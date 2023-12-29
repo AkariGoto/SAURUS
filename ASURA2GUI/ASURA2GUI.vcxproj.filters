@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ASURA2GUI.cpp" />
+    <ClCompile Include="ASURA2GUIDoc.cpp" />
+    <ClCompile Include="ASURA2GUIView.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="UDP\Udp.cpp">
+      <Filter>UDP</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="UDP\stdafx.cpp">
+      <Filter>UDP</Filter>
+    </ClCompile>
+    <ClCompile Include="UDP\AsuraUDPThread.cpp">
+      <Filter>UDP</Filter>
+    </ClCompile>
+    <ClCompile Include="Comm\SciRingBuffer.cpp">
+      <Filter>Comm</Filter>
+    </ClCompile>
+    <ClCompile Include="Comm\SerialPort.cpp">
+      <Filter>Comm</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\AsuraData.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\DataHandler.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\PlanData.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic\AsuraGraphic.cpp">
+      <Filter>Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic\OpenGL\AviMaker.cpp">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic\OpenGL\CameraView.cpp">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic\OpenGL\OpenGL.cpp">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic\OpenGL\OpenGLObject.cpp">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic\OpenGL\OpenGLText.cpp">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Kinematics\AsuraX.cpp">
+      <Filter>Kinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="Kinematics\WalkingRobot.cpp">
+      <Filter>Kinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MathGeometry.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix\Matrix.cpp">
+      <Filter>Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix\MatrixLibrary.cpp">
+      <Filter>Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\Planner.cpp">
+      <Filter>Plan</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\PlannerManager.cpp">
+      <Filter>Plan</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\TimeManager.cpp">
+      <Filter>Plan</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\TripodGaitPlanner.cpp">
+      <Filter>Plan</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\Trajectory\BodyTrajectory.cpp">
+      <Filter>Plan\Trajectory</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\Trajectory\LegTrajectory.cpp">
+      <Filter>Plan\Trajectory</Filter>
+    </ClCompile>
+    <ClCompile Include="Plan\Trajectory\Trajectory.cpp">
+      <Filter>Plan\Trajectory</Filter>
+    </ClCompile>
+    <ClCompile Include="System\ComLib.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Console.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Thread\MotionPlanThread.cpp">
+      <Filter>System\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Thread\TimedMotionProcedure.cpp">
+      <Filter>System\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Timer\MultiMediaTimer.cpp">
+      <Filter>System\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Asc2Int.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\RingBuffer.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Kinematics\Leg\Leg.cpp">
+      <Filter>Kinematics\Leg</Filter>
+    </ClCompile>
+    <ClCompile Include="Kinematics\Leg\TrackLeg.cpp">
+      <Filter>Kinematics\Leg</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ASURA2GUI.h" />
+    <ClInclude Include="ASURA2GUIDoc.h" />
+    <ClInclude Include="ASURA2GUIView.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="System\Console.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="UDP\UDPPacket.h">
+      <Filter>UDP</Filter>
+    </ClInclude>
+    <ClInclude Include="UDP\Udp.h">
+      <Filter>UDP</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="UDP\stdafx.h">
+      <Filter>UDP</Filter>
+    </ClInclude>
+    <ClInclude Include="UDP\AsuraUDPThread.h">
+      <Filter>UDP</Filter>
+    </ClInclude>
+    <ClInclude Include="Comm\SciPacket.h">
+      <Filter>Comm</Filter>
+    </ClInclude>
+    <ClInclude Include="Comm\SciRingBuffer.h">
+      <Filter>Comm</Filter>
+    </ClInclude>
+    <ClInclude Include="Comm\SerialPort.h">
+      <Filter>Comm</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\AsuraData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\DataHandler.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\PlanData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\TitanData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\AsuraGraphic.h">
+      <Filter>Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\AviMaker.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\CameraView.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\OpenGL.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\OpenGLMovie.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\OpenGLObject.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\OpenGLParameter.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic\OpenGL\OpenGLText.h">
+      <Filter>Graphic\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Kinematics\AsuraParameter.h">
+      <Filter>Kinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="Kinematics\AsuraX.h">
+      <Filter>Kinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="Kinematics\WalkingRobot.h">
+      <Filter>Kinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathConstant.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathGeometry.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathLibrary.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix\Matrix.h">
+      <Filter>Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix\MatrixLibrary.h">
+      <Filter>Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\Planner.h">
+      <Filter>Plan</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\PlannerManager.h">
+      <Filter>Plan</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\PlanParameter.h">
+      <Filter>Plan</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\TimeManager.h">
+      <Filter>Plan</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\TripodGaitPlanner.h">
+      <Filter>Plan</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\Trajectory\BodyTrajectory.h">
+      <Filter>Plan\Trajectory</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\Trajectory\LegTrajectory.h">
+      <Filter>Plan\Trajectory</Filter>
+    </ClInclude>
+    <ClInclude Include="Plan\Trajectory\Trajectory.h">
+      <Filter>Plan\Trajectory</Filter>
+    </ClInclude>
+    <ClInclude Include="System\BasicDirectX.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\ComLib.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\DebugOutput.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\LockObject.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\ViewSetting.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\WinUserMessage.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Thread\MotionPlanThread.h">
+      <Filter>System\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Thread\TimedMotionProcedure.h">
+      <Filter>System\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Timer\MultiMediaTimer.h">
+      <Filter>System\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ArrayList.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Asc2Int.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ColorNames.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Constants.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\EngConstant.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\EnumTypes.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\RingBuffer.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\SafeOperation.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Kinematics\Leg\Leg.h">
+      <Filter>Kinematics\Leg</Filter>
+    </ClInclude>
+    <ClInclude Include="Kinematics\Leg\TrackLeg.h">
+      <Filter>Kinematics\Leg</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ASURA2GUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\ASURA2GUI.ico" />
+    <Image Include="res\ASURA2GUIDoc.ico" />
+    <Image Include="res\Toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\ASURA2GUI.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="UDP">
+      <UniqueIdentifier>{2996901c-f12c-4426-9c2a-560884d934d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comm">
+      <UniqueIdentifier>{f9233bb5-374e-43f5-b78f-ad20fb420247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{327c00d4-d471-4e2d-967a-7a62ae6f1df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphic">
+      <UniqueIdentifier>{88f7f803-8e5b-49d4-af66-07106d18ca78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphic\OpenGL">
+      <UniqueIdentifier>{73638fae-b763-4a8b-94c0-229080845e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kinematics">
+      <UniqueIdentifier>{5159b9d6-b350-428f-892c-cec7bbf73b03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{6ae4b4c8-4584-4486-a9d8-7386720d7c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Matrix">
+      <UniqueIdentifier>{eb3fc2cd-cb0c-4076-b457-7c914ddbe06e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plan">
+      <UniqueIdentifier>{cf857ff3-d32d-4cb3-a5cf-2feee5be30bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plan\Trajectory">
+      <UniqueIdentifier>{58fc4604-625e-4ded-8799-8242136fb7c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{efb583d6-ede9-4ecf-98e7-025c538ee13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Control">
+      <UniqueIdentifier>{dca7a041-839f-4e0c-91bd-3ee5e0ce6675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Device">
+      <UniqueIdentifier>{e5b0fcaf-e857-4642-89b0-8fb724556ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Thread">
+      <UniqueIdentifier>{6350f456-e508-474f-a5b1-366c4948a8be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Timer">
+      <UniqueIdentifier>{225b6712-4544-4199-837c-6b82f8b32e21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{91f773a0-ee4c-4f40-8117-ca6f3dd11976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kinematics\Leg">
+      <UniqueIdentifier>{28364fc2-a01a-420d-9360-0c69f9b956f2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
