@@ -1,180 +1,151 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Console.h
- *  à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Éo—Í‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2007/05/19(SAT)
+ *  èª¬æ˜
+ *		ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/05/12(SAT)		æ›´æ–°æ—¥: 2007/05/19(SAT)
  */
 
-#ifndef __Console_h__
-#define __Console_h__
+#ifndef DESIGNLAB_ROBOT_GUI_SYSTEM_CONSOLE_H_
+#define DESIGNLAB_ROBOT_GUI_SYSTEM_CONSOLE_H_
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
 #include <windows.h>
 #include <stdio.h>
 
-/**
- *	----------------------------------------------------------------------
- *		ConsoleƒNƒ‰ƒX
- *			MonoStateƒpƒ^[ƒ“‚Åì¬iƒRƒ“ƒXƒgƒ‰ƒNƒ^Œn‚Ístatic, ƒƒ“ƒo‚Íprivatej
- *			Œp³‚µ‚È‚¢‚±‚Æ
- *			Console.iniƒtƒ@ƒCƒ‹‚ğŠÜ‚ŞSettingƒfƒBƒŒƒNƒgƒŠ‚ğ—pˆÓ
- *	----------------------------------------------------------------------
- */
-class Console
+ /**
+   *	----------------------------------------------------------------------
+   *		Consoleã‚¯ãƒ©ã‚¹
+   *			MonoStateãƒ‘ã‚¿ãƒ¼ãƒ³ã§ä½œæˆï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç³»ã¯static, ãƒ¡ãƒ³ãƒã¯privateï¼‰
+   *			ç¶™æ‰¿ã—ãªã„ã“ã¨
+   *			Console.iniãƒ•ã‚¡ã‚¤ãƒ«ã‚’å«ã‚€Settingãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ç”¨æ„
+   *	----------------------------------------------------------------------
+   */
+class Console final
 {
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo’è”
- *	------------------------------------------------------------
- */
-	static const int	MAX_NAME			= 256;
-	static const int	ENTRYBUFFSIZE		= 256;
-	static const int	LINEBUFFSIZE		= 256;
-
-	/// ƒtƒ@ƒCƒ‹–¼
-	static const TCHAR	CONSOLENAME[MAX_PATH+1];
-	static const TCHAR	INIFILENAME[MAX_PATH+1];
-	static const TCHAR	INIDIRNAME[MAX_PATH+1];
-	static const TCHAR*	YESNO[2];
-
-	/// ƒRƒ“ƒ\[ƒ‹‘®«
-	static const WORD	FOREGROUND_BLACK;
-	static const WORD	FOREGROUND_CYAN;
-	static const WORD	FOREGROUND_WHITE;
-	static const WORD	FOREGROUND_CUSTOM;
-
-	static const WORD	BACKGROUND_BLACK;
-	static const WORD	BACKGROUND_CYAN;
-	static const WORD	BACKGROUND_WHITE;
-	static const WORD	BACKGROUND_CUSTOM;
-
-	/// o—ÍƒŒƒxƒ‹
-	static const WORD	INFO;
-	static const WORD	WARNING;
-	static const WORD	ALART;
-	static const WORD	EMERGENCY;
-
-	static const WORD	DUMP;
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	–¼‘O
- *	----------------------------------------
- */
-	/// ƒƒOƒtƒ@ƒCƒ‹–¼
-	static TCHAR logFileName[ENTRYBUFFSIZE];
-	/// iniƒtƒ@ƒCƒ‹‚ÌƒZƒNƒVƒ‡ƒ“–¼
-	static TCHAR sectionName[ENTRYBUFFSIZE];
-
-/**
- *	----------------------------------------
- *	ƒfƒoƒbƒOİ’è
- *	----------------------------------------
- */
-	/// ƒfƒoƒbƒOƒƒO‚ğo—Í‚·‚é‚©
-	static bool 	isDebugMode;
-	/// ƒƒOƒtƒ@ƒCƒ‹‚ğíœ‚·‚é‚©
-	static bool	isDeleteOnStart;
-	/// ƒfƒoƒbƒOƒƒOo—ÍƒŒƒxƒ‹
-	static DWORD	debugLevel;
-	/// ƒƒOƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹
-	static FILE*	logFile;
-
-	/// ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
-	/// ƒƒOo—Í’†
-	static CRITICAL_SECTION	loggingCS;
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
 public:
-/**
- *	à–¾
- *		ƒfƒoƒbƒOo—ÍƒIƒvƒVƒ‡ƒ“‚Ì‰Šú‰»
- */
-	static void initialize(LPCWSTR  lpszSection);
+    Console() = delete;
+    Console(const Console&) = delete;
+    Console& operator=(const Console&) = delete;
+    Console(Console&&) = delete;
+    ~Console() = delete;
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ìì¬
- */
-	static BOOL createConsole(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–
+     */
+    static void initialize(LPCWSTR  lpszSection);
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOƒŒƒxƒ‹‚Ìƒ`ƒFƒbƒN
- */
-	static BOOL checkLevel(DWORD level);
+    /**
+     *	èª¬æ˜
+     *		ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®ä½œæˆ
+     */
+    static BOOL createConsole(void);
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOƒƒOƒtƒ@ƒCƒ‹‚Ìì¬
- */
-	static FILE*	openLogFile(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ãƒãƒƒã‚°ãƒ¬ãƒ™ãƒ«ã®ãƒã‚§ãƒƒã‚¯
+     */
+    static BOOL checkLevel(DWORD level);
 
-/**
- *	à–¾
- *		Œ‹‰Ê‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í
- */
-	static void print(LPSTR msgString);
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆ
+     */
+    static FILE* openLogFile(void);
 
-/**
- *	à–¾
- *		Ú×Œ‹‰Ê‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í
- */
-	static void	__cdecl output(DWORD level, PSTR fmtStrPointer, ...);
+    /**
+     *	èª¬æ˜
+     *		çµæœã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›
+     */
+    static void print(LPSTR msgString);
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOƒ_ƒ“ƒvo—Í
- *	ˆø”
- *		DWORD  level		... o—ÍƒŒƒxƒ‹
- *		PSTR  titleStrPtr	... ƒ^ƒCƒgƒ‹‚ğw‚·ƒ|ƒCƒ“ƒ^
- *		LPBYTE buffBytePtr	... ƒoƒbƒtƒ@‚ğw‚·ƒ|ƒCƒ“ƒ^
- *		DWORD  buffSize		... ƒoƒbƒtƒ@ƒTƒCƒY	
- */
-	static void dump(DWORD level, PSTR titleStrPtr, LPBYTE buffBytePtr, DWORD buffSize);
+    /**
+     *	èª¬æ˜
+     *		è©³ç´°çµæœã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›
+     */
+    static void	__cdecl output(DWORD level, PSTR fmtStrPointer, ...);
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ì”jŠü
- */
-	static void destroyConsole(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ãƒãƒƒã‚°ãƒ€ãƒ³ãƒ—å‡ºåŠ›
+     *	å¼•æ•°
+     *		DWORD  level		... å‡ºåŠ›ãƒ¬ãƒ™ãƒ«
+     *		PSTR  titleStrPtr	... ã‚¿ã‚¤ãƒˆãƒ«ã‚’æŒ‡ã™ãƒã‚¤ãƒ³ã‚¿
+     *		LPBYTE buffBytePtr	... ãƒãƒƒãƒ•ã‚¡ã‚’æŒ‡ã™ãƒã‚¤ãƒ³ã‚¿
+     *		DWORD  buffSize		... ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+     */
+    static void dump(DWORD level, PSTR titleStrPtr, LPBYTE buffBytePtr, DWORD buffSize);
+
+    /**
+     *	èª¬æ˜
+     *		ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®ç ´æ£„
+     */
+    static void destroyConsole();
 
 private:
-/**
- *	à–¾
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^‚Ì‰B•Á
- */
-	Console();
-	virtual ~Console();
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ì‘®«‚ğİ’è
- */
-	static BOOL setConsoleAttribute(HANDLE consoleHandle);
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ì•W€ƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚ğ“¾‚é
- */
-	static FILE* getConsoleFileHandle(DWORD dwDevice);
 
+    /**
+     *	èª¬æ˜
+     *		ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®å±æ€§ã‚’è¨­å®š
+     */
+    static BOOL setConsoleAttribute(HANDLE consoleHandle);
+
+    /**
+     *	èª¬æ˜
+     *		ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®æ¨™æº–ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’å¾—ã‚‹
+     */
+    static FILE* getConsoleFileHandle(DWORD dwDevice);
+
+    static const int	MAX_NAME = 256;
+    static const int	ENTRYBUFFSIZE = 256;
+    static const int	LINEBUFFSIZE = 256;
+
+    /// ãƒ•ã‚¡ã‚¤ãƒ«å
+    static const TCHAR	CONSOLENAME[MAX_PATH + 1];
+    static const TCHAR	INIFILENAME[MAX_PATH + 1];
+    static const TCHAR	INIDIRNAME[MAX_PATH + 1];
+    static const TCHAR* YESNO[2];
+
+    /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«å±æ€§
+    static const WORD	FOREGROUND_BLACK;
+    static const WORD	FOREGROUND_CYAN;
+    static const WORD	FOREGROUND_WHITE;
+    static const WORD	FOREGROUND_CUSTOM;
+
+    static const WORD	BACKGROUND_BLACK;
+    static const WORD	BACKGROUND_CYAN;
+    static const WORD	BACKGROUND_WHITE;
+    static const WORD	BACKGROUND_CUSTOM;
+
+    /// å‡ºåŠ›ãƒ¬ãƒ™ãƒ«
+    static const WORD	INFO;
+    static const WORD	WARNING;
+    static const WORD	ALART;
+    static const WORD	EMERGENCY;
+
+    static const WORD	DUMP;
+
+    /// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«å
+    static TCHAR logFileName[ENTRYBUFFSIZE];
+
+    /// iniãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³å
+    static TCHAR sectionName[ENTRYBUFFSIZE];
+
+    /// ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚’å‡ºåŠ›ã™ã‚‹ã‹
+    static bool 	isDebugMode;
+    /// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹ã‹
+    static bool	isDeleteOnStart;
+    /// ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°å‡ºåŠ›ãƒ¬ãƒ™ãƒ«
+    static DWORD	debugLevel;
+    /// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+    static FILE* logFile;
+
+    /// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ ãƒ­ã‚°å‡ºåŠ›ä¸­
+    static CRITICAL_SECTION	loggingCS;
 };	/// end of class Console
 
-#endif	/// __Console_h__
+
+#endif  // DESIGNLAB_ROBOT_GUI_SYSTEM_CONSOLE_H_

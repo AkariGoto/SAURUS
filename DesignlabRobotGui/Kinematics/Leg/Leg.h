@@ -1,27 +1,26 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Leg.h
- *  à–¾
- *		1‹r‚ÌŠÖß‚â‘«æ‚ÉŠÖ‚·‚éî•ñC‰^“®Šw‚È‚Ç‚ğ‰ğ‚­
- *  “ú•t
- *		ì¬“ú: 2007/01/31(WED)		XV“ú: 2018/02/12(MON)
+ *  èª¬æ˜
+ *		1è„šã®é–¢ç¯€ã‚„è¶³å…ˆã«é–¢ã™ã‚‹æƒ…å ±ï¼Œé‹å‹•å­¦ãªã©ã‚’è§£ã
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/01/31(WED)		æ›´æ–°æ—¥: 2018/02/12(MON)
  */
 
-//20201015  ‘æ4ƒŠƒ“ƒN
-//20201018  ‘æ4ŠÖß
-//20221026  ƒŠƒ“ƒN4p¨
+ //20201015  ç¬¬4ãƒªãƒ³ã‚¯
+ //20201018  ç¬¬4é–¢ç¯€
+ //20221026  ãƒªãƒ³ã‚¯4å§¿å‹¢
 
 #ifndef __Leg_h__
 #define __Leg_h__
 
 /**
  *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
+ *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
  *	----------------------------------------------------------------------
  */
 #include <cassert>
 #include "..\..\Math\Matrix\Matrix.h"
-#include "..\..\Utility\Constants.h"
 #include "..\AsuraParameter.h"
 
 namespace Asura
@@ -29,656 +28,656 @@ namespace Asura
 
 /**
  *	----------------------------------------------------------------------
- *		LegƒNƒ‰ƒX
+ *		Legã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class Leg
 {
-/**
- *	------------------------------------------------------------
- *		“à•”ƒNƒ‰ƒX‚ÌéŒ¾
- *	------------------------------------------------------------
- */
-	/**
-	 *		LegDataƒNƒ‰ƒXF‹r‚Ìî•ñ
-	 */
-	class LegData
-	{
-		/**
-		 *	------------------------------------------------------------
-		 *		ƒƒ“ƒo•Ï”
-		 *	------------------------------------------------------------
-		 */
-		public:
-			/**
-			 *	À•WŒn‚Í‘S‚Ä“·‘ÌÀ•WŒni‚±‚±‚Å‚ÍƒOƒ[ƒoƒ‹À•Wj
-			 */
-			/// “¯•ÏŠ·s—ñ
-			/// ‹rªŒ³: [4x4]
-			Math::Matrix	baseTransformation;
-			/// ŠÖß: [4x4]x3
-			Math::Matrix* jointTransformation;
-			/// ‘«— ]: [4x4]
-			Math::Matrix	footTransformation;
+    /**
+     *	------------------------------------------------------------
+     *		å†…éƒ¨ã‚¯ãƒ©ã‚¹ã®å®£è¨€
+     *	------------------------------------------------------------
+     */
+     /**
+      *		LegDataã‚¯ãƒ©ã‚¹ï¼šè„šã®æƒ…å ±
+      */
+    class LegData
+    {
+        /**
+         *	------------------------------------------------------------
+         *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+         *	------------------------------------------------------------
+         */
+    public:
+        /**
+         *	åº§æ¨™ç³»ã¯å…¨ã¦èƒ´ä½“åº§æ¨™ç³»ï¼ˆã“ã“ã§ã¯ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™ï¼‰
+         */
+         /// åŒæ™‚å¤‰æ›è¡Œåˆ—
+         /// è„šæ ¹å…ƒ: [4x4]
+        Math::Matrix	baseTransformation;
+        /// é–¢ç¯€: [4x4]x3
+        Math::Matrix* jointTransformation;
+        /// è¶³è£]: [4x4]
+        Math::Matrix	footTransformation;
 
-			Math::Vector bodyAngle;
+        Math::Vector bodyAngle;
 
-			/**
-			 *		ˆÊ’uƒxƒNƒgƒ‹
-			 */
-			/// ‹rªŒ³: [3]
-			Math::Vector	basePosition;
-			/// ŠeŠÖß: [3]x3
-			Math::Vector* jointPosition;
-			/// ‘«— : [3]
-			Math::Vector	footPosition;
+        /**
+         *		ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
+         */
+         /// è„šæ ¹å…ƒ: [3]
+        Math::Vector	basePosition;
+        /// å„é–¢ç¯€: [3]x3
+        Math::Vector* jointPosition;
+        /// è¶³è£: [3]
+        Math::Vector	footPosition;
 
-			/**
-			 *		ŠÖß‚Ìó‘Ô
-			 */
-			/// ŠÖßŠp“x: [3]-->[4]
-			Math::Vector jointAngle;
-			/// ŠÖß‘¬“x: [3]
-			Math::Vector jointVelocity;
-			/// ŠÖßƒgƒ‹ƒN: [3]
-			Math::Vector jointTorque;
-			/// ‘«ñŠÖßŠp“x: [1]
-			//Math::Vector  FootjointAngle;//---Add
-			double FootjointAngle;
+        /**
+         *		é–¢ç¯€ã®çŠ¶æ…‹
+         */
+         /// é–¢ç¯€è§’åº¦: [3]-->[4]
+        Math::Vector jointAngle;
+        /// é–¢ç¯€é€Ÿåº¦: [3]
+        Math::Vector jointVelocity;
+        /// é–¢ç¯€ãƒˆãƒ«ã‚¯: [3]
+        Math::Vector jointTorque;
+        /// è¶³é¦–é–¢ç¯€è§’åº¦: [1]
+        //Math::Vector  FootjointAngle;//---Add
+        double FootjointAngle;
 
-			/**
-			 *		ƒAƒNƒ`ƒ…ƒG[ƒ^‚Ìó‘Ô
-			 */
-			///ƒAƒNƒ`ƒ…ƒG[ƒ^À•W: [4]
-			Math::Vector ActPos;
-			/// •ÏŠ·s—ñ: [4x4]
-			//Math::Matrix	ActTransformation;
+        /**
+         *		ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿ã®çŠ¶æ…‹
+         */
+         ///ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿åº§æ¨™: [4]
+        Math::Vector ActPos;
+        /// å¤‰æ›è¡Œåˆ—: [4x4]
+        //Math::Matrix	ActTransformation;
 
-			double LegTipAngle;  //20221026
-			
-		private:
-		/**
-		 *	------------------------------------------------------------
-		 *		ƒƒ“ƒoŠÖ”
-		 *	------------------------------------------------------------
-		 */
-		/**
-		 *	----------------------------------------
-		 *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
-		 *	----------------------------------------
-		 */
-		public:
-			/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-			LegData();
-			/// ƒfƒXƒgƒ‰ƒNƒ^
-			virtual ~LegData();
+        double LegTipAngle;  //20221026
 
-		private:
-		    /// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
-			void newLegData(void);
-			/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú‚·‚é
-		    void deleteLegData(void);
-	};
+    private:
+        /**
+         *	------------------------------------------------------------
+         *		ãƒ¡ãƒ³ãƒé–¢æ•°
+         *	------------------------------------------------------------
+         */
+         /**
+          *	----------------------------------------
+          *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+          *	----------------------------------------
+          */
+    public:
+        /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+        LegData();
+        /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+        virtual ~LegData();
 
-/**
- *	------------------------------------------------------------
- *		“à•”\‘¢‘Ì‚ÌéŒ¾
- *	------------------------------------------------------------
- */
-	/**
-	 *	‹@\“I‚È§ŒÀ
-	 */
-	struct LegLimit
-	{
-		/// ŠÖßŠpŒÀŠE
-		double angleMin[LEG_JOINT_NUM];
-		double angleMax[LEG_JOINT_NUM];
-		double FootangleMin;
-		double FootangleMax;
+    private:
+        /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
+        void newLegData(void);
+        /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’è§£æ”¾ã™ã‚‹
+        void deleteLegData(void);
+    };
 
-
-		/// ‘«æ”½—ÍŒÀŠE
-		double footReaction[3];
-
-		/// ‹r”¼Œa•ûŒüƒŠ[ƒ`
-		double reachRadiusMin;
-		double reachRadiusMax;
-	
-		/// ‹r‚‚³•ûŒüƒŠ[ƒ`
-		double reachHeightMin;
-		double reachHeightMax;
-	};
-
-	/**
-	 *	DHƒpƒ‰ƒ[ƒ^
-	*/
-	struct DHParameter
-	{
-		double	alpha[LEG_JOINT_NUM];
-		double	a[LEG_JOINT_NUM];
-		double	d[LEG_JOINT_NUM];
-	};
+    /**
+     *	------------------------------------------------------------
+     *		å†…éƒ¨æ§‹é€ ä½“ã®å®£è¨€
+     *	------------------------------------------------------------
+     */
+     /**
+      *	æ©Ÿæ§‹çš„ãªåˆ¶é™
+      */
+    struct LegLimit
+    {
+        /// é–¢ç¯€è§’é™ç•Œ
+        double angleMin[LEG_JOINT_NUM];
+        double angleMax[LEG_JOINT_NUM];
+        double FootangleMin;
+        double FootangleMax;
 
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+        /// è¶³å…ˆååŠ›é™ç•Œ
+        double footReaction[3];
+
+        /// è„šåŠå¾„æ–¹å‘ãƒªãƒ¼ãƒ
+        double reachRadiusMin;
+        double reachRadiusMax;
+
+        /// è„šé«˜ã•æ–¹å‘ãƒªãƒ¼ãƒ
+        double reachHeightMin;
+        double reachHeightMax;
+    };
+
+    /**
+     *	DHãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+    */
+    struct DHParameter
+    {
+        double	alpha[LEG_JOINT_NUM];
+        double	a[LEG_JOINT_NUM];
+        double	d[LEG_JOINT_NUM];
+    };
+
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 public:
 protected:
-/**
- *	‹r‚Ìî•ñ
- *	‰Šú‰»‚Ì‡”Ô‚Ì‚½‚ßæ‚ÉéŒ¾
- */
-	LegData legData;
+    /**
+     *	è„šã®æƒ…å ±
+     *	åˆæœŸåŒ–ã®é †ç•ªã®ãŸã‚å…ˆã«å®£è¨€
+     */
+    LegData legData;
 
-/**
- *	‹@\“I‚È§ŒÀ
- */
-	LegLimit legLimit;
+    /**
+     *	æ©Ÿæ§‹çš„ãªåˆ¶é™
+     */
+    LegLimit legLimit;
 
-/**
- *	DHƒpƒ‰ƒ[ƒ^
- */
-	DHParameter dhParam;
+    /**
+     *	DHãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+     */
+    DHParameter dhParam;
 
-/**
- *	ƒ„ƒRƒrƒAƒ“
- */
-	/// ƒ„ƒRƒrs—ñ: [3x3]
-	Math::Matrix jacobian;
-	/// ‹tƒ„ƒRƒrs—ñ: [3x3]
-	Math::Matrix inverseJacobian;
+    /**
+     *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³
+     */
+     /// ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    Math::Matrix jacobian;
+    /// é€†ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    Math::Matrix inverseJacobian;
 
-/**
- *	‹r‚ÌªŒ³‚ÌˆÊ’uix y zjEp¨iƒÆj: [4]
- */
-	Math::Vector basePose;	
+    /**
+     *	è„šã®æ ¹å…ƒã®ä½ç½®ï¼ˆx y zï¼‰ãƒ»å§¿å‹¢ï¼ˆÎ¸ï¼‰: [4]
+     */
+    Math::Vector basePose;
 
-/**
- *	‹r‚Ìp¨w•Wi‹t‰^“®Šw‚É—p‚¢‚éj0 or 1
- */
-	int poseIndicator[2];
+    /**
+     *	è„šã®å§¿å‹¢æŒ‡æ¨™ï¼ˆé€†é‹å‹•å­¦æ™‚ã«ç”¨ã„ã‚‹ï¼‰0 or 1
+     */
+    int poseIndicator[2];
 
-/**
- *	‹r”Ô†
- */
-	int legNo;
+    /**
+     *	è„šç•ªå·
+     */
+    int legNo;
 
 
-/**
- *	ÅŒã‚ÉƒGƒ‰[‚ÌŒ´ˆö‚Æ‚È‚Á‚½ŠÖß”Ô†i1C2C3j
- *	0‚Í‘S‚ÄOKCƒGƒ‰[–³
- */
-	int legLastErrorJointNo;
+    /**
+     *	æœ€å¾Œã«ã‚¨ãƒ©ãƒ¼ã®åŸå› ã¨ãªã£ãŸé–¢ç¯€ç•ªå·ï¼ˆ1ï¼Œ2ï¼Œ3ï¼‰
+     *	0ã¯å…¨ã¦OKï¼Œã‚¨ãƒ©ãƒ¼ç„¡
+     */
+    int legLastErrorJointNo;
 
 private:
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 *	ˆø”
-	 *		x, y, x: ‹r‚ÌªŒ³ˆÊ’u		
-	 *		theta: ‹r‚Ìù‰ñ²‰ñ‚è‚Ìp¨
-	 */
-	explicit Leg(int no=1, double x=0, double y=0, double z=0, double theta=0);
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+      *	å¼•æ•°
+      *		x, y, x: è„šã®æ ¹å…ƒä½ç½®
+      *		theta: è„šã®æ—‹å›è»¸å›ã‚Šã®å§¿å‹¢
+      */
+    explicit Leg(int no = 1, double x = 0, double y = 0, double z = 0, double theta = 0);
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~Leg();
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~Leg();
 
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	‹r‚Ìƒf[ƒ^‚ğ“¾‚é
- *	----------------------------------------
- */
-	/**
-	 *	“¯Ÿ•ÏŠ·s—ñ
-	 */
-	/// ‹rªŒ³
-	const Math::Matrix& getLegBaseTransformation(void) const {return legData.baseTransformation;}
-	/// ŠÖß
-	const Math::Matrix& getLegJointTransformation(int jointNo) const;
-	/// ‘«— 
-	const Math::Matrix& getLegFootTransformation(void) const {return legData.footTransformation;}
-	
-	/**
-	 *	ˆÊ’uƒxƒNƒgƒ‹
-	 */
-	/// ‹rªŒ³
-	const Math::Vector& getLegBasePosition(void) const {return legData.basePosition;}
-	/// ŠÖßˆÊ’u
-	const Math::Vector& getLegJointPosition(int jointNo) const;
-	/// ‘«— ˆÊ’u: [3]
-	const Math::Vector& getLegFootPosition(void) const {return legData.footPosition;}
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	è„šã®ãƒ‡ãƒ¼ã‚¿ã‚’å¾—ã‚‹
+     *	----------------------------------------
+     */
+     /**
+      *	åŒæ¬¡å¤‰æ›è¡Œåˆ—
+      */
+      /// è„šæ ¹å…ƒ
+    const Math::Matrix& getLegBaseTransformation(void) const { return legData.baseTransformation; }
+    /// é–¢ç¯€
+    const Math::Matrix& getLegJointTransformation(int jointNo) const;
+    /// è¶³è£
+    const Math::Matrix& getLegFootTransformation(void) const { return legData.footTransformation; }
 
-	/**
-	 *	ŠÖß‚Ìó‘Ô
-	 */
-	/// ŠÖßŠp“x: [3]
-	const Math::Vector& getLegJointAngle(void) const {return legData.jointAngle;}
-	/// ŠÖß‘¬“x: [3]
-	const Math::Vector& getLegJointVelocity(void) const {return legData.jointVelocity;}
-	/// ŠÖßƒgƒ‹ƒN: [3]
-	const Math::Vector& getLegJointTorque(void) const {return legData.jointTorque;}
-	/// ‘«ñŠÖßŠp“x :[1]
-	const double getFootJointAngle(void) const {return legData.FootjointAngle;}//------Add
+    /**
+     *	ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
+     */
+     /// è„šæ ¹å…ƒ
+    const Math::Vector& getLegBasePosition(void) const { return legData.basePosition; }
+    /// é–¢ç¯€ä½ç½®
+    const Math::Vector& getLegJointPosition(int jointNo) const;
+    /// è¶³è£ä½ç½®: [3]
+    const Math::Vector& getLegFootPosition(void) const { return legData.footPosition; }
 
-	const double getLegTipAngle(void) const { return legData.LegTipAngle; }  //20221026
+    /**
+     *	é–¢ç¯€ã®çŠ¶æ…‹
+     */
+     /// é–¢ç¯€è§’åº¦: [3]
+    const Math::Vector& getLegJointAngle(void) const { return legData.jointAngle; }
+    /// é–¢ç¯€é€Ÿåº¦: [3]
+    const Math::Vector& getLegJointVelocity(void) const { return legData.jointVelocity; }
+    /// é–¢ç¯€ãƒˆãƒ«ã‚¯: [3]
+    const Math::Vector& getLegJointTorque(void) const { return legData.jointTorque; }
+    /// è¶³é¦–é–¢ç¯€è§’åº¦ :[1]
+    const double getFootJointAngle(void) const { return legData.FootjointAngle; }//------Add
 
-	/**
-	 *	ƒ„ƒRƒrƒAƒ“
-	 */
-	/// ƒ„ƒRƒrs—ñ: [3x3]
-	const Math::Matrix& getJacobian(void) const {return jacobian;}
-	/// ‹tƒ„ƒRƒrs—ñ: [3x3]
-	const Math::Matrix& getInverseJacobian(void) const {return inverseJacobian;}
-	
-	/// ‹r‚ÌªŒ³‚ÌˆÊ’uEp¨: [4]
-	const Math::Vector& getBasePose(void) const {return basePose;}	
+    const double getLegTipAngle(void) const { return legData.LegTipAngle; }  //20221026
 
-	/// ‹r”Ô†‚Ìæ“¾
-	const int getLegNo(void) const {return legNo;}
+    /**
+     *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³
+     */
+     /// ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    const Math::Matrix& getJacobian(void) const { return jacobian; }
+    /// é€†ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    const Math::Matrix& getInverseJacobian(void) const { return inverseJacobian; }
 
-	/// ŠÖß‚ÌƒGƒ‰[”Ô†
-	const int getLegLastErrorJointNo(void) const {return legLastErrorJointNo;}
+    /// è„šã®æ ¹å…ƒã®ä½ç½®ãƒ»å§¿å‹¢: [4]
+    const Math::Vector& getBasePose(void) const { return basePose; }
 
-	/// ƒ{[ƒ‹‚Ë‚¶ˆÊ’u: [4]iƒƒCƒ„•ÏˆÊj
-	const Math::Vector& getLegActuatorPosition(void) const {return legData.ActPos;}//------Add
+    /// è„šç•ªå·ã®å–å¾—
+    const int getLegNo(void) const { return legNo; }
 
-/**
- *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
- *	----------------------------------------
- */
-	/// ‹r”Ô†‚Ìİ’è
-	void setLegNo(int no);
+    /// é–¢ç¯€ã®ã‚¨ãƒ©ãƒ¼ç•ªå·
+    const int getLegLastErrorJointNo(void) const { return legLastErrorJointNo; }
 
-/**
- *	----------------------------------------
- *	‰^“®Šw
- *	----------------------------------------
- */
-	/**
-	 *	“¯Ÿ•ÏŠ·s—ñ
-	 */
-	/// ‹rªŒ³
-	Math::Matrix legBaseHomogeneousTransformation(void);
-	/// ŠÖß
-	Math::Matrix legJointHomogeneousTransformation(int jointNo);
-	/// ‘«— 
-	Math::Matrix legFootHomogeneousTransformation(void);
+    /// ãƒœãƒ¼ãƒ«ã­ã˜ä½ç½®: [4]ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰
+    const Math::Vector& getLegActuatorPosition(void) const { return legData.ActPos; }//------Add
 
-	/**
-	 *	‹t“¯Ÿ•ÏŠ·s—ñ
-	 */
-	/// ‹rªŒ³
-	Math::Matrix legBaseInverseHomogeneousTransformation(void);
-	/// ŠÖß
-	Math::Matrix legJointInverseHomogeneousTransformation(int jointNo);
-	/// ‘«— 
-	Math::Matrix legFootInverseHomogeneousTransformation(void);
+    /**
+     *	----------------------------------------
+     *	ã‚»ãƒƒãƒˆé–¢æ•°
+     *	----------------------------------------
+     */
+     /// è„šç•ªå·ã®è¨­å®š
+    void setLegNo(int no);
 
-	/// ‡‰^“®Šw
-	Kinematics solveDirectKinematics(void);
+    /**
+     *	----------------------------------------
+     *	é‹å‹•å­¦
+     *	----------------------------------------
+     */
+     /**
+      *	åŒæ¬¡å¤‰æ›è¡Œåˆ—
+      */
+      /// è„šæ ¹å…ƒ
+    Math::Matrix legBaseHomogeneousTransformation(void);
+    /// é–¢ç¯€
+    Math::Matrix legJointHomogeneousTransformation(int jointNo);
+    /// è¶³è£
+    Math::Matrix legFootHomogeneousTransformation(void);
 
-	/// ‹t‰^“®Šw
-	Kinematics solveInverseKinematics(void);
+    /**
+     *	é€†åŒæ¬¡å¤‰æ›è¡Œåˆ—
+     */
+     /// è„šæ ¹å…ƒ
+    Math::Matrix legBaseInverseHomogeneousTransformation(void);
+    /// é–¢ç¯€
+    Math::Matrix legJointInverseHomogeneousTransformation(int jointNo);
+    /// è¶³è£
+    Math::Matrix legFootInverseHomogeneousTransformation(void);
 
-	/// p¨w•W‚Ì•ÏX
-	void setLegPoseIndicator(int hip = 1, int knee = 1);
+    /// é †é‹å‹•å­¦
+    Kinematics solveDirectKinematics(void);
 
-	/// ‹r‚ÌªŒ³İ’è
-	void setLegBasePose(double x, double y, double z, double theta);
-/**
- *	----------------------------------------
- *	‹r‚Ì‹@\§ŒÀ‚ğƒ`ƒFƒbƒN
- *	----------------------------------------
- */
-	/// ŠÖß‚Ì‰Â“®”ÍˆÍ‚ğ’²¸
-	Kinematics checkLegJointMotionRange(void);
+    /// é€†é‹å‹•å­¦
+    Kinematics solveInverseKinematics(void);
 
-	/// ‹r‚ÌƒŠ[ƒ`‚ğ’²¸
-	Kinematics checkLegFootReachRange(void);
+    /// å§¿å‹¢æŒ‡æ¨™ã®å¤‰æ›´
+    void setLegPoseIndicator(int hip = 1, int knee = 1);
 
-/**
- *	----------------------------------------
- *	‹r‚ÌPTP§Œä—p
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		‘«‚ÌˆÊ’u‚ğƒZƒbƒgi‘«— ‚Íí‚Éd—Í•ûŒü‚Æ‰¼’èj
- 	 *		‡‰^“®Šw‚Æ‹t‰^“®Šw‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚ğŠm”F‚·‚é
-	 *		“r’†‚ÌŠÖßˆÊ’u‚ğŒvZ‚·‚é
-	 */
-	Kinematics placeLegFootPosition(const Math::Vector& nextFootPosition);
+    /// è„šã®æ ¹å…ƒè¨­å®š
+    void setLegBasePose(double x, double y, double z, double theta);
+    /**
+     *	----------------------------------------
+     *	è„šã®æ©Ÿæ§‹åˆ¶é™ã‚’ãƒã‚§ãƒƒã‚¯
+     *	----------------------------------------
+     */
+     /// é–¢ç¯€ã®å¯å‹•ç¯„å›²ã‚’èª¿æŸ»
+    Kinematics checkLegJointMotionRange(void);
 
-	/** 
-	 *	à–¾
-	 *		ŠÖßŠp‚ğƒZƒbƒg
-	 *		ƒZƒbƒg‚µ‚½ŠÖßŠp‚Å‡‰^“®Šw‚ğ‰ğ‚­
-	 */
-	Kinematics placeLegJointAngles(const Math::Vector& nextJointAngle, const double& nextFootJointAngle);
-	//20201018  const double& nextFootJointAngle’Ç‰Á
+    /// è„šã®ãƒªãƒ¼ãƒã‚’èª¿æŸ»
+    Kinematics checkLegFootReachRange(void);
 
-	void setLegTipAngle(const double angle) { legData.LegTipAngle = angle; return; }  //20221026
+    /**
+     *	----------------------------------------
+     *	è„šã®PTPåˆ¶å¾¡ç”¨
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		è¶³ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆï¼ˆè¶³è£ã¯å¸¸ã«é‡åŠ›æ–¹å‘ã¨ä»®å®šï¼‰
+      *		é †é‹å‹•å­¦ã¨é€†é‹å‹•å­¦ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹ã‚’ç¢ºèªã™ã‚‹
+      *		é€”ä¸­ã®é–¢ç¯€ä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
+      */
+    Kinematics placeLegFootPosition(const Math::Vector& nextFootPosition);
 
-/**
- *	----------------------------------------
- *	ƒ„ƒRƒrƒAƒ“‚ğg‚Á‚Ä‚Ìó‘ÔŒvZ
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		ŠÖß‘¬“x: [3]
-	 *		‹ræ‘¬“x‚©‚çŒvZ
-	 */
-	void calculateLegJointVelocity(const Math::Vector& footVelocity);
-	
-	/**
-	 *	à–¾
-	 *		ŠÖßƒgƒ‹ƒN: [3]
-	 *		‹ræ’[‚É‰Á‚í‚Á‚½‰×d‚©‚çŒvZ
-	 */
-	void calculateLegJointTorque(const Math::Vector& footReaction);
+    /**
+     *	èª¬æ˜
+     *		é–¢ç¯€è§’ã‚’ã‚»ãƒƒãƒˆ
+     *		ã‚»ãƒƒãƒˆã—ãŸé–¢ç¯€è§’ã§é †é‹å‹•å­¦ã‚’è§£ã
+     */
+    Kinematics placeLegJointAngles(const Math::Vector& nextJointAngle, const double& nextFootJointAngle);
+    //20201018  const double& nextFootJointAngleè¿½åŠ 
 
-	/**
-	 *	ƒ„ƒRƒrƒAƒ“©g‚ÌŒvZ
-	 */
-	/// ƒ„ƒRƒrs—ñ: [3x3]
-	void calculateJacobian(void);
-	/// ‹tƒ„ƒRƒrs—ñ: [3x3]
-	void calculateInverseJacobian(void);
+    void setLegTipAngle(const double angle) { legData.LegTipAngle = angle; return; }  //20221026
 
-	/**
-	 *	à–¾
-	 *		ƒ{[ƒ‹‚Ë‚¶ˆÊ’uŒvZiƒƒCƒ„•ÏˆÊj
-	 */
-	///w—ß’l•ÏŠ·
-	void calculationActatorPosition(void);
+    /**
+     *	----------------------------------------
+     *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³ã‚’ä½¿ã£ã¦ã®çŠ¶æ…‹è¨ˆç®—
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		é–¢ç¯€é€Ÿåº¦: [3]
+      *		è„šå…ˆé€Ÿåº¦ã‹ã‚‰è¨ˆç®—
+      */
+    void calculateLegJointVelocity(const Math::Vector& footVelocity);
+
+    /**
+     *	èª¬æ˜
+     *		é–¢ç¯€ãƒˆãƒ«ã‚¯: [3]
+     *		è„šå…ˆç«¯ã«åŠ ã‚ã£ãŸè·é‡ã‹ã‚‰è¨ˆç®—
+     */
+    void calculateLegJointTorque(const Math::Vector& footReaction);
+
+    /**
+     *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³è‡ªèº«ã®è¨ˆç®—
+     */
+     /// ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    void calculateJacobian(void);
+    /// é€†ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    void calculateInverseJacobian(void);
+
+    /**
+     *	èª¬æ˜
+     *		ãƒœãƒ¼ãƒ«ã­ã˜ä½ç½®è¨ˆç®—ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰
+     */
+     ///æŒ‡ä»¤å€¤å¤‰æ›
+    void calculationActatorPosition(void);
 
 private:
-/**
- *	------------------------------------------------------------
- *		’l‚æ‚è‚àƒCƒ“ƒXƒ^ƒ“ƒX‚ğd‹‚µ‚ÄƒIƒuƒWƒFƒNƒg•¡»‹Ö~
- *	------------------------------------------------------------
- */
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^–³Œø
-	Leg(const Leg& leg);
+    /**
+     *	------------------------------------------------------------
+     *		å€¤ã‚ˆã‚Šã‚‚ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’é‡è¦–ã—ã¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¤‡è£½ç¦æ­¢
+     *	------------------------------------------------------------
+     */
+     /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç„¡åŠ¹
+    Leg(const Leg& leg);
 
-	/// ‘ã“ü‰‰Zq–³Œø
-	Leg& operator=(const Leg& leg)=delete;
+    /// ä»£å…¥æ¼”ç®—å­ç„¡åŠ¹
+    Leg& operator=(const Leg& leg) = delete;
 };
 
 /**
  *	------------------------------------------------------------
- *		inlineŠÖ”
+ *		inlineé–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-/// “¯•ÏŠ·s—ñ‚ğ•Ô‚·
-/// jointNo: ŠÖß”Ô†
+ /**
+  *	----------------------------------------
+  *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+  *	----------------------------------------
+  */
+  /// åŒæ™‚å¤‰æ›è¡Œåˆ—ã‚’è¿”ã™
+  /// jointNo: é–¢ç¯€ç•ªå·
 inline const Math::Matrix& Leg::getLegJointTransformation(int jointNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-	return ( legData.jointTransformation[jointNo-1] );
+    return (legData.jointTransformation[jointNo - 1]);
 }
 
-/// ŠÖßˆÊ’u‚ğ•Ô‚·
-/// jointNo: ŠÖß”Ô†
+/// é–¢ç¯€ä½ç½®ã‚’è¿”ã™
+/// jointNo: é–¢ç¯€ç•ªå·
 inline const Math::Vector& Leg::getLegJointPosition(int jointNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-	return ( legData.jointPosition[jointNo-1] );
+    return (legData.jointPosition[jointNo - 1]);
 }
 
 
 /**
- *	à–¾
- *		À•W•ÏŠ·‚É•K—v‚È“¯Ÿ•ÏŠ·s—ñ‚ğ“±o‚·‚é
- *		jointNo -> jointNo+1 ‚Ö‚ÌÀ•W•ÏŠ·
+ *	èª¬æ˜
+ *		åº§æ¨™å¤‰æ›ã«å¿…è¦ãªåŒæ¬¡å¤‰æ›è¡Œåˆ—ã‚’å°å‡ºã™ã‚‹
+ *		jointNo -> jointNo+1 ã¸ã®åº§æ¨™å¤‰æ›
  *
  *		A(1,1) = cos(theta);	A(1,2) = -cos(alpha)*sin(theta);		A(1,3) = sin(alpha)*sin(theta);			A(1,4) = a*cos(theta);
  *		A(2,1) = sin(theta);	A(2,2) = cos(alpha)*cos(theta);			A(2,3) = -sin(alpha)*cos(theta);		A(2,4) = a*sin(theta);
  *		A(3,1) = 0;				A(3,2) = sin(alpha);					A(3,3) = cos(alpha);					A(3,4) = d;
  *		A(4,1) = 0;				A(4,2) = 0;								A(4,3) = 0;								A(4,4) = 1;
- *//// ‹rªŒ³
+ *//// è„šæ ¹å…ƒ
 inline Math::Matrix Leg::legBaseHomogeneousTransformation(void)
 {
-	/// –ß‚è’l‚Ìs—ñ
-	Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    /// æˆ»ã‚Šå€¤ã®è¡Œåˆ—
+    Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-	A(1,1) = cos( basePose(4) );
-	A(2,1) = sin( basePose(4) );
-	A(3,1) = 0;
-	A(4,1) = 0;
+    A(1, 1) = cos(basePose(4));
+    A(2, 1) = sin(basePose(4));
+    A(3, 1) = 0;
+    A(4, 1) = 0;
 
-	A(1,2) = -sin( basePose(4) );
-	A(2,2) = cos( basePose(4) );
-	A(3,2) = 0;
-	A(4,2) = 0;
+    A(1, 2) = -sin(basePose(4));
+    A(2, 2) = cos(basePose(4));
+    A(3, 2) = 0;
+    A(4, 2) = 0;
 
-	A(1,3) = 0;
-	A(2,3) = 0;
-	A(3,3) = 1;
-	A(4,3) = 0;
+    A(1, 3) = 0;
+    A(2, 3) = 0;
+    A(3, 3) = 1;
+    A(4, 3) = 0;
 
-	A(1,4) = basePose(1);
-	A(2,4) = basePose(2);
-	A(3,4) = basePose(3);
-	A(4,4) = 1;
+    A(1, 4) = basePose(1);
+    A(2, 4) = basePose(2);
+    A(3, 4) = basePose(3);
+    A(4, 4) = 1;
 
-	return A;
+    return A;
 
 }
 
-/// ŠÖß
+/// é–¢ç¯€
 inline Math::Matrix Leg::legJointHomogeneousTransformation(int jointNo)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-	/// –ß‚è’l‚Ìs—ñ
-	Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    /// æˆ»ã‚Šå€¤ã®è¡Œåˆ—
+    Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-	A(1,1) = cos( legData.jointAngle(jointNo) );	
-	A(2,1) = sin( legData.jointAngle(jointNo) );	
-	A(3,1) = 0;											
-	A(4,1) = 0;											
+    A(1, 1) = cos(legData.jointAngle(jointNo));
+    A(2, 1) = sin(legData.jointAngle(jointNo));
+    A(3, 1) = 0;
+    A(4, 1) = 0;
 
-	A(1,2) = -cos( dhParam.alpha[jointNo-1] )*sin( legData.jointAngle(jointNo) );	
-	A(2,2) = cos( dhParam.alpha[jointNo-1] )*cos( legData.jointAngle(jointNo) );	
-	A(3,2) = sin( dhParam.alpha[jointNo-1] );
-	A(4,2) = 0;
+    A(1, 2) = -cos(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
+    A(2, 2) = cos(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(3, 2) = sin(dhParam.alpha[jointNo - 1]);
+    A(4, 2) = 0;
 
-	A(1,3) = sin( dhParam.alpha[jointNo-1] )*sin( legData.jointAngle(jointNo) );	
-	A(2,3) = -sin( dhParam.alpha[jointNo-1] )*cos( legData.jointAngle(jointNo) );
-	A(3,3) = cos( dhParam.alpha[jointNo-1] );
-	A(4,3) = 0;
+    A(1, 3) = sin(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
+    A(2, 3) = -sin(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(3, 3) = cos(dhParam.alpha[jointNo - 1]);
+    A(4, 3) = 0;
 
-	A(1,4) = dhParam.a[jointNo-1]*cos( legData.jointAngle(jointNo) );
-	A(2,4) = dhParam.a[jointNo-1]*sin( legData.jointAngle(jointNo) );
-	A(3,4) = dhParam.d[jointNo-1];
-	A(4,4) = 1;
+    A(1, 4) = dhParam.a[jointNo - 1] * cos(legData.jointAngle(jointNo));
+    A(2, 4) = dhParam.a[jointNo - 1] * sin(legData.jointAngle(jointNo));
+    A(3, 4) = dhParam.d[jointNo - 1];
+    A(4, 4) = 1;
 
-	return A;
+    return A;
 
 }
 
-/// ‘«— 
-/// “·‘Ì‚Æ‘«— ‚Íí‚É•½s‚Æ‰¼’è‚µ‚Ä‰ğ‚­¨Šî€p¨‚âp¨‚ÌˆÚs‚ğ‰Â”\‚É‚·‚é‚½‚ß‚ÉCŠeŠÖß‚Ì’l‚©‚ç‰ğ‚­i20201018j
+/// è¶³è£
+/// èƒ´ä½“ã¨è¶³è£ã¯å¸¸ã«å¹³è¡Œã¨ä»®å®šã—ã¦è§£ãâ†’åŸºæº–å§¿å‹¢ã‚„å§¿å‹¢ã®ç§»è¡Œã‚’å¯èƒ½ã«ã™ã‚‹ãŸã‚ã«ï¼Œå„é–¢ç¯€ã®å€¤ã‹ã‚‰è§£ãï¼ˆ20201018ï¼‰
 inline Math::Matrix Leg::legFootHomogeneousTransformation(void)
 {
-	/// –ß‚è’l‚Ìs—ñ
-	Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
-	/// ‘«ñŠÖßŠp“x
-	//double angle = Const::PI / 2 - legData.jointAngle(2) - legData.jointAngle(3);//•ÏX
+    /// æˆ»ã‚Šå€¤ã®è¡Œåˆ—
+    Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    /// è¶³é¦–é–¢ç¯€è§’åº¦
+    //double angle = Const::PI / 2 - legData.jointAngle(2) - legData.jointAngle(3);//å¤‰æ›´
 
-	//20201015
-	/*
-	double angle;
-	if (StandardPos)  //StandardPos‚ªtrue‚Ì‚Ì‚İ‘æ4ƒŠƒ“ƒN‚ª’n–Ê‚Æ•½s‚Æ‚µ‚Ä‡‰^“®Šw‚ğ‰ğ‚­
-	{
-		angle = 0;
-	}
-	else  //‚»‚êˆÈŠO‚Ìê‡‚Í‘æ4ƒŠƒ“ƒN‚Í’n–Ê‚Æ‚’¼
-	{
-		angle = Const::PI / 2 - legData.jointAngle(2) - legData.jointAngle(3);//•ÏX
-	}
-	*/
-	//20201018
-	double angle = legData.FootjointAngle;
+    //20201015
+    /*
+    double angle;
+    if (StandardPos)  //StandardPosãŒtrueã®æ™‚ã®ã¿ç¬¬4ãƒªãƒ³ã‚¯ãŒåœ°é¢ã¨å¹³è¡Œã¨ã—ã¦é †é‹å‹•å­¦ã‚’è§£ã
+    {
+      angle = 0;
+    }
+    else  //ãã‚Œä»¥å¤–ã®å ´åˆã¯ç¬¬4ãƒªãƒ³ã‚¯ã¯åœ°é¢ã¨å‚ç›´
+    {
+      angle = Const::PI / 2 - legData.jointAngle(2) - legData.jointAngle(3);//å¤‰æ›´
+    }
+    */
+    //20201018
+    double angle = legData.FootjointAngle;
 
-	A(1,1) = cos( angle );	
-	A(2,1) = sin( angle );	
-	A(3,1) = 0;											
-	A(4,1) = 0;											
+    A(1, 1) = cos(angle);
+    A(2, 1) = sin(angle);
+    A(3, 1) = 0;
+    A(4, 1) = 0;
 
-	A(1,2) = -sin( angle );	
-	A(2,2) = cos( angle );	
-	A(3,2) = 0;
-	A(4,2) = 0;
+    A(1, 2) = -sin(angle);
+    A(2, 2) = cos(angle);
+    A(3, 2) = 0;
+    A(4, 2) = 0;
 
-	A(1,3) = 0;	
-	A(2,3) = 0;
-	A(3,3) = 1;
-	A(4,3) = 0;
+    A(1, 3) = 0;
+    A(2, 3) = 0;
+    A(3, 3) = 1;
+    A(4, 3) = 0;
 
-	A(1,4) = FOOT*cos( angle );
-	A(2,4) = FOOT*sin( angle );
-	A(3,4) = 0;
-	A(4,4) = 1;
+    A(1, 4) = FOOT * cos(angle);
+    A(2, 4) = FOOT * sin(angle);
+    A(3, 4) = 0;
+    A(4, 4) = 1;
 
-	return A;
+    return A;
 }
 
 /**
- *	à–¾
- *		“¯Ÿ•ÏŠ·s—ñ‚Ì‹ts—ñ‚ğ“±o‚·‚é
- *		jointNo+1 -> jointNo ‚Ö‚ÌÀ•W•ÏŠ·
+ *	èª¬æ˜
+ *		åŒæ¬¡å¤‰æ›è¡Œåˆ—ã®é€†è¡Œåˆ—ã‚’å°å‡ºã™ã‚‹
+ *		jointNo+1 -> jointNo ã¸ã®åº§æ¨™å¤‰æ›
  *
  *		A(1,1) = cos(theta);					A(1,2) = sin(theta);					A(1,3) = 0;				A(1,4) = -a;
  *		A(2,1) = -cos(alpha)*sin(theta);		A(2,2) = cos(alpha)*cos(theta);			A(2,3) = sin(alpha);	A(2,4) = -d*sin(alpha);
  *		A(3,1) = sin(alpha)*sin(theta);			A(3,2) = -sin(alpha)*cos(theta);		A(3,3) = cos(alpha);	A(3,4) = -d*cos(alpha);
  *		A(4,1) = 0;								A(4,2) = 0;								A(3,4) = 0;				A(4,4) = 1;
  */
-/// ‹rªŒ³
+ /// è„šæ ¹å…ƒ
 inline Math::Matrix Leg::legBaseInverseHomogeneousTransformation(void)
 {
-	/// –ß‚è’l‚Ìs—ñ
-	Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    /// æˆ»ã‚Šå€¤ã®è¡Œåˆ—
+    Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-	A(1,1) = cos( basePose(4) );
-	A(2,1) = -sin( basePose(4) );//-’Ç‰Á
-	A(3,1) = 0;
-	A(4,1) = 0;
+    A(1, 1) = cos(basePose(4));
+    A(2, 1) = -sin(basePose(4));//-è¿½åŠ 
+    A(3, 1) = 0;
+    A(4, 1) = 0;
 
-	A(1,2) = sin( basePose(4) );//-’Ç‰Á
-	A(2,2) = cos( basePose(4) );
-	A(3,2) = 0;
-	A(4,2) = 0;
+    A(1, 2) = sin(basePose(4));//-è¿½åŠ 
+    A(2, 2) = cos(basePose(4));
+    A(3, 2) = 0;
+    A(4, 2) = 0;
 
-	A(1,3) = 0;
-	A(2,3) = 0;
-	A(3,3) = 1;
-	A(4,3) = 0;
+    A(1, 3) = 0;
+    A(2, 3) = 0;
+    A(3, 3) = 1;
+    A(4, 3) = 0;
 
-	A(1,4) = -( cos( basePose(4) )*basePose(1) + sin( basePose(4) )*basePose(2) );
-	A(2,4) = -( -sin( basePose(4) )*basePose(1) + cos( basePose(4) )*basePose(2) );
-	A(3,4) = -basePose(3);
-	A(4,4) = 1;
+    A(1, 4) = -(cos(basePose(4)) * basePose(1) + sin(basePose(4)) * basePose(2));
+    A(2, 4) = -(-sin(basePose(4)) * basePose(1) + cos(basePose(4)) * basePose(2));
+    A(3, 4) = -basePose(3);
+    A(4, 4) = 1;
 
-	return A;
+    return A;
 }
 
-/// ŠÖß
+/// é–¢ç¯€
 inline Math::Matrix Leg::legJointInverseHomogeneousTransformation(int jointNo)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-	/// –ß‚è’l‚Ìs—ñ
-	Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    /// æˆ»ã‚Šå€¤ã®è¡Œåˆ—
+    Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-	A(1,1) = cos( legData.jointAngle(jointNo) );	
-	A(2,1) = -cos( dhParam.alpha[jointNo-1] )*sin( legData.jointAngle(jointNo) );		
-	A(3,1) = sin( dhParam.alpha[jointNo-1] )*sin( legData.jointAngle(jointNo) );												
-	A(4,1) = 0;											
+    A(1, 1) = cos(legData.jointAngle(jointNo));
+    A(2, 1) = -cos(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
+    A(3, 1) = sin(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
+    A(4, 1) = 0;
 
-	A(1,2) = sin( legData.jointAngle(jointNo) );
-	A(2,2) = cos( dhParam.alpha[jointNo-1] )*cos( legData.jointAngle(jointNo) );	
-	A(3,2) = -sin( dhParam.alpha[jointNo-1] )*cos( legData.jointAngle(jointNo) );
-	A(4,2) = 0;
+    A(1, 2) = sin(legData.jointAngle(jointNo));
+    A(2, 2) = cos(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(3, 2) = -sin(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(4, 2) = 0;
 
-	A(1,3) = 0;
-	A(2,3) = sin( dhParam.alpha[jointNo-1] );
-	A(3,3) = cos( dhParam.alpha[jointNo-1] );
-	A(4,3) = 0;
+    A(1, 3) = 0;
+    A(2, 3) = sin(dhParam.alpha[jointNo - 1]);
+    A(3, 3) = cos(dhParam.alpha[jointNo - 1]);
+    A(4, 3) = 0;
 
-	A(1,4) = -dhParam.a[jointNo-1];
-	A(2,4) = -dhParam.d[jointNo-1]*sin(  dhParam.alpha[jointNo-1] );
-	A(3,4) = -dhParam.d[jointNo-1]*cos(  dhParam.alpha[jointNo-1] );
-	A(4,4) = 1;
+    A(1, 4) = -dhParam.a[jointNo - 1];
+    A(2, 4) = -dhParam.d[jointNo - 1] * sin(dhParam.alpha[jointNo - 1]);
+    A(3, 4) = -dhParam.d[jointNo - 1] * cos(dhParam.alpha[jointNo - 1]);
+    A(4, 4) = 1;
 
-	return A;
+    return A;
 }
 
-/// ‘«— 
+/// è¶³è£
 inline Math::Matrix Leg::legFootInverseHomogeneousTransformation(void)
 {
-	/// –ß‚è’l‚Ìs—ñ
-	Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
-	/// ‘«ñŠÖßŠp“x<-----•Ï”‚Å’u‚«Š·‚¦‚é
-	//double angle = Const::PI/2 - legData.jointAngle(2) - legData.jointAngle(3);
-	double angle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);  //20221026
+    /// æˆ»ã‚Šå€¤ã®è¡Œåˆ—
+    Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    /// è¶³é¦–é–¢ç¯€è§’åº¦<-----å¤‰æ•°ã§ç½®ãæ›ãˆã‚‹
+    //double angle = Const::PI/2 - legData.jointAngle(2) - legData.jointAngle(3);
+    double angle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);  //20221026
 
-	A(1,1) = cos( angle );
-	A(2,1) = -sin( angle );
-	A(3,1) = 0;
-	A(4,1) = 0;
+    A(1, 1) = cos(angle);
+    A(2, 1) = -sin(angle);
+    A(3, 1) = 0;
+    A(4, 1) = 0;
 
-	A(1,2) = sin( angle );
-	A(2,2) = cos( angle );
-	A(3,2) = 0;
-	A(4,2) = 0;
+    A(1, 2) = sin(angle);
+    A(2, 2) = cos(angle);
+    A(3, 2) = 0;
+    A(4, 2) = 0;
 
-	A(1,3) = 0;
-	A(2,3) = 0;
-	A(3,3) = 1;
-	A(4,3) = 0;
+    A(1, 3) = 0;
+    A(2, 3) = 0;
+    A(3, 3) = 1;
+    A(4, 3) = 0;
 
-	A(1,4) = -FOOT;
-	A(2,4) = 0;
-	A(3,4) = 0;
-	A(4,4) = 1;
+    A(1, 4) = -FOOT;
+    A(2, 4) = 0;
+    A(3, 4) = 0;
+    A(4, 4) = 1;
 
-	return A;
+    return A;
 }
 
 
 }	/// end of namespace Asura
- 
+
 
 #endif	/// __Leg_h__
 

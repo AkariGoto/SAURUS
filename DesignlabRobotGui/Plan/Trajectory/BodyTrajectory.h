@@ -1,8 +1,8 @@
-/**
+ï»¿/**
  *  File: BodyTrajectory.h
  *
- *  Description: “·‘Ì‹O“¹î•ñ‚ğˆµ‚¤ƒNƒ‰ƒX‚ÌéŒ¾•”
- *					 ’¼ü‹O“¹
+ *  Description: èƒ´ä½“è»Œé“æƒ…å ±ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ã®å®£è¨€éƒ¨
+ *					 ç›´ç·šè»Œé“
  *
  *  Created: 2007/03/06(Tue)
  *  Updated: 2007/03/06(Tue)
@@ -14,97 +14,97 @@
 #define __BodyTrajectory_h__
 
 #include "Trajectory.h"
-#include "..\..\Math\Matrix\Matrix.h"
-#include "..\..\Utility\Constants.h"
+#include "Math/Matrix/Matrix.h"
+#include "Utility/EngConstant.h"
 
 namespace Plan
 {
 /**
  *		//////////////////////////////////////////////////
- *				BodyTrajectoryƒNƒ‰ƒX
+ *				BodyTrajectoryã‚¯ãƒ©ã‚¹
  *		//////////////////////////////////////////////////
  */
 class BodyTrajectory : public Trajectory
 {
-/**
- *		//////////////////////////////////////////////////
- *				ƒƒ“ƒo•Ï”
- *		//////////////////////////////////////////////////
- */
+    /**
+     *		//////////////////////////////////////////////////
+     *				ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *		//////////////////////////////////////////////////
+     */
 private:
-/**
- *		‹——£‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-	/// —V‹rƒXƒgƒ[ƒN
-	Math::Vector moveStride;
+    /**
+     *		è·é›¢ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
+     /// éŠè„šã‚¹ãƒˆãƒ­ãƒ¼ã‚¯
+    Math::Vector moveStride;
 
-/**
- *		ŠÔ‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-	/// •œ‹AŠÔ
-	double moveTime;
+    /**
+     *		æ™‚é–“ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
+     /// å¾©å¸°æ™‚é–“
+    double moveTime;
 
-/**
- *		//////////////////////////////////////////////////
- *				ƒƒ“ƒoŠÖ”
- *		//////////////////////////////////////////////////
- */
+    /**
+     *		//////////////////////////////////////////////////
+     *				ãƒ¡ãƒ³ãƒé–¢æ•°
+     *		//////////////////////////////////////////////////
+     */
 public:
-/**
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	BodyTrajectory();
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	BodyTrajectory(const BodyTrajectory& trajectory);
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~BodyTrajectory();
+    /**
+     *		ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    BodyTrajectory();
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    BodyTrajectory(const BodyTrajectory& trajectory);
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~BodyTrajectory();
 
-/**
- *		‰‰Zq
- */
-	/// ‘ã“ü‰‰Zq
-	BodyTrajectory& operator=(const BodyTrajectory& trajectory);
-	/// “™‰¿‰‰Zq
-	bool operator==(const BodyTrajectory& trajectory) const;
-	/// ”ñ“™‰¿‰‰Zq
-	bool operator!=(const BodyTrajectory& trajectory) const;
+    /**
+     *		æ¼”ç®—å­
+     */
+     /// ä»£å…¥æ¼”ç®—å­
+    BodyTrajectory& operator=(const BodyTrajectory& trajectory);
+    /// ç­‰ä¾¡æ¼”ç®—å­
+    bool operator==(const BodyTrajectory& trajectory) const;
+    /// éç­‰ä¾¡æ¼”ç®—å­
+    bool operator!=(const BodyTrajectory& trajectory) const;
 
-/**
- *		ƒAƒNƒZƒXŠÖ”
- */
-	/// “·‘ÌˆÚ“®‹——£
-	const Math::Vector& getMoveStride(void) const{return moveStride;}
-	/// “·‘ÌˆÚ“®ŠÔ
-	const double getMoveTime(void) const{return moveTime;}
+    /**
+     *		ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     */
+     /// èƒ´ä½“ç§»å‹•è·é›¢
+    const Math::Vector& getMoveStride(void) const { return moveStride; }
+    /// èƒ´ä½“ç§»å‹•æ™‚é–“
+    const double getMoveTime(void) const { return moveTime; }
 
-/**
- *		ƒZƒbƒgŠÖ”
- */
-	/// “·‘ÌˆÚ“®ŠÔ
-	void setMoveTime(double time) {moveTime = time; return;}
+    /**
+     *		ã‚»ãƒƒãƒˆé–¢æ•°
+     */
+     /// èƒ´ä½“ç§»å‹•æ™‚é–“
+    void setMoveTime(double time) { moveTime = time; return; }
 
-/**
- *		‰Šú‰»
- */
-	void initializeBodyTrajectory(void);
+    /**
+     *		åˆæœŸåŒ–
+     */
+    void initializeBodyTrajectory(void);
 
-/**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
- *		goalPoint‚¨‚æ‚ÑgoalTime‚à©“®XV‚³‚ê‚é
- */
-	void setBodyTrajectory(const Math::Vector& stride);
-	void setBodyTrajectoryTime(double time);
+    /**
+     *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
+     *		goalPointãŠã‚ˆã³goalTimeã‚‚è‡ªå‹•æ›´æ–°ã•ã‚Œã‚‹
+     */
+    void setBodyTrajectory(const Math::Vector& stride);
+    void setBodyTrajectoryTime(double time);
 
-/**
- *		‹O“¹‚ğ“¾‚é
- */
-	Math::Vector getPosition(double splitTime);
+    /**
+     *		è»Œé“ã‚’å¾—ã‚‹
+     */
+    Math::Vector getPosition(double splitTime);
 
 
 private:
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‘ã“ü‰‰Zq‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
-	void copy(const BodyTrajectory& trajectory);
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ä»£å…¥æ¼”ç®—å­ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+    void copy(const BodyTrajectory& trajectory);
 
 };	/// end of class BodyTrajectory
 

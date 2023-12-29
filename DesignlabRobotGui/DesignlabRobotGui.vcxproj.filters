@@ -87,9 +87,6 @@
     <ClCompile Include="System\ComLib.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="System\Console.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="System\Thread\MotionPlanThread.cpp">
       <Filter>System\Thread</Filter>
     </ClCompile>
@@ -111,6 +108,9 @@
     <ClCompile Include="Kinematics\Leg\TrackLeg.cpp">
       <Filter>Kinematics\Leg</Filter>
     </ClCompile>
+    <ClCompile Include="System\Console.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ASURA2GUI.h" />
@@ -119,7 +119,6 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="System\Console.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UDP\UDPPacket.h">
       <Filter>UDP</Filter>
@@ -263,13 +262,7 @@
     <ClInclude Include="Utility\ColorNames.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\Constants.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Utility\EngConstant.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\EnumTypes.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\RingBuffer.h">
@@ -284,9 +277,12 @@
     <ClInclude Include="Kinematics\Leg\TrackLeg.h">
       <Filter>Kinematics\Leg</Filter>
     </ClInclude>
+    <ClInclude Include="System\Console.h">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ASURA2GUI.rc" />
+    <ResourceCompile Include="DesignlabRobotGui.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\ASURA2GUI.ico" />
@@ -295,6 +291,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\ASURA2GUI.rc2" />
+    <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UDP">
@@ -329,12 +326,6 @@
     </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{efb583d6-ede9-4ecf-98e7-025c538ee13f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Control">
-      <UniqueIdentifier>{dca7a041-839f-4e0c-91bd-3ee5e0ce6675}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Device">
-      <UniqueIdentifier>{e5b0fcaf-e857-4642-89b0-8fb724556ea1}</UniqueIdentifier>
     </Filter>
     <Filter Include="System\Thread">
       <UniqueIdentifier>{6350f456-e508-474f-a5b1-366c4948a8be}</UniqueIdentifier>

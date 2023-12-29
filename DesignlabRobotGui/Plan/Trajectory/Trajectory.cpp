@@ -1,7 +1,7 @@
-/**
+ï»¿/**
  *  File: Trajectory.cpp
  *
- *  Description: ‹O“¹î•ñ‚ğˆµ‚¤ƒNƒ‰ƒX‚Ì’è‹`•”
+ *  Description: è»Œé“æƒ…å ±ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ã®å®šç¾©éƒ¨
  *
  *  Created: 2007/03/06(Tue)
  *  Updated: 2007/03/06(Tue)
@@ -11,6 +11,8 @@
 
 #include "Trajectory.h"
 
+#include "Utility//EngConstant.h"
+
 using namespace std;
 using namespace Math;
 using namespace Const;
@@ -18,149 +20,149 @@ using namespace Const;
 namespace Plan
 {
 /**
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
+ *		ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Trajectory::Trajectory()
 {
-	initializeTrajectory();
+    initializeTrajectory();
 }
 
-/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Trajectory::Trajectory(const Trajectory& trajectory)
 {
-	initializeTrajectory();
-	copy(trajectory);
+    initializeTrajectory();
+    copy(trajectory);
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Trajectory::~Trajectory()
 {
 }
 
 /**
- *		‰‰Zq
+ *		æ¼”ç®—å­
  */
-/// ‘ã“ü‰‰Zq
+ /// ä»£å…¥æ¼”ç®—å­
 Trajectory& Trajectory::operator=(const Trajectory& trajectory)
 {
-	/// ©ŒÈ‘ã“ü‚ğ–h‚®
-	if ( &trajectory != this )
-	{
-		copy(trajectory);
-	}
+    /// è‡ªå·±ä»£å…¥ã‚’é˜²ã
+    if (&trajectory != this)
+    {
+        copy(trajectory);
+    }
 
-	return *this;
+    return *this;
 }
 
-/// “™‰¿‰‰Zq
+/// ç­‰ä¾¡æ¼”ç®—å­
 bool Trajectory::operator ==(const Trajectory& trajectory) const
 {
-	if ( startPosition != trajectory.startPosition ){return false;}
-	if ( goalPosition != trajectory.goalPosition ){return false;}
-	if ( startTime != trajectory.startTime ){return false;}
-	if ( startTime != trajectory.goalTime ) {return false;}
+    if (startPosition != trajectory.startPosition) { return false; }
+    if (goalPosition != trajectory.goalPosition) { return false; }
+    if (startTime != trajectory.startTime) { return false; }
+    if (startTime != trajectory.goalTime) { return false; }
 
-	return true;
+    return true;
 }
 
 
-/// ”ñ“™‰¿‰‰Zq
+/// éç­‰ä¾¡æ¼”ç®—å­
 bool Trajectory::operator!=(const Trajectory& trajectory) const
 {
-	if ( *this == trajectory )
-		return false;
-	else
-		return true;
+    if (*this == trajectory)
+        return false;
+    else
+        return true;
 }
 
 /**
- *		‰Šú‰»
+ *		åˆæœŸåŒ–
  */
 void Trajectory::initializeTrajectory(void)
 {
-	/// ƒXƒ^[ƒg’n“_
-	startPosition.setSize(THREE_DIMENSION);
-	/// ƒS[ƒ‹’n“_
-	goalPosition.setSize(THREE_DIMENSION);
+    /// ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹
+    startPosition.setSize(THREE_DIMENSION);
+    /// ã‚´ãƒ¼ãƒ«åœ°ç‚¹
+    goalPosition.setSize(THREE_DIMENSION);
 
-	/// ƒXƒ^[ƒgŠÔ
-	startTime = 0.0;
-	/// ƒS[ƒ‹ŠÔ
-	goalTime = 0.0;
+    /// ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚é–“
+    startTime = 0.0;
+    /// ã‚´ãƒ¼ãƒ«æ™‚é–“
+    goalTime = 0.0;
 }
 
 /**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+ *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
  */
 void Trajectory::setDistance(const Vector& start, const Vector& goal)
 {
-	startPosition = start;
-	goalPosition = goal;
+    startPosition = start;
+    goalPosition = goal;
 }
 
 void Trajectory::setTime(double start, double goal)
 {
-	startTime = start;
-	goalTime = goal;
+    startTime = start;
+    goalTime = goal;
 }
 
 /**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚ÌˆÚsiƒXƒ^[ƒg‚ğ‚¸‚ç‚·j
+ *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç§»è¡Œï¼ˆã‚¹ã‚¿ãƒ¼ãƒˆã‚’ãšã‚‰ã™ï¼‰
  */
 void Trajectory::shiftStartPosition(const Math::Vector& start)
 {
-	Vector shift(THREE_DIMENSION);
-	shift = goalPosition - startPosition;
+    Vector shift(THREE_DIMENSION);
+    shift = goalPosition - startPosition;
 
-	startPosition = start;
-	goalPosition = start + shift;
+    startPosition = start;
+    goalPosition = start + shift;
 }
 
 void Trajectory::shiftStartTime(double start)
 {
-	double shift;
-	shift = goalTime - startTime;
+    double shift;
+    shift = goalTime - startTime;
 
-	startTime = start;
-	goalTime = start + shift;
+    startTime = start;
+    goalTime = start + shift;
 
 }
 
 /**
- *		‹O“¹‚ğ“¾‚é
+ *		è»Œé“ã‚’å¾—ã‚‹
  */
 Vector Trajectory::getPosition(double splitTime)
 {
-	/// æ‚èo‚·‹ræ‹O“¹
-	Vector trajectory(THREE_DIMENSION);
+    /// å–ã‚Šå‡ºã™è„šå…ˆè»Œé“
+    Vector trajectory(THREE_DIMENSION);
 
-	if ( splitTime <= startTime )
-	{
-		trajectory = startPosition;
-	}
-	else if ( startTime < splitTime && splitTime <= goalTime )
-	{
-		trajectory = (goalPosition - startPosition)*( (splitTime - startTime) / (goalTime - startTime) );
-	}
-	else if ( goalTime < splitTime )
-	{
-		trajectory = goalPosition;
-	}
-	
-	return trajectory;
+    if (splitTime <= startTime)
+    {
+        trajectory = startPosition;
+    }
+    else if (startTime < splitTime && splitTime <= goalTime)
+    {
+        trajectory = (goalPosition - startPosition) * ((splitTime - startTime) / (goalTime - startTime));
+    }
+    else if (goalTime < splitTime)
+    {
+        trajectory = goalPosition;
+    }
+
+    return trajectory;
 }
 
 /**
- *		TrajectoryƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		Trajectoryã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  */
 void Trajectory::copy(const Trajectory& trajectory)
 {
-	startPosition = trajectory.startPosition;
-	goalPosition = trajectory.goalPosition;
+    startPosition = trajectory.startPosition;
+    goalPosition = trajectory.goalPosition;
 
-	startTime = trajectory.startTime;
-	goalTime = trajectory.goalTime;
+    startTime = trajectory.startTime;
+    goalTime = trajectory.goalTime;
 }
 
 

@@ -1,26 +1,25 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Planner.h
- *  à–¾
- *		‘ÎÛ‚Æ‚·‚éWalkingRobotƒIƒuƒWƒFƒNƒg‚ÌŠî–{“®ì‚ğ¶¬‚·‚éƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/03/06(TUE)		XV“ú: 2007/03/12(MON)
+ *  èª¬æ˜
+ *		å¯¾è±¡ã¨ã™ã‚‹WalkingRobotã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åŸºæœ¬å‹•ä½œã‚’ç”Ÿæˆã™ã‚‹ã‚¯ãƒ©ã‚¹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/03/06(TUE)		æ›´æ–°æ—¥: 2007/03/12(MON)
  */
 
-//  20200819  ˆÀ’è—]—TŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-//  20201020  “®ì’â~Œã‚ÌÄ“®ì
+ //  20200819  å®‰å®šä½™è£•é–¢é€£ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+ //  20201020  å‹•ä½œåœæ­¢å¾Œã®å†å‹•ä½œ
 
 #ifndef __Planner_h__
 #define __Planner_h__
 
 /**
  *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
+ *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
  *	----------------------------------------------------------------------
  */
 #include<stdio.h>
 #include "..\Math\Matrix\Matrix.h"
-#include "..\Utility\Constants.h"
 #include "..\Kinematics\AsuraX.h"
 
 #include "PlanParameter.h"
@@ -33,261 +32,261 @@ namespace Plan
 {
 /**
  *	----------------------------------------------------------------------
- *		PlannerƒNƒ‰ƒX
+ *		Plannerã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class Planner
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 protected:
-/**
- *		§Œä‚·‚éƒƒ{ƒbƒgƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
-	Asura::AsuraX* asuraPointer;
+    /**
+     *		åˆ¶å¾¡ã™ã‚‹ãƒ­ãƒœãƒƒãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     */
+    Asura::AsuraX* asuraPointer;
 
-/**
- *		ŠÔ‚ğæ“¾‚·‚é‚½‚ß‚ÌŠÔŠÇ—ƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
-	TimeManager*	timeManagerPointer;
+    /**
+     *		æ™‚é–“ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®æ™‚é–“ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     */
+    TimeManager* timeManagerPointer;
 
-/**
- *		‹O“¹ƒIƒuƒWƒFƒNƒg
- */
-	/// ‹r‹O“¹
-	LegTrajectory* legTrajectory;
-	/// “·‘Ì‹O“¹
-	BodyTrajectory* bodyTrajectory;
+    /**
+     *		è»Œé“ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+     /// è„šè»Œé“
+    LegTrajectory* legTrajectory;
+    /// èƒ´ä½“è»Œé“
+    BodyTrajectory* bodyTrajectory;
 
-/**
- *		Œv‰æ‚É—p‚¢‚é•Ï”
- */
-	/// ˆÀ’è—]—T
-	//double stabilityMargin;  20200819
-	/// s“®ŠJn‚©‚ç‚ÌŒo‰ßŠÔ
-	double elapsedTime;
-	/// ƒvƒ‰ƒ“ƒjƒ“ƒOŠJnŠÔ
-	double planStartTime;
+    /**
+     *		è¨ˆç”»ã«ç”¨ã„ã‚‹å¤‰æ•°
+     */
+     /// å®‰å®šä½™è£•
+     //double stabilityMargin;  20200819
+     /// è¡Œå‹•é–‹å§‹ã‹ã‚‰ã®çµŒéæ™‚é–“
+    double elapsedTime;
+    /// ãƒ—ãƒ©ãƒ³ãƒ‹ãƒ³ã‚°é–‹å§‹æ™‚é–“
+    double planStartTime;
 
-	//20201020  ’â~‚ÌŒo‰ßŠÔ
-	double stopElapsedTime;
-/**
- *		“®ì§Œä‚Ì‚½‚ß‚Ìƒtƒ‰ƒO
- */
-	bool isRunning;
-	bool isSuspended;
+    //20201020  åœæ­¢æ™‚ã®çµŒéæ™‚é–“
+    double stopElapsedTime;
+    /**
+     *		å‹•ä½œåˆ¶å¾¡ã®ãŸã‚ã®ãƒ•ãƒ©ã‚°
+     */
+    bool isRunning;
+    bool isSuspended;
 
 
 private:
-	
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit Planner(Asura::AsuraX* asuraPointer_ = NULL, TimeManager* timeManagerPointer_ = NULL);
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    explicit Planner(Asura::AsuraX* asuraPointer_ = NULL, TimeManager* timeManagerPointer_ = NULL);
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~Planner();
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~Planner();
 
-/**
- *	----------------------------------------
- *	ƒ|ƒCƒ“ƒ^‚Ì‘€ì
- *	----------------------------------------
- */
-	/// §Œä‚·‚é•àsƒƒ{ƒbƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾‚·‚é
-	void acquireAsura(Asura::AsuraX* ptr);
-	/// §Œä‚·‚é•àsƒƒ{ƒbƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ‰ğ•ú‚·‚é
-	void releaseAsura(void);
+    /**
+     *	----------------------------------------
+     *	ãƒã‚¤ãƒ³ã‚¿ã®æ“ä½œ
+     *	----------------------------------------
+     */
+     /// åˆ¶å¾¡ã™ã‚‹æ­©è¡Œãƒ­ãƒœãƒƒãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã™ã‚‹
+    void acquireAsura(Asura::AsuraX* ptr);
+    /// åˆ¶å¾¡ã™ã‚‹æ­©è¡Œãƒ­ãƒœãƒƒãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è§£æ”¾ã™ã‚‹
+    void releaseAsura(void);
 
-	/// g—p‚·‚éŠÔŠÇ—ƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾‚·‚é
-	void acquireTimeManager(TimeManager* ptr);
-	/// g—p‚·‚éŠÔŠÇ—ƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ‰ğ•ú‚·‚é
-	void releaseTimeManager(void);
+    /// ä½¿ç”¨ã™ã‚‹æ™‚é–“ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã™ã‚‹
+    void acquireTimeManager(TimeManager* ptr);
+    /// ä½¿ç”¨ã™ã‚‹æ™‚é–“ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è§£æ”¾ã™ã‚‹
+    void releaseTimeManager(void);
 
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-	/**
-	 *		ƒƒ“ƒo•Ï”‚Ìæ“¾
-	 */
-	/// ˆÀ’è—]—T
-	//double getStabilityMargin(void) const{return stabilityMargin;}  20200819
-	/// Œv‰æŠJn‚©‚ç‚ÌŒo‰ßŠÔ
-	double getElapsedTime(void) const{return elapsedTime;}
-	/// ŠJnŠÔ
-	double getPlanStartTime(void) const{return planStartTime;}
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *		ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å–å¾—
+      */
+      /// å®‰å®šä½™è£•
+      //double getStabilityMargin(void) const{return stabilityMargin;}  20200819
+      /// è¨ˆç”»é–‹å§‹ã‹ã‚‰ã®çµŒéæ™‚é–“
+    double getElapsedTime(void) const { return elapsedTime; }
+    /// é–‹å§‹æ™‚é–“
+    double getPlanStartTime(void) const { return planStartTime; }
 
-	/**
-	 *		‹r‹O“¹‚»‚Ì‚à‚Ì‚ğ“¾‚é
-	 */
-	LegTrajectory& getLegTrajectory(int legNo)
-	{
-		assert( 1 <= legNo && legNo <= Asura::LEG_NUM ); 
-		
-		return legTrajectory[legNo-1];
-	}
+    /**
+     *		è„šè»Œé“ãã®ã‚‚ã®ã‚’å¾—ã‚‹
+     */
+    LegTrajectory& getLegTrajectory(int legNo)
+    {
+        assert(1 <= legNo && legNo <= Asura::LEG_NUM);
 
-	/// constƒIƒuƒWƒFƒNƒg‚É‘Î‚·‚é“Y‚¦š‰‰Zq
-	LegTrajectory& getLegTrajectory(int legNo) const
-	{
-		assert( 1 <= legNo && legNo <= Asura::LEG_NUM ); 
-			
-			return legTrajectory[legNo-1];
-	}
+        return legTrajectory[legNo - 1];
+    }
 
-/**
- *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
- *	----------------------------------------
- */
-	/// ˆÀ’è—]—T
-	//void setStabilityMargin(double margin) {stabilityMargin = margin; return;}  20200819
-	/// Œo‰ßŠÔ
-	void setElapsedTime(double time) {elapsedTime = time; return;}
-	/// ŠJnŠÔ
-	void setPlanStartTime(double time){planStartTime = time; return;}
+    /// constã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹æ·»ãˆå­—æ¼”ç®—å­
+    LegTrajectory& getLegTrajectory(int legNo) const
+    {
+        assert(1 <= legNo && legNo <= Asura::LEG_NUM);
 
-/**
- *	----------------------------------------
- *	‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
- *	----------------------------------------
- */ 
-	/**
-	 *		—V‹r‹O“¹‚ğİ’è‚·‚é
-	 *			legNoF—V‹r
-	 *			upPhaseFUP‘Š
-	 *			returnPhaseF•œ‹A‘Š
-	 *			downPhaseFDOWN‘Š
-	 */
-	void setLegSwingTrajectory(	int legNo, 
-											const Math::Vector& start,
-											const Math::Vector& upPhase,
-											const Math::Vector& returnPhase, 
-											const Math::Vector& downPhase
-											);
+        return legTrajectory[legNo - 1];
+    }
 
-	/**
-	 *		—V‹rŠÔ‚ğİ’è‚·‚é
-	 *			legNoF—V‹r
-	 *			upPhaseFUP‘Š
-	 *			returnPhaseF•œ‹A‘Š
-	 *			downPhaseFDOWN‘Š
-	 */
-	void setLegSwingTime(	int legNo, 
-									double start,
-									double upPhase, 
-									double returnPhase, 
-									double downPhase
-									);
-	/**
-	 *		—V‹r‚Ì‹O“¹ã‚ÌˆÊ’u‚ğæ“¾‚·‚é
-	 */
-	Math::Vector getLegSwingPosition(int legNo, double splitTime);
+    /**
+     *	----------------------------------------
+     *	ã‚»ãƒƒãƒˆé–¢æ•°
+     *	----------------------------------------
+     */
+     /// å®‰å®šä½™è£•
+     //void setStabilityMargin(double margin) {stabilityMargin = margin; return;}  20200819
+     /// çµŒéæ™‚é–“
+    void setElapsedTime(double time) { elapsedTime = time; return; }
+    /// é–‹å§‹æ™‚é–“
+    void setPlanStartTime(double time) { planStartTime = time; return; }
 
-/**
- *	----------------------------------------
- *	ÀÛ‚É“®ì‚ğs‚¤ŠÖ”
- *	----------------------------------------
- */
-	/**
-	 *		—V‹r‚·‚é
-	 */
-	PlanStatus swingLeg(int legNo, double splitTime);
+    /**
+     *	----------------------------------------
+     *	è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
+     *	----------------------------------------
+     */
+     /**
+      *		éŠè„šè»Œé“ã‚’è¨­å®šã™ã‚‹
+      *			legNoï¼šéŠè„š
+      *			upPhaseï¼šUPç›¸
+      *			returnPhaseï¼šå¾©å¸°ç›¸
+      *			downPhaseï¼šDOWNç›¸
+      */
+    void setLegSwingTrajectory(int legNo,
+                        const Math::Vector& start,
+                        const Math::Vector& upPhase,
+                        const Math::Vector& returnPhase,
+                        const Math::Vector& downPhase
+    );
 
-	/**
-	 *		“·‘Ì„i
-	*/
-	PlanStatus moveBody(double splitTime);
+    /**
+     *		éŠè„šæ™‚é–“ã‚’è¨­å®šã™ã‚‹
+     *			legNoï¼šéŠè„š
+     *			upPhaseï¼šUPç›¸
+     *			returnPhaseï¼šå¾©å¸°ç›¸
+     *			downPhaseï¼šDOWNç›¸
+     */
+    void setLegSwingTime(int legNo,
+                    double start,
+                    double upPhase,
+                    double returnPhase,
+                    double downPhase
+    );
+    /**
+     *		éŠè„šã®è»Œé“ä¸Šã®ä½ç½®ã‚’å–å¾—ã™ã‚‹
+     */
+    Math::Vector getLegSwingPosition(int legNo, double splitTime);
 
-	/**
-	 *		“®ì’â~
-	 */
-	void suspendPlan(void) { isSuspended = true; return; }
+    /**
+     *	----------------------------------------
+     *	å®Ÿéš›ã«å‹•ä½œã‚’è¡Œã†é–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *		éŠè„šã™ã‚‹
+      */
+    PlanStatus swingLeg(int legNo, double splitTime);
 
-	/**
-	 *		“®ìÄŠJ
-	 */
-	void resumePlan(void) { isSuspended = false; return; }
+    /**
+     *		èƒ´ä½“æ¨é€²
+    */
+    PlanStatus moveBody(double splitTime);
 
-/**
- *		ƒtƒ‰ƒO‚Ì”»’è
- */
-	bool isActive(void) const{return isRunning;}
+    /**
+     *		å‹•ä½œåœæ­¢
+     */
+    void suspendPlan(void) { isSuspended = true; return; }
 
-/**
- *		ƒGƒ‰[ƒƒbƒZ[ƒW‚Ìo—Í
- */
-	void printPlanErrorMessage(void);
+    /**
+     *		å‹•ä½œå†é–‹
+     */
+    void resumePlan(void) { isSuspended = false; return; }
 
-/**
- *	----------------------------------------
- *	‰^“®‚ğ‹ï‘Ì“I‚É¶¬‚·‚éŠÖ”ŒQ
- *	----------------------------------------
- */
-	/// •àsŠJn‚Ì‚½‚ß‚Ì‰Šú‰»
-	virtual bool setup(void);
+    /**
+     *		ãƒ•ãƒ©ã‚°ã®åˆ¤å®š
+     */
+    bool isActive(void) const { return isRunning; }
 
-	/// •às‚ğŠJn‚·‚é
-	virtual bool startPlan(void);
-	
-	/// •às‚ğ’â~‚·‚é
-	virtual bool stopPlan(void);
+    /**
+     *		ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡ºåŠ›
+     */
+    void printPlanErrorMessage(void);
 
-	/// •às’â~‚Ì‘Ò‹@ó‘Ô‚É‚·‚é
-	virtual bool standByForStop(void);
+    /**
+     *	----------------------------------------
+     *	é‹å‹•ã‚’å…·ä½“çš„ã«ç”Ÿæˆã™ã‚‹é–¢æ•°ç¾¤
+     *	----------------------------------------
+     */
+     /// æ­©è¡Œé–‹å§‹ã®ãŸã‚ã®åˆæœŸåŒ–
+    virtual bool setup(void);
 
-	/// ƒƒ{ƒbƒg‚ğ‹ì“®‚·‚é
-	virtual PlanStatus activateRobot(void)=0;
+    /// æ­©è¡Œã‚’é–‹å§‹ã™ã‚‹
+    virtual bool startPlan(void);
 
-	/// ƒƒ{ƒbƒg‚ÌuŠÔ‚Ìó‘Ô‚ğ¶¬‚·‚é
-	/// w—ß’l¶¬üŠú‚²‚Æ‚ÉŒÄ‚Ño‚·‚±‚Æ‚É‚æ‚èƒƒ{ƒbƒg‚Ì˜A‘±‚È“®ì‚ğŒv‰æ‚·‚é
-	virtual PlanStatus createPlanSnapshot(void)=0;
+    /// æ­©è¡Œã‚’åœæ­¢ã™ã‚‹
+    virtual bool stopPlan(void);
 
-	/**
-	 *		ˆÀ’è—]—T‚ÌŒvZ
-	 *			ˆø”: d—Í•ûŒü¬•ª
-	 */
-	//virtual double calculateStabilityMargin(double gx=0.0, double gy=0.0, double gz=1.0);  20200819
+    /// æ­©è¡Œåœæ­¢ã®å¾…æ©ŸçŠ¶æ…‹ã«ã™ã‚‹
+    virtual bool standByForStop(void);
+
+    /// ãƒ­ãƒœãƒƒãƒˆã‚’é§†å‹•ã™ã‚‹
+    virtual PlanStatus activateRobot(void) = 0;
+
+    /// ãƒ­ãƒœãƒƒãƒˆã®ç¬é–“ã®çŠ¶æ…‹ã‚’ç”Ÿæˆã™ã‚‹
+    /// æŒ‡ä»¤å€¤ç”Ÿæˆå‘¨æœŸã”ã¨ã«å‘¼ã³å‡ºã™ã“ã¨ã«ã‚ˆã‚Šãƒ­ãƒœãƒƒãƒˆã®é€£ç¶šãªå‹•ä½œã‚’è¨ˆç”»ã™ã‚‹
+    virtual PlanStatus createPlanSnapshot(void) = 0;
+
+    /**
+     *		å®‰å®šä½™è£•ã®è¨ˆç®—
+     *			å¼•æ•°: é‡åŠ›æ–¹å‘æˆåˆ†
+     */
+     //virtual double calculateStabilityMargin(double gx=0.0, double gy=0.0, double gz=1.0);  20200819
 
 private:
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^–³Œø
-	Planner(const Planner& planner);
-	/// ‘ã“ü‰‰Zq–³Œø
-	Planner& operator=(const Planner& planner)=delete;
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç„¡åŠ¹
+    Planner(const Planner& planner);
+    /// ä»£å…¥æ¼”ç®—å­ç„¡åŠ¹
+    Planner& operator=(const Planner& planner) = delete;
 
-/**
- *		‹O“¹ƒIƒuƒWƒFƒNƒg
- */
-	/// ‹O“¹ƒIƒuƒWƒFƒNƒg‚Ì¶¬
-	void newTrajectories(void);
-	/// ‹O“¹ƒIƒuƒWƒFƒNƒg‚Ì”jŠü
-	void deleteTrajectories(void);
+    /**
+     *		è»Œé“ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+     /// è»Œé“ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+    void newTrajectories(void);
+    /// è»Œé“ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç ´æ£„
+    void deleteTrajectories(void);
 
-/**
- *		ˆÀ’è—]—T‚ÌŒvZ‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
- */
-	/*  20200819
-	/// x‹rOŠpŒ`‚ÌˆÀ’è—]—T
-	double stabilityMarginForTriangle(const Math::Vector& foot1, const Math::Vector& foot2, const Math::Vector& foot3, 
-												const Math::Vector& cog, const Math::Vector& gravity);
-	/// x‹rlŠpŒ`‚ÌˆÀ’è—]—T
-	double stabilityMarginForQuadrangle(const Math::Vector& foot1, const Math::Vector& foot2, 
-													const Math::Vector& foot3, const Math::Vector& foot4, 
-													const Math::Vector& cog, const Math::Vector& gravity);
-	*/
+    /**
+     *		å®‰å®šä½™è£•ã®è¨ˆç®—ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+     */
+     /*  20200819
+     /// æ”¯æŒè„šä¸‰è§’å½¢æ™‚ã®å®‰å®šä½™è£•
+     double stabilityMarginForTriangle(const Math::Vector& foot1, const Math::Vector& foot2, const Math::Vector& foot3,
+                           const Math::Vector& cog, const Math::Vector& gravity);
+     /// æ”¯æŒè„šå››è§’å½¢æ™‚ã®å®‰å®šä½™è£•
+     double stabilityMarginForQuadrangle(const Math::Vector& foot1, const Math::Vector& foot2,
+                             const Math::Vector& foot3, const Math::Vector& foot4,
+                             const Math::Vector& cog, const Math::Vector& gravity);
+     */
 
 };	/// end of class Planner
 

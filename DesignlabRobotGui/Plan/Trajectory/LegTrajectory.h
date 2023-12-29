@@ -1,8 +1,8 @@
-/**
+ï»¿/**
  *  File: LegTrajectory.h
  *
- *  Description: ‹r‹O“¹î•ñ‚ğˆµ‚¤ƒNƒ‰ƒX‚ÌéŒ¾•”
- *					 ’·•ûŒ`‹O“¹
+ *  Description: è„šè»Œé“æƒ…å ±ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ã®å®£è¨€éƒ¨
+ *					 é•·æ–¹å½¢è»Œé“
  *
  *  Created: 2007/03/06(Tue)
  *  Updated: 2007/03/06(Tue)
@@ -15,119 +15,114 @@
 
 #include "Trajectory.h"
 #include "..\..\Math\Matrix\Matrix.h"
-#include "..\..\Utility\Constants.h"
 
 namespace Plan
 {
-/**
- *		//////////////////////////////////////////////////
- *				LegTrajectoryƒNƒ‰ƒX
- *		//////////////////////////////////////////////////
- */
+
 class LegTrajectory : public Trajectory
 {
-/**
- *		//////////////////////////////////////////////////
- *				ƒƒ“ƒo•Ï”
- *		//////////////////////////////////////////////////
- */
+    /**
+     *		//////////////////////////////////////////////////
+     *				ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *		//////////////////////////////////////////////////
+     */
 private:
-/**
- *		‹——£‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-	/// —V‹rƒXƒgƒ[ƒN
-	Math::Vector returnStroke;
-	/// —V‹rU‚èã‚°‚‚³
-	Math::Vector upSwing;
-	/// —V‹rU‚è‰º‚°‚‚³
-	Math::Vector downSwing;
+    /**
+     *		è·é›¢ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
+     /// éŠè„šã‚¹ãƒˆãƒ­ãƒ¼ã‚¯
+    Math::Vector returnStroke;
+    /// éŠè„šæŒ¯ã‚Šä¸Šã’é«˜ã•
+    Math::Vector upSwing;
+    /// éŠè„šæŒ¯ã‚Šä¸‹ã’é«˜ã•
+    Math::Vector downSwing;
 
-	Math::Vector Swing;
+    Math::Vector Swing;
 
-/**
- *		ŠÔ‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-	/// •œ‹AŠÔ
-	double returnTime;
-	/// U‚èã‚°ŠÔ
-	double upTime;
-	/// U‚è‰º‚°ŠÔ
-	double downTime;
+    /**
+     *		æ™‚é–“ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
+     /// å¾©å¸°æ™‚é–“
+    double returnTime;
+    /// æŒ¯ã‚Šä¸Šã’æ™‚é–“
+    double upTime;
+    /// æŒ¯ã‚Šä¸‹ã’æ™‚é–“
+    double downTime;
 
-/**
- *		//////////////////////////////////////////////////
- *				ƒƒ“ƒoŠÖ”
- *		//////////////////////////////////////////////////
- */
-/**
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- */
+    /**
+     *		//////////////////////////////////////////////////
+     *				ãƒ¡ãƒ³ãƒé–¢æ•°
+     *		//////////////////////////////////////////////////
+     */
+     /**
+      *		ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+      */
 public:
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	LegTrajectory();
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	LegTrajectory(const LegTrajectory& trajectory);
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~LegTrajectory();
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    LegTrajectory();
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    LegTrajectory(const LegTrajectory& trajectory);
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~LegTrajectory();
 
-/**
- *		‰‰Zq
- */
-	/// ‘ã“ü‰‰Zq
-	virtual LegTrajectory& operator=(const LegTrajectory& trajectory);
-	/// “™‰¿‰‰Zq
-	bool operator==(const LegTrajectory& trajectory) const;
-	/// ”ñ“™‰¿‰‰Zq
-	bool operator!=(const LegTrajectory& trajectory) const;
+    /**
+     *		æ¼”ç®—å­
+     */
+     /// ä»£å…¥æ¼”ç®—å­
+    virtual LegTrajectory& operator=(const LegTrajectory& trajectory);
+    /// ç­‰ä¾¡æ¼”ç®—å­
+    bool operator==(const LegTrajectory& trajectory) const;
+    /// éç­‰ä¾¡æ¼”ç®—å­
+    bool operator!=(const LegTrajectory& trajectory) const;
 
-/**
- *		ƒAƒNƒZƒXŠÖ”
- */
-	/// —V‹rƒXƒgƒ[ƒN
-	const Math::Vector& getReturnStroke(void) const{return returnStroke;}
-	/// —V‹rU‚èã‚°‚‚³
-	const Math::Vector& getUpSwing(void) const{return upSwing;}
-	/// —V‹rU‚è‰º‚°‚‚³
-	const Math::Vector& getDownSwing(void) const{return downSwing;}
+    /**
+     *		ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     */
+     /// éŠè„šã‚¹ãƒˆãƒ­ãƒ¼ã‚¯
+    const Math::Vector& getReturnStroke(void) const { return returnStroke; }
+    /// éŠè„šæŒ¯ã‚Šä¸Šã’é«˜ã•
+    const Math::Vector& getUpSwing(void) const { return upSwing; }
+    /// éŠè„šæŒ¯ã‚Šä¸‹ã’é«˜ã•
+    const Math::Vector& getDownSwing(void) const { return downSwing; }
 
-	/// •œ‹AŠÔ
-	double getReturnTime(void) const{return returnTime;}
-	/// U‚èã‚°ŠÔ
-	double getUpTime(void) const{return upTime;}
-	/// U‚è‰º‚°ŠÔ
-	double getDownTime(void) const{return downTime;}
+    /// å¾©å¸°æ™‚é–“
+    double getReturnTime(void) const { return returnTime; }
+    /// æŒ¯ã‚Šä¸Šã’æ™‚é–“
+    double getUpTime(void) const { return upTime; }
+    /// æŒ¯ã‚Šä¸‹ã’æ™‚é–“
+    double getDownTime(void) const { return downTime; }
 
 
-/**
- *		ƒZƒbƒgŠÖ”
- */
-/**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
- *		goalPoint‚¨‚æ‚ÑgoalTime‚à©“®XV‚³‚ê‚é
- */
-	void setLegTrajectory(	
-									const Math::Vector& start, 
-									const Math::Vector& upPhase, 
-									const Math::Vector& returnPhase, 
-									const Math::Vector& downPhase
-									);
+    /**
+     *		ã‚»ãƒƒãƒˆé–¢æ•°
+     */
+     /**
+      *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
+      *		goalPointãŠã‚ˆã³goalTimeã‚‚è‡ªå‹•æ›´æ–°ã•ã‚Œã‚‹
+      */
+    void setLegTrajectory(
+                    const Math::Vector& start,
+                    const Math::Vector& upPhase,
+                    const Math::Vector& returnPhase,
+                    const Math::Vector& downPhase
+    );
 
-	void setLegTrajectoryTime(double start, double upPhase, double returnPhase, double downPhase);
+    void setLegTrajectoryTime(double start, double upPhase, double returnPhase, double downPhase);
 
-/**
- *		‰Šú‰»
- */
-	void initializeLegTrajectory(void);
+    /**
+     *		åˆæœŸåŒ–
+     */
+    void initializeLegTrajectory(void);
 
-/**
- *		‹O“¹‚ğ“¾‚é
- *		time: ‹O“¹’†‚ÌŠÔistartTime < splitTime < goalTimej
- */
-	Math::Vector getPosition(double splitTime);
+    /**
+     *		è»Œé“ã‚’å¾—ã‚‹
+     *		time: è»Œé“ä¸­ã®æ™‚é–“ï¼ˆstartTime < splitTime < goalTimeï¼‰
+     */
+    Math::Vector getPosition(double splitTime);
 
 private:
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‘ã“ü‰‰Zq‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
-	void copy(const LegTrajectory& trajectory);
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ä»£å…¥æ¼”ç®—å­ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+    void copy(const LegTrajectory& trajectory);
 
 };	/// end of class LegTrajectory
 

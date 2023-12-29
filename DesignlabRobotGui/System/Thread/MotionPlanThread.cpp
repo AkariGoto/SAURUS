@@ -1,25 +1,25 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		MotionPlanThread.cpp
- *  à–¾
- *		•à—eŒv‰æ‚ğs‚¤ƒXƒŒƒbƒh¶¬ƒNƒ‰ƒX‚ÌéŒ¾ƒNƒ‰ƒX
- *		 UIƒXƒŒƒbƒh‚Æ‚µ‚Äì¬‚·‚é‚½‚ßCWinThread‚©‚ç”h¶
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2007/05/26(SAT)
+ *  èª¬æ˜
+ *		æ­©å®¹è¨ˆç”»ã‚’è¡Œã†ã‚¹ãƒ¬ãƒƒãƒ‰ç”Ÿæˆã‚¯ãƒ©ã‚¹ã®å®£è¨€ã‚¯ãƒ©ã‚¹
+ *		 UIã‚¹ãƒ¬ãƒƒãƒ‰ã¨ã—ã¦ä½œæˆã™ã‚‹ãŸã‚CWinThreadã‹ã‚‰æ´¾ç”Ÿ
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/05/12(SAT)		æ›´æ–°æ—¥: 2007/05/26(SAT)
  */
 
-// MotionPlanThread.cpp : À‘•ƒtƒ@ƒCƒ‹
-//
+ // MotionPlanThread.cpp : å®Ÿè£…ãƒ•ã‚¡ã‚¤ãƒ«
+ //
 
-//  20200820  trotGait‚ğtripodGait‚ÉC³EAxisControlƒ_ƒCƒAƒƒOŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-//  20201005  1üŠú‚ÅI—¹
+ //  20200820  trotGaitã‚’tripodGaitã«ä¿®æ­£ãƒ»AxisControlãƒ€ã‚¤ã‚¢ãƒ­ã‚°é–¢é€£ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+ //  20201005  1å‘¨æœŸã§çµ‚äº†
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
-//#include "..\..\stdafx.h"
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
+  //#include "..\..\stdafx.h"
 #include "..\..\pch.h"
 
 #include "..\..\ASURA2GUI.h"
@@ -27,7 +27,7 @@
 
 //#include "..\..\Dialog\AxisControlDialog.h"
 //#include "..\..\Dialog\SerialPortDialog.h"
-#include "..\..\Utility\Constants.h"
+#include "Utility/EngConstant.h"
 
 
 using namespace std;
@@ -42,15 +42,15 @@ using namespace System;
 
 /**
  *	----------------------------------------------------------------------
- *		MotionPlanThreadƒNƒ‰ƒX
+ *		MotionPlanThreadã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 
-/**
- *	------------------------------------------------------------
- *		MotionPlanThreadƒNƒ‰ƒX‚Ìstatic•Ï”‚Ì‰Šú‰»
- *	------------------------------------------------------------
- */
+ /**
+  *	------------------------------------------------------------
+  *		MotionPlanThreadã‚¯ãƒ©ã‚¹ã®staticå¤‰æ•°ã®åˆæœŸåŒ–
+  *	------------------------------------------------------------
+  */
 AsuraX MotionPlanThread::asuraX;
 
 AsuraData MotionPlanThread::asuraXData;
@@ -68,253 +68,253 @@ TripodGaitPlanner MotionPlanThread::tripodGait(&MotionPlanThread::asuraX, &Motio
 //TrackDrivePlanner MotionPlanThread::trackDrive(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
 //ModeChangePlanner MotionPlanThread::modeChange(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
 //HybridMotionPlanner MotionPlanThread::hybridMotion(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
-//URGMotionPlanner MotionPlanThread::URGMotion(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);		//’Ç‰Á
+//URGMotionPlanner MotionPlanThread::URGMotion(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);		//è¿½åŠ 
 
 //double MotionPlanThread::axisCtrlData[AC_DLG_AXIS_NUM] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};  20200820
 
 
 /**
  *	------------------------------------------------------------
- *		MotionPlanThreadƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
+ *		MotionPlanThreadã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°å®šç¾©
  *	------------------------------------------------------------
  */
 IMPLEMENT_DYNCREATE(MotionPlanThread, CWinThread)
 
 /**
  *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
+ *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  *	----------------------------------------
  */
-MotionPlanThread::MotionPlanThread():pMultiMediaTimer(),pTimedMotionProcedure(),pUDPThread()
+    MotionPlanThread::MotionPlanThread() :pMultiMediaTimer(), pTimedMotionProcedure(), pUDPThread()
 {
-	/// ¶‘¶ƒtƒ‰ƒO‚Ì‰Šú‰»
-	isAlive = FALSE;
+    /// ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
+    isAlive = FALSE;
 
-	/// ’ÊMƒtƒ‰ƒO
-	isCommAlive = false;
+    /// é€šä¿¡ãƒ•ãƒ©ã‚°
+    isCommAlive = false;
 
 }
 
 MotionPlanThread::~MotionPlanThread()
 {
-	/// ¶‘¶ƒtƒ‰ƒO‚ÌI—¹ˆ—
-	isAlive = FALSE;
+    /// ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã®çµ‚äº†å‡¦ç†
+    isAlive = FALSE;
 }
 
 BOOL MotionPlanThread::InitInstance()
 {
-	// TODO:  ƒXƒŒƒbƒh‚²‚Æ‚Ì‰Šú‰»‚ğ‚±‚±‚ÅÀs‚µ‚Ü‚·B
-	initializeMotionPlanThread();
-	
-	return TRUE;
+    // TODO:  ã‚¹ãƒ¬ãƒƒãƒ‰ã”ã¨ã®åˆæœŸåŒ–ã‚’ã“ã“ã§å®Ÿè¡Œã—ã¾ã™ã€‚
+    initializeMotionPlanThread();
+
+    return TRUE;
 }
 
 int MotionPlanThread::ExitInstance()
 {
-	// TODO:  ƒXƒŒƒbƒh‚²‚Æ‚ÌŒãˆ—‚ğ‚±‚±‚ÅÀs‚µ‚Ü‚·B
-	finalizeMotionPlanThread();
+    // TODO:  ã‚¹ãƒ¬ãƒƒãƒ‰ã”ã¨ã®å¾Œå‡¦ç†ã‚’ã“ã“ã§å®Ÿè¡Œã—ã¾ã™ã€‚
+    finalizeMotionPlanThread();
 
-	return CWinThread::ExitInstance();
+    return CWinThread::ExitInstance();
 }
 
 BEGIN_MESSAGE_MAP(MotionPlanThread, CWinThread)
 
-	ON_THREAD_MESSAGE(WM_PLAN_END_THREAD,			OnEndThread)					/// ƒXƒŒƒbƒhI—¹
-	ON_THREAD_MESSAGE(WM_PLAN_REQUEST_VIEW_DATA,	OnSendViewData)					/// •\¦ƒf[ƒ^‘—M
-	ON_THREAD_MESSAGE(WM_PLAN_SETUP_MOTION,			OnSetupMotion)					/// ƒvƒ‰ƒ“‚ÌƒZƒbƒgƒAƒbƒv
-	ON_THREAD_MESSAGE(WM_PLAN_START_MOTION,			OnStartMotion)					/// ƒvƒ‰ƒ“ŠJn
-	ON_THREAD_MESSAGE(WM_PLAN_STOP_MOTION,			OnStopMotion)					/// ƒvƒ‰ƒ“’â~
-	ON_THREAD_MESSAGE(WM_PLAN_GENERATE_MOTION,		OnGenerateMotion)				/// ƒvƒ‰ƒ“¶¬
+    ON_THREAD_MESSAGE(WM_PLAN_END_THREAD, OnEndThread)					/// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†
+    ON_THREAD_MESSAGE(WM_PLAN_REQUEST_VIEW_DATA, OnSendViewData)					/// è¡¨ç¤ºãƒ‡ãƒ¼ã‚¿é€ä¿¡
+    ON_THREAD_MESSAGE(WM_PLAN_SETUP_MOTION, OnSetupMotion)					/// ãƒ—ãƒ©ãƒ³ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
+    ON_THREAD_MESSAGE(WM_PLAN_START_MOTION, OnStartMotion)					/// ãƒ—ãƒ©ãƒ³é–‹å§‹
+    ON_THREAD_MESSAGE(WM_PLAN_STOP_MOTION, OnStopMotion)					/// ãƒ—ãƒ©ãƒ³åœæ­¢
+    ON_THREAD_MESSAGE(WM_PLAN_GENERATE_MOTION, OnGenerateMotion)				/// ãƒ—ãƒ©ãƒ³ç”Ÿæˆ
 
-	ON_THREAD_MESSAGE(WM_PLAN_COMM_START,			OnStartDataSending)				/// ƒf[ƒ^‘—MŠJn
-	ON_THREAD_MESSAGE(WM_PLAN_COMM_STOP,			OnStopDataSending)				/// ƒf[ƒ^‘—M’â~
+    ON_THREAD_MESSAGE(WM_PLAN_COMM_START, OnStartDataSending)				/// ãƒ‡ãƒ¼ã‚¿é€ä¿¡é–‹å§‹
+    ON_THREAD_MESSAGE(WM_PLAN_COMM_STOP, OnStopDataSending)				/// ãƒ‡ãƒ¼ã‚¿é€ä¿¡åœæ­¢
 
-	//ON_THREAD_MESSAGE(WM_PLAN_AC_LEG_NO,			OnAxisCtrlDlgLegNo)				/// ‹r”Ô†‘I‘ğ
-	//ON_THREAD_MESSAGE(WM_PLAN_AC_CTRL_MODE,			OnAxisCtrlDlgCtrlMode)			/// §Œäƒ‚[ƒh‘I‘ğ
-	//ON_THREAD_MESSAGE(WM_PLAN_AC_SENDING_SLDR_DATA,	OnAxisCtrlDlgRecieveSldrData)	/// ƒf[ƒ^óM
-	//ON_THREAD_MESSAGE(WM_PLAN_AC_REQUEST_DATA,		OnAxisCtrlDlgSendData)			/// ƒf[ƒ^‘—M
+    //ON_THREAD_MESSAGE(WM_PLAN_AC_LEG_NO,			OnAxisCtrlDlgLegNo)				/// è„šç•ªå·é¸æŠ
+    //ON_THREAD_MESSAGE(WM_PLAN_AC_CTRL_MODE,			OnAxisCtrlDlgCtrlMode)			/// åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰é¸æŠ
+    //ON_THREAD_MESSAGE(WM_PLAN_AC_SENDING_SLDR_DATA,	OnAxisCtrlDlgRecieveSldrData)	/// ãƒ‡ãƒ¼ã‚¿å—ä¿¡
+    //ON_THREAD_MESSAGE(WM_PLAN_AC_REQUEST_DATA,		OnAxisCtrlDlgSendData)			/// ãƒ‡ãƒ¼ã‚¿é€ä¿¡
 
-	//ON_THREAD_MESSAGE(WM_PLAN_URGTHREAD_SET,		OnURGThreadSet)					/// URGThreadƒAƒhƒŒƒXƒZƒbƒg
+    //ON_THREAD_MESSAGE(WM_PLAN_URGTHREAD_SET,		OnURGThreadSet)					/// URGThreadã‚¢ãƒ‰ãƒ¬ã‚¹ã‚»ãƒƒãƒˆ
 
 END_MESSAGE_MAP()
 
-// MotionPlanThread ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// MotionPlanThread ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©
 /**
  *	------------------------------------------------------------
- *		¶¬‚³‚ê‚½AƒƒbƒZ[ƒWŠ„‚è“–‚ÄŠÖ”
- *		MotionPlanThread ƒƒbƒZ[ƒWƒnƒ“ƒhƒ‰ ŠÖ”
+ *		ç”Ÿæˆã•ã‚ŒãŸã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‰²ã‚Šå½“ã¦é–¢æ•°
+ *		MotionPlanThread ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ© é–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	----------------------------------------
- *	DocCViewƒNƒ‰ƒXŠÖ˜A
- *	----------------------------------------
- */
-/**
- *	à–¾
- *		ƒXƒŒƒbƒh‚ÌI—¹ˆ—
- */
- void MotionPlanThread::OnEndThread(WPARAM wParam, LPARAM lParam)
+ /**
+  *	----------------------------------------
+  *	Docï¼ŒViewã‚¯ãƒ©ã‚¹é–¢é€£
+  *	----------------------------------------
+  */
+  /**
+   *	èª¬æ˜
+   *		ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†å‡¦ç†
+   */
+void MotionPlanThread::OnEndThread(WPARAM wParam, LPARAM lParam)
 {
-	/// ƒXƒŒƒbƒhI—¹ˆ—
-	ExitInstance();
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†å‡¦ç†
+    ExitInstance();
 
-	/// ƒVƒXƒeƒ€‚ÉI—¹‚ğ—v‹(WM_DESTORY‚É‘Î‰)
-	PostQuitMessage(0);
+    /// ã‚·ã‚¹ãƒ†ãƒ ã«çµ‚äº†ã‚’è¦æ±‚(WM_DESTORYã«å¯¾å¿œ)
+    PostQuitMessage(0);
 }
 
 /**
- *	à–¾
- *		ƒƒCƒ“ƒXƒŒƒbƒh‚Ö‚Ìƒf[ƒ^‘—M
+ *	èª¬æ˜
+ *		ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã¸ã®ãƒ‡ãƒ¼ã‚¿é€ä¿¡
  */
 void MotionPlanThread::OnSendViewData(WPARAM wParam, LPARAM lParam)
 {
-	/// View‚ÖAsuraX‚Ì•\¦ƒf[ƒ^‚ğ‘—M
-	::PostMessage( (HWND)wParam, WM_PLAN_SENDING_VIEW_DATA, (WPARAM)&asuraXData, (LPARAM)&planData );
+    /// Viewã¸AsuraXã®è¡¨ç¤ºãƒ‡ãƒ¼ã‚¿ã‚’é€ä¿¡
+    ::PostMessage((HWND)wParam, WM_PLAN_SENDING_VIEW_DATA, (WPARAM)&asuraXData, (LPARAM)&planData);
 }
 
 /**
- *	à–¾
- *		•à—eƒZƒbƒgƒAƒbƒv
+ *	èª¬æ˜
+ *		æ­©å®¹ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
  */
 void MotionPlanThread::OnSetupMotion(WPARAM wParam, LPARAM lParam)
 {
-	Plan::Strategy strategy = (Plan::Strategy)lParam;
+    Plan::Strategy strategy = (Plan::Strategy)lParam;
 
-	switch (strategy)
-	{
-		/*case CRAWL:
+    switch (strategy)
+    {
+        /*case CRAWL:
 
-			plannerManager.switchPlan(&crawlGait, Plan::CRAWL);
-			break;*/
+          plannerManager.switchPlan(&crawlGait, Plan::CRAWL);
+          break;*/
 
-		/*case TROT:
-			plannerManager.switchPlan(&tripodGait, Plan::TROT);  //  20200820
-			break;*/
+          /*case TROT:
+            plannerManager.switchPlan(&tripodGait, Plan::TROT);  //  20200820
+            break;*/
 
-		case TRIPOD:
-			plannerManager.switchPlan(&tripodGait, Plan::TRIPOD);  //  20200820
-			break;
+        case TRIPOD:
+            plannerManager.switchPlan(&tripodGait, Plan::TRIPOD);  //  20200820
+            break;
 
-		//20201005
-		case TRIPOD_1_CYCLE:
-			plannerManager.switchPlan(&tripodGait, Plan::TRIPOD_1_CYCLE);  //  20200820
-			break;
+            //20201005
+        case TRIPOD_1_CYCLE:
+            plannerManager.switchPlan(&tripodGait, Plan::TRIPOD_1_CYCLE);  //  20200820
+            break;
 
-		/*case TRACK_DRIVE:
-			plannerManager.switchPlan(&trackDrive, Plan::TRACK_DRIVE);
-			break;*/
+            /*case TRACK_DRIVE:
+              plannerManager.switchPlan(&trackDrive, Plan::TRACK_DRIVE);
+              break;*/
 
-		/*case MODE_CHANGE:
-			plannerManager.switchPlan(&modeChange, Plan::MODE_CHANGE);
-			break;*/
+              /*case MODE_CHANGE:
+                plannerManager.switchPlan(&modeChange, Plan::MODE_CHANGE);
+                break;*/
 
-		/*case AXIS_CONTROL:
-			plannerManager.switchPlan(&axisControl, Plan::AXIS_CONTROL);
-			break;*/
+                /*case AXIS_CONTROL:
+                  plannerManager.switchPlan(&axisControl, Plan::AXIS_CONTROL);
+                  break;*/
 
-	/*	case HYBRID_MOTION:
-			plannerManager.switchPlan(&hybridMotion, Plan::HYBRID_MOTION);
-			break;*/
+                  /*	case HYBRID_MOTION:
+                      plannerManager.switchPlan(&hybridMotion, Plan::HYBRID_MOTION);
+                      break;*/
 
-		/*case URG_MOTION:
-			plannerManager.switchPlan(&URGMotion, Plan::URG_MOTION);		//’Ç‰Á
-			break;*/
+                      /*case URG_MOTION:
+                        plannerManager.switchPlan(&URGMotion, Plan::URG_MOTION);		//è¿½åŠ 
+                        break;*/
 
-		default:
-			break;
-	}
+        default:
+            break;
+    }
 
-	plannerManager.setup();
+    plannerManager.setup();
 }
 
 /**
- *	à–¾
- *		•à—eŠJn
+ *	èª¬æ˜
+ *		æ­©å®¹é–‹å§‹
  */
 void MotionPlanThread::OnStartMotion(WPARAM wParam, LPARAM lParam)
 {
-	plannerManager.startMotion();
+    plannerManager.startMotion();
 }
 
 /**
- *	à–¾
- *		•à—e’â~
+ *	èª¬æ˜
+ *		æ­©å®¹åœæ­¢
  */
 void MotionPlanThread::OnStopMotion(WPARAM wParam, LPARAM lParam)
 {
-	plannerManager.stopMotion();
+    plannerManager.stopMotion();
 }
 
 /**
- *	à–¾
- *		•à—e¶¬
- *		ƒ^ƒCƒ}‚É‚æ‚Á‚ÄŒÄ‚Î‚ê‚é’†g
+ *	èª¬æ˜
+ *		æ­©å®¹ç”Ÿæˆ
+ *		ã‚¿ã‚¤ãƒã«ã‚ˆã£ã¦å‘¼ã°ã‚Œã‚‹ä¸­èº«
  */
 void MotionPlanThread::OnGenerateMotion(WPARAM wParam, LPARAM lParam)
 {
-	/// ¸Šm‚ÈŒ»İ‚ğæ“¾
-	timeManager.setRealTime( pMultiMediaTimer->getPresentTime() );
+    /// ç²¾ç¢ºãªç¾åœ¨æ™‚åˆ»ã‚’å–å¾—
+    timeManager.setRealTime(pMultiMediaTimer->getPresentTime());
 
-	if ( plannerManager.isActive() )
-	{
-		/// Šî€•à—e‚ÌƒXƒiƒbƒvƒVƒ‡ƒbƒgƒf[ƒ^ì¬
-		plannerManager.createSnapshot();
-	}
+    if (plannerManager.isActive())
+    {
+        /// åŸºæº–æ­©å®¹ã®ã‚¹ãƒŠãƒƒãƒ—ã‚·ãƒ§ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ä½œæˆ
+        plannerManager.createSnapshot();
+    }
 
-	/// ƒf[ƒ^‚Ì•Û‘¶
-	dataHandler.handleAsuraData();
-	dataHandler.handlePlanData();
+    /// ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜
+    dataHandler.handleAsuraData();
+    dataHandler.handlePlanData();
 
-	/// <UDP‚Åƒ{[ƒ‹‚Ë‚¶ƒXƒgƒ[ƒNiƒƒCƒ„•ÏˆÊjw—ß’l‘—M>
+    /// <UDPã§ãƒœãƒ¼ãƒ«ã­ã˜ã‚¹ãƒˆãƒ­ãƒ¼ã‚¯ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰æŒ‡ä»¤å€¤é€ä¿¡>
 
-	if ( isCommAlive )
-		pUDPThread->PostThreadMessage(WM_PLAN_SENDING_COMM_DATA, (WPARAM)(&asuraXData), (LPARAM)(&planData) );
+    if (isCommAlive)
+        pUDPThread->PostThreadMessage(WM_PLAN_SENDING_COMM_DATA, (WPARAM)(&asuraXData), (LPARAM)(&planData));
 
 
-	return;
+    return;
 }
 
 /**
  *	----------------------------------------
- *	’ÊMŠÖ˜A
+ *	é€šä¿¡é–¢é€£
  *	----------------------------------------
  */
-/// ƒf[ƒ^‘—MŠJn
+ /// ãƒ‡ãƒ¼ã‚¿é€ä¿¡é–‹å§‹
 void MotionPlanThread::OnStartDataSending(WPARAM wParam, LPARAM lParam)
 {
-	isCommAlive = true;
+    isCommAlive = true;
 }
 
-/// ƒf[ƒ^‘—M’â~
+/// ãƒ‡ãƒ¼ã‚¿é€ä¿¡åœæ­¢
 void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
 {
-	isCommAlive = false;
+    isCommAlive = false;
 }
 
 ///**
 // *	----------------------------------------
-// *	CAxisControlDialogŠÖ˜A
+// *	CAxisControlDialogé–¢é€£
 // *	----------------------------------------
 // */
-///// ‹r”Ô†İ’è
+///// è„šç•ªå·è¨­å®š
 //void MotionPlanThread::OnAxisCtrlDlgLegNo(WPARAM wParam, LPARAM lParam)
 //{
-//	/// ‹r”Ô†‚ğİ’è
+//	/// è„šç•ªå·ã‚’è¨­å®š
 //	int legNo = (int)wParam;
 //	axisControl.setCtrlTargetLegNo( legNo );
 //
-//	/// Œ»İ’l‚ğPlanner‚É•Û
+//	/// ç¾åœ¨å€¤ã‚’Plannerã«ä¿æŒ
 //	axisControl.setJointAngle(legNo, asuraXData.getLegJointAngle( legNo ) );
 //	axisControl.setFootPosition(legNo, asuraXData.getLegFootPosition( legNo ) );
 //
 //	return;
 //}
 //
-///// §Œäƒ‚[ƒhİ’è
+///// åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰è¨­å®š
 //void MotionPlanThread::OnAxisCtrlDlgCtrlMode(WPARAM wParam, LPARAM lParam)
 //{
-//	/// ƒ_ƒCƒAƒƒO‚Ì§Œäƒ‚[ƒh”Ô†‚É‚æ‚è§Œäƒ‚[ƒh‚ğŒˆ’è
+//	/// ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰ç•ªå·ã«ã‚ˆã‚Šåˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰ã‚’æ±ºå®š
 //	switch ( (int)wParam )
 //	{
 //		case 0:
@@ -334,17 +334,17 @@ void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
 //	}
 //}
 //
-///// ƒXƒ‰ƒCƒ_[’lóM
+///// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼å€¤å—ä¿¡
 //void MotionPlanThread::OnAxisCtrlDlgRecieveSldrData(WPARAM wParam, LPARAM lParam)
 //{
-//	/// §Œäƒ‚[ƒh‚Ìæ“¾
+//	/// åˆ¶å¾¡ãƒ¢ãƒ¼ãƒ‰ã®å–å¾—
 //	AxisControlPlanner::ControlMode mode = axisControl.getControlMode();
-//	/// §Œä‹r‚Ì”Ô†æ“¾ 
+//	/// åˆ¶å¾¡è„šã®ç•ªå·å–å¾— 
 //	int no = axisControl.getCtrlTargetLegNo();
-//	/// w—ß’l‚ğæ“¾
+//	/// æŒ‡ä»¤å€¤ã‚’å–å¾—
 //	double data = (double)lParam;
 //
-//	/// §ŒäƒIƒuƒWƒFƒNƒg‚ÌŒ»İ’l‚ğæ“¾
+//	/// åˆ¶å¾¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¾åœ¨å€¤ã‚’å–å¾—
 //	Vector joint(LEG_JOINT_NUM);
 //	Vector foot(THREE_DIMENSION);
 //
@@ -353,7 +353,7 @@ void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
 //		joint = asuraXData.getLegJointAngle(no);
 //		foot = asuraXData.getLegFootPosition(no);
 //
-//		/// ƒXƒ‰ƒCƒ_[”Ô†‚É‚æ‚è‹““®‚Æ’l‚ğŒˆ’è
+//		/// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ç•ªå·ã«ã‚ˆã‚ŠæŒ™å‹•ã¨å€¤ã‚’æ±ºå®š
 //		switch ( (int)wParam )
 //		{
 //			case 1:
@@ -392,7 +392,7 @@ void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
 //	}
 //	else if ( mode == AxisControlPlanner::VELOCITY )
 //	{
-//		/// ƒXƒ‰ƒCƒ_[”Ô†‚É‚æ‚è‹““®‚Æ’l‚ğŒˆ’è
+//		/// ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ç•ªå·ã«ã‚ˆã‚ŠæŒ™å‹•ã¨å€¤ã‚’æ±ºå®š
 //		switch ( (int)wParam )
 //		{
 //			case 1:
@@ -428,13 +428,13 @@ void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
 //
 //}
 //
-///// AsuraX‚Ìƒf[ƒ^‚ğACƒ_ƒCƒAƒƒO‚É‘—M
+///// AsuraXã®ãƒ‡ãƒ¼ã‚¿ã‚’ACãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«é€ä¿¡
 //void MotionPlanThread::OnAxisCtrlDlgSendData(WPARAM wParam, LPARAM lParam)
 //{
 //	PostMessage( (HWND)wParam, WM_PLAN_SENDING_AC_DATA, (WPARAM)&asuraXData, NULL);
 //	
 //
-//	/// AxisControlPlanner‚Ìw—ß’l‚àXV
+//	/// AxisControlPlannerã®æŒ‡ä»¤å€¤ã‚‚æ›´æ–°
 //	int legNo = axisControl.getCtrlTargetLegNo();
 //	if ( legNo != 0 )
 //	{
@@ -445,98 +445,98 @@ void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
 //	return;
 //}
 //
-////URGThreadƒAƒhƒŒƒXƒZƒbƒg
+////URGThreadã‚¢ãƒ‰ãƒ¬ã‚¹ã‚»ãƒƒãƒˆ
 //void MotionPlanThread::OnURGThreadSet(WPARAM wParam, LPARAM lParam)
 //{
 //	URGThreadID=(DWORD)wParam;
 //
-//	pTimedMotionProcedure->URGsetThreadID(URGThreadID);	//// m_nThread‚ÍŠî’êƒNƒ‰ƒX‚ÌCWinThread‚Ìƒƒ“ƒo		URG—p
+//	pTimedMotionProcedure->URGsetThreadID(URGThreadID);	//// m_nThreadã¯åŸºåº•ã‚¯ãƒ©ã‚¹ã®CWinThreadã®ãƒ¡ãƒ³ãƒ		URGç”¨
 //
 //	return;
 //}
 
 /**
  *	------------------------------------------------------------
- *		©ìŠÖ”
+ *		è‡ªä½œé–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	à–¾
- *		‰Šú‰»
- */
+ /**
+  *	èª¬æ˜
+  *		åˆæœŸåŒ–
+  */
 void MotionPlanThread::initializeMotionPlanThread(void)
 {
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒNì¬
- */
-	/// ƒIƒuƒWƒFƒNƒgì¬
-	pTimedMotionProcedure = new TimedMotionProcedure();
-	/// ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒN‚É–{ƒXƒŒƒbƒh‚ÌID‚ğ“o˜^
-	pTimedMotionProcedure->setThreadID(m_nThreadID);	//// m_nThread‚ÍŠî’êƒNƒ‰ƒX‚ÌCWinThread‚Ìƒƒ“ƒo
-	
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ä½œæˆ
+     */
+     /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
+    pTimedMotionProcedure = new TimedMotionProcedure();
+    /// ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã«æœ¬ã‚¹ãƒ¬ãƒƒãƒ‰ã®IDã‚’ç™»éŒ²
+    pTimedMotionProcedure->setThreadID(m_nThreadID);	//// m_nThreadã¯åŸºåº•ã‚¯ãƒ©ã‚¹ã®CWinThreadã®ãƒ¡ãƒ³ãƒ
 
-/**
- *	ƒ^ƒCƒ}–{‘Ìì¬
- */
-	pMultiMediaTimer = new MultiMediaTimer(*pTimedMotionProcedure);
-	pMultiMediaTimer->setTimer(20, 5);
 
-	/// ƒXƒŒƒbƒh‚ğƒAƒNƒeƒBƒu‚É
-	isAlive = TRUE;
+    /**
+     *	ã‚¿ã‚¤ãƒæœ¬ä½“ä½œæˆ
+     */
+    pMultiMediaTimer = new MultiMediaTimer(*pTimedMotionProcedure);
+    pMultiMediaTimer->setTimer(20, 5);
+
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«
+    isAlive = TRUE;
 }
 
 /**
- *	à–¾
- *		I—¹ˆ—
+ *	èª¬æ˜
+ *		çµ‚äº†å‡¦ç†
  */
 void MotionPlanThread::finalizeMotionPlanThread(void)
 {
-/**
- *	ƒ^ƒCƒ}I—¹ˆ—
- */
-	/// ƒ^ƒCƒ}‚ª’â~‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç
-	if ( pMultiMediaTimer != NULL )
-	{
-		pMultiMediaTimer->killTimer();
-	
-		/// ƒ^ƒCƒ}ƒIƒuƒWƒFƒNƒg”jŠü
-		delete pMultiMediaTimer;
-		pMultiMediaTimer = NULL;	
-	}
+    /**
+     *	ã‚¿ã‚¤ãƒçµ‚äº†å‡¦ç†
+     */
+     /// ã‚¿ã‚¤ãƒãŒåœæ­¢ã—ã¦ã„ãªã‹ã£ãŸã‚‰
+    if (pMultiMediaTimer != NULL)
+    {
+        pMultiMediaTimer->killTimer();
 
-	if ( pTimedMotionProcedure != NULL )
-	{
-		/// ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒN”jŠü
-		delete pTimedMotionProcedure;
-		pTimedMotionProcedure = NULL;
-	}
+        /// ã‚¿ã‚¤ãƒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´æ£„
+        delete pMultiMediaTimer;
+        pMultiMediaTimer = NULL;
+    }
 
-	return;
+    if (pTimedMotionProcedure != NULL)
+    {
+        /// ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç ´æ£„
+        delete pTimedMotionProcedure;
+        pTimedMotionProcedure = NULL;
+    }
+
+    return;
 }
 
 ///**
-// *	à–¾
-// *		‘€ì‚·‚éƒ_ƒCƒAƒƒO‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğƒZƒbƒg
+// *	èª¬æ˜
+// *		æ“ä½œã™ã‚‹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 // */
-///// ²§Œäƒ_ƒCƒAƒƒO
+///// è»¸åˆ¶å¾¡ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 //void MotionPlanThread::acquireAxisControlDialog(CAxisControlDialog* pDlg)
 //{
 //	pAxisControlDialog = pDlg;
 //	return;
 //}
 //
-///// ƒVƒŠƒAƒ‹’ÊMƒ_ƒCƒAƒƒO
+///// ã‚·ãƒªã‚¢ãƒ«é€šä¿¡ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 //void MotionPlanThread::acquireSerialPortDialog(CSerialPortDialog* pDlg)
 //{
 //	pSerialPortDialog = pDlg;
 //	return;
 //}
 
-//UDP’ÊMƒ_ƒCƒAƒƒO‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğƒZƒbƒg
+//UDPé€šä¿¡ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 void MotionPlanThread::acquireAsuraUDPThread(AsuraUDPThread* pDlg)
 {
-	pUDPThread = pDlg;
-	return;
+    pUDPThread = pDlg;
+    return;
 }

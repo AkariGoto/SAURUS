@@ -1,7 +1,7 @@
-/**
+ï»¿/**
  *  File: LegTrajectory.cpp
  *
- *  Description: ‹r‹O“¹î•ñ‚ğˆµ‚¤ƒNƒ‰ƒX‚Ì’è‹`•”
+ *  Description: è„šè»Œé“æƒ…å ±ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ã®å®šç¾©éƒ¨
  *
  *  Created: 2007/03/06(Tue)
  *  Updated: 2007/03/06(Tue)
@@ -10,7 +10,8 @@
  */
 
 #include "LegTrajectory.h"
-
+#include "Utility/EngConstant.h"
+#include "Math//MathConstant.h"
 
 using namespace std;
 using namespace Math;
@@ -19,490 +20,490 @@ using namespace Const;
 namespace Plan
 {
 /**
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
+ *		ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^iÀˆø”‚Ìw’è‚ª•s—v‚ÈƒRƒ“ƒXƒgƒ‰ƒNƒ^A‰¼ˆø”‚ªéŒ¾‚³‚ê‚Ä‚¢‚È‚¢ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÍƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‚È‚éj
+ /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼ˆå®Ÿå¼•æ•°ã®æŒ‡å®šãŒä¸è¦ãªã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€ä»®å¼•æ•°ãŒå®£è¨€ã•ã‚Œã¦ã„ãªã„ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãªã‚‹ï¼‰
 
-LegTrajectory::LegTrajectory()//LegTrajectoryƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”LegTrajectory()
+LegTrajectory::LegTrajectory()//LegTrajectoryã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°LegTrajectory()
 {
-	initializeLegTrajectory();
+    initializeLegTrajectory();
 }
 
-/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 LegTrajectory::LegTrajectory(const LegTrajectory& trajectory)
 {
-	initializeLegTrajectory();
-	copy(trajectory);
+    initializeLegTrajectory();
+    copy(trajectory);
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 LegTrajectory::~LegTrajectory()
 {
 }
 
 /**
- *		‰‰Zq
+ *		æ¼”ç®—å­
  */
-/// ‘ã“ü‰‰Zq
+ /// ä»£å…¥æ¼”ç®—å­
 LegTrajectory& LegTrajectory::operator=(const LegTrajectory& trajectory)
 {
-	/// ©ŒÈ‘ã“ü‚ğ–h‚®
-	if ( &trajectory != this )
-	{
-		copy(trajectory);
-	}
+    /// è‡ªå·±ä»£å…¥ã‚’é˜²ã
+    if (&trajectory != this)
+    {
+        copy(trajectory);
+    }
 
-	return *this;
+    return *this;
 }
 
-/// “™‰¿‰‰Zq
+/// ç­‰ä¾¡æ¼”ç®—å­
 bool LegTrajectory::operator==(const LegTrajectory& trajectory) const
 {
-	if ( returnStroke != trajectory.returnStroke ){return false;}
-	if ( upSwing != trajectory.upSwing ){return false;}
-	if ( downSwing != trajectory.downSwing ){return false;}
+    if (returnStroke != trajectory.returnStroke) { return false; }
+    if (upSwing != trajectory.upSwing) { return false; }
+    if (downSwing != trajectory.downSwing) { return false; }
 
-	if ( returnTime != trajectory.returnTime ){return false;}
-	if ( upTime != trajectory.upTime ){return false;}
-	if ( downTime != trajectory.downTime ){return false;}
+    if (returnTime != trajectory.returnTime) { return false; }
+    if (upTime != trajectory.upTime) { return false; }
+    if (downTime != trajectory.downTime) { return false; }
 
-	return true;
+    return true;
 }
 
-/// ”ñ“™‰¿‰‰Zq
+/// éç­‰ä¾¡æ¼”ç®—å­
 bool LegTrajectory::operator!=(const LegTrajectory& trajectory) const
 {
-	if ( *this == trajectory )
-		return false;
-	else 
-		return true;
+    if (*this == trajectory)
+        return false;
+    else
+        return true;
 }
 
 
 /**
- *		‰Šú‰»
+ *		åˆæœŸåŒ–
  */
 void LegTrajectory::initializeLegTrajectory(void)
 {
-/**
- *		ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
- */
-	/// —V‹rƒXƒgƒ[ƒN
-	returnStroke.setSize(THREE_DIMENSION);
-	/// —V‹rU‚èã‚°‚‚³
-	upSwing.setSize(THREE_DIMENSION);
-	/// —V‹rU‚è‰º‚°‚‚³
-	downSwing.setSize(THREE_DIMENSION);
+    /**
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
+     */
+     /// éŠè„šã‚¹ãƒˆãƒ­ãƒ¼ã‚¯
+    returnStroke.setSize(THREE_DIMENSION);
+    /// éŠè„šæŒ¯ã‚Šä¸Šã’é«˜ã•
+    upSwing.setSize(THREE_DIMENSION);
+    /// éŠè„šæŒ¯ã‚Šä¸‹ã’é«˜ã•
+    downSwing.setSize(THREE_DIMENSION);
 
-	Swing.setSize(THREE_DIMENSION);
+    Swing.setSize(THREE_DIMENSION);
 
-	/// •œ‹AŠÔ
-	returnTime = 0.0;
-	/// U‚èã‚°ŠÔ
-	upTime = 0.0;
-	/// U‚è‰º‚°ŠÔ
-	downTime = 0.0;
+    /// å¾©å¸°æ™‚é–“
+    returnTime = 0.0;
+    /// æŒ¯ã‚Šä¸Šã’æ™‚é–“
+    upTime = 0.0;
+    /// æŒ¯ã‚Šä¸‹ã’æ™‚é–“
+    downTime = 0.0;
 }
 
 /**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+ *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
  */
 void LegTrajectory::setLegTrajectory
-	(
-		const Math::Vector& start,
-		const Math::Vector& upPhase, 
-		const Math::Vector& returnPhase, 
-		const Math::Vector& downPhase
+(
+  const Math::Vector& start,
+  const Math::Vector& upPhase,
+  const Math::Vector& returnPhase,
+  const Math::Vector& downPhase
 
-		//const Math::Vector& swingPhase
-	)
+  //const Math::Vector& swingPhase
+)
 {
-	/// ƒƒ“ƒo•Ï”‚ÌXV
-	startPosition = start;
+    /// ãƒ¡ãƒ³ãƒå¤‰æ•°ã®æ›´æ–°
+    startPosition = start;
 
-	upSwing = upPhase;
-	returnStroke = returnPhase;
-	downSwing = downPhase;
+    upSwing = upPhase;
+    returnStroke = returnPhase;
+    downSwing = downPhase;
 
-	/// ƒS[ƒ‹ˆÊ’u‚ğXV‚·‚é
-	goalPosition = startPosition + upSwing + returnStroke + downSwing ;
+    /// ã‚´ãƒ¼ãƒ«ä½ç½®ã‚’æ›´æ–°ã™ã‚‹
+    goalPosition = startPosition + upSwing + returnStroke + downSwing;
 
-	return;
+    return;
 }
 
 void LegTrajectory::setLegTrajectoryTime(double start, double upPhase, double returnPhase, double downPhase)
 {
-	/// ƒƒ“ƒo•Ï”‚ÌXV
-	startTime = start;
+    /// ãƒ¡ãƒ³ãƒå¤‰æ•°ã®æ›´æ–°
+    startTime = start;
 
-	upTime = upPhase;
-	returnTime = returnPhase;
-	downTime = downPhase;
+    upTime = upPhase;
+    returnTime = returnPhase;
+    downTime = downPhase;
 
-	/// ƒS[ƒ‹ŠÔ‚ğXV‚·‚é
-	goalTime = startTime + upTime + returnTime + downTime;
+    /// ã‚´ãƒ¼ãƒ«æ™‚é–“ã‚’æ›´æ–°ã™ã‚‹
+    goalTime = startTime + upTime + returnTime + downTime;
 
-	return;
+    return;
 }
 
 /**
- *		‹O“¹ã‚ÌˆÊ’u‚ğ“¾‚é
- *		splitTime: ‹O“¹’†‚ÌŠÔistartTime < time < goalTimej
+ *		è»Œé“ä¸Šã®ä½ç½®ã‚’å¾—ã‚‹
+ *		splitTime: è»Œé“ä¸­ã®æ™‚é–“ï¼ˆstartTime < time < goalTimeï¼‰
  */
 Math::Vector LegTrajectory::getPosition(double splitTime)
 {
-	
-	/// æ‚èo‚·‹ræ‹O“¹
-	Vector trajectory(THREE_DIMENSION);
 
-	/*	‡¬ƒTƒCƒNƒƒCƒh‹O“¹
-	*		—£’E,Ú’n‚Ì‘¬“x‚ª˜A‘±. —V‹rŠÔ‚Ìê‡•ª‚¯‚ª2ƒpƒ^[ƒ“‚ÅÏ‚Ş.
-	*		[ˆø—p] åŒ´‹`G, ›˜ar, ×“c—Si, ••”½, “¡]³, "4‹r•às‹@\‚Ì‚½‚ß‚Ì’áÕŒ‚‘«æ‹O",“ú–{ƒƒ{ƒbƒgŠw‰ï 8Šª6† ,pp22-31,1990
-	*/
-		//*  20221219
-		///—V‹r‚Ì’†ŠÔŠÔ
-		double MiddleTime	= ( startTime + goalTime )/2.00;//+dutyFactor
-		///—V‹rŠÔ
-		double SwingTime	=  goalTime - startTime ;//Ts
+    /// å–ã‚Šå‡ºã™è„šå…ˆè»Œé“
+    Vector trajectory(THREE_DIMENSION);
 
-		/// —V‹rŠJn‘O
-		if ( splitTime <= startTime )
-		{			
-			trajectory = startPosition;
-		}
-		/// up‘Š
-		else if ( ( startTime < splitTime ) && ( splitTime <= MiddleTime ) )//( splitTime < goalTime ) )//
-		{
-			trajectory = startPosition 
-						+ ( (splitTime - startTime)/SwingTime - sin(4 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/4 ) * upSwing * 2 
-						+ ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
-		}
-		/// down‘Š	*downSwing‚Ì’†g‚Í•‰
-		else if ( ( MiddleTime < splitTime) && ( splitTime < goalTime ) )
-		{
-			trajectory = startPosition +upSwing
-						+ (  ( splitTime - MiddleTime)/SwingTime - sin(4 * Const::PI * (splitTime - MiddleTime)/SwingTime )/ Const::PI/4 ) *downSwing *2
-						+ ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )*returnStroke;
-		}
-		/// —V‹rI—¹
-		else if (goalTime <= splitTime)
-		{
-			trajectory = goalPosition;
-		} 
-		//*/
-		
+    /*	åˆæˆã‚µã‚¤ã‚¯ãƒ­ã‚¤ãƒ‰è»Œé“
+    *		é›¢è„±,æ¥åœ°æ™‚ã®é€Ÿåº¦ãŒé€£ç¶š. éŠè„šæ™‚é–“ã®å ´åˆåˆ†ã‘ãŒ2ãƒ‘ã‚¿ãƒ¼ãƒ³ã§æ¸ˆã‚€.
+    *		[å¼•ç”¨] æ¦ŠåŸç¾©å®, è…å’Œä¿Š, ç´°ç”°ç¥å¸, æœéƒ¨èª , è—¤æ±Ÿæ­£å…‹, "4è„šæ­©è¡Œæ©Ÿæ§‹ã®ãŸã‚ã®ä½è¡æ’ƒè¶³å…ˆè»Œ",æ—¥æœ¬ãƒ­ãƒœãƒƒãƒˆå­¦ä¼šèªŒ 8å·»6å· ,pp22-31,1990
+    */
+    //*  20221219
+    ///éŠè„šã®ä¸­é–“æ™‚é–“
+    double MiddleTime = (startTime + goalTime) / 2.00;//+dutyFactor
+    ///éŠè„šæ™‚é–“
+    double SwingTime = goalTime - startTime;//Ts
 
-		
+    /// éŠè„šé–‹å§‹å‰
+    if (splitTime <= startTime)
+    {
+        trajectory = startPosition;
+    }
+    /// upç›¸
+    else if ((startTime < splitTime) && (splitTime <= MiddleTime))//( splitTime < goalTime ) )//
+    {
+        trajectory = startPosition
+            + ((splitTime - startTime) / SwingTime - sin(4 * Const::PI * (splitTime - startTime) / SwingTime) / Const::PI / 4) * upSwing * 2
+            + ((splitTime - startTime) / SwingTime - sin(2 * Const::PI * (splitTime - startTime) / SwingTime) / Const::PI / 2) * returnStroke;
+    }
+    /// downç›¸	*downSwingã®ä¸­èº«ã¯è² 
+    else if ((MiddleTime < splitTime) && (splitTime < goalTime))
+    {
+        trajectory = startPosition + upSwing
+            + ((splitTime - MiddleTime) / SwingTime - sin(4 * Const::PI * (splitTime - MiddleTime) / SwingTime) / Const::PI / 4) * downSwing * 2
+            + ((splitTime - startTime) / SwingTime - sin(2 * Const::PI * (splitTime - startTime) / SwingTime) / Const::PI / 2) * returnStroke;
+    }
+    /// éŠè„šçµ‚äº†
+    else if (goalTime <= splitTime)
+    {
+        trajectory = goalPosition;
+    }
+    //*/
 
-       /********•ÏŒ`ƒTƒCƒNƒƒCƒh‹O“¹*******/
 
-/*****MiddleTime‚É‚¨‚¯‚é‰Á‘¬“x‚Ì•Ï‰»‚ğ¬‚³‚­‚·‚é****/
+
+
+       /********å¤‰å½¢ã‚µã‚¤ã‚¯ãƒ­ã‚¤ãƒ‰è»Œé“*******/
+
+/*****MiddleTimeã«ãŠã‘ã‚‹åŠ é€Ÿåº¦ã®å¤‰åŒ–ã‚’å°ã•ãã™ã‚‹****/
 
     /*    if(splitTime <= startTime)
-		{
-			trajectory = startPosition ;
-		}
+    {
+      trajectory = startPosition ;
+    }
 
-		else if( ( startTime < splitTime ) && ( splitTime <= startTime + SwingTime/4 ) ) //up=>ok
-		{
-			trajectory = startPosition 
-				//+ (upSwing / (4 + Const::PI)) * (4 * Const::PI*( (splitTime -startTime)/ SwingTime) - sin(4*Const::PI*( (splitTime - startTime )/ SwingTime)) )
-				+ ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
-		}
+    else if( ( startTime < splitTime ) && ( splitTime <= startTime + SwingTime/4 ) ) //up=>ok
+    {
+      trajectory = startPosition
+        //+ (upSwing / (4 + Const::PI)) * (4 * Const::PI*( (splitTime -startTime)/ SwingTime) - sin(4*Const::PI*( (splitTime - startTime )/ SwingTime)) )
+        + ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
+    }
 
-		else if( ( startTime + SwingTime/4 < splitTime ) && ( splitTime <= startTime + MiddleTime ) ) //up=>ok
-		{
-			trajectory = startPosition  
-				//+ (4 * upSwing /(4 + Const::PI)) * ( sin(2 * Const::PI* ((splitTime - startTime)/ SwingTime) - Const::PI/2) + Const::PI/4 )
-				+ ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
-		}
+    else if( ( startTime + SwingTime/4 < splitTime ) && ( splitTime <= startTime + MiddleTime ) ) //up=>ok
+    {
+      trajectory = startPosition
+        //+ (4 * upSwing /(4 + Const::PI)) * ( sin(2 * Const::PI* ((splitTime - startTime)/ SwingTime) - Const::PI/2) + Const::PI/4 )
+        + ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
+    }
 
-		else if( ( startTime + MiddleTime < splitTime ) && ( splitTime <= startTime + 3*SwingTime/4 ) )//down
-		{
-			trajectory = startPosition
-				//+ (4 * upSwing / (4 + Const::PI)) * ( sin( 2 * Const::PI * (splitTime - startTime) / SwingTime - Const::PI/2 ) + Const::PI/4 ) 
-				+ ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
-		}
+    else if( ( startTime + MiddleTime < splitTime ) && ( splitTime <= startTime + 3*SwingTime/4 ) )//down
+    {
+      trajectory = startPosition
+        //+ (4 * upSwing / (4 + Const::PI)) * ( sin( 2 * Const::PI * (splitTime - startTime) / SwingTime - Const::PI/2 ) + Const::PI/4 )
+        + ( (splitTime - startTime)/SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )* returnStroke;
+    }
 
-		else if( ( startTime + 3*SwingTime/4 < splitTime ) && ( splitTime < goalTime ) )//down
-		{
-			trajectory = startPosition
-				//+ ( 4 * Const::PI * upSwing / (4 + Const::PI) ) * ( (1 - ((splitTime - startTime) / SwingTime) ) - (1/4/Const::PI) * sin(4*Const::PI*( 1 - ((splitTime - startTime) /SwingTime) ) ) )
-				+ ( (splitTime - startTime) / SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )*returnStroke;
-		}
+    else if( ( startTime + 3*SwingTime/4 < splitTime ) && ( splitTime < goalTime ) )//down
+    {
+      trajectory = startPosition
+        //+ ( 4 * Const::PI * upSwing / (4 + Const::PI) ) * ( (1 - ((splitTime - startTime) / SwingTime) ) - (1/4/Const::PI) * sin(4*Const::PI*( 1 - ((splitTime - startTime) /SwingTime) ) ) )
+        + ( (splitTime - startTime) / SwingTime - sin(2 * Const::PI * (splitTime - startTime)/SwingTime )/ Const::PI/2  )*returnStroke;
+    }
 
-		else if( goalTime <= splitTime)
-		{
-			trajectory = goalPosition ;
-		}
-		*/
+    else if( goalTime <= splitTime)
+    {
+      trajectory = goalPosition ;
+    }
+    */
 
-	/*  20221219
-	//  20200822  ‹ræ—£’E“_‚æ‚è‚à‹ræ’…’n“_‚ª‚‚¢ê‡or’á‚¢ê‡
-	if (upSwing[2] != -downSwing[2])
-	{
-		///—V‹r‚Ì’¸“_’†“_‚És‚Á‚½‚ÌŠÔ
-		double MiddleTime = startTime + (goalTime - startTime) * 3 / 4;//( startTime + goalTime );
+    /*  20221219
+    //  20200822  è„šå…ˆé›¢è„±ç‚¹ã‚ˆã‚Šã‚‚è„šå…ˆç€åœ°ç‚¹ãŒé«˜ã„å ´åˆorä½ã„å ´åˆ
+    if (upSwing[2] != -downSwing[2])
+    {
+      ///éŠè„šã®é ‚ç‚¹ä¸­ç‚¹ã«è¡Œã£ãŸæ™‚ã®æ™‚é–“
+      double MiddleTime = startTime + (goalTime - startTime) * 3 / 4;//( startTime + goalTime );
 
-		///—V‹rŠÔ
-		double SwingTime = goalTime - startTime;//Ts
+      ///éŠè„šæ™‚é–“
+      double SwingTime = goalTime - startTime;//Ts
 
-		double first, second;
+      double first, second;
 
-		//printf("MiddleTime%lf \n SwingTime%lf",MiddleTime,SwingTime);
+      //printf("MiddleTime%lf \n SwingTime%lf",MiddleTime,SwingTime);
 
-		if (upSwing[2] > -downSwing[2])
-		{
-			first = SwingTime * 3 / 5;  //up—p
-			second = SwingTime * 2 / 5; //up—p
-		}
-		else
-		{
-			first = SwingTime * 2 / 5; //down
-			second = SwingTime * 3 / 5; //down
-		}
-		
-
-	   // my trajectory
-		if (splitTime <= startTime)
-		{
-			trajectory = startPosition;
-			//cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
-		}
-
-		else if ((startTime < splitTime) && (splitTime <= startTime + first / 2)) //up
-		{
-			trajectory = startPosition
-				+ (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / first / 2) - sin(4 * Const::PI * ((splitTime - startTime) / first / 2))); //Z
-			 // printf("1111\n");
-			 // cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
-		}
-
-		else if ((startTime + first / 2 < splitTime) && (splitTime <= startTime + first)) //up
-		{
-			trajectory = startPosition
-				+ (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / first / 2) - Const::PI / 2) + Const::PI / 4) //Z
-				+ returnStroke * (2 * ((splitTime - startTime) / first / 2) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / first / 2) - 0.25)) - 0.5); //X
-		 //printf("2222\n");
-		 //cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
+      if (upSwing[2] > -downSwing[2])
+      {
+        first = SwingTime * 3 / 5;  //upç”¨
+        second = SwingTime * 2 / 5; //upç”¨
+      }
+      else
+      {
+        first = SwingTime * 2 / 5; //down
+        second = SwingTime * 3 / 5; //down
+      }
 
 
-		}
-		else if ((startTime + first < splitTime) && (splitTime <= startTime + first + second / 2)) //down
-		{
-			trajectory = startPosition + upSwing + downSwing
-				- (4 * downSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime - first + second)) / second / 2 - Const::PI / 2) + Const::PI / 4) //Z
-				+ returnStroke * (2 * ((splitTime - startTime - first + second) / second / 2) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime - first + second) / second / 2) - 0.25)) - 0.5);//X
-			//printf("3333\n");
-			//cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
-		}
+       // my trajectory
+      if (splitTime <= startTime)
+      {
+        trajectory = startPosition;
+        //cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
+      }
 
-		else if ((startTime + first + second / 2 < splitTime) && (splitTime <= goalTime)) //down
-		{
-			trajectory = startPosition + upSwing + downSwing
-				- (4 * Const::PI * downSwing / (4 + Const::PI)) * ((1 - ((splitTime - startTime - first + second) / second / 2)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime - first + second) / second / 2)))) //Z
-				+ returnStroke; //X
-			//printf("4444\n");
-			//cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
-		}
+      else if ((startTime < splitTime) && (splitTime <= startTime + first / 2)) //up
+      {
+        trajectory = startPosition
+          + (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / first / 2) - sin(4 * Const::PI * ((splitTime - startTime) / first / 2))); //Z
+         // printf("1111\n");
+         // cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
+      }
 
-		else if (goalTime < splitTime)
-		{
-			trajectory = goalPosition;
-			// cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
-		}
-
-		if (trajectory[1] < -700)
-		{
-
-			cout << trajectory[0] << "," << trajectory[1] << "," << trajectory[2] << endl;
-		}
-
-		if (trajectory[1] < -500)
-		{
-			cout << trajectory[0] << "," << trajectory[1] << "," << trajectory[2] << endl;
-		}
-	}
-	//  20221219  */
-		/*
-		//—V‹r‚Ì’¸“_’†“_‚És‚Á‚½‚ÌŠÔ
-		double MiddleTime = startTime + (goalTime - startTime) * 2 / 3;//( startTime + goalTime );
-		///—V‹rŠÔ
-		double SwingTime = goalTime - startTime;//Ts
-
-		// my trajectory(‚±‚ê‚Å3ƒpƒ^[ƒ“, PlanParameter.h ‚ÌU‚èã‚°‚ÆU‚è‰º‚°‚‚³‚Ì’l‚ğ‚¢‚¶‚Á‚ÄÄŒ»)
-		if (splitTime <= startTime)
-		{
-			trajectory = startPosition;
-		}
-		else if ((startTime < splitTime) && (splitTime <= MiddleTime / 2)) //up
-		{
-			trajectory = startPosition
-				+ (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / SwingTime) - sin(4 * Const::PI * ((splitTime - startTime) / SwingTime))); //Z
-
-		}
-		else if ((MiddleTime / 2 < splitTime) && (splitTime <= MiddleTime)) //up
-		{
-			trajectory = startPosition
-				+ (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / SwingTime) - Const::PI / 2) + Const::PI / 4) //Z
-				+ returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5); //X
-		}
-		else if ((MiddleTime < splitTime) && (splitTime <= MiddleTime * 5 / 8)) //down
-		{
-			trajectory = startPosition + upSwing + downSwing
-				- (4 * downSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime)) / SwingTime - Const::PI / 2) + Const::PI / 4) //Z
-				+ returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5);//X
-
-		}
-		else if ((MiddleTime * 5 / 8 < splitTime) && (splitTime <= goalTime)) //down
-		{
-			trajectory = startPosition + upSwing + downSwing
-				- (4 * Const::PI * downSwing / (4 + Const::PI)) * ((1 - ((splitTime - startTime) / SwingTime)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime) / SwingTime)))) //Z
-				+ returnStroke; //X
-
-		}
-		else if (goalTime < splitTime)
-		{
-			trajectory = goalPosition;
-			//startPosition + upSwing + returnStroke +downSwing
-			//- ( 4 * Const::PI * downSwing / (4 + Const::PI) ) * ( (1 - ((splitTime - startTime) / SwingTime) ) - (1/4/Const::PI) * sin(4*Const::PI*( 1 - ((splitTime - startTime) /SwingTime) ) ) );
-
-		}
-
-		*/
+      else if ((startTime + first / 2 < splitTime) && (splitTime <= startTime + first)) //up
+      {
+        trajectory = startPosition
+          + (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / first / 2) - Const::PI / 2) + Const::PI / 4) //Z
+          + returnStroke * (2 * ((splitTime - startTime) / first / 2) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / first / 2) - 0.25)) - 0.5); //X
+       //printf("2222\n");
+       //cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
 
 
+      }
+      else if ((startTime + first < splitTime) && (splitTime <= startTime + first + second / 2)) //down
+      {
+        trajectory = startPosition + upSwing + downSwing
+          - (4 * downSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime - first + second)) / second / 2 - Const::PI / 2) + Const::PI / 4) //Z
+          + returnStroke * (2 * ((splitTime - startTime - first + second) / second / 2) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime - first + second) / second / 2) - 0.25)) - 0.5);//X
+        //printf("3333\n");
+        //cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
+      }
 
-	   //‚’á·‚È‚µ
-		/*
-		if (splitTime <= startTime)
-		{
-			trajectory = startPosition;
-		}
-		else if ((startTime < splitTime) && (splitTime <= startTime + SwingTime / 4)) //up
-		{
-			trajectory = startPosition
-				+ (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / SwingTime) - sin(4 * Const::PI * ((splitTime - startTime) / SwingTime))); //Z
+      else if ((startTime + first + second / 2 < splitTime) && (splitTime <= goalTime)) //down
+      {
+        trajectory = startPosition + upSwing + downSwing
+          - (4 * Const::PI * downSwing / (4 + Const::PI)) * ((1 - ((splitTime - startTime - first + second) / second / 2)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime - first + second) / second / 2)))) //Z
+          + returnStroke; //X
+        //printf("4444\n");
+        //cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
+      }
 
-		}
-		else if ((startTime + SwingTime / 4 < splitTime) && (splitTime <= MiddleTime)) //up
-		{
-			trajectory = startPosition
-				+ (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / SwingTime) - Const::PI / 2) + Const::PI / 4) //Z
-				+ returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5); //X
-		}
-		else if ((MiddleTime < splitTime) && (splitTime <= startTime + 3 * SwingTime / 4)) //down
-		{
-			trajectory = startPosition + upSwing + downSwing
-				- (4 * downSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime)) / SwingTime - Const::PI / 2) + Const::PI / 4) //Z
-				+ returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5);//X
-		}
-		else if ((startTime + 3 * SwingTime / 4 < splitTime) && (splitTime < startTime + goalTime)) //down
-		{
-			trajectory = startPosition + upSwing
-				- (4 * Const::PI * downSwing / (4 + Const::PI)) * ((1 - ((splitTime - 3 * SwingTime / 4) / SwingTime)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime) / SwingTime)))) //Z
-				+ returnStroke; //X
+      else if (goalTime < splitTime)
+      {
+        trajectory = goalPosition;
+        // cout << trajectory[0]<<","<<trajectory[1]<<","<<trajectory[2]<<endl;
+      }
 
-		}
-		else if (goalTime <= splitTime)
-		{
-			trajectory = goalPosition;
-		}
-		*/
-	
+      if (trajectory[1] < -700)
+      {
 
-	/*  20221219
-		else
-		{
-			// my trajectory==>>ÅI”Åi•½–Êj
-			//—V‹rŠÔ
-			double SwingTime = goalTime - startTime;//Ts
+        cout << trajectory[0] << "," << trajectory[1] << "," << trajectory[2] << endl;
+      }
 
-			if (splitTime <= startTime)
-			{
-				trajectory = startPosition;
-			}
-			else if ((startTime < splitTime) && (splitTime <= startTime + SwingTime / 4)) //up
-			{
-				trajectory = startPosition
-					+ (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / SwingTime) - sin(4 * Const::PI * ((splitTime - startTime) / SwingTime))); //Z
+      if (trajectory[1] < -500)
+      {
+        cout << trajectory[0] << "," << trajectory[1] << "," << trajectory[2] << endl;
+      }
+    }
+    //  20221219  */
+    /*
+    //éŠè„šã®é ‚ç‚¹ä¸­ç‚¹ã«è¡Œã£ãŸæ™‚ã®æ™‚é–“
+    double MiddleTime = startTime + (goalTime - startTime) * 2 / 3;//( startTime + goalTime );
+    ///éŠè„šæ™‚é–“
+    double SwingTime = goalTime - startTime;//Ts
 
-			}
-			else if ((startTime + SwingTime / 4 < splitTime) && (splitTime <= startTime + 3 * SwingTime / 4)) //up
-			{
-				trajectory = startPosition
-					+ (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / SwingTime) - Const::PI / 2) + Const::PI / 4)  //Z
-					+ returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5); //X
-			}
-			else if ((startTime + 3 * SwingTime / 4 < splitTime) && (splitTime < startTime + goalTime)) //down
-			{
-				trajectory = startPosition
-					+ (4 * Const::PI * upSwing / (4 + Const::PI)) * ((1 - ((splitTime - startTime) / SwingTime)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime) / SwingTime)))) //Z
-					+ returnStroke; //X
-			}
-			else if (goalTime <= splitTime)
-			{
-				trajectory = goalPosition;
-			}
+    // my trajectory(ã“ã‚Œã§3ãƒ‘ã‚¿ãƒ¼ãƒ³, PlanParameter.h ã®æŒ¯ã‚Šä¸Šã’ã¨æŒ¯ã‚Šä¸‹ã’é«˜ã•ã®å€¤ã‚’ã„ã˜ã£ã¦å†ç¾)
+    if (splitTime <= startTime)
+    {
+      trajectory = startPosition;
+    }
+    else if ((startTime < splitTime) && (splitTime <= MiddleTime / 2)) //up
+    {
+      trajectory = startPosition
+        + (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / SwingTime) - sin(4 * Const::PI * ((splitTime - startTime) / SwingTime))); //Z
 
-		}
-	//  20221219  */   
-	   
+    }
+    else if ((MiddleTime / 2 < splitTime) && (splitTime <= MiddleTime)) //up
+    {
+      trajectory = startPosition
+        + (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / SwingTime) - Const::PI / 2) + Const::PI / 4) //Z
+        + returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5); //X
+    }
+    else if ((MiddleTime < splitTime) && (splitTime <= MiddleTime * 5 / 8)) //down
+    {
+      trajectory = startPosition + upSwing + downSwing
+        - (4 * downSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime)) / SwingTime - Const::PI / 2) + Const::PI / 4) //Z
+        + returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5);//X
+
+    }
+    else if ((MiddleTime * 5 / 8 < splitTime) && (splitTime <= goalTime)) //down
+    {
+      trajectory = startPosition + upSwing + downSwing
+        - (4 * Const::PI * downSwing / (4 + Const::PI)) * ((1 - ((splitTime - startTime) / SwingTime)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime) / SwingTime)))) //Z
+        + returnStroke; //X
+
+    }
+    else if (goalTime < splitTime)
+    {
+      trajectory = goalPosition;
+      //startPosition + upSwing + returnStroke +downSwing
+      //- ( 4 * Const::PI * downSwing / (4 + Const::PI) ) * ( (1 - ((splitTime - startTime) / SwingTime) ) - (1/4/Const::PI) * sin(4*Const::PI*( 1 - ((splitTime - startTime) /SwingTime) ) ) );
+
+    }
+
+    */
 
 
-	/*   if(splitTime <= startTime)
-	   {
-			trajectory = startPosition ;
-	   }
-	   else if( ( startTime < splitTime ) && ( splitTime <= startTime + SwingTime/4 )) //up
-	   {
-		   trajectory = startPosition  
-			  + (upSwing / (4 + Const::PI)) * (4 * Const::PI*( (splitTime -startTime)/ SwingTime) - sin(4*Const::PI*( (splitTime - startTime )/ SwingTime)) );
 
-	   }
-	   else if(( startTime + SwingTime/4 < splitTime ) && ( splitTime <= startTime + 3*SwingTime/4 ) ) //up
-	   {
-		   trajectory = startPosition  
-			  + (4 * upSwing /(4 + Const::PI)) * ( sin(2 * Const::PI* ((splitTime - startTime)/ SwingTime) - Const::PI/2) + Const::PI/4 );
-			  + 2 * returnStroke * (  ((splitTime -startTime)/SwingTime) - (1/4/Const::PI)*sin(4 * Const::PI*( ((splitTime - startTime)/SwingTime ) - 0.25) ) - 0.25 );
-	   }
-	  
-	   else if(( startTime + 3*SwingTime/4 < splitTime ) && ( splitTime < goalTime )) //down
-	   {
-		    trajectory = startPosition 
-				+ ( 4 * Const::PI * upSwing / (4 + Const::PI) ) * ( (1 - ((splitTime - startTime) / SwingTime) ) - (1/4/Const::PI) * sin(4*Const::PI*( 1 - ((splitTime - startTime) /SwingTime) ) ) )
-				 + returnStroke ;
-	   }
+    //é«˜ä½å·®ãªã—
+   /*
+   if (splitTime <= startTime)
+   {
+     trajectory = startPosition;
+   }
+   else if ((startTime < splitTime) && (splitTime <= startTime + SwingTime / 4)) //up
+   {
+     trajectory = startPosition
+       + (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / SwingTime) - sin(4 * Const::PI * ((splitTime - startTime) / SwingTime))); //Z
 
-	   else if( goalTime <= splitTime)
-	   {
-		    trajectory = goalPosition ;
-	   }
-	   */
-	  
-	return trajectory;
+   }
+   else if ((startTime + SwingTime / 4 < splitTime) && (splitTime <= MiddleTime)) //up
+   {
+     trajectory = startPosition
+       + (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / SwingTime) - Const::PI / 2) + Const::PI / 4) //Z
+       + returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5); //X
+   }
+   else if ((MiddleTime < splitTime) && (splitTime <= startTime + 3 * SwingTime / 4)) //down
+   {
+     trajectory = startPosition + upSwing + downSwing
+       - (4 * downSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime)) / SwingTime - Const::PI / 2) + Const::PI / 4) //Z
+       + returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5);//X
+   }
+   else if ((startTime + 3 * SwingTime / 4 < splitTime) && (splitTime < startTime + goalTime)) //down
+   {
+     trajectory = startPosition + upSwing
+       - (4 * Const::PI * downSwing / (4 + Const::PI)) * ((1 - ((splitTime - 3 * SwingTime / 4) / SwingTime)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime) / SwingTime)))) //Z
+       + returnStroke; //X
+
+   }
+   else if (goalTime <= splitTime)
+   {
+     trajectory = goalPosition;
+   }
+   */
+
+
+   /*  20221219
+     else
+     {
+       // my trajectory==>>æœ€çµ‚ç‰ˆï¼ˆå¹³é¢ï¼‰
+       //éŠè„šæ™‚é–“
+       double SwingTime = goalTime - startTime;//Ts
+
+       if (splitTime <= startTime)
+       {
+         trajectory = startPosition;
+       }
+       else if ((startTime < splitTime) && (splitTime <= startTime + SwingTime / 4)) //up
+       {
+         trajectory = startPosition
+           + (upSwing / (4 + Const::PI)) * (4 * Const::PI * ((splitTime - startTime) / SwingTime) - sin(4 * Const::PI * ((splitTime - startTime) / SwingTime))); //Z
+
+       }
+       else if ((startTime + SwingTime / 4 < splitTime) && (splitTime <= startTime + 3 * SwingTime / 4)) //up
+       {
+         trajectory = startPosition
+           + (4 * upSwing / (4 + Const::PI)) * (sin(2 * Const::PI * ((splitTime - startTime) / SwingTime) - Const::PI / 2) + Const::PI / 4)  //Z
+           + returnStroke * (2 * ((splitTime - startTime) / SwingTime) - (1 / (2 * Const::PI)) * sin(4 * Const::PI * (((splitTime - startTime) / SwingTime) - 0.25)) - 0.5); //X
+       }
+       else if ((startTime + 3 * SwingTime / 4 < splitTime) && (splitTime < startTime + goalTime)) //down
+       {
+         trajectory = startPosition
+           + (4 * Const::PI * upSwing / (4 + Const::PI)) * ((1 - ((splitTime - startTime) / SwingTime)) - (1 / 4 / Const::PI) * sin(4 * Const::PI * (1 - ((splitTime - startTime) / SwingTime)))) //Z
+           + returnStroke; //X
+       }
+       else if (goalTime <= splitTime)
+       {
+         trajectory = goalPosition;
+       }
+
+     }
+   //  20221219  */
+
+
+
+   /*   if(splitTime <= startTime)
+      {
+       trajectory = startPosition ;
+      }
+      else if( ( startTime < splitTime ) && ( splitTime <= startTime + SwingTime/4 )) //up
+      {
+        trajectory = startPosition
+         + (upSwing / (4 + Const::PI)) * (4 * Const::PI*( (splitTime -startTime)/ SwingTime) - sin(4*Const::PI*( (splitTime - startTime )/ SwingTime)) );
+
+      }
+      else if(( startTime + SwingTime/4 < splitTime ) && ( splitTime <= startTime + 3*SwingTime/4 ) ) //up
+      {
+        trajectory = startPosition
+         + (4 * upSwing /(4 + Const::PI)) * ( sin(2 * Const::PI* ((splitTime - startTime)/ SwingTime) - Const::PI/2) + Const::PI/4 );
+         + 2 * returnStroke * (  ((splitTime -startTime)/SwingTime) - (1/4/Const::PI)*sin(4 * Const::PI*( ((splitTime - startTime)/SwingTime ) - 0.25) ) - 0.25 );
+      }
+
+      else if(( startTime + 3*SwingTime/4 < splitTime ) && ( splitTime < goalTime )) //down
+      {
+         trajectory = startPosition
+         + ( 4 * Const::PI * upSwing / (4 + Const::PI) ) * ( (1 - ((splitTime - startTime) / SwingTime) ) - (1/4/Const::PI) * sin(4*Const::PI*( 1 - ((splitTime - startTime) /SwingTime) ) ) )
+          + returnStroke ;
+      }
+
+      else if( goalTime <= splitTime)
+      {
+         trajectory = goalPosition ;
+      }
+      */
+
+    return trajectory;
 
 }
 
 
 /**
- *		LegTrajectoryƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		LegTrajectoryã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  */
 void LegTrajectory::copy(const LegTrajectory& trajectory)
 {
-	/// —V‹rƒXƒgƒ[ƒN
-	returnStroke = trajectory.returnStroke;
-	/// —V‹rU‚èã‚°‚‚³
-	upSwing = trajectory.upSwing;
-	/// —V‹rU‚è‰º‚°‚‚³
-	downSwing = trajectory.downSwing;
+    /// éŠè„šã‚¹ãƒˆãƒ­ãƒ¼ã‚¯
+    returnStroke = trajectory.returnStroke;
+    /// éŠè„šæŒ¯ã‚Šä¸Šã’é«˜ã•
+    upSwing = trajectory.upSwing;
+    /// éŠè„šæŒ¯ã‚Šä¸‹ã’é«˜ã•
+    downSwing = trajectory.downSwing;
 
-	/// •œ‹AŠÔ
-	returnTime = trajectory.returnTime;
-	/// U‚èã‚°ŠÔ
-	upTime = trajectory.upTime;
-	/// U‚è‰º‚°ŠÔ
-	downTime = trajectory.downTime;
+    /// å¾©å¸°æ™‚é–“
+    returnTime = trajectory.returnTime;
+    /// æŒ¯ã‚Šä¸Šã’æ™‚é–“
+    upTime = trajectory.upTime;
+    /// æŒ¯ã‚Šä¸‹ã’æ™‚é–“
+    downTime = trajectory.downTime;
 }
 
 }	/// end of namespace Plan

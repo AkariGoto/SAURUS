@@ -1,13 +1,13 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		PlanData.h
- *  à–¾
- *		ˆÚ“®Œv‰æ‚Ìƒf[ƒ^iŠÔAˆÀ’è—]—T‚È‚Çj
- *  “ú•t
- *		ì¬“ú: 2007/02/12(MON)		XV“ú: 2007/02/19(MON)
+ *  èª¬æ˜
+ *		ç§»å‹•è¨ˆç”»ã®ãƒ‡ãƒ¼ã‚¿ï¼ˆæ™‚é–“ã€å®‰å®šä½™è£•ãªã©ï¼‰
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/02/12(MON)		æ›´æ–°æ—¥: 2007/02/19(MON)
  */
 
- //20200819  ˆÀ’è—]—TŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
+ //20200819  å®‰å®šä½™è£•é–¢é€£ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
 
 #ifndef __PlanData_h__
 #define __PlanData_h__
@@ -15,7 +15,6 @@
 #include "..\Math\Matrix\Matrix.h"
 #include "..\Kinematics\AsuraParameter.h"
 #include "..\Plan\PlanParameter.h"
-#include "..\Utility\Constants.h"
 
 
 namespace Data
@@ -23,79 +22,79 @@ namespace Data
 
 class PlanData
 {
-    private:
+private:
 
-    // ˆÀ’è—]—T
+    // å®‰å®šä½™è£•
     // double stabilityMargin;
 
-    /// Œo‰ßŠÔ
+    /// çµŒéæ™‚é–“
     double elapsedTime;
 
-    /// ‘¤sŠp
+    /// å´è¡Œè§’
     double crabAngle;
 
 
     /**
      *	------------------------------------------------------------
-     *		ƒƒ“ƒoŠÖ”
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
      *	------------------------------------------------------------
      */
-    public:
+public:
     /**
      *	----------------------------------------
-     *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      *	----------------------------------------
      */
-     /// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     PlanData();
 
-    /// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     PlanData(const PlanData& PlanData);
 
-    /// ƒfƒXƒgƒ‰ƒNƒ^
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     virtual ~PlanData();
 
     /**
      *	----------------------------------------
-     *	‰‰Zq
+     *	æ¼”ç®—å­
      *	----------------------------------------
      */
-     /// ‘ã“ü‰‰Zq
+     /// ä»£å…¥æ¼”ç®—å­
     virtual PlanData& operator=(const PlanData& planData);
 
-    /// “™‰¿‰‰Zq
+    /// ç­‰ä¾¡æ¼”ç®—å­
     bool operator==(const PlanData& planData);
 
-    /// ”ñ“™‰¿‰‰Zq
+    /// éç­‰ä¾¡æ¼”ç®—å­
     bool operator!=(const PlanData& planData);
 
     /**
-     *	ƒNƒ‰ƒX©g‚ğ•¡»‚·‚é
+     *	ã‚¯ãƒ©ã‚¹è‡ªèº«ã‚’è¤‡è£½ã™ã‚‹
      */
-     //PlanData& clone(void); 20210622ŠÖ”’è‹`‚È‚µBƒRƒƒ“ƒgƒAƒEƒg
+     //PlanData& clone(void); 20210622é–¢æ•°å®šç¾©ãªã—ã€‚ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
 
    /**
     *	----------------------------------------
-    *	ƒAƒNƒZƒXŠÖ”
+    *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
     *	----------------------------------------
     */
-    /// ˆÀ’è—]—T
+    /// å®‰å®šä½™è£•
     //double getStabilityMargin(void) const{return stabilityMargin;}  20200819
-    /// ŠÔ
+    /// æ™‚é–“
     double getElapsedTime(void) const { return elapsedTime; }
 
     /**
      *	----------------------------------------
-     *	ƒZƒbƒgŠÖ”
+     *	ã‚»ãƒƒãƒˆé–¢æ•°
      *	----------------------------------------
      */
-     /// ˆÀ’è—]—T
+     /// å®‰å®šä½™è£•
      //void setStabilityMargin(double margin) { stabilityMargin = margin; return; }  20200819
-     /// ŠÔ
+     /// æ™‚é–“
     void setElapsedTime(double time) { elapsedTime = time; return; }
 
-    private:
-    /// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‘ã“ü‰‰Zq‚Ìƒwƒ‹ƒvŠÖ”
+private:
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ä»£å…¥æ¼”ç®—å­ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
     void copy(const PlanData& planData);
 
 };	/// end of class PlanData

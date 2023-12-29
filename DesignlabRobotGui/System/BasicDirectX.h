@@ -1,144 +1,144 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		BasicDirectX.h
- *  à–¾
- *		DirectX‚Ì’è‹`
- *  “ú•t
- *		ì¬“ú: 2008/03/10(MON)		XV“ú: 2008/03/10(MON)	
- */
-#ifndef __BasicDirectX_h__
-#define __BasicDirectX_h__
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
-#include "DebugOutput.h"
-
-
-/**
- *	------------------------------------------------------------
- *		DirectInput
- *	------------------------------------------------------------
- */
-/// DirectX‚Ìƒo[ƒWƒ‡ƒ“éŒ¾iƒwƒbƒ_‚æ‚è‘O‚ÅéŒ¾‚·‚éj
-#define DIRECTINPUT_VERSION 0x800
-#include <dinput.h>
-
-/**
- *	ƒEƒBƒ“ƒhƒEƒYƒwƒbƒ_BWinNT4.0AWin98ˆÈ~
- */
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x400
-#endif
-#include <Windows.h>
-
-/**
- *	------------------------------------------------------------
- *		DirectXƒ‰ƒCƒuƒ‰ƒŠ‚Ì’Ç‰Á
- *	------------------------------------------------------------
- */
-/// DirectXGUID
-#pragma comment(lib, "dxguid.lib")
-
-/// DirectInput
-#pragma comment(lib, "dinput8.lib")
-
-/**
- *	------------------------------------------------------------
- *		DirectXƒ}ƒNƒ
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒŠƒŠ[ƒX‚É‚àÀs
- *	----------------------------------------
- */
-/**
- *	DirectX‚Ì¬Œ÷
- *
- *	ƒŠƒŠ[ƒX‚É‚àÀs‚³‚ê‚é
- *	ˆø”
- *		dxStatus DirectX‚ÌƒXƒe[ƒ^ƒXB¬Œ÷‚µ‚Ä‚¢‚ê‚Îtrue‚ğ•Ô‚·
- */
-#define DX_SUCCEEDED(dxStatus) ( (dxStatus) >= 0 )
-
-/**
- * 	DirectX‚Ì¸”s
- *
- * 	ƒŠƒŠ[ƒX‚É‚àÀs‚³‚ê‚é
- *	ˆø”
- *		dxStatus DirectX‚ÌƒXƒe[ƒ^ƒXB¸”s‚µ‚Ä‚¢‚ê‚Îtrue‚ğ•Ô‚·
- */
-#define DX_FAILED(dxStatus) ( (dxStatus) < 0 )
-
-/**
- *	----------------------------------------
- *	ƒfƒoƒbƒO‚Ì‚İÀs
- *	----------------------------------------
- */
-#ifdef _DEBUG
-/**
- *	DirectX‚ÌƒAƒT[ƒg
- *
- *	ƒŠƒŠ[ƒX‚É‚ÍÀs‚³‚ê‚È‚¢
- *	ˆø”
- *		expression ¸”s‚¾‚ÆƒAƒT[ƒg‚ª”­¶
- */
-#define DX_ASSERT(expression) \
-	if ( DX_FAILED(expression) ) {\
-		debugPrint(TEXT("DirectX Assertion in %s (%d)\n"), __FILE__, __LINE__);\
-		DebugBreak();\
-	}
-
-/**
- *	DirectX‚ÌƒƒbƒZ[ƒW•tƒAƒT[ƒg
- *
- *	ƒŠƒŠ[ƒX‚É‚ÍÀs‚³‚ê‚Ü‚¹‚ñ
- *	ˆø”
- *		expression ¸”s‚¾‚ÆƒAƒT[ƒg‚ª”­¶‚·‚é
- *		message ƒAƒT[ƒg‚Éo—Í‚·‚éƒƒbƒZ[ƒW
- */
-#define DX_MSG_ASSERT(expression, message) \
-	if ( DX_FAILED(expression) ) {\
-		debugPrint(TEXT("DirectX Assertion %s\n in %s (%d)\n"), message, __FILE__, __LINE__);\
-		DebugBreak();\
-	}
-
-/**
- *	DirectX‚Ìƒ`ƒFƒbƒN
- *
- *	ƒŠƒŠ[ƒX‚Éƒ`ƒFƒbƒN‚ÍÀs‚³‚ê‚È‚¢‚ªAˆø”‚Ì\•¶‚ÍÀs‚³‚ê‚é
- *	ˆø”
- *		expression ¸”s‚¾‚ÆƒAƒT[ƒg‚ª”­¶‚·‚é
- */
-#define DX_CHECK(expression) DX_ASSERT(expression)
-
-/**
- *	DirectX‚ÌƒƒbƒZ[ƒW•tƒ`ƒFƒbƒN
- *
- *	ƒŠƒŠ[ƒX‚Éƒ`ƒFƒbƒN‚ÍÀs‚³‚ê‚È‚¢‚ªAˆø”‚Ì\•¶‚ÍÀs‚³‚ê‚é
- *	ˆø”
- *		expression ¸”s‚¾‚ÆƒAƒT[ƒg‚ª”­¶‚·‚é
- *		message ƒAƒT[ƒg‚Éo—Í‚·‚éƒƒbƒZ[ƒW
- */
-#define DX_MSG_CHECK(expression, message) \
-	DX_MSG_ASSERT(expression, message)
-
-/**
- *	----------------------------------------
- *	ƒfƒoƒbƒOƒ}ƒNƒ‚ÌƒŠƒŠ[ƒX‚Ìƒ_ƒ~[
- *	----------------------------------------
- */
-#else /// _DEBUG
-
-#define DX_ASSERT(expression)
-#define DX_MSG_ASSERT(expression, message)
-#define DX_CHECK(expression)
-#define DX_MSG_CHECK(expression, message)
-
-#endif	/// End of _DEBUG
-
-#endif	/// __BasicDirectX_h__
+ï»¿///**
+// *  ãƒ•ã‚¡ã‚¤ãƒ«å
+// *		BasicDirectX.h
+// *  èª¬æ˜
+// *		DirectXã®å®šç¾©
+// *  æ—¥ä»˜
+// *		ä½œæˆæ—¥: 2008/03/10(MON)		æ›´æ–°æ—¥: 2008/03/10(MON)
+// */
+//#ifndef __BasicDirectX_h__
+//#define __BasicDirectX_h__
+//
+// /**
+//  *	----------------------------------------------------------------------
+//  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+//  *	----------------------------------------------------------------------
+//  */
+//#include "DebugOutput.h"
+//
+//
+//  /**
+//   *	------------------------------------------------------------
+//   *		DirectInput
+//   *	------------------------------------------------------------
+//   */
+//   /// DirectXã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³å®£è¨€ï¼ˆãƒ˜ãƒƒãƒ€ã‚ˆã‚Šå‰ã§å®£è¨€ã™ã‚‹ï¼‰
+//#define DIRECTINPUT_VERSION 0x800
+//#include <dinput.h>
+//
+///**
+// *	ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ºãƒ˜ãƒƒãƒ€ã€‚WinNT4.0ã€Win98ä»¥é™
+// */
+//#ifndef _WIN32_WINNT
+//#define _WIN32_WINNT 0x400
+//#endif
+//#include <Windows.h>
+//
+// /**
+//  *	------------------------------------------------------------
+//  *		DirectXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®è¿½åŠ 
+//  *	------------------------------------------------------------
+//  */
+//  /// DirectXGUID
+//#pragma comment(lib, "dxguid.lib")
+//
+///// DirectInput
+//#pragma comment(lib, "dinput8.lib")
+//
+///**
+// *	------------------------------------------------------------
+// *		DirectXãƒã‚¯ãƒ­
+// *	------------------------------------------------------------
+// */
+//
+// /**
+//  *	----------------------------------------
+//  *	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ã‚‚å®Ÿè¡Œ
+//  *	----------------------------------------
+//  */
+//  /**
+//   *	DirectXã®æˆåŠŸ
+//   *
+//   *	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹
+//   *	å¼•æ•°
+//   *		dxStatus DirectXã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€‚æˆåŠŸã—ã¦ã„ã‚Œã°trueã‚’è¿”ã™
+//   */
+//#define DX_SUCCEEDED(dxStatus) ( (dxStatus) >= 0 )
+//
+//   /**
+//    * 	DirectXã®å¤±æ•—
+//    *
+//    * 	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹
+//    *	å¼•æ•°
+//    *		dxStatus DirectXã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€‚å¤±æ•—ã—ã¦ã„ã‚Œã°trueã‚’è¿”ã™
+//    */
+//#define DX_FAILED(dxStatus) ( (dxStatus) < 0 )
+//
+//    /**
+//     *	----------------------------------------
+//     *	ãƒ‡ãƒãƒƒã‚°æ™‚ã®ã¿å®Ÿè¡Œ
+//     *	----------------------------------------
+//     */
+//#ifdef _DEBUG
+//     /**
+//      *	DirectXã®ã‚¢ã‚µãƒ¼ãƒˆ
+//      *
+//      *	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ã¯å®Ÿè¡Œã•ã‚Œãªã„
+//      *	å¼•æ•°
+//      *		expression å¤±æ•—ã ã¨ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿ
+//      */
+//#define DX_ASSERT(expression) \
+//	if ( DX_FAILED(expression) ) {\
+//		debugPrint(TEXT("DirectX Assertion in %s (%d)\n"), __FILE__, __LINE__);\
+//		DebugBreak();\
+//	}
+//
+//      /**
+//       *	DirectXã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä»˜ã‚¢ã‚µãƒ¼ãƒˆ
+//       *
+//       *	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ã¯å®Ÿè¡Œã•ã‚Œã¾ã›ã‚“
+//       *	å¼•æ•°
+//       *		expression å¤±æ•—ã ã¨ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã™ã‚‹
+//       *		message ã‚¢ã‚µãƒ¼ãƒˆæ™‚ã«å‡ºåŠ›ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+//       */
+//#define DX_MSG_ASSERT(expression, message) \
+//	if ( DX_FAILED(expression) ) {\
+//		debugPrint(TEXT("DirectX Assertion %s\n in %s (%d)\n"), message, __FILE__, __LINE__);\
+//		DebugBreak();\
+//	}
+//
+//       /**
+//        *	DirectXã®ãƒã‚§ãƒƒã‚¯
+//        *
+//        *	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ãƒã‚§ãƒƒã‚¯ã¯å®Ÿè¡Œã•ã‚Œãªã„ãŒã€å¼•æ•°ã®æ§‹æ–‡ã¯å®Ÿè¡Œã•ã‚Œã‚‹
+//        *	å¼•æ•°
+//        *		expression å¤±æ•—ã ã¨ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã™ã‚‹
+//        */
+//#define DX_CHECK(expression) DX_ASSERT(expression)
+//
+//        /**
+//         *	DirectXã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä»˜ãƒã‚§ãƒƒã‚¯
+//         *
+//         *	ãƒªãƒªãƒ¼ã‚¹æ™‚ã«ãƒã‚§ãƒƒã‚¯ã¯å®Ÿè¡Œã•ã‚Œãªã„ãŒã€å¼•æ•°ã®æ§‹æ–‡ã¯å®Ÿè¡Œã•ã‚Œã‚‹
+//         *	å¼•æ•°
+//         *		expression å¤±æ•—ã ã¨ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã™ã‚‹
+//         *		message ã‚¢ã‚µãƒ¼ãƒˆæ™‚ã«å‡ºåŠ›ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+//         */
+//#define DX_MSG_CHECK(expression, message) \
+//	DX_MSG_ASSERT(expression, message)
+//
+//         /**
+//          *	----------------------------------------
+//          *	ãƒ‡ãƒãƒƒã‚°æ™‚ãƒã‚¯ãƒ­ã®ãƒªãƒªãƒ¼ã‚¹æ™‚ã®ãƒ€ãƒŸãƒ¼
+//          *	----------------------------------------
+//          */
+//#else /// _DEBUG
+//
+//#define DX_ASSERT(expression)
+//#define DX_MSG_ASSERT(expression, message)
+//#define DX_CHECK(expression)
+//#define DX_MSG_CHECK(expression, message)
+//
+//#endif	/// End of _DEBUG
+//
+//#endif	/// __BasicDirectX_h__

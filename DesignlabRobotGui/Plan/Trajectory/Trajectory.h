@@ -1,7 +1,7 @@
-/**
+ï»¿/**
  *  File: Trajectory.h
  *
- *  Description: ‹O“¹î•ñ‚ğˆµ‚¤ƒNƒ‰ƒX‚ÌéŒ¾•”
+ *  Description: è»Œé“æƒ…å ±ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ã®å®£è¨€éƒ¨
  *
  *  Created: 2007/03/06(Tue)
  *  Updated: 2007/03/06(Tue)
@@ -13,118 +13,110 @@
 #define __Trajectory_h__
 
 #include "..\..\Math\Matrix\Matrix.h"
-#include "..\..\Utility\Constants.h"
+
 
 namespace Plan
 {
-/**
- *		//////////////////////////////////////////////////
- *				TrajectoryƒNƒ‰ƒX
- *		//////////////////////////////////////////////////
- */
+
 class Trajectory
 {
-/**
- *		//////////////////////////////////////////////////
- *				ƒƒ“ƒo•Ï”
- *		//////////////////////////////////////////////////
- */
+
 protected:
-/**
- *		‹——£‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-	/// ƒXƒ^[ƒgˆÊ’u
-	Math::Vector startPosition;
-	/// ƒS[ƒ‹ˆÊ’u
-	Math::Vector goalPosition;
+    /**
+     *		è·é›¢ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
+     /// ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®
+    Math::Vector startPosition;
+    /// ã‚´ãƒ¼ãƒ«ä½ç½®
+    Math::Vector goalPosition;
 
-/**
- *		ŠÔ‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-	/// ƒXƒ^[ƒgŠÔ
-	double startTime;
-	/// ƒS[ƒ‹ŠÔ
-	double goalTime;
+    /**
+     *		æ™‚é–“ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
+     /// ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚é–“
+    double startTime;
+    /// ã‚´ãƒ¼ãƒ«æ™‚é–“
+    double goalTime;
 
 private:
 
-/**
- *		//////////////////////////////////////////////////
- *				ƒƒ“ƒoŠÖ”
- *		//////////////////////////////////////////////////
- */
+    /**
+     *		//////////////////////////////////////////////////
+     *				ãƒ¡ãƒ³ãƒé–¢æ•°
+     *		//////////////////////////////////////////////////
+     */
 public:
-/**
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Trajectory();
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Trajectory(const Trajectory& trajectory);
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~Trajectory();
+    /**
+     *		ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    Trajectory();
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    Trajectory(const Trajectory& trajectory);
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~Trajectory();
 
-/**
- *		‰‰Zq
- */
-	/// ‘ã“ü‰‰Zq
-	virtual Trajectory& operator=(const Trajectory& trajectory);
-	/// “™‰¿‰‰Zq
-	bool operator==(const Trajectory& trajectory) const;
-	bool operator!=(const Trajectory& trajectory) const;
+    /**
+     *		æ¼”ç®—å­
+     */
+     /// ä»£å…¥æ¼”ç®—å­
+    virtual Trajectory& operator=(const Trajectory& trajectory);
+    /// ç­‰ä¾¡æ¼”ç®—å­
+    bool operator==(const Trajectory& trajectory) const;
+    bool operator!=(const Trajectory& trajectory) const;
 
-/**
- *		ƒAƒNƒZƒXŠÖ”
- */
-	/// ‹——£‚ÉŠÖŒW‚·‚é‚à‚Ì
-	const Math::Vector& getStartPosition(void) const {return startPosition;}
-			Math::Vector& getStartPosition(void) {return startPosition;}
-	const Math::Vector& getGoalPosition(void) const {return goalPosition;}
-			Math::Vector& getGoalPosition(void)  {return goalPosition;}
+    /**
+     *		ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     */
+     /// è·é›¢ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+    const Math::Vector& getStartPosition(void) const { return startPosition; }
+    Math::Vector& getStartPosition(void) { return startPosition; }
+    const Math::Vector& getGoalPosition(void) const { return goalPosition; }
+    Math::Vector& getGoalPosition(void) { return goalPosition; }
 
-	/// ˆÚ“®‹——£
-	const Math::Vector getDistance(void) const{return (goalPosition - startPosition);}
-			Math::Vector getDistance(void) {return (goalPosition - startPosition);}
+    /// ç§»å‹•è·é›¢
+    const Math::Vector getDistance(void) const { return (goalPosition - startPosition); }
+    Math::Vector getDistance(void) { return (goalPosition - startPosition); }
 
-	/// ŠÔ‚ÉŠÖŒW‚·‚é‚à‚Ì
-	const double getStartTime(void) const {return startTime;}
-			double getStartTime(void) {return startTime;}
-	const double getGoalTime(void) const {return goalTime;}
-			double getGoalTime(void) {return goalTime;}
+    /// æ™‚é–“ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+    const double getStartTime(void) const { return startTime; }
+    double getStartTime(void) { return startTime; }
+    const double getGoalTime(void) const { return goalTime; }
+    double getGoalTime(void) { return goalTime; }
 
-	/// ‘‹O“¹ŠÔ
-	double getTime(void) const {return (goalTime - startTime);}
-	
-/**
- *		ƒZƒbƒgŠÖ”
- */
-/**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
- */
-	void setDistance(const Math::Vector& start, const Math::Vector& goal);
-	void setTime(double start, double goal);
+    /// ç·è»Œé“æ™‚é–“
+    double getTime(void) const { return (goalTime - startTime); }
 
-
-/**
- *		‰Šú‰»
- */
-	void initializeTrajectory(void);
-
-/**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚ÌˆÚsiƒXƒ^[ƒg‚ğ‚¸‚ç‚·j
- */
-	void shiftStartPosition(const Math::Vector& start);
-	void shiftStartTime(double start);
+    /**
+     *		ã‚»ãƒƒãƒˆé–¢æ•°
+     */
+     /**
+      *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
+      */
+    void setDistance(const Math::Vector& start, const Math::Vector& goal);
+    void setTime(double start, double goal);
 
 
-/**
- *		‹O“¹‚ğ“¾‚é
- */
-	virtual Math::Vector getPosition(double splitTime);
+    /**
+     *		åˆæœŸåŒ–
+     */
+    void initializeTrajectory(void);
+
+    /**
+     *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç§»è¡Œï¼ˆã‚¹ã‚¿ãƒ¼ãƒˆã‚’ãšã‚‰ã™ï¼‰
+     */
+    void shiftStartPosition(const Math::Vector& start);
+    void shiftStartTime(double start);
+
+
+    /**
+     *		è»Œé“ã‚’å¾—ã‚‹
+     */
+    virtual Math::Vector getPosition(double splitTime);
 
 private:
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‘ã“ü‰‰Zq‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
-	void copy(const Trajectory& trajectory);
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ä»£å…¥æ¼”ç®—å­ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+    void copy(const Trajectory& trajectory);
 
 };	/// end of class Trajectory
 

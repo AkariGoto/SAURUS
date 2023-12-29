@@ -1,27 +1,20 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Leg.cpp
- *  à–¾
- *		1‹r‚ÌŠÖß‚â‘«æ‚ÉŠÖ‚·‚éî•ñC‰^“®Šw‚È‚Ç‚ğ‰ğ‚­
- *  
- *		ì¬“ú: 2007/01/31(WED)		XV“ú: 2018/02/12(MON)
+ *  èª¬æ˜
+ *		1è„šã®é–¢ç¯€ã‚„è¶³å…ˆã«é–¢ã™ã‚‹æƒ…å ±ï¼Œé‹å‹•å­¦ãªã©ã‚’è§£ã
+ *
+ *		ä½œæˆæ—¥: 2007/01/31(WED)		æ›´æ–°æ—¥: 2018/02/12(MON)
  */
 
-//20201014  ‘æ4ŠÖß
-//20201015  ‘æ4ƒŠƒ“ƒN
-//20201018  ‘æ4ŠÖß
-//20221026@ƒŠƒ“ƒN4p¨
+ //20201014  ç¬¬4é–¢ç¯€
+ //20201015  ç¬¬4ãƒªãƒ³ã‚¯
+ //20201018  ç¬¬4é–¢ç¯€
+ //20221026ã€€ãƒªãƒ³ã‚¯4å§¿å‹¢
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+
 #include "Leg.h"
-//#include "TrackLeg.h"  20200819
-#include "..\..\Utility\Constants.h"
 #include "..\..\System\DebugOutput.h"
-//#include <winsock2.h>
 
 using namespace std;
 using namespace Math;
@@ -31,130 +24,130 @@ namespace Asura
 {
 /**
  *	----------------------------------------------------------------------
- *		LegƒNƒ‰ƒX
+ *		Legã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 
-/**
- *	------------------------------------------------------------
- *		LegƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
+ /**
+  *	------------------------------------------------------------
+  *		Legã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°å®šç¾©
+  *	------------------------------------------------------------
+  */
 
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+  /**
+   *	----------------------------------------
+   *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+   *	----------------------------------------
+   */
+   /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 Leg::Leg(int no, double x, double y, double z, double theta)
 {
 
-/**
- *	ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
- */
-	/// ‹r”Ô†İ’è
-	legNo = no;
+    /**
+     *	ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
+     */
+     /// è„šç•ªå·è¨­å®š
+    legNo = no;
 
-	/**
-	 *	‹@\“I‚ÈŒÀŠE
-	 */
-	/// ŠÖßŠpŒÀŠE
-	/// ŠÖßŠp‰ºŒÀ
-	legLimit.angleMin[0]			= LEG_ANGLE1_MIN;
-	legLimit.angleMin[1]			= LEG_ANGLE2_MIN;
-	legLimit.angleMin[2]			= LEG_ANGLE3_MIN;
-	legLimit.FootangleMin			= LEG_ANGLE4_MIN;
+    /**
+     *	æ©Ÿæ§‹çš„ãªé™ç•Œ
+     */
+     /// é–¢ç¯€è§’é™ç•Œ
+     /// é–¢ç¯€è§’ä¸‹é™
+    legLimit.angleMin[0] = LEG_ANGLE1_MIN;
+    legLimit.angleMin[1] = LEG_ANGLE2_MIN;
+    legLimit.angleMin[2] = LEG_ANGLE3_MIN;
+    legLimit.FootangleMin = LEG_ANGLE4_MIN;
 
-	/// ŠÖßŠpãŒÀ	
-	legLimit.angleMax[0]			= LEG_ANGLE1_MAX;
-	legLimit.angleMax[1]			= LEG_ANGLE2_MAX;
-	legLimit.angleMax[2]			= LEG_ANGLE3_MAX;
-	legLimit.FootangleMax			= LEG_ANGLE4_MAX;
-	
-	/// ‘«æ”½—ÍŒÀŠE
-	legLimit.footReaction[0]	= FOOT_REACTION_X;
-	legLimit.footReaction[1]	= FOOT_REACTION_Y;
-	legLimit.footReaction[2]	= FOOT_REACTION_Z;
-	
-	/// ‹r”¼Œa•ûŒüƒŠ[ƒ`
-	legLimit.reachRadiusMin		= REACH_RADIUS_MIN;
-	legLimit.reachRadiusMax		= REACH_RADIUS_MAX;
-	/// ‹r‚‚³•ûŒüƒŠ[ƒ`
-	legLimit.reachHeightMin		= REACH_HEIGHT_MIN;
-	legLimit.reachHeightMax		= REACH_HEIGHT_MAX;
+    /// é–¢ç¯€è§’ä¸Šé™	
+    legLimit.angleMax[0] = LEG_ANGLE1_MAX;
+    legLimit.angleMax[1] = LEG_ANGLE2_MAX;
+    legLimit.angleMax[2] = LEG_ANGLE3_MAX;
+    legLimit.FootangleMax = LEG_ANGLE4_MAX;
 
-	/**
-	 *	DHƒpƒ‰ƒ[ƒ^
-	 */
-	dhParam.alpha[0]				= -PI/2;
-	dhParam.alpha[1]				= 0;
-	dhParam.alpha[2]				= 0;
+    /// è¶³å…ˆååŠ›é™ç•Œ
+    legLimit.footReaction[0] = FOOT_REACTION_X;
+    legLimit.footReaction[1] = FOOT_REACTION_Y;
+    legLimit.footReaction[2] = FOOT_REACTION_Z;
 
-	dhParam.a[0]					= LINK1;///OFFSET1;
-	dhParam.a[1]					= LINK2;
-	dhParam.a[2]					= LINK3;
-	//dhParam.a[3]					= FOOT;
+    /// è„šåŠå¾„æ–¹å‘ãƒªãƒ¼ãƒ
+    legLimit.reachRadiusMin = REACH_RADIUS_MIN;
+    legLimit.reachRadiusMax = REACH_RADIUS_MAX;
+    /// è„šé«˜ã•æ–¹å‘ãƒªãƒ¼ãƒ
+    legLimit.reachHeightMin = REACH_HEIGHT_MIN;
+    legLimit.reachHeightMax = REACH_HEIGHT_MAX;
 
-	/// ‹r”Ô†‚ÌƒIƒtƒZƒbƒg•ûŒü‚ğ¶‰E‚Å•Ï‚¦‚é
-	switch (no){
-		///is•ûŒü¶‘¤
-		//case 0:
-		case 1:
-		case 2:
-		case 3:
-		{
-			dhParam.d[0]					= -OFFSET1;
-			dhParam.d[1]					= -OFFSET2;
-			dhParam.d[2]					= -OFFSET3;
-		}
-		break;
-		///is•ûŒü‰E‘¤
-		//case 3:
-		case 4:
-		case 5:
-		case 6:
-		{
-			dhParam.d[0]					= OFFSET1;
-			dhParam.d[1]					= OFFSET2;
-			dhParam.d[2]					= OFFSET3;
-		}
-		break;
+    /**
+     *	DHãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+     */
+    dhParam.alpha[0] = -PI / 2;
+    dhParam.alpha[1] = 0;
+    dhParam.alpha[2] = 0;
 
-		default:
-			break;
-	}
+    dhParam.a[0] = LINK1;///OFFSET1;
+    dhParam.a[1] = LINK2;
+    dhParam.a[2] = LINK3;
+    //dhParam.a[3]					= FOOT;
 
-	//20201014
-	legData.FootjointAngle = 0;
+    /// è„šç•ªå·ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆæ–¹å‘ã‚’å·¦å³ã§å¤‰ãˆã‚‹
+    switch (no) {
+        ///é€²è¡Œæ–¹å‘å·¦å´
+        //case 0:
+        case 1:
+        case 2:
+        case 3:
+        {
+            dhParam.d[0] = -OFFSET1;
+            dhParam.d[1] = -OFFSET2;
+            dhParam.d[2] = -OFFSET3;
+        }
+        break;
+        ///é€²è¡Œæ–¹å‘å³å´
+        //case 3:
+        case 4:
+        case 5:
+        case 6:
+        {
+            dhParam.d[0] = OFFSET1;
+            dhParam.d[1] = OFFSET2;
+            dhParam.d[2] = OFFSET3;
+        }
+        break;
 
-	//20221026
-	legData.LegTipAngle = 0;
+        default:
+            break;
+    }
 
-/**
- *	s—ñ‚ÌƒTƒCƒYŒˆ’è
- */
-	/// ƒ„ƒRƒrs—ñ: [3x3]
-	jacobian.setSize(THREE_DIMENSION, THREE_DIMENSION);
-	/// ‹tƒ„ƒRƒrs—ñ: [3x3]
-	inverseJacobian.setSize(THREE_DIMENSION, THREE_DIMENSION);
+    //20201014
+    legData.FootjointAngle = 0;
 
-	/// ‹r‚Ìp¨w•Wi‹t‰^“®Šw‚É—p‚¢‚éj0 or 1
-	this->setLegPoseIndicator();
+    //20221026
+    legData.LegTipAngle = 0;
 
-	/// ‹r‚ÌªŒ³Œˆ’è
-	basePose.setSize(4);
-	this->setLegBasePose(x, y, z, theta);
+    /**
+     *	è¡Œåˆ—ã®ã‚µã‚¤ã‚ºæ±ºå®š
+     */
+     /// ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    jacobian.setSize(THREE_DIMENSION, THREE_DIMENSION);
+    /// é€†ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
+    inverseJacobian.setSize(THREE_DIMENSION, THREE_DIMENSION);
 
-	/// Å‰‚ÍƒGƒ‰[ŠÖß–³
-	legLastErrorJointNo = 0;
+    /// è„šã®å§¿å‹¢æŒ‡æ¨™ï¼ˆé€†é‹å‹•å­¦æ™‚ã«ç”¨ã„ã‚‹ï¼‰0 or 1
+    this->setLegPoseIndicator();
 
-	/// ‰ŠúŠÖß’l‚Å~‰^“®Šw‚ğ‰ğ‚¢‚ÄŠÖßˆÊ’u‚ğ•Û
-	solveDirectKinematics();
+    /// è„šã®æ ¹å…ƒæ±ºå®š
+    basePose.setSize(4);
+    this->setLegBasePose(x, y, z, theta);
+
+    /// æœ€åˆã¯ã‚¨ãƒ©ãƒ¼é–¢ç¯€ç„¡
+    legLastErrorJointNo = 0;
+
+    /// åˆæœŸé–¢ç¯€å€¤ã§æ·³é‹å‹•å­¦ã‚’è§£ã„ã¦é–¢ç¯€ä½ç½®ã‚’ä¿æŒ
+    solveDirectKinematics();
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Leg::~Leg()
 {
 
@@ -162,647 +155,647 @@ Leg::~Leg()
 
 /**
  *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
+ *	ã‚»ãƒƒãƒˆé–¢æ•°
  *	----------------------------------------
  */
-/// ‹r”Ô†‚Ìİ’è
+ /// è„šç•ªå·ã®è¨­å®š
 void Leg::setLegNo(int no)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	if ( !(1 <= legNo && legNo <= LEG_NUM ) )
-	{
-		cerr << "Error: [Leg::setLegNo] Argument is invalid\n" << endl;//cerr =>•W€ƒGƒ‰[o—Í
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    if (!(1 <= legNo && legNo <= LEG_NUM))
+    {
+        cerr << "Error: [Leg::setLegNo] Argument is invalid\n" << endl;//cerr =>æ¨™æº–ã‚¨ãƒ©ãƒ¼å‡ºåŠ›
         abort();
-	}
+    }
 
-	legNo = no;
-	
-	
+    legNo = no;
+
+
 }
 
 /**
  *	----------------------------------------
- *	‰^“®Šw
+ *	é‹å‹•å­¦
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‡‰^“®Šw‚ğ‰ğ‚­
- *		“¯Ÿ•ÏŠ·s—ñ‚ğ—p‚¢‚Ä‰ğ‚­
- *
- */
+ /**
+  *	èª¬æ˜
+  *		é †é‹å‹•å­¦ã‚’è§£ã
+  *		åŒæ¬¡å¤‰æ›è¡Œåˆ—ã‚’ç”¨ã„ã¦è§£ã
+  *
+  */
 Kinematics Leg::solveDirectKinematics(void)
 {
-	/// –ß‚è’l—p
-	Kinematics kine;
-	/// ƒJƒEƒ“ƒ^
-	int i, j;
+    /// æˆ»ã‚Šå€¤ç”¨
+    Kinematics kine;
+    /// ã‚«ã‚¦ãƒ³ã‚¿
+    int i, j;
 
-	/// ‚Ü‚¸ŠÖß‚ª‰Â“®”ÍˆÍ“à‚É‚ ‚é‚©‚Ç‚¤‚©’²‚×‚é
-	kine = checkLegJointMotionRange();
+    /// ã¾ãšé–¢ç¯€ãŒå¯å‹•ç¯„å›²å†…ã«ã‚ã‚‹ã‹ã©ã†ã‹èª¿ã¹ã‚‹
+    kine = checkLegJointMotionRange();
 
-	/// ŠÖß‚ª‰Â“®”ÍˆÍŠO
-	if ( kine != NO_KINE_ERROR )	
-	{
-		cerr << "Error: [Leg::solveDirectKinematics] Invalid joint angle" << endl;
-	
-		return kine;
-	}
+    /// é–¢ç¯€ãŒå¯å‹•ç¯„å›²å¤–
+    if (kine != NO_KINE_ERROR)
+    {
+        cerr << "Error: [Leg::solveDirectKinematics] Invalid joint angle" << endl;
 
-	/// ‹rªŒ³‚Ü‚Å‚ÌÀ•W•ÏŠ·
-	legData.baseTransformation = legBaseHomogeneousTransformation();
-	/// ‹rªŒ³ˆÊ’uƒxƒNƒgƒ‹‚ğ‘ã“ü
-	for (i=1; i<=THREE_DIMENSION; i++)
-		legData.basePosition(i) = legData.baseTransformation(i, 4);
+        return kine;
+    }
 
-	/// ‹rªŒ³‚©‚ç‘æ1ŠÖß‚Ü‚Å‚ÌÀ•W•ÏŠ·
-	legData.jointTransformation[0] = legData.baseTransformation*legJointHomogeneousTransformation(1);
-	/// ‘æ1ŠÖßˆÊ’uƒxƒNƒgƒ‹‚ğ‘ã“ü
-	for (i=1; i<=THREE_DIMENSION; i++)
-		legData.jointPosition[0](i) = legData.jointTransformation[0](i, 4);
+    /// è„šæ ¹å…ƒã¾ã§ã®åº§æ¨™å¤‰æ›
+    legData.baseTransformation = legBaseHomogeneousTransformation();
+    /// è„šæ ¹å…ƒä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä»£å…¥
+    for (i = 1; i <= THREE_DIMENSION; i++)
+        legData.basePosition(i) = legData.baseTransformation(i, 4);
 
-	/// ŠÖß‚Ì“¯•ÏŠ·‚ğ’€Ÿs‚¤
-	for (i=1; i<LEG_JOINT_NUM; i++)
-	{
-		/// “¯Ÿ•ÏŠ·s—ñ‚ğŒvZ
-		legData.jointTransformation[i] = legData.jointTransformation[i-1]*legJointHomogeneousTransformation(i+1);
+    /// è„šæ ¹å…ƒã‹ã‚‰ç¬¬1é–¢ç¯€ã¾ã§ã®åº§æ¨™å¤‰æ›
+    legData.jointTransformation[0] = legData.baseTransformation * legJointHomogeneousTransformation(1);
+    /// ç¬¬1é–¢ç¯€ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä»£å…¥
+    for (i = 1; i <= THREE_DIMENSION; i++)
+        legData.jointPosition[0](i) = legData.jointTransformation[0](i, 4);
 
-		/// ˆÊ’uƒxƒNƒgƒ‹‚ğæ“¾
-		for (j=1; j<=THREE_DIMENSION; j++)
-			legData.jointPosition[i](j) = legData.jointTransformation[i](j, 4);
-	}
+    /// é–¢ç¯€ã®åŒæ™‚å¤‰æ›ã‚’é€æ¬¡è¡Œã†
+    for (i = 1; i < LEG_JOINT_NUM; i++)
+    {
+        /// åŒæ¬¡å¤‰æ›è¡Œåˆ—ã‚’è¨ˆç®—
+        legData.jointTransformation[i] = legData.jointTransformation[i - 1] * legJointHomogeneousTransformation(i + 1);
 
-	/// ‘«æ‚Ì“¯Ÿ•ÏŠ·s—ñXV
-	legData.footTransformation = legData.jointTransformation[2]*legFootHomogeneousTransformation();
-	/// ‘«ˆÊ’uˆÊ’uƒxƒNƒgƒ‹‚ğ‘ã“ü
-	for (i=1; i<=THREE_DIMENSION; i++)
-		legData.footPosition(i) = legData.footTransformation(i ,4);
+        /// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
+        for (j = 1; j <= THREE_DIMENSION; j++)
+            legData.jointPosition[i](j) = legData.jointTransformation[i](j, 4);
+    }
 
-	/// ‡‰^“®Šw‚ğ‰ğ‚¢‚½Œã‚É‘«æ‚ª‰Â“®”ÍˆÍ“à‚É‚ ‚é‚©‚Ç‚¤‚©
-	kine = checkLegFootReachRange();
+    /// è¶³å…ˆã®åŒæ¬¡å¤‰æ›è¡Œåˆ—æ›´æ–°
+    legData.footTransformation = legData.jointTransformation[2] * legFootHomogeneousTransformation();
+    /// è¶³ä½ç½®ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä»£å…¥
+    for (i = 1; i <= THREE_DIMENSION; i++)
+        legData.footPosition(i) = legData.footTransformation(i, 4);
 
-	calculationActatorPosition();
+    /// é †é‹å‹•å­¦ã‚’è§£ã„ãŸå¾Œã«è¶³å…ˆãŒå¯å‹•ç¯„å›²å†…ã«ã‚ã‚‹ã‹ã©ã†ã‹
+    kine = checkLegFootReachRange();
 
-	return kine;
+    calculationActatorPosition();
+
+    return kine;
 }
 
 /**
- *	à–¾
- *		‹t‰^“®Šw‚ğ‰ğ‚­
- *		‹@\‚ª’Pƒ‚È‚½‚ßŠô‰½Šw“I‚É‰ğ‚­
+ *	èª¬æ˜
+ *		é€†é‹å‹•å­¦ã‚’è§£ã
+ *		æ©Ÿæ§‹ãŒå˜ç´”ãªãŸã‚å¹¾ä½•å­¦çš„ã«è§£ã
  */
 Kinematics Leg::solveInverseKinematics(void)
 {
-	/**
-	 *	ƒ[ƒJƒ‹•Ï”
-	 */
-	/// –ß‚è’l
-	Kinematics kine = NO_KINE_ERROR;
-	/// ‹rÀ•WŒn‚Å‚Ì‹ræ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Matrix footTransform(DH_DIMENSION, DH_DIMENSION);
-	/// ‹ræ‚ÌˆÊ’u
-	double x=0.00; double y=0.00; double z=0.00;
-	/// ŠÖßŠp‚ÌŒvZ‚Ég‚¤
-	double sin3=0.00; double cos3=0.00;
-	double sinA=0.00; double cosA=0.00;
-	/// ŒvZ•â•
-	double q1=0.00; double q2=0.00;			
-	/// —]Œ·’è——p‚ÌŒvZ•â•
-	double r1=0.00; double r2=0.00;
-	/// ˆê•Û‘¶—p
-	double formerJoint1;
-	///‹ræÚ’nŠp“x
-	//double LegTipAngle = Const::PI/2 ;  //+ Const::PI/4;
-	//legData.LegTipAngle = 90 / 180 * Const::PI;  //+ Const::PI/4;
+    /**
+     *	ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+     */
+     /// æˆ»ã‚Šå€¤
+    Kinematics kine = NO_KINE_ERROR;
+    /// è„šåº§æ¨™ç³»ã§ã®è„šå…ˆã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Matrix footTransform(DH_DIMENSION, DH_DIMENSION);
+    /// è„šå…ˆã®ä½ç½®
+    double x = 0.00; double y = 0.00; double z = 0.00;
+    /// é–¢ç¯€è§’ã®è¨ˆç®—ã«ä½¿ã†
+    double sin3 = 0.00; double cos3 = 0.00;
+    double sinA = 0.00; double cosA = 0.00;
+    /// è¨ˆç®—è£œåŠ©
+    double q1 = 0.00; double q2 = 0.00;
+    /// ä½™å¼¦å®šç†ç”¨ã®è¨ˆç®—è£œåŠ©
+    double r1 = 0.00; double r2 = 0.00;
+    /// ä¸€æ™‚ä¿å­˜ç”¨
+    double formerJoint1;
+    ///è„šå…ˆæ¥åœ°è§’åº¦
+    //double LegTipAngle = Const::PI/2 ;  //+ Const::PI/4;
+    //legData.LegTipAngle = 90 / 180 * Const::PI;  //+ Const::PI/4;
 
 
-	/// ‹r‚Ì‰Â“®”ÍˆÍ‚ğƒ`ƒFƒbƒN
-	kine = checkLegFootReachRange();
+    /// è„šã®å¯å‹•ç¯„å›²ã‚’ãƒã‚§ãƒƒã‚¯
+    kine = checkLegFootReachRange();
 
-	/// ‰Â“®”ÍˆÍŠO‚¾‚Á‚½‚ç
-	if ( kine != NO_KINE_ERROR )
-	{
-		return kine;
-	}
+    /// å¯å‹•ç¯„å›²å¤–ã ã£ãŸã‚‰
+    if (kine != NO_KINE_ERROR)
+    {
+        return kine;
+    }
 
-	/// ƒOƒ[ƒoƒ‹À•WŒn‚©‚ç‹rÀ•WŒn‚Ö‚Ì•ÏŠ·
-	footTransform = legBaseInverseHomogeneousTransformation()*legData.footTransformation; //legBaseInverseHomogeneousTransformation‚ÆfootTransformation‚ğŠm”F‚µ‚ÄLegTipAngle‚ª‚ ‚é‚©Šm”F
+    /// ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™ç³»ã‹ã‚‰è„šåº§æ¨™ç³»ã¸ã®å¤‰æ›
+    footTransform = legBaseInverseHomogeneousTransformation() * legData.footTransformation; //legBaseInverseHomogeneousTransformationã¨footTransformationã‚’ç¢ºèªã—ã¦LegTipAngleãŒã‚ã‚‹ã‹ç¢ºèª
 
-	/// ˆÊ’u‚ğ‘ã“ü
-	x = footTransform(1, 4);
-	y = footTransform(2, 4);
-	z = footTransform(3, 4) ;//+ FOOT;	/// ‘«ñ‚‚³‚¾‚¯ƒIƒtƒZƒbƒgií‚Éz•ûŒü‚ÉƒIƒtƒZƒbƒg‚Æ‰¼’èj
+    /// ä½ç½®ã‚’ä»£å…¥
+    x = footTransform(1, 4);
+    y = footTransform(2, 4);
+    z = footTransform(3, 4);//+ FOOT;	/// è¶³é¦–é«˜ã•ã ã‘ã‚ªãƒ•ã‚»ãƒƒãƒˆï¼ˆå¸¸ã«zæ–¹å‘ã«ã‚ªãƒ•ã‚»ãƒƒãƒˆã¨ä»®å®šï¼‰
 
-	//20221026
-	legData.LegTipAngle = (-0.1 * sqrt(x * x + y *y) + 0.02 * z + 151) / 180  * Const::PI;
-	/*
-	if (legData.LegTipAngle < 67)
-	{
-		legData.LegTipAngle = 67;
-	}
-	else if (legData.LegTipAngle > 113)
-	{
-		legData.LegTipAngle = 113;
-	}
-	//*/
+    //20221026
+    legData.LegTipAngle = (-0.1 * sqrt(x * x + y * y) + 0.02 * z + 151) / 180 * Const::PI;
+    /*
+    if (legData.LegTipAngle < 67)
+    {
+      legData.LegTipAngle = 67;
+    }
+    else if (legData.LegTipAngle > 113)
+    {
+      legData.LegTipAngle = 113;
+    }
+    //*/
 
-	/// ŒvZ•â••Ï”‚ğZo
-	q1 = dhParam.d[1] + dhParam.d[2];
-	q2 = z - dhParam.d[0];
+    /// è¨ˆç®—è£œåŠ©å¤‰æ•°ã‚’ç®—å‡º
+    q1 = dhParam.d[1] + dhParam.d[2];
+    q2 = z - dhParam.d[0];
 
-	r1 = sqrt( x*x + y*y - q1*q1 );
-	r2 = sqrt( x*x + y*y - q1*q1 + q2*q2 );
+    r1 = sqrt(x * x + y * y - q1 * q1);
+    r2 = sqrt(x * x + y * y - q1 * q1 + q2 * q2);
 
-	/// ŠÖß1‚Ì“ÁˆÙ“_”»’è
-	if ( ( fabs(x) < 0.001 ) && ( fabs(y) < 0.001 ) )
-	{
-		/// ƒGƒ‰[ŠÖß”Ô†‚ğ‹L˜^
-		legLastErrorJointNo = 1;
+    /// é–¢ç¯€1ã®ç‰¹ç•°ç‚¹åˆ¤å®š
+    if ((fabs(x) < 0.001) && (fabs(y) < 0.001))
+    {
+        /// ã‚¨ãƒ©ãƒ¼é–¢ç¯€ç•ªå·ã‚’è¨˜éŒ²
+        legLastErrorJointNo = 1;
 
-		return KINE_ERROR_SINGULAR;
-	}
-	/// ŠÖß3‚Ì‰ğÍ‚Ì‚½‚ßŠÖß1‚Ì’l‚ğˆê•Û‘¶
-	formerJoint1 = legData.jointAngle(1);
+        return KINE_ERROR_SINGULAR;
+    }
+    /// é–¢ç¯€3ã®è§£æã®ãŸã‚é–¢ç¯€1ã®å€¤ã‚’ä¸€æ™‚ä¿å­˜
+    formerJoint1 = legData.jointAngle(1);
 
-	/// ŠÖß1‚Ì’l‚ğŒvZ
-	legData.jointAngle(1) = atan2(y, x) - poseIndicator[0]*atan2(q1, r1);
+    /// é–¢ç¯€1ã®å€¤ã‚’è¨ˆç®—
+    legData.jointAngle(1) = atan2(y, x) - poseIndicator[0] * atan2(q1, r1);
 
-/*
+    /*
 
-	/// ŠÖß3‚Ì³Œ·C—]Œ·‚ğŒvZ
-	cos3 = ( r2*r2 - dhParam.a[1]*dhParam.a[1] - dhParam.a[2]*dhParam.a[2] )/( 2.0*dhParam.a[1]*dhParam.a[2] );
-	
-
-	/// ŠÖß3‚Ì—]Œ·‚ªŒvZ‰Â”\‚©‚Ç‚¤‚©
-
-	if ( fabs(cos3) > 1.0 )
-	{
-		/// ‹t‰^“®Šw•s‰Â‚È‚Ì‚ÅŠÖß1‚Ì’l‚ğ–ß‚·
-		legData.jointAngle(1) = formerJoint1;
-		
-		/// ƒGƒ‰[ŠÖß”Ô†‚ğ‹L˜^
-		legLastErrorJointNo = 3;
-		
-		return KINE_ERROR_UNREACHABLE;
-	}
-	else if ( fabs(cos3) > 0.99 )
-	{
-		/// “ÁˆÙ“_
-		/// ƒGƒ‰[ŠÖß”Ô†‚ğ‹L˜^
-		legLastErrorJointNo = 3;
-
-		return KINE_ERROR_SINGULAR;
-	}
-	
-	/// ŠÖß3‚Ì³Œ·‚ğŒvZ
-	sin3 = poseIndicator[1]*sqrt( 1.00 - cos3*cos3);
-	
-
-	/// ŠÖß3‚Ì’l‚ğ‘ã“ü
-	legData.jointAngle(3) = atan2(sin3, cos3);
-
-	
-	/// ŠÖß2‚Ì•â•Šp‚Ì—]Œ·‚ğŒvZ
-	cosA = ( r2*r2 + dhParam.a[1]*dhParam.a[1] - dhParam.a[2]*dhParam.a[2] )/(2.00*r2*dhParam.a[1]);
-	sinA = sqrt( 1.00 - cosA*cosA);
-	
-	/// ŠÖß2‚Ì’l‚ğ‘ã“ü
-	legData.jointAngle(2) = -atan2(q2, poseIndicator[0]*r1) - poseIndicator[0]*poseIndicator[1]*atan2(sinA, cosA);
-
-	
-*/
-	//q1 = sqrt(x*x +	y*y) - LINK1 - FOOT * cos(LegTipAngle );
-	//q2 = z + FOOT * sin(LegTipAngle );
-	//20221026
-	q1 = sqrt(x * x + y * y) - LINK1 - FOOT * cos(legData.LegTipAngle);
-	q2 = z + FOOT * sin(legData.LegTipAngle);
-	
-	r1 = (q1*q1 + q2*q2 + LINK2*LINK2 -LINK3*LINK3)/(2*LINK2);
-	r2 = (q1*q1 + q2*q2 - LINK2*LINK2 +LINK3*LINK3)/(2*LINK3);
-
-	/// ‘æ2ŠÖßŒvZ
-	legData.jointAngle(2) = -atan2(q2, q1)						- atan2(sqrt(q1*q1+q2*q2-r1*r1),r1);
-
-	///‘æ3ŠÖßŒvZ
-	legData.jointAngle(3) = atan2(sqrt(q1*q1+q2*q2-r2*r2),r2)	+ atan2(sqrt(q1*q1+q2*q2-r1*r1),r1);
-
-	///‘«ñŠÖß
-	//legData.FootjointAngle = LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);
-	legData.FootjointAngle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);  //20221026
-
-	/// ÅŒã‚ÉŠeŠÖß‚Ì‰Â“®”ÍˆÍ‚ğŠm”F
-	kine = checkLegJointMotionRange();
-
-	/// ŠÖß‚ª‰Â“®”ÍˆÍŠO
-	if (kine != NO_KINE_ERROR)
-	{
-		cerr << "Error: [Leg::solveDirectKinematics] Invalid joint angle" << endl;
-
-		return kine;
-	}
+      /// é–¢ç¯€3ã®æ­£å¼¦ï¼Œä½™å¼¦ã‚’è¨ˆç®—
+      cos3 = ( r2*r2 - dhParam.a[1]*dhParam.a[1] - dhParam.a[2]*dhParam.a[2] )/( 2.0*dhParam.a[1]*dhParam.a[2] );
 
 
-	///ƒ{[ƒ‹‚Ë‚¶À•WŒvZ(ƒƒCƒ„•ÏˆÊ)
-	calculationActatorPosition();
+      /// é–¢ç¯€3ã®ä½™å¼¦ãŒè¨ˆç®—å¯èƒ½ã‹ã©ã†ã‹
 
-	return kine;
-	
+      if ( fabs(cos3) > 1.0 )
+      {
+        /// é€†é‹å‹•å­¦ä¸å¯ãªã®ã§é–¢ç¯€1ã®å€¤ã‚’æˆ»ã™
+        legData.jointAngle(1) = formerJoint1;
+
+        /// ã‚¨ãƒ©ãƒ¼é–¢ç¯€ç•ªå·ã‚’è¨˜éŒ²
+        legLastErrorJointNo = 3;
+
+        return KINE_ERROR_UNREACHABLE;
+      }
+      else if ( fabs(cos3) > 0.99 )
+      {
+        /// ç‰¹ç•°ç‚¹
+        /// ã‚¨ãƒ©ãƒ¼é–¢ç¯€ç•ªå·ã‚’è¨˜éŒ²
+        legLastErrorJointNo = 3;
+
+        return KINE_ERROR_SINGULAR;
+      }
+
+      /// é–¢ç¯€3ã®æ­£å¼¦ã‚’è¨ˆç®—
+      sin3 = poseIndicator[1]*sqrt( 1.00 - cos3*cos3);
+
+
+      /// é–¢ç¯€3ã®å€¤ã‚’ä»£å…¥
+      legData.jointAngle(3) = atan2(sin3, cos3);
+
+
+      /// é–¢ç¯€2ã®è£œåŠ©è§’ã®ä½™å¼¦ã‚’è¨ˆç®—
+      cosA = ( r2*r2 + dhParam.a[1]*dhParam.a[1] - dhParam.a[2]*dhParam.a[2] )/(2.00*r2*dhParam.a[1]);
+      sinA = sqrt( 1.00 - cosA*cosA);
+
+      /// é–¢ç¯€2ã®å€¤ã‚’ä»£å…¥
+      legData.jointAngle(2) = -atan2(q2, poseIndicator[0]*r1) - poseIndicator[0]*poseIndicator[1]*atan2(sinA, cosA);
+
+
+    */
+    //q1 = sqrt(x*x +	y*y) - LINK1 - FOOT * cos(LegTipAngle );
+    //q2 = z + FOOT * sin(LegTipAngle );
+    //20221026
+    q1 = sqrt(x * x + y * y) - LINK1 - FOOT * cos(legData.LegTipAngle);
+    q2 = z + FOOT * sin(legData.LegTipAngle);
+
+    r1 = (q1 * q1 + q2 * q2 + LINK2 * LINK2 - LINK3 * LINK3) / (2 * LINK2);
+    r2 = (q1 * q1 + q2 * q2 - LINK2 * LINK2 + LINK3 * LINK3) / (2 * LINK3);
+
+    /// ç¬¬2é–¢ç¯€è¨ˆç®—
+    legData.jointAngle(2) = -atan2(q2, q1) - atan2(sqrt(q1 * q1 + q2 * q2 - r1 * r1), r1);
+
+    ///ç¬¬3é–¢ç¯€è¨ˆç®—
+    legData.jointAngle(3) = atan2(sqrt(q1 * q1 + q2 * q2 - r2 * r2), r2) + atan2(sqrt(q1 * q1 + q2 * q2 - r1 * r1), r1);
+
+    ///è¶³é¦–é–¢ç¯€
+    //legData.FootjointAngle = LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);
+    legData.FootjointAngle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);  //20221026
+
+    /// æœ€å¾Œã«å„é–¢ç¯€ã®å¯å‹•ç¯„å›²ã‚’ç¢ºèª
+    kine = checkLegJointMotionRange();
+
+    /// é–¢ç¯€ãŒå¯å‹•ç¯„å›²å¤–
+    if (kine != NO_KINE_ERROR)
+    {
+        cerr << "Error: [Leg::solveDirectKinematics] Invalid joint angle" << endl;
+
+        return kine;
+    }
+
+
+    ///ãƒœãƒ¼ãƒ«ã­ã˜åº§æ¨™è¨ˆç®—(ãƒ¯ã‚¤ãƒ¤å¤‰ä½)
+    calculationActatorPosition();
+
+    return kine;
+
 }
 
 /**
- *	à–¾
- *		p¨w•W‚Ì•ÏX
- *		‹r‚Ìp¨‚ğŒˆ’è‚·‚é
- *		‡‚É˜C‘ÚC•G‚©‚çŒˆ‚ß‚éDw•W‚Í1 or -1
+ *	èª¬æ˜
+ *		å§¿å‹¢æŒ‡æ¨™ã®å¤‰æ›´
+ *		è„šã®å§¿å‹¢ã‚’æ±ºå®šã™ã‚‹
+ *		é †ã«è…°ï¼Œè…¿ï¼Œè†ã‹ã‚‰æ±ºã‚ã‚‹ï¼æŒ‡æ¨™ã¯1 or -1
  */
 void Leg::setLegPoseIndicator(int hip, int knee)
 {
-	if ( abs(hip) != 1 || abs(knee) != 1 )
-	{
-			cerr << "Error: [Leg::setPoseIndicator] Invalid argument" << endl;
-            return;
-	}
+    if (abs(hip) != 1 || abs(knee) != 1)
+    {
+        cerr << "Error: [Leg::setPoseIndicator] Invalid argument" << endl;
+        return;
+    }
 
-	poseIndicator[0]		= hip;
-	poseIndicator[1]		= knee;
+    poseIndicator[0] = hip;
+    poseIndicator[1] = knee;
 
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		‹r‚ÌªŒ³‚ÌˆÊ’up¨Œˆ’è
- *		¡‰ñ‚ÍˆÊ’u: x, y, z, p¨: ƒÆ‚ÅŒˆ’è‚·‚é
+ *	èª¬æ˜
+ *		è„šã®æ ¹å…ƒã®ä½ç½®å§¿å‹¢æ±ºå®š
+ *		ä»Šå›ã¯ä½ç½®: x, y, z, å§¿å‹¢: Î¸ã§æ±ºå®šã™ã‚‹
  */
 void Leg::setLegBasePose(double x, double y, double z, double theta)
 {
-	/// ‹rªŒ³ƒpƒ‰ƒ[ƒ^‚É‘ã“ü
-	basePose(1) = x;
-	basePose(2) = y;
-	basePose(3) = z;
-	basePose(4) = theta;
+    /// è„šæ ¹å…ƒãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã«ä»£å…¥
+    basePose(1) = x;
+    basePose(2) = y;
+    basePose(3) = z;
+    basePose(4) = theta;
 
-	return;
+    return;
 }
 
 /**
  *	----------------------------------------
- *	‹r‚Ì‹@\§ŒÀ‚ğƒ`ƒFƒbƒN
+ *	è„šã®æ©Ÿæ§‹åˆ¶é™ã‚’ãƒã‚§ãƒƒã‚¯
  *	----------------------------------------
  */
-/// ŠÖß‚Ì‰Â“®”ÍˆÍ‚ğ’²¸
+ /// é–¢ç¯€ã®å¯å‹•ç¯„å›²ã‚’èª¿æŸ»
 Kinematics Leg::checkLegJointMotionRange(void)
 {
-	for (int i=1; i<=LEG_JOINT_NUM; i++)
-	{
-		if ( legData.jointAngle(i) < legLimit.angleMin[i-1] )
-		{
-			/// ‰Â“®”ÍˆÍ‚Ì‰ºŒÀˆÈ‰º
-			legLastErrorJointNo = i;
+    for (int i = 1; i <= LEG_JOINT_NUM; i++)
+    {
+        if (legData.jointAngle(i) < legLimit.angleMin[i - 1])
+        {
+            /// å¯å‹•ç¯„å›²ã®ä¸‹é™ä»¥ä¸‹
+            legLastErrorJointNo = i;
 
-			return KINE_ERROR_JOINT_UNDER_LIMIT;
-		}
-		else if ( legData.jointAngle(i) > legLimit.angleMax[i-1] )
-		{
-			/// ‰Â“®”ÍˆÍ‚ÌãŒÀˆÈã
-			legLastErrorJointNo = i;
+            return KINE_ERROR_JOINT_UNDER_LIMIT;
+        }
+        else if (legData.jointAngle(i) > legLimit.angleMax[i - 1])
+        {
+            /// å¯å‹•ç¯„å›²ã®ä¸Šé™ä»¥ä¸Š
+            legLastErrorJointNo = i;
 
-			return KINE_ERROR_JOINT_OVER_LIMIT;
-		}
+            return KINE_ERROR_JOINT_OVER_LIMIT;
+        }
 
-	}
+    }
 
-	if (legData.FootjointAngle < legLimit.FootangleMin)
-	{
-		/// ‰Â“®”ÍˆÍ‚Ì‰ºŒÀˆÈ‰º
-		legLastErrorJointNo = 4;
+    if (legData.FootjointAngle < legLimit.FootangleMin)
+    {
+        /// å¯å‹•ç¯„å›²ã®ä¸‹é™ä»¥ä¸‹
+        legLastErrorJointNo = 4;
 
-		return KINE_ERROR_JOINT_UNDER_LIMIT;
-	}
-	else if (legData.FootjointAngle > legLimit.FootangleMax)
-	{
-		/// ‰Â“®”ÍˆÍ‚ÌãŒÀˆÈã
-		legLastErrorJointNo = 4;
+        return KINE_ERROR_JOINT_UNDER_LIMIT;
+    }
+    else if (legData.FootjointAngle > legLimit.FootangleMax)
+    {
+        /// å¯å‹•ç¯„å›²ã®ä¸Šé™ä»¥ä¸Š
+        legLastErrorJointNo = 4;
 
-		return KINE_ERROR_JOINT_OVER_LIMIT;
-	}
+        return KINE_ERROR_JOINT_OVER_LIMIT;
+    }
 
-	/// ƒGƒ‰[‚È‚µ
-	legLastErrorJointNo = 0;
+    /// ã‚¨ãƒ©ãƒ¼ãªã—
+    legLastErrorJointNo = 0;
 
-	return NO_KINE_ERROR;
+    return NO_KINE_ERROR;
 }
 
-/// ‹r‚ÌƒŠ[ƒ`‚ğ’²¸
+/// è„šã®ãƒªãƒ¼ãƒã‚’èª¿æŸ»
 Kinematics Leg::checkLegFootReachRange(void)
 {
-	/// ‹rÀ•WŒn‚Å‚Ì‹ræ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Matrix transform(DH_DIMENSION, DH_DIMENSION);
-	/// ŒvZ—p•â••Ï”
-	double x, y, z;
+    /// è„šåº§æ¨™ç³»ã§ã®è„šå…ˆã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Matrix transform(DH_DIMENSION, DH_DIMENSION);
+    /// è¨ˆç®—ç”¨è£œåŠ©å¤‰æ•°
+    double x, y, z;
 
-	/// ƒOƒ[ƒoƒ‹À•WŒn‚©‚ç‹rÀ•WŒn‚Ö‚Ì•ÏŠ·
-	transform = legBaseInverseHomogeneousTransformation()*legData.footTransformation;
-	/// ŒvZ—p‚Ì•Ï”‚É‘ã“ü
-	x = transform(1, 4);
-	y = transform(2, 4);
-	//z = transform(3, 4) + FOOT;
-	z = transform(3, 4) + FOOT * sin(legData.LegTipAngle);  //20221026
+    /// ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™ç³»ã‹ã‚‰è„šåº§æ¨™ç³»ã¸ã®å¤‰æ›
+    transform = legBaseInverseHomogeneousTransformation() * legData.footTransformation;
+    /// è¨ˆç®—ç”¨ã®å¤‰æ•°ã«ä»£å…¥
+    x = transform(1, 4);
+    y = transform(2, 4);
+    //z = transform(3, 4) + FOOT;
+    z = transform(3, 4) + FOOT * sin(legData.LegTipAngle);  //20221026
 
-	/// ”¼Œa•ûŒü‚Ì‰Â“®”ÍˆÍ	//‰Â“®”ÍˆÍ“à‚¾‚Æ‚±‚±A”ÍˆÍ“à‚ÍNO_KINE_ERROR
-	if ( sqrt( x*x + y*y ) < legLimit.reachRadiusMin )
-	{
-		return KINE_ERROR_REACH_RADIUS_UNDER;
-	}
-	else if ( sqrt( x*x + y*y ) > legLimit.reachRadiusMax )
-	{
-		return KINE_ERROR_REACH_RADIUS_OVER;
-	}
+    /// åŠå¾„æ–¹å‘ã®å¯å‹•ç¯„å›²	//å¯å‹•ç¯„å›²å†…ã ã¨ã“ã“ã€ç¯„å›²å†…ã¯NO_KINE_ERROR
+    if (sqrt(x * x + y * y) < legLimit.reachRadiusMin)
+    {
+        return KINE_ERROR_REACH_RADIUS_UNDER;
+    }
+    else if (sqrt(x * x + y * y) > legLimit.reachRadiusMax)
+    {
+        return KINE_ERROR_REACH_RADIUS_OVER;
+    }
 
-	/// ‚‚³•ûŒü‚Ì‰Â“®”ÍˆÍ
-	if ( z < legLimit.reachHeightMin)
-	{
-		return KINE_ERROR_REACH_HEIGHT_UNDER;
-	}
-	else if ( z > legLimit.reachHeightMax )
-	{
-		return KINE_ERROR_REACH_HEIGHT_OVER;
-	}
+    /// é«˜ã•æ–¹å‘ã®å¯å‹•ç¯„å›²
+    if (z < legLimit.reachHeightMin)
+    {
+        return KINE_ERROR_REACH_HEIGHT_UNDER;
+    }
+    else if (z > legLimit.reachHeightMax)
+    {
+        return KINE_ERROR_REACH_HEIGHT_OVER;
+    }
 
-	/// ‰Â“®”ÍˆÍ“à
-	return NO_KINE_ERROR;
+    /// å¯å‹•ç¯„å›²å†…
+    return NO_KINE_ERROR;
 }
 
 /**
  *	----------------------------------------
- *	‹r‚ÌPTP§Œä—p
+ *	è„šã®PTPåˆ¶å¾¡ç”¨
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‘«‚ÌˆÊ’u‚ğƒZƒbƒgi‘«— ‚Íí‚Éd—Í•ûŒü‚Æ‰¼’èj
- *		‡‰^“®Šw‚Æ‹t‰^“®Šw‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚ğŠm”F‚·‚é
- *		“r’†‚ÌŠÖßˆÊ’u‚ğŒvZ‚·‚é
- *		i•às‚ÉŒÄ‚Î‚ê‚éj20201015
- */
+ /**
+  *	èª¬æ˜
+  *		è¶³ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆï¼ˆè¶³è£ã¯å¸¸ã«é‡åŠ›æ–¹å‘ã¨ä»®å®šï¼‰
+  *		é †é‹å‹•å­¦ã¨é€†é‹å‹•å­¦ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹ã‚’ç¢ºèªã™ã‚‹
+  *		é€”ä¸­ã®é–¢ç¯€ä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
+  *		ï¼ˆæ­©è¡Œæ™‚ã«å‘¼ã°ã‚Œã‚‹ï¼‰20201015
+  */
 Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
 {
-	Matrix lastFootTransform(DH_DIMENSION, DH_DIMENSION);
+    Matrix lastFootTransform(DH_DIMENSION, DH_DIMENSION);
 
-	/// ˆø”ƒ`ƒFƒbƒN
-	if ( nextFootPosition.getSize() != THREE_DIMENSION )
-	{
-			cerr << "Error: [Leg::placeFootPosition] Invalid argument" << endl;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    if (nextFootPosition.getSize() != THREE_DIMENSION)
+    {
+        cerr << "Error: [Leg::placeFootPosition] Invalid argument" << endl;
 
-			return KINE_ERROR_ELSE;
-	}
+        return KINE_ERROR_ELSE;
+    }
 
-	/// ‘«æ‚Ì“¯Ÿ•ÏŠ·s—ñ‚ğˆê•Û‘¶
-	lastFootTransform = legData.footTransformation;
-	/// –Ú•W‘«æˆÊ’u‚ğ‘ã“ü	
-	for (int i=1; i<=THREE_DIMENSION; i++)
-		legData.footTransformation(i, 4) = nextFootPosition(i);
+    /// è¶³å…ˆã®åŒæ¬¡å¤‰æ›è¡Œåˆ—ã‚’ä¸€æ™‚ä¿å­˜
+    lastFootTransform = legData.footTransformation;
+    /// ç›®æ¨™è¶³å…ˆä½ç½®ã‚’ä»£å…¥	
+    for (int i = 1; i <= THREE_DIMENSION; i++)
+        legData.footTransformation(i, 4) = nextFootPosition(i);
 
-	/// ‹t‰^“®Šw‚ğ‰ğ‚­
-	Kinematics kine = this->solveInverseKinematics();
+    /// é€†é‹å‹•å­¦ã‚’è§£ã
+    Kinematics kine = this->solveInverseKinematics();
 
-	/// ‹t‰^“®Šw‚ÌŒ‹‰Ê‚Å‘I‘ğ
-	//*
-	switch (kine)
-	{
-		case NO_KINE_ERROR:
-			/// ‡‰^“®Šw‚ğ‰ğ‚¢‚Ä“r’†‚ÌŠÖßˆÊ’u‚àŒvZ
-			kine = solveDirectKinematics();
-			break;
+    /// é€†é‹å‹•å­¦ã®çµæœã§é¸æŠ
+    //*
+    switch (kine)
+    {
+        case NO_KINE_ERROR:
+            /// é †é‹å‹•å­¦ã‚’è§£ã„ã¦é€”ä¸­ã®é–¢ç¯€ä½ç½®ã‚‚è¨ˆç®—
+            kine = solveDirectKinematics();
+            break;
 
-		case KINE_ERROR_UNREACHABLE:
-			/// ‘«æˆÊ’u‚ğŒ³‚É–ß‚·
-			legData.footTransformation = lastFootTransform;
-			cerr << "Error1" << endl;
-			break;
+        case KINE_ERROR_UNREACHABLE:
+            /// è¶³å…ˆä½ç½®ã‚’å…ƒã«æˆ»ã™
+            legData.footTransformation = lastFootTransform;
+            cerr << "Error1" << endl;
+            break;
 
-		case KINE_ERROR_SINGULAR:
-			/// ‘«æˆÊ’u‚ğŒ³‚É–ß‚·
-			legData.footTransformation = lastFootTransform;
-			//cerr << "Error2" << endl;
-			break;
+        case KINE_ERROR_SINGULAR:
+            /// è¶³å…ˆä½ç½®ã‚’å…ƒã«æˆ»ã™
+            legData.footTransformation = lastFootTransform;
+            //cerr << "Error2" << endl;
+            break;
 
-		case KINE_ERROR_ELSE:
-			/// ‘«æˆÊ’u‚ğŒ³‚É–ß‚·
-			legData.footTransformation = lastFootTransform;
-			cerr << "Error3" << endl;
-			break;
+        case KINE_ERROR_ELSE:
+            /// è¶³å…ˆä½ç½®ã‚’å…ƒã«æˆ»ã™
+            legData.footTransformation = lastFootTransform;
+            cerr << "Error3" << endl;
+            break;
 
-		default:
-			break;
-	}
-	//*/
+        default:
+            break;
+    }
+    //*/
 
-	return kine;
+    return kine;
 }
 
-/** 
- *	à–¾
- *		ŠÖßŠp‚ğƒZƒbƒg
- *		ƒZƒbƒg‚µ‚½ŠÖßŠp‚Å‡‰^“®Šw‚ğ‰ğ‚­
- *		iWalkingRobot‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÅŒÄ‚Î‚ê‚éj20201015
+/**
+ *	èª¬æ˜
+ *		é–¢ç¯€è§’ã‚’ã‚»ãƒƒãƒˆ
+ *		ã‚»ãƒƒãƒˆã—ãŸé–¢ç¯€è§’ã§é †é‹å‹•å­¦ã‚’è§£ã
+ *		ï¼ˆWalkingRobotã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§å‘¼ã°ã‚Œã‚‹ï¼‰20201015
  */
 Kinematics Leg::placeLegJointAngles(const Vector& nextJointAngle, const double& nextFootJointAngle)
 {
-	/// ˆê•Û‘¶—p
-	Vector lastJointAngle(THREE_DIMENSION);
-	double lastFootJointAngle;
+    /// ä¸€æ™‚ä¿å­˜ç”¨
+    Vector lastJointAngle(THREE_DIMENSION);
+    double lastFootJointAngle;
 
-	/// ˆø”ƒ`ƒFƒbƒN
-	if ( nextJointAngle.getSize() != 3 )
-	{
-			cerr << "Error: [Leg::placeJointAngles] Invalid argument" << endl;
-			return KINE_ERROR_ELSE;
-	}
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    if (nextJointAngle.getSize() != 3)
+    {
+        cerr << "Error: [Leg::placeJointAngles] Invalid argument" << endl;
+        return KINE_ERROR_ELSE;
+    }
 
-	/// Œ»İ‚ÌŠÖßŠp‚ğˆê•Û‘¶
-	lastJointAngle = legData.jointAngle;
-	legData.jointAngle = nextJointAngle;  //20201018
-	lastFootJointAngle = legData.FootjointAngle;
-	legData.FootjointAngle = nextFootJointAngle;  //20201018
+    /// ç¾åœ¨ã®é–¢ç¯€è§’ã‚’ä¸€æ™‚ä¿å­˜
+    lastJointAngle = legData.jointAngle;
+    legData.jointAngle = nextJointAngle;  //20201018
+    lastFootJointAngle = legData.FootjointAngle;
+    legData.FootjointAngle = nextFootJointAngle;  //20201018
 
-	/// ‡‰^“®Šw‚ğ‰ğ‚­
-	Kinematics kine = solveDirectKinematics();
-	switch (kine)
-	{
-		case NO_KINE_ERROR:
-			break;
+    /// é †é‹å‹•å­¦ã‚’è§£ã
+    Kinematics kine = solveDirectKinematics();
+    switch (kine)
+    {
+        case NO_KINE_ERROR:
+            break;
 
-		case KINE_ERROR_UNREACHABLE:
-			legData.jointAngle = lastJointAngle;
-			break;
+        case KINE_ERROR_UNREACHABLE:
+            legData.jointAngle = lastJointAngle;
+            break;
 
-		case KINE_ERROR_SINGULAR:
-			legData.jointAngle = lastJointAngle;
-			break;
+        case KINE_ERROR_SINGULAR:
+            legData.jointAngle = lastJointAngle;
+            break;
 
-		case KINE_ERROR_ELSE:
-			legData.jointAngle = lastJointAngle;
-			break;
-	}
+        case KINE_ERROR_ELSE:
+            legData.jointAngle = lastJointAngle;
+            break;
+    }
 
-	return kine;
+    return kine;
 
-	
+
 
 }
 
 /**
  *	----------------------------------------
- *	ƒ„ƒRƒrƒAƒ“‚ğg‚Á‚Ä‚Ìó‘ÔŒvZ
+ *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³ã‚’ä½¿ã£ã¦ã®çŠ¶æ…‹è¨ˆç®—
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		ŠÖß‘¬“x: [3]
- *		‹ræ‘¬“x‚©‚çŒvZ
- */
+ /**
+  *	èª¬æ˜
+  *		é–¢ç¯€é€Ÿåº¦: [3]
+  *		è„šå…ˆé€Ÿåº¦ã‹ã‚‰è¨ˆç®—
+  */
 void Leg::calculateLegJointVelocity(const Vector& footVelocity)
 {
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		ŠÖßƒgƒ‹ƒN: [3]
- *		‹ræ’[‚É‰Á‚í‚Á‚½‰×d‚©‚çŒvZ
+ *	èª¬æ˜
+ *		é–¢ç¯€ãƒˆãƒ«ã‚¯: [3]
+ *		è„šå…ˆç«¯ã«åŠ ã‚ã£ãŸè·é‡ã‹ã‚‰è¨ˆç®—
  */
 void Leg::calculateLegJointTorque(const Vector& footReaction)
 {
-	return;
+    return;
 }
 
 /**
- *	ƒ„ƒRƒrƒAƒ“©g‚ÌŒvZ
+ *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³è‡ªèº«ã®è¨ˆç®—
  */
-/// ƒ„ƒRƒrs—ñ: [3x3]
+ /// ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
 void Leg::calculateJacobian(void)
 {
-	return;
+    return;
 }
 
-/// ‹tƒ„ƒRƒrs—ñ: [3x3]
+/// é€†ãƒ¤ã‚³ãƒ“è¡Œåˆ—: [3x3]
 void Leg::calculateInverseJacobian(void)
 {
-	return;
+    return;
 }
 /**
- *	à–¾
- *		ƒ{[ƒ‹‚Ë‚¶À•WŒvZiƒƒCƒ„•ÏˆÊj
+ *	èª¬æ˜
+ *		ãƒœãƒ¼ãƒ«ã­ã˜åº§æ¨™è¨ˆç®—ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰
  */
 void Leg::calculationActatorPosition(void)
 {
-	/*
-	legData.ActPos(1)	= Pulley_Radius *legData.jointAngle(1)		+ Pulley_Radius *legData.jointAngle(2);//123;//
-	legData.ActPos(2)	= Pulley_Radius *legData.jointAngle(2)		- Pulley_Radius *legData.jointAngle(1);//456;//
-	legData.ActPos(3)	= Pulley_Radius *legData.jointAngle(2)		+ Pulley_Radius *legData.jointAngle(3);//789;//
-	legData.ActPos(4)	= Pulley_Radius *legData.jointAngle(3)		+ Pulley_Radius *legData.FootjointAngle;//1011;//+ Pulley_Radius *legData.jointAngle(4);
-	*/
+    /*
+    legData.ActPos(1)	= Pulley_Radius *legData.jointAngle(1)		+ Pulley_Radius *legData.jointAngle(2);//123;//
+    legData.ActPos(2)	= Pulley_Radius *legData.jointAngle(2)		- Pulley_Radius *legData.jointAngle(1);//456;//
+    legData.ActPos(3)	= Pulley_Radius *legData.jointAngle(2)		+ Pulley_Radius *legData.jointAngle(3);//789;//
+    legData.ActPos(4)	= Pulley_Radius *legData.jointAngle(3)		+ Pulley_Radius *legData.FootjointAngle;//1011;//+ Pulley_Radius *legData.jointAngle(4);
+    */
 
-	/*
-	legData.ActPos(1) = (-Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2));//123;//
-	legData.ActPos(2) = -(Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2));//456;//
-	legData.ActPos(3) = (Pulley_Radius * legData.jointAngle(2) + Pulley_Radius * legData.jointAngle(3));//789;//
-	legData.ActPos(4) = (Pulley_Radius * legData.jointAngle(3) + Pulley_Radius * legData.FootjointAngle);//1011
-	//*/
+    /*
+    legData.ActPos(1) = (-Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2));//123;//
+    legData.ActPos(2) = -(Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2));//456;//
+    legData.ActPos(3) = (Pulley_Radius * legData.jointAngle(2) + Pulley_Radius * legData.jointAngle(3));//789;//
+    legData.ActPos(4) = (Pulley_Radius * legData.jointAngle(3) + Pulley_Radius * legData.FootjointAngle);//1011
+    //*/
 
-	//*  ‚È‚º‚©’l‚ª‡‚í‚È‚¢‚Ì‚Å’²®
-	legData.ActPos(1) = (-Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2)) * 0.983818;//123;//
-	legData.ActPos(2) = -(Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2))  * 0.980921;//456;//
-	legData.ActPos(3) = (Pulley_Radius * legData.jointAngle(2) + Pulley_Radius * legData.jointAngle(3)) * 0.982403;//789;//
-	legData.ActPos(4) = (Pulley_Radius * legData.jointAngle(3) + Pulley_Radius * legData.FootjointAngle) * 0.983152;//1011
-	//*/
+    //*  ãªãœã‹å€¤ãŒåˆã‚ãªã„ã®ã§èª¿æ•´
+    legData.ActPos(1) = (-Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2)) * 0.983818;//123;//
+    legData.ActPos(2) = -(Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2)) * 0.980921;//456;//
+    legData.ActPos(3) = (Pulley_Radius * legData.jointAngle(2) + Pulley_Radius * legData.jointAngle(3)) * 0.982403;//789;//
+    legData.ActPos(4) = (Pulley_Radius * legData.jointAngle(3) + Pulley_Radius * legData.FootjointAngle) * 0.983152;//1011
+    //*/
 
-	return;
+    return;
 }
 
 /**
  *	----------------------------------------------------------------------
- *		Leg‚Ì“à•”ƒNƒ‰ƒX@LegDataƒNƒ‰ƒX
+ *		Legã®å†…éƒ¨ã‚¯ãƒ©ã‚¹ã€€LegDataã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ /**
+  *	----------------------------------------
+  *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+  *	----------------------------------------
+  */
+  /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Leg::LegData::LegData()
 {
-	newLegData();
-	
+    newLegData();
+
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Leg::LegData::~LegData()
 {
-	deleteLegData();
+    deleteLegData();
 }
 
 /**
  *	------------------------------------------------------------
- *		TrackDataƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		TrackDataã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
-/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
+ /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
 void Leg::LegData::newLegData(void)
 {
-	/// ƒƒ“ƒo‚Ìƒƒ‚ƒŠ—ÌˆæŠm•Û
-	jointTransformation	=	new Matrix[LEG_JOINT_NUM];
-	jointPosition		=	new Vector[LEG_JOINT_NUM];
+    /// ãƒ¡ãƒ³ãƒã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸç¢ºä¿
+    jointTransformation = new Matrix[LEG_JOINT_NUM];
+    jointPosition = new Vector[LEG_JOINT_NUM];
 
-	/// s—ñ‚ÌƒTƒCƒYŒˆ’è
-	/// “¯•ÏŠ·s—ñ
-	baseTransformation.setSize(DH_DIMENSION, DH_DIMENSION);
-	baseTransformation.loadIdentity();
+    /// è¡Œåˆ—ã®ã‚µã‚¤ã‚ºæ±ºå®š
+    /// åŒæ™‚å¤‰æ›è¡Œåˆ—
+    baseTransformation.setSize(DH_DIMENSION, DH_DIMENSION);
+    baseTransformation.loadIdentity();
 
-	for ( int i=0; i<LEG_JOINT_NUM; i++)
-	{
-		jointTransformation[i].setSize(DH_DIMENSION, DH_DIMENSION);
-		jointTransformation[i].loadIdentity();
-	}
+    for (int i = 0; i < LEG_JOINT_NUM; i++)
+    {
+        jointTransformation[i].setSize(DH_DIMENSION, DH_DIMENSION);
+        jointTransformation[i].loadIdentity();
+    }
 
-	footTransformation.setSize(DH_DIMENSION, DH_DIMENSION);
-	footTransformation.loadIdentity();
+    footTransformation.setSize(DH_DIMENSION, DH_DIMENSION);
+    footTransformation.loadIdentity();
 
-	/// ˆÊ’uƒxƒNƒgƒ‹
-	basePosition.setSize(THREE_DIMENSION);
+    /// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
+    basePosition.setSize(THREE_DIMENSION);
 
-	for (int j=0; j<LEG_JOINT_NUM; j++)
-		jointPosition[j].setSize(THREE_DIMENSION);
+    for (int j = 0; j < LEG_JOINT_NUM; j++)
+        jointPosition[j].setSize(THREE_DIMENSION);
 
-	footPosition.setSize(THREE_DIMENSION);
+    footPosition.setSize(THREE_DIMENSION);
 
-	/// ŠÖßŠp“x
-	jointAngle.setSize(LEG_JOINT_NUM);
-	/// ŠÖß‘¬“x
-	jointVelocity.setSize(LEG_JOINT_NUM);
-	/// ŠÖßƒgƒ‹ƒN
-	jointTorque.setSize(LEG_JOINT_NUM);
-	/// ‘«ñŠÖßŠp“x
-	//FootjointAngle.setSize(1);
-	FootjointAngle;
+    /// é–¢ç¯€è§’åº¦
+    jointAngle.setSize(LEG_JOINT_NUM);
+    /// é–¢ç¯€é€Ÿåº¦
+    jointVelocity.setSize(LEG_JOINT_NUM);
+    /// é–¢ç¯€ãƒˆãƒ«ã‚¯
+    jointTorque.setSize(LEG_JOINT_NUM);
+    /// è¶³é¦–é–¢ç¯€è§’åº¦
+    //FootjointAngle.setSize(1);
+    FootjointAngle;
 
-	///ƒAƒNƒ`ƒ…ƒG[ƒ^À•W
-	//ActPos		=	new Vector[LEG_ACT_NUM];
-	ActPos.setSize(LEG_ACT_NUM);
-	//•ÏŠ·s—ñ
-	//ActTransformation.setSize(LEG_ACT_NUM,4);
-	return;
+    ///ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿åº§æ¨™
+    //ActPos		=	new Vector[LEG_ACT_NUM];
+    ActPos.setSize(LEG_ACT_NUM);
+    //å¤‰æ›è¡Œåˆ—
+    //ActTransformation.setSize(LEG_ACT_NUM,4);
+    return;
 }
 
-/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú‚·‚é
+/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’è§£æ”¾ã™ã‚‹
 void Leg::LegData::deleteLegData(void)
 {
-	delete [] jointTransformation;
-	delete [] jointPosition;
+    delete[] jointTransformation;
+    delete[] jointPosition;
 
-	return;
+    return;
 }
 
 } /// end of namespace Asura

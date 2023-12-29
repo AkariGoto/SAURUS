@@ -1,17 +1,14 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Console.cpp
- *  à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Éo—Í‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2007/05/19(SAT)
+ *  èª¬æ˜
+ *		ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/05/12(SAT)		æ›´æ–°æ—¥: 2007/05/19(SAT)
  */
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+#include "Console.h"
+
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,487 +18,423 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include "..\Utility\Asc2Int.h"		/// •¶š—ñ¨”’l•ÏŠ·ƒ‹[ƒ`ƒ“
-#include "Console.h"
+#include "..\Utility\Asc2Int.h"  // æ–‡å­—åˆ—â†’æ•°å€¤å¤‰æ›ãƒ«ãƒ¼ãƒãƒ³
 
-/**
- *	----------------------------------------------------------------------
- *		PlanDataƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		staticƒƒ“ƒo•Ï”‚Ì‰Šú‰»
- *	------------------------------------------------------------
- */
-	const TCHAR	Console::CONSOLENAME[MAX_PATH+1]	= TEXT("Console Debugging");
-	const TCHAR	Console::INIFILENAME[MAX_PATH+1]	= TEXT("\\Debug.ini");
-	const TCHAR	Console::INIDIRNAME[MAX_PATH+1]		= TEXT("\\Setting");
-	const TCHAR*	Console::YESNO[2]				= { TEXT("No"), TEXT("Yes") };
+ /**
+  *	----------------------------------------------------------------------
+  *		PlanDataã‚¯ãƒ©ã‚¹
+  *	----------------------------------------------------------------------
+  */
 
-	const WORD	Console::FOREGROUND_BLACK	= (WORD)0x0000;
-	const WORD	Console::FOREGROUND_CYAN	= (WORD)0x0003;
-	const WORD	Console::FOREGROUND_WHITE	= (WORD)0x0007;
-	const WORD	Console::FOREGROUND_CUSTOM	= (WORD)0x0003 | (WORD)0x0008;
+  /**
+   *	------------------------------------------------------------
+   *		staticãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
+   *	------------------------------------------------------------
+   */
+const TCHAR	Console::CONSOLENAME[MAX_PATH + 1] = TEXT("Console Debugging");
+const TCHAR	Console::INIFILENAME[MAX_PATH + 1] = TEXT("\\Debug.ini");
+const TCHAR	Console::INIDIRNAME[MAX_PATH + 1] = TEXT("\\Setting");
+const TCHAR* Console::YESNO[2] = { TEXT("No"), TEXT("Yes") };
 
-	const WORD	Console::BACKGROUND_BLACK	= (WORD)0x0000;
-	const WORD	Console::BACKGROUND_CYAN	= (WORD)0x0030;
-	const WORD	Console::BACKGROUND_WHITE	= (WORD)0x0070;
-	const WORD	Console::BACKGROUND_CUSTOM	= (WORD)0x0030 | (WORD)0x0080;
+const WORD	Console::FOREGROUND_BLACK = (WORD)0x0000;
+const WORD	Console::FOREGROUND_CYAN = (WORD)0x0003;
+const WORD	Console::FOREGROUND_WHITE = (WORD)0x0007;
+const WORD	Console::FOREGROUND_CUSTOM = (WORD)0x0003 | (WORD)0x0008;
 
-	const DWORD	INFO						= (DWORD)0x00000001L;
-	const DWORD	WARNING						= (DWORD)0x00000002L;
-	const DWORD	ALART						= (DWORD)0x00000004L;
-	const DWORD	EMERGENCY					= (DWORD)0x00000008L;
+const WORD	Console::BACKGROUND_BLACK = (WORD)0x0000;
+const WORD	Console::BACKGROUND_CYAN = (WORD)0x0030;
+const WORD	Console::BACKGROUND_WHITE = (WORD)0x0070;
+const WORD	Console::BACKGROUND_CUSTOM = (WORD)0x0030 | (WORD)0x0080;
 
-	const DWORD DUMP						= (DWORD)0x80000000L;
+const DWORD	INFO = (DWORD)0x00000001L;
+const DWORD	WARNING = (DWORD)0x00000002L;
+const DWORD	ALART = (DWORD)0x00000004L;
+const DWORD	EMERGENCY = (DWORD)0x00000008L;
 
-	bool Console::isDebugMode				= FALSE;
-	bool Console::isDeleteOnStart			= FALSE;
-	DWORD Console::debugLevel				= 0x0L;
-	FILE* Console::logFile					= NULL;
+const DWORD DUMP = (DWORD)0x80000000L;
 
-	TCHAR	Console::logFileName[ENTRYBUFFSIZE]	= TEXT("");
-	TCHAR	Console::sectionName[ENTRYBUFFSIZE]	= TEXT("");
+bool Console::isDebugMode = FALSE;
+bool Console::isDeleteOnStart = FALSE;
+DWORD Console::debugLevel = 0x0L;
+FILE* Console::logFile = NULL;
 
-	CRITICAL_SECTION Console::loggingCS;
-/**
- *	------------------------------------------------------------
- *		PlanDataƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-/**
- *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- */
-Console::Console()
-{
-}
+TCHAR	Console::logFileName[ENTRYBUFFSIZE] = TEXT("");
+TCHAR	Console::sectionName[ENTRYBUFFSIZE] = TEXT("");
 
-Console::~Console()
-{
-}
+CRITICAL_SECTION Console::loggingCS;
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOo—ÍƒIƒvƒVƒ‡ƒ“‚Ì‰Šú‰»
- */
+
 void Console::initialize(LPCWSTR sectionString)
 {
-	TCHAR	appNameString[ENTRYBUFFSIZE];
-	TCHAR	keyNameString[ENTRYBUFFSIZE];
-	TCHAR	iniFilePathString[MAX_PATH+1];
+    TCHAR	appNameString[ENTRYBUFFSIZE];
+    TCHAR	keyNameString[ENTRYBUFFSIZE];
+    TCHAR	iniFilePathString[MAX_PATH + 1];
 
-	/// ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ğ‰Šú‰»‚·‚é
-	InitializeCriticalSection(&loggingCS);
+    /// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’åˆæœŸåŒ–ã™ã‚‹
+    InitializeCriticalSection(&loggingCS);
 
-	/// ƒZƒNƒVƒ‡ƒ“w’è‚ª‚È‚¢
-	if (sectionString == NULL)
-	{
-		if( isDeleteOnStart == TRUE)
-		{
-			_unlink((char*)logFileName);			/// ƒƒOƒtƒ@ƒCƒ‹‚ğíœ‚·‚é
-		}
-		return;
-	}
+    /// ã‚»ã‚¯ã‚·ãƒ§ãƒ³æŒ‡å®šãŒãªã„
+    if (sectionString == NULL)
+    {
+        if (isDeleteOnStart == TRUE)
+        {
+            _unlink((char*)logFileName);			/// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+        }
+        return;
+    }
 
-	lstrcpy(sectionName, sectionString);		/// ƒZƒNƒVƒ‡ƒ“–¼‚ğ•Û‘¶
+    lstrcpy(sectionName, sectionString);		/// ã‚»ã‚¯ã‚·ãƒ§ãƒ³åã‚’ä¿å­˜
 
-	/// ƒfƒoƒbƒOƒ‚[ƒh‚ğ‰Šú‰»‚·‚é
-	isDebugMode		= FALSE;
-	debugLevel		= 0L;
-	*logFileName	= '\0';
+    /// ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰ã‚’åˆæœŸåŒ–ã™ã‚‹
+    isDebugMode = FALSE;
+    debugLevel = 0L;
+    *logFileName = '\0';
 
-	if (logFile != NULL)
-	{
-		fclose(logFile);
-	}
-	logFile = NULL;
+    if (logFile != NULL)
+    {
+        fclose(logFile);
+    }
+    logFile = NULL;
 
-	/// iniƒtƒ@ƒCƒ‹–¼‚ğ¶¬‚·‚é
-	*iniFilePathString = '\0';
-	GetCurrentDirectory(sizeof(iniFilePathString), iniFilePathString);
-	lstrcat(iniFilePathString, INIDIRNAME);
-	lstrcat(iniFilePathString, INIFILENAME);
-	
-	/// ƒƒOƒtƒ@ƒCƒ‹‚ğÁ‚µ‚Ä‚©‚çÀs‚·‚é
-	lstrcpy( keyNameString, TEXT("isDeleteOnStart") );
+    /// iniãƒ•ã‚¡ã‚¤ãƒ«åã‚’ç”Ÿæˆã™ã‚‹
+    *iniFilePathString = '\0';
+    GetCurrentDirectory(sizeof(iniFilePathString), iniFilePathString);
+    lstrcat(iniFilePathString, INIDIRNAME);
+    lstrcat(iniFilePathString, INIFILENAME);
 
-	/// iniƒtƒ@ƒCƒ‹‚Ìw’è‚³‚ê‚½ƒZƒNƒVƒ‡ƒ““à‚É‚ ‚é, w’è‚³‚ê‚½ƒL[‚ÉŠÖ˜A•t‚¯‚ç‚ê‚Ä‚¢‚é•¶š—ñ‚ğæ“¾
-	GetPrivateProfileString(sectionString, keyNameString, YESNO[FALSE], appNameString, sizeof(appNameString), iniFilePathString);
-	
-	if ( lstrcmp(appNameString, YESNO[TRUE]) == 0 )
-	{
-		isDeleteOnStart = TRUE;
-	}
+    /// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¶ˆã—ã¦ã‹ã‚‰å®Ÿè¡Œã™ã‚‹
+    lstrcpy(keyNameString, TEXT("isDeleteOnStart"));
 
-	/// ƒfƒoƒbƒOƒ‚[ƒh
-	lstrcpy( keyNameString, TEXT("DebugMode") );
-	GetPrivateProfileString(sectionString, keyNameString, YESNO[FALSE], appNameString, sizeof(appNameString), iniFilePathString);
-	
-	if ( lstrcmp(appNameString, YESNO[TRUE]) == 0 )
-	{
-		isDebugMode = TRUE;
-	}
+    /// iniãƒ•ã‚¡ã‚¤ãƒ«ã®æŒ‡å®šã•ã‚ŒãŸã‚»ã‚¯ã‚·ãƒ§ãƒ³å†…ã«ã‚ã‚‹, æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«é–¢é€£ä»˜ã‘ã‚‰ã‚Œã¦ã„ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
+    GetPrivateProfileString(sectionString, keyNameString, YESNO[FALSE], appNameString, sizeof(appNameString), iniFilePathString);
 
-	/// ƒfƒoƒbƒOƒRƒ“ƒ\[ƒ‹•\¦ƒ‚[ƒh
-	lstrcpy( keyNameString, TEXT("ConsoleMode") );
-	GetPrivateProfileString(sectionString, keyNameString, YESNO[FALSE], appNameString, sizeof(appNameString), iniFilePathString);
-	
-	if ( (lstrcmp(appNameString, YESNO[TRUE]) == 0) && (isDebugMode == TRUE) )
-	{
-		Console::createConsole();
-	}
+    if (lstrcmp(appNameString, YESNO[TRUE]) == 0)
+    {
+        isDeleteOnStart = TRUE;
+    }
 
-	/// ƒfƒoƒbƒOƒŒƒxƒ‹
-	lstrcpy( keyNameString, TEXT("DebugLevel") );
-	
-	GetPrivateProfileString(sectionString, keyNameString, TEXT("0"), appNameString, sizeof(appNameString), iniFilePathString);
-	debugLevel = (DWORD)ascToInt( (PSTR)appNameString );		/// asc2int.c ‚ğg‚¤
+    /// ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰
+    lstrcpy(keyNameString, TEXT("DebugMode"));
+    GetPrivateProfileString(sectionString, keyNameString, YESNO[FALSE], appNameString, sizeof(appNameString), iniFilePathString);
 
-	/// ƒfƒoƒbƒOƒƒOƒtƒ@ƒCƒ‹–¼iƒtƒ‹ƒpƒX–¼j
-	lstrcpy( keyNameString, TEXT("LogFile") );
-	GetPrivateProfileString(sectionString, keyNameString, TEXT(""), appNameString, sizeof(appNameString), iniFilePathString);
-	
-	GetCurrentDirectory(sizeof(logFileName), logFileName);
-	lstrcat(logFileName, INIDIRNAME);
-	lstrcat(logFileName, appNameString);
+    if (lstrcmp(appNameString, YESNO[TRUE]) == 0)
+    {
+        isDebugMode = TRUE;
+    }
 
-	if (isDeleteOnStart == TRUE)
-	{
-		DeleteFile(logFileName);				/// ƒƒOƒtƒ@ƒCƒ‹‚ğíœ‚·‚é
-	}
+    /// ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ã‚½ãƒ¼ãƒ«è¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰
+    lstrcpy(keyNameString, TEXT("ConsoleMode"));
+    GetPrivateProfileString(sectionString, keyNameString, YESNO[FALSE], appNameString, sizeof(appNameString), iniFilePathString);
+
+    if ((lstrcmp(appNameString, YESNO[TRUE]) == 0) && (isDebugMode == TRUE))
+    {
+        Console::createConsole();
+    }
+
+    /// ãƒ‡ãƒãƒƒã‚°ãƒ¬ãƒ™ãƒ«
+    lstrcpy(keyNameString, TEXT("DebugLevel"));
+
+    GetPrivateProfileString(sectionString, keyNameString, TEXT("0"), appNameString, sizeof(appNameString), iniFilePathString);
+    debugLevel = (DWORD)ascToInt((PSTR)appNameString);		/// asc2int.c ã‚’ä½¿ã†
+
+    /// ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆãƒ•ãƒ«ãƒ‘ã‚¹åï¼‰
+    lstrcpy(keyNameString, TEXT("LogFile"));
+    GetPrivateProfileString(sectionString, keyNameString, TEXT(""), appNameString, sizeof(appNameString), iniFilePathString);
+
+    GetCurrentDirectory(sizeof(logFileName), logFileName);
+    lstrcat(logFileName, INIDIRNAME);
+    lstrcat(logFileName, appNameString);
+
+    if (isDeleteOnStart == TRUE)
+    {
+        DeleteFile(logFileName);				/// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+    }
 
 
-	logFile = Console::openLogFile();				/// ƒƒOƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚·‚é
+    logFile = Console::openLogFile();				/// ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹
 
-	return;
+    return;
 }
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ìì¬
- */
 BOOL Console::createConsole(void)
 {
-	FILE* filePointer;
-	TCHAR	titleString[MAX_PATH+1];
+    FILE* filePointer;
+    TCHAR	titleString[MAX_PATH + 1];
 
-	if ( (GetVersion() & 0x80000000) && ( (GetVersion() & 0xFF) == 3) )
-	{
-		return FALSE;		/// Win32s ‚ÍƒRƒ“ƒ\[ƒ‹API‚ğ—˜—p‚Å‚«‚È‚¢
-	}
+    if ((GetVersion() & 0x80000000) && ((GetVersion() & 0xFF) == 3))
+    {
+        return FALSE;		/// Win32s ã¯ã‚³ãƒ³ã‚½ãƒ¼ãƒ«APIã‚’åˆ©ç”¨ã§ããªã„
+    }
 
-	FreeConsole();			/// ƒRƒ“ƒ\[ƒ‹‚ª‘¶İ‚·‚ê‚Îƒfƒ^ƒbƒ`‚·‚é
-	AllocConsole();			/// ƒRƒ“ƒ\[ƒ‹‚ğƒAƒ^ƒbƒ`‚·‚é
+    FreeConsole();			/// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ãŒå­˜åœ¨ã™ã‚Œã°ãƒ‡ã‚¿ãƒƒãƒã™ã‚‹
+    AllocConsole();			/// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹
 
-	/// ƒRƒ“ƒ\[ƒ‹‚Ìƒ^ƒCƒgƒ‹‚ğİ’è‚·‚é
-	wsprintf(titleString, TEXT("%s - %s"), CONSOLENAME, sectionName);
-	SetConsoleTitle(titleString);
+    /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®šã™ã‚‹
+    wsprintf(titleString, TEXT("%s - %s"), CONSOLENAME, sectionName);
+    SetConsoleTitle(titleString);
 
-	/// stdout ‚ğ“¾‚é
-	if ( ( filePointer = getConsoleFileHandle(STD_OUTPUT_HANDLE) ) == NULL)
-	{
-		/// ¸”s”»’è
-		FreeConsole();
-		return FALSE;
-	}
-	*stdout = *filePointer;
+    /// stdout ã‚’å¾—ã‚‹
+    if ((filePointer = getConsoleFileHandle(STD_OUTPUT_HANDLE)) == NULL)
+    {
+        /// å¤±æ•—åˆ¤å®š
+        FreeConsole();
+        return FALSE;
+    }
+    *stdout = *filePointer;
 
-	/// stderr ‚ğ“¾‚é
-	if ( ( filePointer = getConsoleFileHandle(STD_ERROR_HANDLE) ) == NULL )
-	{
-		/// ¸”s”»’è
-		FreeConsole();
-		return FALSE;
-	}
-	*stderr = *filePointer;
+    /// stderr ã‚’å¾—ã‚‹
+    if ((filePointer = getConsoleFileHandle(STD_ERROR_HANDLE)) == NULL)
+    {
+        /// å¤±æ•—åˆ¤å®š
+        FreeConsole();
+        return FALSE;
+    }
+    *stderr = *filePointer;
 
-	return TRUE;
+    return TRUE;
 }
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOƒŒƒxƒ‹‚Ìƒ`ƒFƒbƒN
- */
 BOOL Console::checkLevel(DWORD level)
 {
-	if ( debugLevel == 0L )
-	{
-		return TRUE;			/// ƒŒƒxƒ‹İ’è‚ª‚È‚¢
-	}
+    if (debugLevel == 0L)
+    {
+        return TRUE;			/// ãƒ¬ãƒ™ãƒ«è¨­å®šãŒãªã„
+    }
 
-	if( !(debugLevel & level) )
-	{
-		return FALSE;
-	}
+    if (!(debugLevel & level))
+    {
+        return FALSE;
+    }
 
-	return TRUE;
+    return TRUE;
 }
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOƒƒOƒtƒ@ƒCƒ‹‚Ìì¬
- */
 FILE* Console::openLogFile(void)
 {
-	/// Šù‚ÉƒI[ƒvƒ“‚³‚ê‚Ä‚¢‚½‚ç
-	if ( logFile != NULL )
-		return logFile;
+    /// æ—¢ã«ã‚ªãƒ¼ãƒ—ãƒ³ã•ã‚Œã¦ã„ãŸã‚‰
+    if (logFile != NULL)
+        return logFile;
 
-	/// ƒtƒ@ƒCƒ‹‚Ìw’è‚ª‚È‚©‚Á‚½‚ç
-	if ( lstrlen(logFileName) <= 0 )
-		return NULL;
+    /// ãƒ•ã‚¡ã‚¤ãƒ«ã®æŒ‡å®šãŒãªã‹ã£ãŸã‚‰
+    if (lstrlen(logFileName) <= 0)
+        return NULL;
 
-	/// w’èƒtƒ@ƒCƒ‹‚ğŠJ‚­
-	return fopen( (char*)logFileName, "a");
+    /// æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+    return fopen((char*)logFileName, "a");
 }
 
-/**
- *	à–¾
- *		Œ‹‰Ê‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í
- */
 void Console::print(PSTR msgString)
 {
-	/// ƒRƒ“ƒ\[ƒ‹‚Éo—Í
-	fputs(msgString, stderr);
+    /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«å‡ºåŠ›
+    fputs(msgString, stderr);
 
-	/// ƒtƒ@ƒCƒ‹‚Éo—Í
-	if( logFile != NULL )
-	{
-		fputs(msgString, logFile);
-		fflush(logFile);
-	}
+    /// ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›
+    if (logFile != NULL)
+    {
+        fputs(msgString, logFile);
+        fflush(logFile);
+    }
 
-	return;
+    return;
 }
 
-/**
- *	à–¾
- *		Ú×Œ‹‰Ê‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í
- */
 void __cdecl Console::output(DWORD level, PSTR fmtStrPointer, ...)
 {
-	LPSTR FAR*	plpParam;
-	char formatBuff[LINEBUFFSIZE];
-	char lineBuff[LINEBUFFSIZE];
+    LPSTR FAR* plpParam;
+    char formatBuff[LINEBUFFSIZE];
+    char lineBuff[LINEBUFFSIZE];
 
-	if (!isDebugMode)
-	{
-		if (logFile != NULL)
-		{
-			fclose(logFile);
-		}
+    if (!isDebugMode)
+    {
+        if (logFile != NULL)
+        {
+            fclose(logFile);
+        }
 
-		logFile = NULL;
-		return;
-	}
+        logFile = NULL;
+        return;
+    }
 
-	/// ƒŒƒxƒ‹‚ª•s³
-	if ( !checkLevel(level) )
-	{
-		return;
-	}
+    /// ãƒ¬ãƒ™ãƒ«ãŒä¸æ­£
+    if (!checkLevel(level))
+    {
+        return;
+    }
 
-	/// ‘Ò‚¿ŠJn
-	EnterCriticalSection(&loggingCS);
+    /// å¾…ã¡é–‹å§‹
+    EnterCriticalSection(&loggingCS);
 
-	plpParam = ( (PSTR FAR *)&fmtStrPointer ) + 1;
-	
-	wsprintf( (LPWSTR)formatBuff, TEXT("%08lX:%s"), GetCurrentThreadId(), fmtStrPointer );
-	vsprintf( lineBuff, formatBuff, (PSTR)plpParam );
-	
-	Console::print(lineBuff);
+    plpParam = ((PSTR FAR*) & fmtStrPointer) + 1;
 
-	/// ‘Ò‚¿I—¹
-	LeaveCriticalSection(&loggingCS);
+    wsprintf((LPWSTR)formatBuff, TEXT("%08lX:%s"), GetCurrentThreadId(), fmtStrPointer);
+    vsprintf(lineBuff, formatBuff, (PSTR)plpParam);
 
-	return;
+    Console::print(lineBuff);
+
+    /// å¾…ã¡çµ‚äº†
+    LeaveCriticalSection(&loggingCS);
+
+    return;
 }
 
-/**
- *	à–¾
- *		ƒfƒoƒbƒOƒ_ƒ“ƒvo—Í
- *	ˆø”
- *		DWORD  level		... o—ÍƒŒƒxƒ‹
- *		PSTR  titleStrPtr	... ƒ^ƒCƒgƒ‹‚ğw‚·ƒ|ƒCƒ“ƒ^
- *		LPBYTE buffBytePtr	... ƒoƒbƒtƒ@‚ğw‚·ƒ|ƒCƒ“ƒ^
- *		DWORD  buffSize		... ƒoƒbƒtƒ@ƒTƒCƒY	
- */
 void Console::dump(DWORD level, PSTR titleStrPtr, LPBYTE buffBytePtr, DWORD buffSize)
 {
-	DWORD	lineCount   = 0L;			/// 1s‚Ìo—ÍƒoƒCƒg”
-	DWORD	buffCount   = 0L;			/// ƒoƒbƒtƒ@‘S‘Ì‚Ìo—ÍƒoƒCƒg”
-	DWORD	address     = 0L;
-	DWORD	bytePtrLine = 16L;		/// 1s‚Éo—Í‚·‚éƒoƒCƒg” */
-	TCHAR 	lineBuff[LINEBUFFSIZE];
-	LPBYTE	tempBytePtr;
+    DWORD	lineCount = 0L;			/// 1è¡Œã®å‡ºåŠ›ãƒã‚¤ãƒˆæ•°
+    DWORD	buffCount = 0L;			/// ãƒãƒƒãƒ•ã‚¡å…¨ä½“ã®å‡ºåŠ›ãƒã‚¤ãƒˆæ•°
+    DWORD	address = 0L;
+    DWORD	bytePtrLine = 16L;		/// 1è¡Œã«å‡ºåŠ›ã™ã‚‹ãƒã‚¤ãƒˆæ•° */
+    TCHAR 	lineBuff[LINEBUFFSIZE];
+    LPBYTE	tempBytePtr;
 
-	if (isDebugMode)
-	{
-		if ( logFile != NULL)
-		{
-			fclose(logFile);
-		}
-		logFile = NULL;
-		return;
-	}
+    if (isDebugMode)
+    {
+        if (logFile != NULL)
+        {
+            fclose(logFile);
+        }
+        logFile = NULL;
+        return;
+    }
 
-	/// ƒŒƒxƒ‹‚ª•s³
-	if ( !checkLevel(level) )
-	{
-		return;
-	}
+    /// ãƒ¬ãƒ™ãƒ«ãŒä¸æ­£
+    if (!checkLevel(level))
+    {
+        return;
+    }
 
-	if (buffSize > 0x00fffff0L)
-	{
-		buffSize = 0x00fffff0L;		/* Å‘å•\¦Œ… * 16 [bytes] */
-	}
+    if (buffSize > 0x00fffff0L)
+    {
+        buffSize = 0x00fffff0L;		/* æœ€å¤§è¡¨ç¤ºæ¡ * 16 [bytes] */
+    }
 
-	/* ‘Ò‚¿ŠJn */
-	EnterCriticalSection(&loggingCS);
+    /* å¾…ã¡é–‹å§‹ */
+    EnterCriticalSection(&loggingCS);
 
-	Console::output(level, " << %s >> ( %ld bytes )\n", titleStrPtr, buffSize);
-	Console::output(level,	"±ÄŞÚ½ 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
-	Console::output(level,	"-----+-----------------------------------------------\n");
+    Console::output(level, " << %s >> ( %ld bytes )\n", titleStrPtr, buffSize);
+    Console::output(level, "ï½±ï¾„ï¾ï¾šï½½ 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
+    Console::output(level, "-----+-----------------------------------------------\n");
 
-	for (buffCount=0L; buffCount<=(buffSize - 1L); )
-	{
-		Console::output(level, "%05X ", buffCount);
-		tempBytePtr = buffBytePtr;
+    for (buffCount = 0L; buffCount <= (buffSize - 1L); )
+    {
+        Console::output(level, "%05X ", buffCount);
+        tempBytePtr = buffBytePtr;
 
-		/// 16iƒ_ƒ“ƒvo—Í
-		for (lineCount=0L; lineCount<=(bytePtrLine-1L); lineCount++)
-		{
-			wsprintf(lineBuff, TEXT("%02X "), *buffBytePtr++);
-			Console::print( (PSTR)lineBuff );
-			
-			buffCount++;
-			if (buffCount >= buffSize)
-			{
-				DWORD dwSub;
-				for (dwSub=1L; dwSub<=(bytePtrLine-lineCount-1L); dwSub++)
-				{
-					Console::print("   ");
-				}
+        /// 16é€²ãƒ€ãƒ³ãƒ—å‡ºåŠ›
+        for (lineCount = 0L; lineCount <= (bytePtrLine - 1L); lineCount++)
+        {
+            wsprintf(lineBuff, TEXT("%02X "), *buffBytePtr++);
+            Console::print((PSTR)lineBuff);
 
-				bytePtrLine = lineCount + 1;
-				break;
-			}
-		}
+            buffCount++;
+            if (buffCount >= buffSize)
+            {
+                DWORD dwSub;
+                for (dwSub = 1L; dwSub <= (bytePtrLine - lineCount - 1L); dwSub++)
+                {
+                    Console::print("   ");
+                }
 
-		/// ƒLƒƒƒ‰ƒNƒ^ƒ_ƒ“ƒvo—Í
-		for (lineCount=0L; lineCount <= (bytePtrLine-1L); lineCount++)
-		{
-			if ( (*tempBytePtr >= 0x20) && (*tempBytePtr < 0x80) )
-			{
-				wsprintf(lineBuff, TEXT("%c"), *tempBytePtr);
-				Console::print( (PSTR)lineBuff );				/// 1•¶šo—Í
-			}
-			else
-			{
-				Console::print(".");						/// •\¦‚Å‚«‚È‚¢ƒLƒƒƒ‰ƒNƒ^
-			}
+                bytePtrLine = lineCount + 1;
+                break;
+            }
+        }
 
-			tempBytePtr++;
-		}
+        /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ€ãƒ³ãƒ—å‡ºåŠ›
+        for (lineCount = 0L; lineCount <= (bytePtrLine - 1L); lineCount++)
+        {
+            if ((*tempBytePtr >= 0x20) && (*tempBytePtr < 0x80))
+            {
+                wsprintf(lineBuff, TEXT("%c"), *tempBytePtr);
+                Console::print((PSTR)lineBuff);				/// 1æ–‡å­—å‡ºåŠ›
+            }
+            else
+            {
+                Console::print(".");						/// è¡¨ç¤ºã§ããªã„ã‚­ãƒ£ãƒ©ã‚¯ã‚¿
+            }
 
-		Console::print("\n");
-	}
-	Console::output(level, "-----------------------------------------------------\n");
+            tempBytePtr++;
+        }
 
-	/// ‘Ò‚¿I—¹
-	LeaveCriticalSection(&loggingCS);
+        Console::print("\n");
+    }
+    Console::output(level, "-----------------------------------------------------\n");
+
+    /// å¾…ã¡çµ‚äº†
+    LeaveCriticalSection(&loggingCS);
 }
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ì”jŠü
- */
 void Console::destroyConsole(void)
 {
-	/// ƒfƒoƒbƒO‚µ‚Ä‚È‚©‚Á‚½‚ç
-	if ( !isDebugMode )
-	{
-		return;
-	}
+    // ãƒ‡ãƒãƒƒã‚°ã—ã¦ãªã‹ã£ãŸã‚‰
+    if (!isDebugMode)
+    {
+        return;
+    }
 
-	/// ƒƒOƒtƒ@ƒCƒ‹ŠJ‚¢‚Ä‚¢‚½‚ç
-	if ( logFile != NULL )
-	{
-		fclose(logFile);
-		logFile = NULL;
-	}
+    // ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«é–‹ã„ã¦ã„ãŸã‚‰
+    if (logFile != NULL)
+    {
+        fclose(logFile);
+        logFile = NULL;
+    }
 
-	fclose(stdout);
-	fclose(stderr);
-	
-	/// ƒRƒ“ƒ\[ƒ‹ƒfƒ^ƒbƒ`
-	FreeConsole();
+    fclose(stdout);
+    fclose(stderr);
 
-	return;
+    // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ãƒ‡ã‚¿ãƒƒãƒ
+    FreeConsole();
+
+    return;
 }
 
-/**
- *	------------------------------------------------------------
- *		ConsoleƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ì‘®«‚ğİ’è
- */
 BOOL Console::setConsoleAttribute(HANDLE consoleHandle)
 {
-	CONSOLE_CURSOR_INFO			cci;		/// ƒRƒ“ƒ\[ƒ‹ƒJ[ƒ\ƒ‹‚ÉŠÖ‚·‚é\‘¢‘Ì
-	CONSOLE_SCREEN_BUFFER_INFO	csbi;		/// ƒRƒ“ƒ\[ƒ‹ƒXƒNƒŠ[ƒ“ƒoƒbƒtƒ@‚ÉŠÖ‚·‚é\‘¢‘Ì
-	COORD						coordScreen = { 0, 0 };			/// ƒLƒƒƒ‰ƒNƒ^[ƒZƒ‹‚ÌÀ•W
-	DWORD						consoleSize, charsWritten;		/// ƒRƒ“ƒ\[ƒ‹‚ÌƒTƒCƒY‚Æ‚©
-	
-	/// ƒRƒ“ƒ\[ƒ‹‚Ì•\¦Fİ’è
-	WORD attribute = BACKGROUND_BLACK | FOREGROUND_CUSTOM;
+    CONSOLE_CURSOR_INFO			cci;		/// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚«ãƒ¼ã‚½ãƒ«ã«é–¢ã™ã‚‹æ§‹é€ ä½“
+    CONSOLE_SCREEN_BUFFER_INFO	csbi;		/// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒãƒƒãƒ•ã‚¡ã«é–¢ã™ã‚‹æ§‹é€ ä½“
+    COORD						coordScreen = { 0, 0 };			/// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚»ãƒ«ã®åº§æ¨™
+    DWORD						consoleSize, charsWritten;		/// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®ã‚µã‚¤ã‚ºã¨ã‹
 
-	cci.dwSize   = 100;
-	cci.bVisible = FALSE;
+    /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®è¡¨ç¤ºè‰²è¨­å®š
+    WORD attribute = BACKGROUND_BLACK | FOREGROUND_CUSTOM;
 
-	/// ƒRƒ“ƒ\[ƒ‹ƒXƒNƒŠ[ƒ“ƒoƒbƒtƒ@‚ÌƒJ[ƒ\ƒ‹‚ÌƒTƒCƒY‚Æ‰Â‹«‚ğİ’è
-	SetConsoleCursorInfo(consoleHandle, &cci);
+    cci.dwSize = 100;
+    cci.bVisible = FALSE;
 
-	/// ƒRƒ“ƒ\[ƒ‹ƒXƒNƒŠ[ƒ“ƒoƒbƒtƒ@‚ÉŠÖ‚·‚éî•ñ‚ğæ“¾
-	GetConsoleScreenBufferInfo(consoleHandle, &csbi);
-	
-	consoleSize = csbi.dwSize.X * csbi.dwSize.Y;
-	
-	/// ƒXƒNƒŠ[ƒ“ƒoƒbƒtƒ@‚Ìw’è‚µ‚½À•W‚©‚çw’è‚µ‚½”‚Ì•¶šƒZƒ‹•ª‚¾‚¯, ƒeƒLƒXƒg‚Æ”wŒiF‚ğİ’è
-	FillConsoleOutputAttribute(consoleHandle, attribute, consoleSize, coordScreen, &charsWritten);
-	
-	/// š‚Ì‘OŒiiƒeƒLƒXƒgjF‘®«‚Æ”wŒiF‘®«‚ğİ’è
-	SetConsoleTextAttribute(consoleHandle, attribute);
+    /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ã‚«ãƒ¼ã‚½ãƒ«ã®ã‚µã‚¤ã‚ºã¨å¯è¦–æ€§ã‚’è¨­å®š
+    SetConsoleCursorInfo(consoleHandle, &cci);
 
-	return TRUE;
+    /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒãƒƒãƒ•ã‚¡ã«é–¢ã™ã‚‹æƒ…å ±ã‚’å–å¾—
+    GetConsoleScreenBufferInfo(consoleHandle, &csbi);
+
+    consoleSize = csbi.dwSize.X * csbi.dwSize.Y;
+
+    /// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒãƒƒãƒ•ã‚¡ã®æŒ‡å®šã—ãŸåº§æ¨™ã‹ã‚‰æŒ‡å®šã—ãŸæ•°ã®æ–‡å­—ã‚»ãƒ«åˆ†ã ã‘, ãƒ†ã‚­ã‚¹ãƒˆã¨èƒŒæ™¯è‰²ã‚’è¨­å®š
+    FillConsoleOutputAttribute(consoleHandle, attribute, consoleSize, coordScreen, &charsWritten);
+
+    /// å­—ã®å‰æ™¯ï¼ˆãƒ†ã‚­ã‚¹ãƒˆï¼‰è‰²å±æ€§ã¨èƒŒæ™¯è‰²å±æ€§ã‚’è¨­å®š
+    SetConsoleTextAttribute(consoleHandle, attribute);
+
+    return TRUE;
 }
 
-/**
- *	à–¾
- *		ƒRƒ“ƒ\[ƒ‹‚Ì•W€ƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚ğ“¾‚é
- */
 FILE* Console::getConsoleFileHandle(DWORD dwDevice)
 {
-	HANDLE	hStdDevice;
-	int 	hCrt;
-	FILE*	fpConsole = NULL;
+    HANDLE	hStdDevice;
+    int 	hCrt;
+    FILE* fpConsole = NULL;
 
-	if ((hStdDevice = GetStdHandle(dwDevice) ) != INVALID_HANDLE_VALUE)
-	{
-		/// ƒRƒ“ƒ\[ƒ‹ƒnƒ“ƒhƒ‹‚©‚çƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚ğ“¾‚é
-		hCrt      = _open_osfhandle((intptr_t)hStdDevice, _O_TEXT);
-		fpConsole = _fdopen(hCrt, "w");
+    if ((hStdDevice = GetStdHandle(dwDevice)) != INVALID_HANDLE_VALUE)
+    {
+        /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’å¾—ã‚‹
+        hCrt = _open_osfhandle((intptr_t)hStdDevice, _O_TEXT);
+        fpConsole = _fdopen(hCrt, "w");
 
-		setvbuf(fpConsole, NULL, _IONBF, 0);
+        setvbuf(fpConsole, NULL, _IONBF, 0);
 
-		/// ƒRƒ“ƒ\[ƒ‹‚Ì‘®«‚ğİ’è‚·‚é
-		setConsoleAttribute(hStdDevice);
-	}
+        /// ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®å±æ€§ã‚’è¨­å®šã™ã‚‹
+        setConsoleAttribute(hStdDevice);
+    }
 
-	return fpConsole;
+    return fpConsole;
 }

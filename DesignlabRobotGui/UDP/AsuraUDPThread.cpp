@@ -1,9 +1,8 @@
-// AsuraUDPTherad.cpp : À‘•ƒtƒ@ƒCƒ‹
+ï»¿// AsuraUDPTherad.cpp : å®Ÿè£…ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
 #include "stdafx.h"
 #include "AsuraUDPThread.h"
-#include "..\Utility\Constants.h"
 #include "UDPPacket.h"
 #include <winsock2.h>
 #include <WS2tcpip.h>
@@ -27,608 +26,608 @@ IMPLEMENT_DYNCREATE(AsuraUDPThread, CWinThread)
 
 BEGIN_MESSAGE_MAP(AsuraUDPThread, CWinThread)
 
-	///ƒJƒXƒ^ƒ€ƒƒbƒZ[ƒW
-	ON_MESSAGE(WM_DLG_UDPTHREAD_END, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnEndThread)
-	ON_MESSAGE(WM_DLG_COMM_START_LISTEN, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStartPortListening)
-	ON_MESSAGE(WM_DLG_COMM_STOP_LISTEN, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStopPortListening)
-	ON_MESSAGE(WM_PLAN_SENDING_COMM_DATA, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnSendCommandData)
+    ///ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+    ON_MESSAGE(WM_DLG_UDPTHREAD_END, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnEndThread)
+    ON_MESSAGE(WM_DLG_COMM_START_LISTEN, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStartPortListening)
+    ON_MESSAGE(WM_DLG_COMM_STOP_LISTEN, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStopPortListening)
+    ON_MESSAGE(WM_PLAN_SENDING_COMM_DATA, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnSendCommandData)
 
-	/* ƒƒO –¢À‘•20210622
-	ON_MESSAGE(WM_DLG_COMM_START_LOGGING, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStartLogging)
-	ON_MESSAGE(WM_DLG_COMM_STOP_LOGGING, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStopLogging)
-	*/
+    /* ãƒ­ã‚° æœªå®Ÿè£…20210622
+    ON_MESSAGE(WM_DLG_COMM_START_LOGGING, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStartLogging)
+    ON_MESSAGE(WM_DLG_COMM_STOP_LOGGING, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStopLogging)
+    */
 
 END_MESSAGE_MAP()
 
 AsuraUDPThread::AsuraUDPThread()
-	:isAlive(),isCommAlive(),addr(),client_addr(),client_IPAdress()
-	,longPacket(),onelegPacket(),pMultiMediaTimer(),pTimedUDPProcedure()
-	,port(),sciPacketType(),server_IPAdress(),server_addr(),shortPacket()
-{ 
-	///¶‘¶ƒtƒ‰ƒO‚Ì‰Šú‰»
-	isAlive = FALSE;
+    :isAlive(), isCommAlive(), addr(), client_addr(), client_IPAdress()
+    , longPacket(), onelegPacket(), pMultiMediaTimer(), pTimedUDPProcedure()
+    , port(), sciPacketType(), server_IPAdress(), server_addr(), shortPacket()
+{
+    ///ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
+    isAlive = FALSE;
 
-	//’ÊMƒtƒ‰ƒO
-	isCommAlive = FALSE;
+    //é€šä¿¡ãƒ•ãƒ©ã‚°
+    isCommAlive = FALSE;
 
-	//sock initialize
-	sock=INVALID_SOCKET;
+    //sock initialize
+    sock = INVALID_SOCKET;
 
 }
 
 AsuraUDPThread::~AsuraUDPThread()
 {
-	//¶‘¶ƒtƒ‰ƒO‚ÌI—¹ˆ—
-	isAlive = FALSE;
+    //ç”Ÿå­˜ãƒ•ãƒ©ã‚°ã®çµ‚äº†å‡¦ç†
+    isAlive = FALSE;
 }
 
 BOOL AsuraUDPThread::InitInstance()
 {
-	// TODO:  ƒXƒŒƒbƒh‚²‚Æ‚Ì‰Šú‰»‚ğ‚±‚±‚ÅÀs‚µ‚Ü‚·B
+    // TODO:  ã‚¹ãƒ¬ãƒƒãƒ‰ã”ã¨ã®åˆæœŸåŒ–ã‚’ã“ã“ã§å®Ÿè¡Œã—ã¾ã™ã€‚
 
-	/// ƒXƒŒƒbƒh‚ğƒAƒNƒeƒBƒu‚É
-	isAlive = TRUE;
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«
+    isAlive = TRUE;
 
 
 
-	return TRUE;
+    return TRUE;
 }
 
 int AsuraUDPThread::ExitInstance()
 {
-	// TODO:  ƒXƒŒƒbƒh‚²‚Æ‚ÌŒãˆ—‚ğ‚±‚±‚ÅÀs‚µ‚Ü‚·B
-	 
-	
+    // TODO:  ã‚¹ãƒ¬ãƒƒãƒ‰ã”ã¨ã®å¾Œå‡¦ç†ã‚’ã“ã“ã§å®Ÿè¡Œã—ã¾ã™ã€‚
 
-	finalizeAsuraUDPThread();
-	return CWinThread::ExitInstance();
+
+
+    finalizeAsuraUDPThread();
+    return CWinThread::ExitInstance();
 }
 
-// ASuraUDPThread ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// ASuraUDPThread ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©
 /**
  *	------------------------------------------------------------
- *		¶¬‚³‚ê‚½AƒƒbƒZ[ƒWŠ„‚è“–‚ÄŠÖ”
- *		MotionPlanThread ƒƒbƒZ[ƒWƒnƒ“ƒhƒ‰ ŠÖ”
+ *		ç”Ÿæˆã•ã‚ŒãŸã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‰²ã‚Šå½“ã¦é–¢æ•°
+ *		MotionPlanThread ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ© é–¢æ•°
  *	------------------------------------------------------------
  */
  /**
   *	----------------------------------------
-  *	DocCViewƒNƒ‰ƒXŠÖ˜A
+  *	Docï¼ŒViewã‚¯ãƒ©ã‚¹é–¢é€£
   *	----------------------------------------
   */
- /**
-  *	à–¾
-  *		ƒXƒŒƒbƒh‚ÌI—¹ˆ—
- */
+  /**
+   *	èª¬æ˜
+   *		ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†å‡¦ç†
+  */
 void AsuraUDPThread::OnEndThread(WPARAM wParam, LPARAM lParam)
 {
-	/// ƒXƒŒƒbƒhI—¹ˆ—
-	ExitInstance();
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†å‡¦ç†
+    ExitInstance();
 
-	/// ƒVƒXƒeƒ€‚ÉI—¹‚ğ—v‹(WM_DESTORY‚É‘Î‰)
-	PostQuitMessage(0);
+    /// ã‚·ã‚¹ãƒ†ãƒ ã«çµ‚äº†ã‚’è¦æ±‚(WM_DESTORYã«å¯¾å¿œ)
+    PostQuitMessage(0);
 }
 
 
 /**
  *	----------------------------------------
- *	’ÊMŠÖ˜A
+ *	é€šä¿¡é–¢é€£
  *	----------------------------------------
  */
-///’ÊMŠJn
+ ///é€šä¿¡é–‹å§‹
 void AsuraUDPThread::OnStartPortListening(WPARAM wParam, LPARAM lParam)
 {
-	//ƒ[ƒJƒ‹•Ï”
-	int n=1;
+    //ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+    int n = 1;
 
-	/*
-		sock open
-	*/
-	// initalize winsock2
-	WSADATA wsaData;
-	n=WSAStartup(MAKEWORD(2, 0), &wsaData); ///¬Œ÷‚µ‚½‚ç–ß‚è’l0
-	
-
-	if (n == 0)
-	{
-		
-
-		//socket opening
-		sock = socket(AF_INET, SOCK_DGRAM, 0);
-
-		
-		
-		//server configulation
-		
-		memset(&server_addr,0,sizeof server_addr);
-		server_addr.sin_family = AF_INET;
-		server_addr.sin_port = htons(c_portNo);
-		inet_pton(AF_INET,"192.168.0.169", &server_addr.sin_addr.S_un.S_addr);
-		//inet_pton(AF_INET, client_IPAdress, &server_addr.sin_addr.S_un.S_addr);
+    /*
+      sock open
+    */
+    // initalize winsock2
+    WSADATA wsaData;
+    n = WSAStartup(MAKEWORD(2, 0), &wsaData); ///æˆåŠŸã—ãŸã‚‰æˆ»ã‚Šå€¤0
 
 
-		isCommAlive = true;
-	}
-	else
-	{
-		isCommAlive = false;
-	}
+    if (n == 0)
+    {
+
+
+        //socket opening
+        sock = socket(AF_INET, SOCK_DGRAM, 0);
+
+
+
+        //server configulation
+
+        memset(&server_addr, 0, sizeof server_addr);
+        server_addr.sin_family = AF_INET;
+        server_addr.sin_port = htons(c_portNo);
+        inet_pton(AF_INET, "192.168.0.169", &server_addr.sin_addr.S_un.S_addr);
+        //inet_pton(AF_INET, client_IPAdress, &server_addr.sin_addr.S_un.S_addr);
+
+
+        isCommAlive = true;
+    }
+    else
+    {
+        isCommAlive = false;
+    }
 }
 
-///’ÊM’â~
+///é€šä¿¡åœæ­¢
 void AsuraUDPThread::OnStopPortListening(WPARAM wParam, LPARAM lParam)
 {
-	isCommAlive = false;
-	
-	/*
-		sock close
-	*/
-	//socket closing
-	closesocket(sock);
-	// finalize winsock2
-	WSACleanup();
+    isCommAlive = false;
 
-	/// ƒXƒŒƒbƒhI—¹ˆ—
-	ExitInstance();
+    /*
+      sock close
+    */
+    //socket closing
+    closesocket(sock);
+    // finalize winsock2
+    WSACleanup();
 
-	/// ƒVƒXƒeƒ€‚ÉI—¹‚ğ—v‹(WM_DESTORY‚É‘Î‰)
-	PostQuitMessage(0);
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†å‡¦ç†
+    ExitInstance();
+
+    /// ã‚·ã‚¹ãƒ†ãƒ ã«çµ‚äº†ã‚’è¦æ±‚(WM_DESTORYã«å¯¾å¿œ)
+    PostQuitMessage(0);
 }
 
 void AsuraUDPThread::OnSendCommandData(WPARAM wParam, LPARAM lParam)
 {
-	//get command 
-	if ((AsuraData*)wParam != NULL)
-		viewAsuraXData = *((AsuraData*)wParam);
-	if ((PlanData*)lParam != NULL)
-		viewPlanData = *((PlanData*)lParam);
+    //get command 
+    if ((AsuraData*)wParam != NULL)
+        viewAsuraXData = *((AsuraData*)wParam);
+    if ((PlanData*)lParam != NULL)
+        viewPlanData = *((PlanData*)lParam);
 
-	//‘—Mƒoƒbƒtƒ@‚Ö‚Ì‘‚«‚İ
+    //é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã¸ã®æ›¸ãè¾¼ã¿
 
-	/**
-	 *		ƒ[ƒJƒ‹•Ï”
-	 */
-	int i;
-	sciPacketType = SciPacketType::LONG;
+    /**
+     *		ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+     */
+    int i;
+    sciPacketType = SciPacketType::LONG;
 
-	switch (sciPacketType)
-	{
-	case SciPacketType::SHORT:
-	{
-		/// ƒpƒPƒbƒg‘—M
-		for (i = 0;i < SCI_MAX_JOINT_NUM;i++)
-		{
-			/// ƒpƒPƒbƒgƒf[ƒ^ì¬
-			ZeroMemory(shortPacket[i], SCI_PACKET_SIZE_SHORT);
-			//buildPacket(SciPacketType::SHORT, shortPacket[i], i+1, PACKET_CMD_JNT_POS);
-			//pCommPort->sendData((&shortPacket[i][0]), (DWORD)SCI_PACKET_SIZE_SHORT);
-		}
-	}
-	break;
+    switch (sciPacketType)
+    {
+        case SciPacketType::SHORT:
+        {
+            /// ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡
+            for (i = 0; i < SCI_MAX_JOINT_NUM; i++)
+            {
+                /// ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ä½œæˆ
+                ZeroMemory(shortPacket[i], SCI_PACKET_SIZE_SHORT);
+                //buildPacket(SciPacketType::SHORT, shortPacket[i], i+1, PACKET_CMD_JNT_POS);
+                //pCommPort->sendData((&shortPacket[i][0]), (DWORD)SCI_PACKET_SIZE_SHORT);
+            }
+        }
+        break;
 
-	case  SciPacketType::LONG:
-	{
-		/// ƒpƒPƒbƒg‘—M
-		SecureZeroMemory(&longPacket, sizeof(longPacket));
-		//if(getLocomotionStyle()==LEGGED)//–â‘è
-		buildPacket(SciPacketType::LONG, SCI_ALL_JOINTS, PAKCET_CMD_WALK);
-		//ƒpƒPƒbƒg‘—M
-		sendto(sock, longPacket, sizeof(longPacket), 0, (struct sockaddr*)&server_addr, sizeof(server_addr));
-		
-		
-	}
-	break;
-
-	case  SciPacketType::DEBUGGING:
-	{
-		return;
-	}
-	break;
-	}
+        case  SciPacketType::LONG:
+        {
+            /// ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡
+            SecureZeroMemory(&longPacket, sizeof(longPacket));
+            //if(getLocomotionStyle()==LEGGED)//å•é¡Œ
+            buildPacket(SciPacketType::LONG, SCI_ALL_JOINTS, PAKCET_CMD_WALK);
+            //ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡
+            sendto(sock, longPacket, sizeof(longPacket), 0, (struct sockaddr*)&server_addr, sizeof(server_addr));
 
 
+        }
+        break;
 
-	return;
+        case  SciPacketType::DEBUGGING:
+        {
+            return;
+        }
+        break;
+    }
+
+
+
+    return;
 
 }
 
 
 
 
-//ŠJnˆ—
+//é–‹å§‹å‡¦ç†
 void AsuraUDPThread::initializeAsuraUDPThread(void)
 {
-	/*
-	*
-	* ƒoƒbƒtƒ@—Ìˆæ‚ÌŠm•Û
-	*
-	*/
+    /*
+    *
+    * ãƒãƒƒãƒ•ã‚¡é ˜åŸŸã®ç¢ºä¿
+    *
+    */
 
 
-	if (writeBuffer != NULL) delete[] writeBuffer;
-	if (writeBufferSize_ > MAX_BUFFER_SIZE) writeBufferSize_ = MAX_BUFFER_SIZE;
-	writeBuffer = new unsigned char[writeBufferSize_];
+    if (writeBuffer != NULL) delete[] writeBuffer;
+    if (writeBufferSize_ > MAX_BUFFER_SIZE) writeBufferSize_ = MAX_BUFFER_SIZE;
+    writeBuffer = new unsigned char[writeBufferSize_];
 
-	/// ƒoƒbƒtƒ@ƒTƒCƒY‚Ìİ’è
-	writeBufferSize = writeBufferSize_;
+    /// ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã®è¨­å®š
+    writeBufferSize = writeBufferSize_;
 
-	/// ƒoƒbƒtƒ@‚Ì‰Šú‰»
-	ZeroMemory(writeBuffer, writeBufferSize);
+    /// ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
+    ZeroMemory(writeBuffer, writeBufferSize);
 
 
 
-	/**
-	 *	à–¾
-	 *		ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒNì¬
-	 */
-	 /// ƒIƒuƒWƒFƒNƒgì¬
-	pTimedUDPProcedure = new System::TimedMotionProcedure();
-	/// ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒN‚É–{ƒXƒŒƒbƒh‚ÌID‚ğ“o˜^
-	pTimedUDPProcedure->setThreadID(m_nThreadID);	//// m_nThread‚ÍŠî’êƒNƒ‰ƒX‚ÌCWinThread‚Ìƒƒ“ƒo
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ä½œæˆ
+     */
+     /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
+    pTimedUDPProcedure = new System::TimedMotionProcedure();
+    /// ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã«æœ¬ã‚¹ãƒ¬ãƒƒãƒ‰ã®IDã‚’ç™»éŒ²
+    pTimedUDPProcedure->setThreadID(m_nThreadID);	//// m_nThreadã¯åŸºåº•ã‚¯ãƒ©ã‚¹ã®CWinThreadã®ãƒ¡ãƒ³ãƒ
 
-/**
- *	ƒ^ƒCƒ}–{‘Ìì¬
- */
-	pMultiMediaTimer = new System::MultiMediaTimer(*pTimedUDPProcedure);
-	pMultiMediaTimer->setTimer(20, 5);
+    /**
+     *	ã‚¿ã‚¤ãƒæœ¬ä½“ä½œæˆ
+     */
+    pMultiMediaTimer = new System::MultiMediaTimer(*pTimedUDPProcedure);
+    pMultiMediaTimer->setTimer(20, 5);
 
-	isAlive = TRUE;
+    isAlive = TRUE;
 }
 
 
-//I—¹ˆ—
+//çµ‚äº†å‡¦ç†
 void AsuraUDPThread::finalizeAsuraUDPThread(void)
 {
-	/**
-	 *	ƒ^ƒCƒ}I—¹ˆ—
-	 */
-	 /// ƒ^ƒCƒ}‚ª’â~‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç
-	if (pMultiMediaTimer != NULL)
-	{
-		pMultiMediaTimer->killTimer();
+    /**
+     *	ã‚¿ã‚¤ãƒçµ‚äº†å‡¦ç†
+     */
+     /// ã‚¿ã‚¤ãƒãŒåœæ­¢ã—ã¦ã„ãªã‹ã£ãŸã‚‰
+    if (pMultiMediaTimer != NULL)
+    {
+        pMultiMediaTimer->killTimer();
 
-		/// ƒ^ƒCƒ}ƒIƒuƒWƒFƒNƒg”jŠü
-		delete pMultiMediaTimer;
-		pMultiMediaTimer = NULL;
-	}
+        /// ã‚¿ã‚¤ãƒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´æ£„
+        delete pMultiMediaTimer;
+        pMultiMediaTimer = NULL;
+    }
 
-	if (pTimedUDPProcedure != NULL)
-	{
-		/// ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒN”jŠü
-		delete pTimedUDPProcedure;
-		pTimedUDPProcedure = NULL;
-	}
+    if (pTimedUDPProcedure != NULL)
+    {
+        /// ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç ´æ£„
+        delete pTimedUDPProcedure;
+        pTimedUDPProcedure = NULL;
+    }
 
-	return;
+    return;
 
 }
 
-//@ƒpƒPƒbƒgƒf[ƒ^ì¬
+//ã€€ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ä½œæˆ
 char AsuraUDPThread::buildPacket(SciPacketType type, int address, int command)
 {
-	/// ƒJƒEƒ“ƒ^
-	int i, j;
-	
-
-	/// ’ÊMƒtƒH[ƒ}ƒbƒg‚Åê‡•ª‚¯
-	switch (type)
-	{
-		/// 1ŠÖß‚²‚Æ‚Éw—ß’l‚ğ‘—‚éê‡<---Š±Â‹ì“®
-	case SciPacketType::SHORT:
-	{
-		/// ƒf[ƒ^•”•ª
-		int data;
-
-		/// w—ß’l‚Åê‡•ª‚¯
-		switch (command)
-		{
-			/// Šp“xw—ß
-		case PACKET_CMD_JNT_POS:
-		{
-			/// ‹rŠÖßƒf[ƒ^æ“¾
-			/// ’PˆÊ‚ğDeg‚ÉC³‚µA100”{‚µ‚Ä—LŒø”š5Œ…‚Ì³‚Ì®”‚É‚·‚éi16bitj
-			data = (int)((viewAsuraXData.getLegJointAngle((int)((address - 1) / 3) + 1)(((address - 1) % 3) + 1) * RAD2DEG + 180.0) * 100.0);	/// <-ƒIƒtƒZƒbƒg‚µ‚Ä³’l‚É
-			//data =(int)(commTitanData.getLegActuatorPosition(1)*100);
-
-			/// ƒoƒbƒtƒ@‚Éˆê•Û‘¶ 
-			//packet[0] = SCI_PACKET_HEADER;
-			//packet[1] = SCI_PACKET_SIZE_SHORT;
-			//packet[2] = (unsigned char)address;
-			//packet[3] = (unsigned char)command;
-			//packet[4] = (unsigned char)((data & 0xFF00) >> 8);
-			//packet[5] = (unsigned char)(data & 0x00FF);
-			//packet[6] = (unsigned char)((packet[4] + packet[5]) & 0x00FF);
-		}
-		break;
-
-		/// ‘¬“xi—ß
-		case PACKET_CMD_JNT_SPD:
-		{
-		}
-		break;
-
-		default:
-			break;
-		}
-	}
-	break;
-
-	/// ‘SŠÖß‚Éw—ß’l‚ğ‘—‚éê‡
-	case SciPacketType::LONG:
-	{
+    /// ã‚«ã‚¦ãƒ³ã‚¿
+    int i, j;
 
 
-		/*			/// ƒpƒPƒbƒgƒf[ƒ^‚É‘ã“ü
-					/// ƒwƒbƒ_
-					packet[0]	= SCI_PACKET_HEADER;
-					packet[1]	= SCI_PACKET_HEADER;
-					packet[2]	= SCI_PACKET_SIZE_LONG;
+    /// é€šä¿¡ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§å ´åˆåˆ†ã‘
+    switch (type)
+    {
+        /// 1é–¢ç¯€ã”ã¨ã«æŒ‡ä»¤å€¤ã‚’é€ã‚‹å ´åˆ<---å¹²æ¸‰é§†å‹•
+        case SciPacketType::SHORT:
+        {
+            /// ãƒ‡ãƒ¼ã‚¿éƒ¨åˆ†
+            int data;
 
-						packet[3]	= PACKET_LEG_ALL_JOINTS;
+            /// æŒ‡ä»¤å€¤ã§å ´åˆåˆ†ã‘
+            switch (command)
+            {
+                /// è§’åº¦æŒ‡ä»¤
+                case PACKET_CMD_JNT_POS:
+                {
+                    /// è„šé–¢ç¯€ãƒ‡ãƒ¼ã‚¿å–å¾—
+                    /// å˜ä½ã‚’Degã«ä¿®æ­£ã—ã€100å€ã—ã¦æœ‰åŠ¹æ•°å­—5æ¡ã®æ­£ã®æ•´æ•°ã«ã™ã‚‹ï¼ˆ16bitï¼‰
+                    data = (int)((viewAsuraXData.getLegJointAngle((int)((address - 1) / 3) + 1)(((address - 1) % 3) + 1) * RAD2DEG + 180.0) * 100.0);	/// <-ã‚ªãƒ•ã‚»ãƒƒãƒˆã—ã¦æ­£å€¤ã«
+                    //data =(int)(commTitanData.getLegActuatorPosition(1)*100);
 
-						/// ƒRƒ}ƒ“ƒh“à—e
-						packet[4]	= changeflag;//PAKCET_CMD_WALK;
+                    /// ãƒãƒƒãƒ•ã‚¡ã«ä¸€æ™‚ä¿å­˜ 
+                    //packet[0] = SCI_PACKET_HEADER;
+                    //packet[1] = SCI_PACKET_SIZE_SHORT;
+                    //packet[2] = (unsigned char)address;
+                    //packet[3] = (unsigned char)command;
+                    //packet[4] = (unsigned char)((data & 0xFF00) >> 8);
+                    //packet[5] = (unsigned char)(data & 0x00FF);
+                    //packet[6] = (unsigned char)((packet[4] + packet[5]) & 0x00FF);
+                }
+                break;
 
-						/// ƒwƒbƒ_ƒ`ƒFƒbƒNƒTƒ€
-						for (i=0;i<(SCI_PACKET_HEADER_SIZE-1);i++)
-						{
-							headerCheckSum += packet[i];
-						}
-						packet[5] = headerCheckSum;
+                /// é€Ÿåº¦å¸ä»¤
+                case PACKET_CMD_JNT_SPD:
+                {
+                }
+                break;
 
-						for (i=0;i<SCI_MAX_JOINT_NUM;i++)
-						{
-							/// ‹rŠÖßƒf[ƒ^æ“¾
-							/// -180`180‚¾‚ª180“x‰ÁZ‚µ‚ÄAƒIƒtƒZƒbƒg‚µ‚Ä0`360‚É•ÏŠ·‚µ³’l‚É
-							///Šp‘¬“x‚ÍˆÚ“®‘¬“x‚ğ-300`300[mm/s]‚Æ‚µC‚»‚ÌŒã’PˆÊ‚ğ[deg/s]‚É‚·‚é@‚»‚µ‚Ä+300‚·‚é‚±‚Æ‚ÅƒIƒtƒZƒbƒg‚ğs‚¤
-							if(i==2 || i==5 || i==8 || i==11){
-								if(changeflag & BIT((i-2)/3))
-								{
-										data = (int)((commTitanData.getTrackSpeed((int)(i/3)+1)* RAD2DEG/WHEELRADIUS+300) * 100.0);//Šp‘¬“x
-							//		if(i==5)
-								cerr<<"ANvel  " <<data<<"   vel  " <<commTitanData.getTrackSpeed((int)(i/3)+1)<<endl;
+                default:
+                    break;
+            }
+        }
+        break;
 
-								}
-								else
-								{data = (int)((commTitanData.getLegJointAngle((int)(i / 3) + 1)(i%3 + 1) * RAD2DEG + 180.0) * 100.0);
-									//if(i==5)
-								cerr<<i<<" anggg =" <<data<<"   anggg  " <<commTitanData.getLegJointAngle((int)(i / 3) + 1)(i%3 + 1)<<endl;
-								}//Šp“x
-							}
-							else
-							{
-							data = (int)((commTitanData.getLegJointAngle((int)(i / 3) + 1)(i%3 + 1) * RAD2DEG + 180.0) * 100.0);//Šp“x
-							if(i==1)
-								cerr<<"2angll ="<<data<<endl;
-							}
-							dataHigh	= (unsigned char)((data & 0xFF00) >> 8);
-							dataLow		= (unsigned char)(data & 0x00FF);
-							sum = sum + dataHigh + dataLow;
-
-							/// ‹r‚ÌƒpƒPƒbƒgƒf[ƒ^
-							packet[2*(i + 3)]		= dataHigh;
-							packet[2*(i + 3) + 1]	= dataLow;
-						}
-
-						/// ƒ`ƒFƒbƒNƒTƒ€
-						packet[30]	= (unsigned char)((sum & 0x7F00) >> 8);
-						packet[31]	= (unsigned char)(sum & 0x00FF);
+        /// å…¨é–¢ç¯€ã«æŒ‡ä»¤å€¤ã‚’é€ã‚‹å ´åˆ
+        case SciPacketType::LONG:
+        {
 
 
-				}
-				break;
+            /*			/// ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã«ä»£å…¥
+                  /// ãƒ˜ãƒƒãƒ€
+                  packet[0]	= SCI_PACKET_HEADER;
+                  packet[1]	= SCI_PACKET_HEADER;
+                  packet[2]	= SCI_PACKET_SIZE_LONG;
 
-				case Comm::DEBUGGING:
-				{
-				}
-				break;
-			default:
-				break;
-		*/
-	
-		unsigned __int32 data = 0;
-		double Actpos=0;
-		unsigned char symbol=0;
-		
-		unsigned __int16  CANID = 0;
-		unsigned __int16  TopID = 0;
-		unsigned __int16  UnderID = 0;
-		unsigned __int16  Data1 = 0;
-		unsigned __int16  Data2 = 0;
-		int address = 0;//ƒAƒNƒ`ƒ…ƒG[ƒ^[”Ô† 1-24
-		unsigned char CommandType = 0;
-		unsigned char Checksum=0;
-		unsigned short Cdata1=0;
-		unsigned short Cdata2 = 0;
-		int Act_Memo = 0;
-		unsigned __int16 Pinit = 127;
+                    packet[3]	= PACKET_LEG_ALL_JOINTS;
 
-		for (i = 1;i < (LEG_NUM-4);i++) {//for(i=0;i<1;i++){//
+                    /// ã‚³ãƒãƒ³ãƒ‰å†…å®¹
+                    packet[4]	= changeflag;//PAKCET_CMD_WALK;
 
-			for (j = 0;j < LEG_ACT_NUM;j++) {//for (j=0;j<1;j++){//
+                    /// ãƒ˜ãƒƒãƒ€ãƒã‚§ãƒƒã‚¯ã‚µãƒ 
+                    for (i=0;i<(SCI_PACKET_HEADER_SIZE-1);i++)
+                    {
+                      headerCheckSum += packet[i];
+                    }
+                    packet[5] = headerCheckSum;
 
+                    for (i=0;i<SCI_MAX_JOINT_NUM;i++)
+                    {
+                      /// è„šé–¢ç¯€ãƒ‡ãƒ¼ã‚¿å–å¾—
+                      /// -180ï½180ã ãŒ180åº¦åŠ ç®—ã—ã¦ã€ã‚ªãƒ•ã‚»ãƒƒãƒˆã—ã¦0ï½360ã«å¤‰æ›ã—æ­£å€¤ã«
+                      ///è§’é€Ÿåº¦ã¯ç§»å‹•é€Ÿåº¦ã‚’-300ï½300[mm/s]ã¨ã—ï¼Œãã®å¾Œå˜ä½ã‚’[deg/s]ã«ã™ã‚‹ã€€ãã—ã¦+300ã™ã‚‹ã“ã¨ã§ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¡Œã†
+                      if(i==2 || i==5 || i==8 || i==11){
+                        if(changeflag & BIT((i-2)/3))
+                        {
+                            data = (int)((commTitanData.getTrackSpeed((int)(i/3)+1)* RAD2DEG/WHEELRADIUS+300) * 100.0);//è§’é€Ÿåº¦
+                      //		if(i==5)
+                        cerr<<"ANvel  " <<data<<"   vel  " <<commTitanData.getTrackSpeed((int)(i/3)+1)<<endl;
 
-				switch (j)
-				{
-					CANID = 0;
-					CommandType = 0;
-					///‹rƒ}ƒCƒRƒ“1
-				case 0: {
-					CANID = (i + 1) * 100 + 10;//controller__1;//
-					CommandType = com_ballscllew_1_pos;///ƒ{[ƒ‹‚Ë‚¶1
+                        }
+                        else
+                        {data = (int)((commTitanData.getLegJointAngle((int)(i / 3) + 1)(i%3 + 1) * RAD2DEG + 180.0) * 100.0);
+                          //if(i==5)
+                        cerr<<i<<" anggg =" <<data<<"   anggg  " <<commTitanData.getLegJointAngle((int)(i / 3) + 1)(i%3 + 1)<<endl;
+                        }//è§’åº¦
+                      }
+                      else
+                      {
+                      data = (int)((commTitanData.getLegJointAngle((int)(i / 3) + 1)(i%3 + 1) * RAD2DEG + 180.0) * 100.0);//è§’åº¦
+                      if(i==1)
+                        cerr<<"2angll ="<<data<<endl;
+                      }
+                      dataHigh	= (unsigned char)((data & 0xFF00) >> 8);
+                      dataLow		= (unsigned char)(data & 0x00FF);
+                      sum = sum + dataHigh + dataLow;
 
-				}
-					  break;
-				case 1: {
-					CANID = (i + 1) * 100 + 10;//controller_2_1;//
-					CommandType = com_ballscllew_2_pos;///ƒ{[ƒ‹‚Ë‚¶2
+                      /// è„šã®ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿
+                      packet[2*(i + 3)]		= dataHigh;
+                      packet[2*(i + 3) + 1]	= dataLow;
+                    }
 
-				}
-					  break;
-
-					  ///‹rƒ}ƒCƒRƒ“2
-				case 2: {
-					CANID = (i + 1) * 100 + 20;//controller_2_2;//
-					CommandType = com_ballscllew_1_pos;///ƒ{[ƒ‹‚Ë‚¶1
-				}
-					  break;
-				case 3: {
-					CANID = (i + 1) * 100 + 20;//controller_2_2;//
-					CommandType = com_ballscllew_2_pos;///ƒ{[ƒ‹‚Ë‚¶2
-				}
-					  break;
-
-				default:
-					break;
-				}
-				TopID = CANID & 0x0000ff00;
-				UnderID = CANID & 0x000000ff;
-				TopID = TopID >> 8;
-				///ƒAƒNƒ`ƒ…ƒG[ƒ^[w—ß’l = ƒ{[ƒ‹‚Ë‚¶À•W * 100
-				//data = (int)( (viewAsuraXData.getLegJointAngle(1)(1)*RAD2DEG +180.0 )*100.0 );
-				//data =(int)(commTitanData.getLegActuatorPosition(i+1)(j+1)*100.0);
-				//data =123*100; 
-				//data =(unsigned __int32)(-123*100);
-			
-				Actpos = 100*viewAsuraXData.getLegActuatorPosition(i+1)(j + 1);
-				
-				if (Actpos >= 0)
-				{
-					data = (unsigned int)Actpos;
-					symbol = 0x00;
-				}
-				else
-				{
-					Actpos = (-1) * Actpos;		//•„†”½“]
-					data = (unsigned int)Actpos;
-					symbol = 0xff;
-				}
-				
-							
-
-				///ƒ}ƒXƒN‚ÆƒLƒƒƒXƒg‚ğ“¯‚ÉÀs‚·‚é‚Æw—ß’lƒGƒ‰[‚È‚Ì‚Å•ª‚¯‚é
-				Data1 = data & 0xff00;
-				Data2= data & 0x00ff;
-				Data1 = Data1 >> 8;
-
-				//ƒpƒPƒbƒgƒ`ƒFƒbƒNƒTƒ€
-				Cdata1 = Data1&0x00f0;
-				Cdata2 = Data2&0x000f;
-				Checksum = (unsigned char)(Cdata1 + Cdata2);
+                    /// ãƒã‚§ãƒƒã‚¯ã‚µãƒ 
+                    packet[30]	= (unsigned char)((sum & 0x7F00) >> 8);
+                    packet[31]	= (unsigned char)(sum & 0x00FF);
 
 
-				/// ƒAƒNƒ`ƒ…ƒG[ƒ^‚Ö‚ÌƒpƒPƒbƒgƒf[ƒ^
-				longPacket[8 * Act_Memo]	 = (unsigned char)Pinit;
-				longPacket[8 * Act_Memo	+ 1] = (unsigned char)TopID;//((CANID & 0x0000FF00 ) >> 8);
-				longPacket[8 * Act_Memo + 2] = (unsigned char)UnderID;//( CANID & 0x000000FF );
-				longPacket[8 * Act_Memo + 3] = (unsigned char)CommandType;
-				longPacket[8 * Act_Memo + 4] = (unsigned char)symbol;
-				longPacket[8 * Act_Memo + 5] = (unsigned char)Data1;
-				longPacket[8 * Act_Memo + 6] = (unsigned char)Data2;
-				longPacket[8 * Act_Memo + 7] = Checksum;
+                }
+                break;
 
-					
-				
-				Act_Memo++;
-			}//LEG_ACT_NUM
+                case Comm::DEBUGGING:
+                {
+                }
+                break;
+              default:
+                break;
+            */
 
-			
-		}///LEG_NUM
+            unsigned __int32 data = 0;
+            double Actpos = 0;
+            unsigned char symbol = 0;
+
+            unsigned __int16  CANID = 0;
+            unsigned __int16  TopID = 0;
+            unsigned __int16  UnderID = 0;
+            unsigned __int16  Data1 = 0;
+            unsigned __int16  Data2 = 0;
+            int address = 0;//ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿ãƒ¼ç•ªå· 1-24
+            unsigned char CommandType = 0;
+            unsigned char Checksum = 0;
+            unsigned short Cdata1 = 0;
+            unsigned short Cdata2 = 0;
+            int Act_Memo = 0;
+            unsigned __int16 Pinit = 127;
+
+            for (i = 1; i < (LEG_NUM - 4); i++) {//for(i=0;i<1;i++){//
+
+                for (j = 0; j < LEG_ACT_NUM; j++) {//for (j=0;j<1;j++){//
+
+
+                    switch (j)
+                    {
+                        CANID = 0;
+                        CommandType = 0;
+                        ///è„šãƒã‚¤ã‚³ãƒ³1
+                        case 0: {
+                            CANID = (i + 1) * 100 + 10;//controller__1;//
+                            CommandType = com_ballscllew_1_pos;///ãƒœãƒ¼ãƒ«ã­ã˜1
+
+                        }
+                              break;
+                        case 1: {
+                            CANID = (i + 1) * 100 + 10;//controller_2_1;//
+                            CommandType = com_ballscllew_2_pos;///ãƒœãƒ¼ãƒ«ã­ã˜2
+
+                        }
+                              break;
+
+                              ///è„šãƒã‚¤ã‚³ãƒ³2
+                        case 2: {
+                            CANID = (i + 1) * 100 + 20;//controller_2_2;//
+                            CommandType = com_ballscllew_1_pos;///ãƒœãƒ¼ãƒ«ã­ã˜1
+                        }
+                              break;
+                        case 3: {
+                            CANID = (i + 1) * 100 + 20;//controller_2_2;//
+                            CommandType = com_ballscllew_2_pos;///ãƒœãƒ¼ãƒ«ã­ã˜2
+                        }
+                              break;
+
+                        default:
+                            break;
+                    }
+                    TopID = CANID & 0x0000ff00;
+                    UnderID = CANID & 0x000000ff;
+                    TopID = TopID >> 8;
+                    ///ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿ãƒ¼æŒ‡ä»¤å€¤ = ãƒœãƒ¼ãƒ«ã­ã˜åº§æ¨™ * 100
+                    //data = (int)( (viewAsuraXData.getLegJointAngle(1)(1)*RAD2DEG +180.0 )*100.0 );
+                    //data =(int)(commTitanData.getLegActuatorPosition(i+1)(j+1)*100.0);
+                    //data =123*100; 
+                    //data =(unsigned __int32)(-123*100);
+
+                    Actpos = 100 * viewAsuraXData.getLegActuatorPosition(i + 1)(j + 1);
+
+                    if (Actpos >= 0)
+                    {
+                        data = (unsigned int)Actpos;
+                        symbol = 0x00;
+                    }
+                    else
+                    {
+                        Actpos = (-1) * Actpos;		//ç¬¦å·åè»¢
+                        data = (unsigned int)Actpos;
+                        symbol = 0xff;
+                    }
 
 
 
-/*				for (j=0;j<LEG_ACT_NUM;j++){//for (j=0;j<1;j++){//
-					i=0;
-					CANID		=	0;
-						CommandType	= 0;
-					//switch (j)
-					//{
+                    ///ãƒã‚¹ã‚¯ã¨ã‚­ãƒ£ã‚¹ãƒˆã‚’åŒæ™‚ã«å®Ÿè¡Œã™ã‚‹ã¨æŒ‡ä»¤å€¤ã‚¨ãƒ©ãƒ¼ãªã®ã§åˆ†ã‘ã‚‹
+                    Data1 = data & 0xff00;
+                    Data2 = data & 0x00ff;
+                    Data1 = Data1 >> 8;
 
-						///‹rƒ}ƒCƒRƒ“1
-						if(j==0){
-							CANID		= controller_1_1;//(i+1)*100 + 10;//
-							CommandType	= com_ballscllew_1_pos;///ƒ{[ƒ‹‚Ë‚¶1
+                    //ãƒ‘ã‚±ãƒƒãƒˆãƒã‚§ãƒƒã‚¯ã‚µãƒ 
+                    Cdata1 = Data1 & 0x00f0;
+                    Cdata2 = Data2 & 0x000f;
+                    Checksum = (unsigned char)(Cdata1 + Cdata2);
 
-								}
 
-						else if(j==1){
-							CANID		= controller_1_1;//(i+1)*100 + 10;//
-							CommandType	= com_ballscllew_2_pos;///ƒ{[ƒ‹‚Ë‚¶2
-							   }
-						///‹rƒ}ƒCƒRƒ“2
-						else if(j==2){
-							CANID		= controller_1_2;//(i+1)*100 + 20;//
-							CommandType	= com_ballscllew_1_pos;///ƒ{[ƒ‹‚Ë‚¶1
-							   }
-						else if(j==3){
-							CANID		= controller_1_2;//(i+1)*100 + 20;//
-							CommandType	= com_ballscllew_2_pos;///ƒ{[ƒ‹‚Ë‚¶2
-							   }
-						//default:
-							//break;
-					//}
-					TopID	=	CANID & 0x0000ff00;
-					UnderID	=	CANID & 0x000000ff;
-					TopID	=	TopID >>8;
-					///ƒAƒNƒ`ƒ…ƒG[ƒ^[w—ß’l = ƒ{[ƒ‹‚Ë‚¶À•W * 100
-					//data = (int)( ( commTitanData.getLegJointAngle(1)(1)*RAD2DEG +180.0 )*100.0 );
-					//data =(int)(commTitanData.getLegActuatorPosition(i+1)(j+1)*100.0);
-					//data =123*100;
-					//data =(unsigned __int32)(-123*100);
-					data =(unsigned __int32)(commTitanData.getLegActuatorPosition(i+1)(j+1)*100.0);
+                    /// ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿ã¸ã®ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿
+                    longPacket[8 * Act_Memo] = (unsigned char)Pinit;
+                    longPacket[8 * Act_Memo + 1] = (unsigned char)TopID;//((CANID & 0x0000FF00 ) >> 8);
+                    longPacket[8 * Act_Memo + 2] = (unsigned char)UnderID;//( CANID & 0x000000FF );
+                    longPacket[8 * Act_Memo + 3] = (unsigned char)CommandType;
+                    longPacket[8 * Act_Memo + 4] = (unsigned char)symbol;
+                    longPacket[8 * Act_Memo + 5] = (unsigned char)Data1;
+                    longPacket[8 * Act_Memo + 6] = (unsigned char)Data2;
+                    longPacket[8 * Act_Memo + 7] = Checksum;
 
-					///ƒ}ƒXƒN‚ÆƒLƒƒƒXƒg‚ğ“¯‚ÉÀs‚·‚é‚Æw—ß’lƒGƒ‰[‚È‚Ì‚Å•ª‚¯‚é
-					Top1	=	data & 0xff000000;
-					Top2	=	data & 0x00ff0000;
-					Under1	=	data & 0x0000ff00;
-					Under2	=	data & 0x000000ff;
-					Top1	=	Top1 	>> 24;
-					Top2	=	Top2 	>> 16;
-					Under1	=	Under1 	>> 8;
 
-					/// ƒAƒNƒ`ƒ…ƒG[ƒ^‚Ö‚ÌƒpƒPƒbƒgƒf[ƒ^
-					packet[7*Act_Memo]		= ( char)TopID;//((CANID & 0x0000FF00 ) >> 8);
-					packet[7*Act_Memo+1]	= ( char)UnderID;//( CANID & 0x000000FF );
-					packet[7*Act_Memo+2]	= ( char)(CommandType);
-					packet[7*Act_Memo+3]	= ( char)Top1;//((data & 0xFF000000 ) >> 24);
-					packet[7*Act_Memo+4]	= ( char)Top2;//((data & 0x00FF0000 ) >> 12);
-					packet[7*Act_Memo+5]	= ( char)Under1;//((data & 0x0000FF00 ) >> 8);
-					packet[7*Act_Memo+6]	= ( char)Under2;//( data & 0x000000FF );
-					Act_Memo++;
-				}//LEG_ACT_NUM
-*/
 
-///ÅŒã‚ÉƒQ[ƒgƒEƒFƒCƒ}ƒCƒRƒ“
-		/*
-		CANID = controller_0_0;
-		CommandType = 255;//START COMMAND
-		data = 255;//START COMMAND Checker
+                    Act_Memo++;
+                }//LEG_ACT_NUM
 
-		///ƒ}ƒXƒN‚ÆƒLƒƒƒXƒg‚ğ“¯‚ÉÀs‚·‚é‚Æw—ß’lƒGƒ‰[‚È‚Ì‚Å•ª‚¯‚é
-		Top1 = data & 0xff000000;
-		Top2 = data & 0x00ff0000;
-		Under1 = data & 0x0000ff00;
-		Under2 = data & 0x000000ff;
-		Top1 = Top1 >> 24;
-		Top2 = Top2 >> 16;
-		Under1 = Under1 >> 8;
 
-		//Act_Memo++;
-		packet[7 * Act_Memo] = (char)((CANID & 0x0000FF00) >> 8);;
-		packet[7 * Act_Memo + 1] = (char)(CANID & 0x000000FF);
-		packet[7 * Act_Memo + 2] = (char)(CommandType);
-		packet[7 * Act_Memo + 3] = (char)((data & 0xFF000000) >> 24);
-		packet[7 * Act_Memo + 4] = (char)((data & 0x00FF0000) >> 12);
-		packet[7 * Act_Memo + 5] = (char)((data & 0x0000FF00) >> 8);
-		packet[7 * Act_Memo + 6] = (char)(data & 0x000000FF);
-		*/
+            }///LEG_NUM
 
-	}	/// end of switch (packetFormat)
 
-	}
-	
 
-	return 0;
+        /*				for (j=0;j<LEG_ACT_NUM;j++){//for (j=0;j<1;j++){//
+                  i=0;
+                  CANID		=	0;
+                    CommandType	= 0;
+                  //switch (j)
+                  //{
+
+                    ///è„šãƒã‚¤ã‚³ãƒ³1
+                    if(j==0){
+                      CANID		= controller_1_1;//(i+1)*100 + 10;//
+                      CommandType	= com_ballscllew_1_pos;///ãƒœãƒ¼ãƒ«ã­ã˜1
+
+                        }
+
+                    else if(j==1){
+                      CANID		= controller_1_1;//(i+1)*100 + 10;//
+                      CommandType	= com_ballscllew_2_pos;///ãƒœãƒ¼ãƒ«ã­ã˜2
+                         }
+                    ///è„šãƒã‚¤ã‚³ãƒ³2
+                    else if(j==2){
+                      CANID		= controller_1_2;//(i+1)*100 + 20;//
+                      CommandType	= com_ballscllew_1_pos;///ãƒœãƒ¼ãƒ«ã­ã˜1
+                         }
+                    else if(j==3){
+                      CANID		= controller_1_2;//(i+1)*100 + 20;//
+                      CommandType	= com_ballscllew_2_pos;///ãƒœãƒ¼ãƒ«ã­ã˜2
+                         }
+                    //default:
+                      //break;
+                  //}
+                  TopID	=	CANID & 0x0000ff00;
+                  UnderID	=	CANID & 0x000000ff;
+                  TopID	=	TopID >>8;
+                  ///ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿ãƒ¼æŒ‡ä»¤å€¤ = ãƒœãƒ¼ãƒ«ã­ã˜åº§æ¨™ * 100
+                  //data = (int)( ( commTitanData.getLegJointAngle(1)(1)*RAD2DEG +180.0 )*100.0 );
+                  //data =(int)(commTitanData.getLegActuatorPosition(i+1)(j+1)*100.0);
+                  //data =123*100;
+                  //data =(unsigned __int32)(-123*100);
+                  data =(unsigned __int32)(commTitanData.getLegActuatorPosition(i+1)(j+1)*100.0);
+
+                  ///ãƒã‚¹ã‚¯ã¨ã‚­ãƒ£ã‚¹ãƒˆã‚’åŒæ™‚ã«å®Ÿè¡Œã™ã‚‹ã¨æŒ‡ä»¤å€¤ã‚¨ãƒ©ãƒ¼ãªã®ã§åˆ†ã‘ã‚‹
+                  Top1	=	data & 0xff000000;
+                  Top2	=	data & 0x00ff0000;
+                  Under1	=	data & 0x0000ff00;
+                  Under2	=	data & 0x000000ff;
+                  Top1	=	Top1 	>> 24;
+                  Top2	=	Top2 	>> 16;
+                  Under1	=	Under1 	>> 8;
+
+                  /// ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿ã¸ã®ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿
+                  packet[7*Act_Memo]		= ( char)TopID;//((CANID & 0x0000FF00 ) >> 8);
+                  packet[7*Act_Memo+1]	= ( char)UnderID;//( CANID & 0x000000FF );
+                  packet[7*Act_Memo+2]	= ( char)(CommandType);
+                  packet[7*Act_Memo+3]	= ( char)Top1;//((data & 0xFF000000 ) >> 24);
+                  packet[7*Act_Memo+4]	= ( char)Top2;//((data & 0x00FF0000 ) >> 12);
+                  packet[7*Act_Memo+5]	= ( char)Under1;//((data & 0x0000FF00 ) >> 8);
+                  packet[7*Act_Memo+6]	= ( char)Under2;//( data & 0x000000FF );
+                  Act_Memo++;
+                }//LEG_ACT_NUM
+        */
+
+        ///æœ€å¾Œã«ã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤ãƒã‚¤ã‚³ãƒ³
+            /*
+            CANID = controller_0_0;
+            CommandType = 255;//START COMMAND
+            data = 255;//START COMMAND Checker
+
+            ///ãƒã‚¹ã‚¯ã¨ã‚­ãƒ£ã‚¹ãƒˆã‚’åŒæ™‚ã«å®Ÿè¡Œã™ã‚‹ã¨æŒ‡ä»¤å€¤ã‚¨ãƒ©ãƒ¼ãªã®ã§åˆ†ã‘ã‚‹
+            Top1 = data & 0xff000000;
+            Top2 = data & 0x00ff0000;
+            Under1 = data & 0x0000ff00;
+            Under2 = data & 0x000000ff;
+            Top1 = Top1 >> 24;
+            Top2 = Top2 >> 16;
+            Under1 = Under1 >> 8;
+
+            //Act_Memo++;
+            packet[7 * Act_Memo] = (char)((CANID & 0x0000FF00) >> 8);;
+            packet[7 * Act_Memo + 1] = (char)(CANID & 0x000000FF);
+            packet[7 * Act_Memo + 2] = (char)(CommandType);
+            packet[7 * Act_Memo + 3] = (char)((data & 0xFF000000) >> 24);
+            packet[7 * Act_Memo + 4] = (char)((data & 0x00FF0000) >> 12);
+            packet[7 * Act_Memo + 5] = (char)((data & 0x0000FF00) >> 8);
+            packet[7 * Act_Memo + 6] = (char)(data & 0x000000FF);
+            */
+
+        }	/// end of switch (packetFormat)
+
+    }
+
+
+    return 0;
 }
 
-// AsuraUDPTherad ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰[
+// AsuraUDPTherad ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©ãƒ¼
