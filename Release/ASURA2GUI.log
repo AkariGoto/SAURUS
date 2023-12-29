@@ -1,0 +1,61 @@
+﻿  AsuraData.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Data\AsuraData.cpp(473,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  AsuraGraphic.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Graphic\AsuraGraphic.cpp(848,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  AviMaker.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Graphic\OpenGL\AviMaker.cpp(649,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  CameraView.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Graphic\OpenGL\CameraView.cpp(289,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  OpenGL.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Graphic\OpenGL\OpenGL.cpp(680,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  OpenGLObject.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Graphic\OpenGL\OpenGLObject.cpp(950,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  OpenGLText.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Graphic\OpenGL\OpenGLText.cpp(183,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  AsuraX.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Kinematics\AsuraX.cpp(46,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Leg.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Kinematics\Leg\Leg.cpp(741,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  TrackLeg.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Kinematics\Leg\TrackLeg.cpp(264,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  WalkingRobot.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Kinematics\WalkingRobot.cpp(773,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  MathGeometry.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Math\MathGeometry.cpp(354,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Matrix.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Math\Matrix\Matrix.cpp(2093,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  MatrixLibrary.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Math\Matrix\MatrixLibrary.cpp(199,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Planner.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\Planner.cpp(523,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  PlannerManager.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\PlannerManager.cpp(147,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  TimeManager.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\TimeManager.cpp(63,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  BodyTrajectory.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\Trajectory\BodyTrajectory.cpp(124,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  LegTrajectory.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\Trajectory\LegTrajectory.cpp(509,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Trajectory.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\Trajectory\Trajectory.cpp(168,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  コンパイル中...
+  TripodGaitPlanner.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Plan\TripodGaitPlanner.cpp(1040,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  ComLib.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\System\ComLib.cpp(71,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Console.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\System\Console.cpp(508,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  MotionPlanThread.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\System\Thread\MotionPlanThread.cpp(541,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  TimedMotionProcedure.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\System\Thread\TimedMotionProcedure.cpp(131,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  MultiMediaTimer.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\System\Timer\MultiMediaTimer.cpp(322,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  AsuraUDPThread.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\UDP\AsuraUDPThread.cpp(70,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Udp.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\UDP\Udp.cpp(143,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  Asc2Int.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Utility\Asc2Int.cpp(181,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
+  RingBuffer.cpp
+C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI\Utility\RingBuffer.cpp(280,1): fatal error C1010: プリコンパイル ヘッダーを検索中に不明な EOF が見つかりました。'#include "pch.h"' をソースに追加しましたか?
