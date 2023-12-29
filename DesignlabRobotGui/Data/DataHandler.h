@@ -1,244 +1,177 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		DataHandler.h
- *  à–¾
- *		ƒƒ{ƒbƒg‚Ìƒf[ƒ^ƒnƒ“ƒhƒ‰
- *  “ú•t
- *		ì¬“ú: 2007/02/12(Mon)		XV“ú: 2007/02/19(Mon)
- */
-//20200819  ƒNƒ[ƒ‰ŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
+ï»¿
+#ifndef DESIGNLABROBOTGUI_DATA_DATAHANDLER_H_
+#define DESIGNLABROBOTGUI_DATA_DATAHANDLER_H_
 
 
-#ifndef __DataHandler_h__
-#define __DataHandler_h__
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
-#include "..\Kinematics\AsuraX.h"
-#include "..\Plan\Planner.h"
+#include "Kinematics\AsuraX.h"
+#include "Plan\Planner.h"
 #include "AsuraData.h"
 #include "PlanData.h"
-#include "..\Kinematics\AsuraParameter.h"
-#include "..\Plan\PlanParameter.h"
+#include "Kinematics\AsuraParameter.h"
+#include "Plan\PlanParameter.h"
 
 namespace Data
 {
 
-/**
- *	----------------------------------------------------------------------
- *		DataHandlerƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-class DataHandler
+class DataHandler final
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
 public:
-private:
-/**
- *	ƒf[ƒ^‚ğæ“¾‚·‚éƒƒ{ƒbƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
-	/// ƒLƒlƒ}ƒeƒBƒNƒXƒf[ƒ^
-	Asura::AsuraX* asuraDataSourcePointer;
-	/// Œv‰æƒf[ƒ^
-	Plan::Planner* planDataSourcePointer;
+    DataHandler() = delete;  //!< ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ä½¿ç”¨ç¦æ­¢ï¼Œå¿…ãšä»¥ä¸‹ã®å¼•æ•°ä»˜ãã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨
+
+    //! ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    //! @param[in] asuraPtr ãƒ‡ãƒ¼ã‚¿ã‚’å—ã‘å–ã‚‹ AsuraX ã‚¯ãƒ©ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    //! @param[in] asuraDataPtr ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ AsuraData ã‚¯ãƒ©ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    //! @param[in] planPtr ãƒ‡ãƒ¼ã‚¿ã‚’å—ã‘å–ã‚‹ Planner ã‚¯ãƒ©ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    //! @param[in] planDataPtr ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ planDataPtr ã‚¯ãƒ©ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    explicit DataHandler(Asura::AsuraX* asuraPtr,
+                         Data::AsuraData* asuraDataPtr,
+                         Plan::Planner* planPtr,
+                         Data::PlanData* planDataPtr);
+
+    ~DataHandler();
+
+    /**
+     *	----------------------------------------
+     *	ãƒ‡ãƒ¼ã‚¿å…ƒã®ãƒã‚¤ãƒ³ã‚¿ã®å–å¾—ãƒ»è§£æ”¾
+     *	----------------------------------------
+     */
+     /// å–å¾—
+    void acquireAsuraDataSource(Asura::AsuraX* asuraPointer);
+    /// è§£æ”¾
+    void releaseAsuraDataSource();
+
+    /// å–å¾—
+    void acquirePlanDataSource(Plan::Planner* planPointer);
+    /// è§£æ”¾
+    void releasePlanDataSource();
+
+    /**
+     *	----------------------------------------
+     *	ãƒ‡ãƒ¼ã‚¿å…ˆã®ãƒã‚¤ãƒ³ã‚¿ã®å–å¾—ãƒ»è§£æ”¾
+     *	----------------------------------------
+     */
+     /// å–å¾—
+    void acquireAsuraDataTarget(Data::AsuraData* dataPointer);
+    /// è§£æ”¾
+    void releaseAsuraDataTarget();
+
+    /// å–å¾—
+    void acquirePlanDataTarget(Data::PlanData* dataPointer);
+    /// è§£æ”¾
+    void releasePlanDataTarget();
+
+    /**
+     *	----------------------------------------
+     *	ãƒ‡ãƒ¼ã‚¿ã®å–ã‚Šè¾¼ã¿ã¨è»¢é€
+     *	----------------------------------------
+     */
+     /// è»¢é€
+    void exportAsuraData();
+    /// å–ã‚Šè¾¼ã¿
+    void importAsuraData();
+
+    /// è»¢é€
+    void exportPlanData();
+    /// å–ã‚Šè¾¼ã¿
+    void importPlanData();
 
 
-/**
- *	ƒf[ƒ^‚ğ•Û‘¶‚·‚éƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
-	Data::AsuraData* asuraDataTargetPointer;
-	Data::PlanData* planDataTargetPointer;
+    /**
+     *	ãƒ‡ãƒ¼ã‚¿æ¸¡ã—
+     */
+    void handleAsuraData();
+    void handlePlanData();
 
-/**
- *	•Ûƒf[ƒ^
- */
-	/// ƒLƒlƒ}ƒeƒBƒNƒX
-	Data::AsuraData asuraData;
-	/// Œv‰æ
-	Data::PlanData planData;
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *	ã‚­ãƒãƒãƒ†ã‚£ã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+      */
+    const Data::AsuraData& getAsuraData(void) const { return asuraData; }
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/**
-	 *	ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 *	ˆø”
-	 *		asuraPtr: ƒf[ƒ^‚ğó‚¯æ‚éAsuraXƒNƒ‰ƒX‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	 *		asuraDataPtr: ƒf[ƒ^‚ğ“n‚·AsuraDataƒNƒ‰ƒX‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	 *		planPtr: ƒf[ƒ^‚ğó‚¯æ‚éPlannerƒNƒ‰ƒX‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	 *		planDataPtr: ƒf[ƒ^‚ğ“n‚·planDataPtrƒNƒ‰ƒX‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	 */
-	explicit DataHandler(Asura::AsuraX* asuraPtr, Data::AsuraData* asuraDataPtr, 
-								Plan::Planner* planPtr, Data::PlanData* planDataPtr);
+    /**
+     *	èƒ´ä½“
+     */
+     /// åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getBodyTransformation(void) const { return asuraData.getBodyTransformation(); }
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~DataHandler();
+    /// èƒ´ä½“ä½ç½®
+    const Math::Vector& getBodyPosition(void) const { return asuraData.getBodyPosition(); }
 
-/**
- *	----------------------------------------
- *	ƒf[ƒ^Œ³‚Ìƒ|ƒCƒ“ƒ^‚Ìæ“¾E‰ğ•ú
- *	----------------------------------------
- */
-	/// æ“¾
-	void acquireAsuraDataSource(Asura::AsuraX* asuraPointer);
-	/// ‰ğ•ú
-	void releaseAsuraDataSource(void);
+    /// èƒ´ä½“é€Ÿåº¦
+    const Math::Vector& getBodyVelocity(void) const { return asuraData.getBodyVelocity(); }
 
-	/// æ“¾
-	void acquirePlanDataSource(Plan::Planner* planPointer);
-	/// ‰ğ•ú
-	void releasePlanDataSource(void);
+    /**
+     *	è„š
+     */
+     /// è„šæ ¹å…ƒã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getLegBaseTransformation(int legNo) const;
 
-/**
- *	----------------------------------------
- *	ƒf[ƒ^æ‚Ìƒ|ƒCƒ“ƒ^‚Ìæ“¾E‰ğ•ú
- *	----------------------------------------
- */
-	/// æ“¾
-	void acquireAsuraDataTarget(Data::AsuraData* dataPointer);
-	/// ‰ğ•ú
-	void releaseAsuraDataTarget(void);
+    /// è„šé–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getLegJointTransformation(int legNo, int jointNo) const;
 
-	/// æ“¾
-	void acquirePlanDataTarget(Data::PlanData* dataPointer);
-	/// ‰ğ•ú
-	void releasePlanDataTarget(void);
+    /// è¶³ä½ç½®ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getLegFootTransformation(int legNo) const;
 
-/**
- *	----------------------------------------
- *	ƒf[ƒ^‚Ìæ‚è‚İ‚Æ“]‘—
- *	----------------------------------------
- */
-	/// “]‘—
-	void exportAsuraData(void);
-	/// æ‚è‚İ
-	void importAsuraData(void);
+    /// è„šã®æ ¹å…ƒä½ç½®
+    const Math::Vector& getLegBasePosition(int legNo) const;
 
-	/// “]‘—
-	void exportPlanData(void);
-	/// æ‚è‚İ
-	void importPlanData(void);
+    /// è„šã®é–¢ç¯€ä½ç½®
+    const Math::Vector& getLegJointPosition(int legNo, int jointNo) const;
+
+    /// è¶³ä½ç½®
+    const Math::Vector& getLegFootPosition(int legNo) const;
+
+    /// è„šã®é–¢ç¯€è§’åº¦
+    const Math::Vector& getLegJointAngle(int legNo) const;
+
+    /// è„šã®é–¢ç¯€é€Ÿåº¦
+    const Math::Vector& getLegJointVelocity(int legNo) const;
+
+    /// è„šã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    const Math::Vector& getLegJointTorque(int legNo) const;
+
+    /// è„šã®é‹å‹•ç›¸
+    const Asura::LegPhase getLegPhase(int legNo) const;
 
 
-/**
- *	ƒf[ƒ^“n‚µ
- */
-	void handleAsuraData(void);
-	void handlePlanData(void);
 
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-/**
- *	ƒLƒlƒ}ƒeƒBƒNƒXƒf[ƒ^
- */
-	const Data::AsuraData& getAsuraData(void) const{return asuraData;}
+    /**
+     *	è¨ˆç”»ãƒ‡ãƒ¼ã‚¿
+     */
+    const Data::PlanData& getPlanData(void) const { return planData; }
 
-	/**
-	 *	“·‘Ì
-	 */
-	/// “¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getBodyTransformation(void) const {return asuraData.getBodyTransformation();}
-
-	/// “·‘ÌˆÊ’u
-	const Math::Vector& getBodyPosition(void) const {return asuraData.getBodyPosition();}
-
-	/// “·‘Ì‘¬“x
-	const Math::Vector& getBodyVelocity(void) const {return asuraData.getBodyVelocity();}
-
-	/**
-	 *	‹r
-	 */
-	/// ‹rªŒ³‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getLegBaseTransformation(int legNo) const;
-
-	/// ‹rŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getLegJointTransformation(int legNo, int jointNo) const;
-
-	/// ‘«ˆÊ’u‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getLegFootTransformation(int legNo) const;
-
-	/// ‹r‚ÌªŒ³ˆÊ’u
-	const Math::Vector& getLegBasePosition(int legNo) const;
-
-	/// ‹r‚ÌŠÖßˆÊ’u
-	const Math::Vector& getLegJointPosition(int legNo, int jointNo) const;
-
-	/// ‘«ˆÊ’u
-	const Math::Vector& getLegFootPosition(int legNo) const;
-
-	/// ‹r‚ÌŠÖßŠp“x
-	const Math::Vector& getLegJointAngle(int legNo) const;
-
-	/// ‹r‚ÌŠÖß‘¬“x
-	const Math::Vector& getLegJointVelocity(int legNo) const;
-
-	/// ‹r‚ÌŠÖßƒgƒ‹ƒN
-	const Math::Vector& getLegJointTorque(int legNo) const;
-
-	/// ‹r‚Ì‰^“®‘Š
-	const Asura::LegPhase getLegPhase(int legNo) const;
-
-	/**
-	 *	ƒNƒ[ƒ‰
-	 */
-	/*  20200819
-	/// ƒNƒ[ƒ‰ªŒ³‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getTrackBaseTransformation(int trackNo) const;
-
-	/// ƒNƒ[ƒ‰ŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getTrackJointTransformation(int trackNo, int jointNo) const;
-
-	/// ƒNƒ[ƒ‰æ’[‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getTrackEndTransformation(int trackNo) const;
-
-	/// ƒNƒ[ƒ‰‚ÌªŒ³ˆÊ’u
-	const Math::Vector& getTrackBasePosition(int trackNo) const;
-
-	/// ƒNƒ[ƒ‰‚ÌŠÖßˆÊ’u
-	const Math::Vector& getTrackJointPosition(int trackNo, int jointNo) const;
-
-	/// ƒNƒ[ƒ‰‚ÌªŒ³ˆÊ’u
-	const Math::Vector& getTrackEndPosition(int trackNo) const;
-
-	/// ƒNƒ[ƒ‰‚ÌŠÖßŠp“x
-	const Math::Vector& getTrackJointAngle(int trackNo) const;
-
-	/// ƒNƒ[ƒ‰‚ÌŠÖß‘¬“x
-	const Math::Vector& getTrackJointVelocity(int trackNo) const;
-
-	/// ƒNƒ[ƒ‰‚ÌŠÖßƒgƒ‹ƒN
-	const Math::Vector& getTrackJointTorque(int trackNo) const;
-	*/
-
-/**
- *	Œv‰æƒf[ƒ^
- */
-	const Data::PlanData& getPlanData(void) const{return planData;}
-
-	//const double getStabilityMargin(void) const{return planData.getStabilityMargin();}  20200819
-	const double getElapsedTime(void) const{return planData.getElapsedTime();}
+    const double getElapsedTime(void) const { return planData.getElapsedTime(); }
 
 private:
+    /**
+     *	ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ãƒ­ãƒœãƒƒãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     */
+     /// ã‚­ãƒãƒãƒ†ã‚£ã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+    Asura::AsuraX* asuraDataSourcePointer;
+    /// è¨ˆç”»ãƒ‡ãƒ¼ã‚¿
+    Plan::Planner* planDataSourcePointer;
+
+
+    /**
+     *	ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     */
+    Data::AsuraData* asuraDataTargetPointer;
+    Data::PlanData* planDataTargetPointer;
+
+    /**
+     *	ä¿æŒãƒ‡ãƒ¼ã‚¿
+     */
+     /// ã‚­ãƒãƒãƒ†ã‚£ã‚¯ã‚¹
+    Data::AsuraData asuraData;
+    /// è¨ˆç”»
+    Data::PlanData planData;
 };
 
 
-}
-#endif /// __DataHandler_h__
+}  // namespace Data
+
+#endif  // DESIGNLABROBOTGUI_DATA_DATAHANDLER_H_

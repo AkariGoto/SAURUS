@@ -1,104 +1,55 @@
-﻿/**
- *  ファイル名
- *		PlanData.h
- *  説明
- *		移動計画のデータ（時間、安定余裕など）
- *  日付
- *		作成日: 2007/02/12(MON)		更新日: 2007/02/19(MON)
- */
+﻿
+#ifndef DESIGNLABROBOTGUI_DATA_PLANDATA_H_
+#define DESIGNLABROBOTGUI_DATA_PLANDATA_H_
 
- //20200819  安定余裕関連コメントアウト
+#include <algorithm>
 
-#ifndef __PlanData_h__
-#define __PlanData_h__
-
-#include "..\Math\Matrix\Matrix.h"
-#include "..\Kinematics\AsuraParameter.h"
-#include "..\Plan\PlanParameter.h"
+#include "Math/Matrix/Matrix.h"
+#include "Kinematics/AsuraParameter.h"
+#include "Plan/PlanParameter.h"
 
 
 namespace Data
 {
 
-class PlanData
+class PlanData final
 {
-private:
-
-    // 安定余裕
-    // double stabilityMargin;
-
-    /// 経過時間
-    double elapsedTime;
-
-    /// 側行角
-    double crabAngle;
-
-
-    /**
-     *	------------------------------------------------------------
-     *		メンバ関数
-     *	------------------------------------------------------------
-     */
 public:
-    /**
-     *	----------------------------------------
-     *	コンストラクタとデストラクタ
-     *	----------------------------------------
-     */
-     /// デフォルトコンストラクタ
-    PlanData();
+    PlanData();                            //!< コンストラクタ
+    PlanData(const PlanData& PlanData);    //!< コピーコンストラクタ
 
-    /// コピーコンストラクタ
-    PlanData(const PlanData& PlanData);
+    ~PlanData() = default;         //!< デストラクタ
 
-    /// デストラクタ
-    virtual ~PlanData();
 
-    /**
-     *	----------------------------------------
-     *	演算子
-     *	----------------------------------------
-     */
-     /// 代入演算子
-    virtual PlanData& operator=(const PlanData& planData);
+    PlanData& operator=(const PlanData& planData);  //!< 代入演算子
 
-    /// 等価演算子
-    bool operator==(const PlanData& planData);
+    bool operator==(const PlanData& planData);  //!< 等価演算子
+    bool operator!=(const PlanData& planData) { return !(*this == planData); }  //!< 非等価演算子
 
-    /// 非等価演算子
-    bool operator!=(const PlanData& planData);
 
-    /**
-     *	クラス自身を複製する
-     */
-     //PlanData& clone(void); 20210622関数定義なし。コメントアウト
+    //! 経過時間を取得する．
+    //! @return 経過時間
+    constexpr double getElapsedTime() const
+    {
+        return elapsedTime;
+    }
 
-   /**
-    *	----------------------------------------
-    *	アクセス関数
-    *	----------------------------------------
-    */
-    /// 安定余裕
-    //double getStabilityMargin(void) const{return stabilityMargin;}  20200819
-    /// 時間
-    double getElapsedTime(void) const { return elapsedTime; }
-
-    /**
-     *	----------------------------------------
-     *	セット関数
-     *	----------------------------------------
-     */
-     /// 安定余裕
-     //void setStabilityMargin(double margin) { stabilityMargin = margin; return; }  20200819
-     /// 時間
-    void setElapsedTime(double time) { elapsedTime = time; return; }
+    //! 経過時間を設定する．
+    //! @param[in] time 経過時間
+    inline void setElapsedTime(const double time)
+    {
+        elapsedTime = time; return;
+    }
 
 private:
-    /// コピーコンストラクタと代入演算子のヘルプ関数
+    // コピーコンストラクタと代入演算子のヘルプ関数
     void copy(const PlanData& planData);
 
-};	/// end of class PlanData
+    double elapsedTime;  //!< 経過時間
+    double crabAngle;    //!< 側行角
+};
 
-}	/// end of namespace Data
+}  // namespace Data
 
-#endif /// __PlanData_h__
+
+#endif  // DESIGNLABROBOTGUI_DATA_PLANDATA_H_

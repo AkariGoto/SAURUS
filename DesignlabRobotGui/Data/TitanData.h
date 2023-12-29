@@ -1,477 +1,476 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		AsuraData.h
- *  à–¾
- *		TITAN X‚Ìƒf[ƒ^iƒLƒlƒ}ƒeƒBƒNƒXCƒNƒ[ƒ‰‚È‚Çj
- *  “ú•t
- *		ì¬“ú: 2007/02/12(Mon)		XV“ú: 2007/02/19(Mon)
+ *  èª¬æ˜
+ *		TITAN Xã®ãƒ‡ãƒ¼ã‚¿ï¼ˆã‚­ãƒãƒãƒ†ã‚£ã‚¯ã‚¹ï¼Œã‚¯ãƒ­ãƒ¼ãƒ©ãªã©ï¼‰
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/02/12(Mon)		æ›´æ–°æ—¥: 2007/02/19(Mon)
  */
 
 #ifndef __AsuraData_h__
 #define __AsuraData_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include "..\Math\Matrix\Matrix.h"
 #include "..\Kinematics\AsuraParameter.h"
-#include "..\Utility\Constants.h"
 
 namespace Data
 {
 
 /**
  *	----------------------------------------------------------------------
- *		AsuraDataƒNƒ‰ƒX
+ *		AsuraDataã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class AsuraData
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 private:
-/**
- *	----------------------------------------
- *	“·‘Ì
- *	----------------------------------------
- */
-	/// “¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix bodyTransformation;
+    /**
+     *	----------------------------------------
+     *	èƒ´ä½“
+     *	----------------------------------------
+     */
+     /// åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix bodyTransformation;
 
-	/// “·‘ÌˆÊ’u
-	Math::Vector bodyPosition;
+    /// èƒ´ä½“ä½ç½®
+    Math::Vector bodyPosition;
 
-	/// “·‘Ì‘¬“x
-	Math::Vector bodyVelocity;
+    /// èƒ´ä½“é€Ÿåº¦
+    Math::Vector bodyVelocity;
 
-	/// •às•ûŒüƒxƒNƒgƒ‹
-	Math::Vector walkingDirection;
+    /// æ­©è¡Œæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+    Math::Vector walkingDirection;
 
-	/// ˆÚ“®—l®
-	Asura::LocomotionStyle locomotionStyle;
+    /// ç§»å‹•æ§˜å¼
+    Asura::LocomotionStyle locomotionStyle;
 
-/**
- *	----------------------------------------
- *	‹r
- *	----------------------------------------
- */
-	/// ‹rªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix* legBaseTransformation;
-	
-	/// ‹rŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix** legJointTransformation;
+    /**
+     *	----------------------------------------
+     *	è„š
+     *	----------------------------------------
+     */
+     /// è„šæ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix* legBaseTransformation;
 
-	/// ‘«ˆÊ’u‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix* legFootTransformation;
+    /// è„šé–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix** legJointTransformation;
 
-	/// ‹rªŒ³‚ÌŠÖßˆÊ’u
-	Math::Vector* legBasePosition;
+    /// è¶³ä½ç½®ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix* legFootTransformation;
 
-	/// ‹r‚ÌŠÖßˆÊ’u
-	Math::Vector** legJointPosition;
+    /// è„šæ ¹å…ƒã®é–¢ç¯€ä½ç½®
+    Math::Vector* legBasePosition;
 
-	/// ‘«ˆÊ’u
-	Math::Vector* legFootPosition;
+    /// è„šã®é–¢ç¯€ä½ç½®
+    Math::Vector** legJointPosition;
 
-	/// ‹r‚ÌŠÖßŠp“x
-	Math::Vector* legJointAngle;
+    /// è¶³ä½ç½®
+    Math::Vector* legFootPosition;
 
-	/// ‹r‚ÌŠÖß‘¬“x
-	Math::Vector* legJointVelocity;
+    /// è„šã®é–¢ç¯€è§’åº¦
+    Math::Vector* legJointAngle;
 
-	/// ‹r‚ÌŠÖßƒgƒ‹ƒN
-	Math::Vector* legJointTorque;
+    /// è„šã®é–¢ç¯€é€Ÿåº¦
+    Math::Vector* legJointVelocity;
 
-	/// ‹r‚Ì‰^“®‘Š
-	Asura::LegPhase* legPhase;
-	/// ‘«ñŠÖßŠp“x: [6]
-	Math::Vector FootJointAngle;//---Add
+    /// è„šã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    Math::Vector* legJointTorque;
 
-	/// ‹r‚Ìƒ{[ƒ‹‚Ë‚¶ˆÊ’uiƒƒCƒ„•ÏˆÊj
-	Math::Vector* legActuatorPosition;
-/**
- *	----------------------------------------
- *	ƒNƒ[ƒ‰
- *	----------------------------------------
- */
-	/// ƒNƒ[ƒ‰ªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix* trackBaseTransformation;
+    /// è„šã®é‹å‹•ç›¸
+    Asura::LegPhase* legPhase;
+    /// è¶³é¦–é–¢ç¯€è§’åº¦: [6]
+    Math::Vector FootJointAngle;//---Add
 
-	/// ƒNƒ[ƒ‰ŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix** trackJointTransformation;
+    /// è„šã®ãƒœãƒ¼ãƒ«ã­ã˜ä½ç½®ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰
+    Math::Vector* legActuatorPosition;
+    /**
+     *	----------------------------------------
+     *	ã‚¯ãƒ­ãƒ¼ãƒ©
+     *	----------------------------------------
+     */
+     /// ã‚¯ãƒ­ãƒ¼ãƒ©æ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix* trackBaseTransformation;
 
-	/// ƒNƒ[ƒ‰æ’[‚Ì“¯Ÿ•ÏŠ·s—ñ
-	Math::Matrix* trackEndTransformation;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©é–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix** trackJointTransformation;
 
-	/// ƒNƒ[ƒ‰ªŒ³ˆÊ’u
-	Math::Vector* trackBasePosition;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©å…ˆç«¯ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Math::Matrix* trackEndTransformation;
 
-	/// ƒNƒ[ƒ‰‚ÌŠÖßˆÊ’u
-	Math::Vector** trackJointPosition;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©æ ¹å…ƒä½ç½®
+    Math::Vector* trackBasePosition;
 
-	/// ƒNƒ[ƒ‰æ’[‚ÌˆÊ’u
-	Math::Vector* trackEndPosition;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€ä½ç½®
+    Math::Vector** trackJointPosition;
+
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©å…ˆç«¯ã®ä½ç½®
+    Math::Vector* trackEndPosition;
 
 
 
-	/// ƒNƒ[ƒ‰‚ÌŠÖßŠp“x
-	Math::Vector* trackJointAngle;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€è§’åº¦
+    Math::Vector* trackJointAngle;
 
-	/// ƒNƒ[ƒ‰‚ÌŠÖß‘¬“x
-	Math::Vector* trackJointVelocity;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€é€Ÿåº¦
+    Math::Vector* trackJointVelocity;
 
-	/// ƒNƒ[ƒ‰‚ÌŠÖßƒgƒ‹ƒN
-	Math::Vector* trackJointTorque;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    Math::Vector* trackJointTorque;
 
-	/// ƒNƒ[ƒ‰‘¬“x
-	double* trackSpeed;
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©é€Ÿåº¦
+    double* trackSpeed;
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	AsuraData();
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    AsuraData();
 
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	AsuraData(const AsuraData& asuraData);
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    AsuraData(const AsuraData& asuraData);
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~AsuraData();
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~AsuraData();
 
-	/**
- *	ƒNƒ‰ƒX©g‚ğ•¡»‚·‚é
- */
-	AsuraData& clone(void);
+    /**
+   *	ã‚¯ãƒ©ã‚¹è‡ªèº«ã‚’è¤‡è£½ã™ã‚‹
+   */
+    AsuraData& clone(void);
 
-/**
- *	----------------------------------------
- *	‰‰Zq
- *	----------------------------------------
- */
-	/// ‘ã“ü‰‰Zq
-	virtual AsuraData& operator=(const AsuraData& asuraData);
+    /**
+     *	----------------------------------------
+     *	æ¼”ç®—å­
+     *	----------------------------------------
+     */
+     /// ä»£å…¥æ¼”ç®—å­
+    virtual AsuraData& operator=(const AsuraData& asuraData);
 
-	/// “™‰¿‰‰Zq
-	bool operator==(const AsuraData& asuraData);
+    /// ç­‰ä¾¡æ¼”ç®—å­
+    bool operator==(const AsuraData& asuraData);
 
-	/// ”ñ“™‰¿‰‰Zq
-	bool operator!=(const AsuraData& asuraData);
+    /// éç­‰ä¾¡æ¼”ç®—å­
+    bool operator!=(const AsuraData& asuraData);
 
 
 
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-	/**
-	 *	“·‘Ì
-	 */
-	/// “¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getBodyTransformation(void) const{return bodyTransformation;}
-	/// “·‘ÌˆÊ’u
-	const Math::Vector& getBodyPosition(void) const{return bodyPosition;}
-	/// “·‘Ì‘¬“x
-	const Math::Vector& getBodyVelocity(void) const{return bodyVelocity;}
-	/// •às•ûŒüƒxƒNƒgƒ‹
-	const Math::Vector& getWalkingDirection(void) const{return walkingDirection;}
-	/// ˆÚ“®—l®
-	const Asura::LocomotionStyle getLocomotionStyle(void) const{return locomotionStyle;}
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *	èƒ´ä½“
+      */
+      /// åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getBodyTransformation(void) const { return bodyTransformation; }
+    /// èƒ´ä½“ä½ç½®
+    const Math::Vector& getBodyPosition(void) const { return bodyPosition; }
+    /// èƒ´ä½“é€Ÿåº¦
+    const Math::Vector& getBodyVelocity(void) const { return bodyVelocity; }
+    /// æ­©è¡Œæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+    const Math::Vector& getWalkingDirection(void) const { return walkingDirection; }
+    /// ç§»å‹•æ§˜å¼
+    const Asura::LocomotionStyle getLocomotionStyle(void) const { return locomotionStyle; }
 
-	/**
-	 *	‹r
-	 */
-	/// ‹rªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getLegBaseTransformation(int legNo) const
-	{
-		return legBaseTransformation[legNo-1];
-	}
-	/// ‹rŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getLegJointTransformation(int legNo, int jointNo) const
-	{
-		return legJointTransformation[legNo-1][jointNo-1];
-	}
-	/// ‘«ˆÊ’u‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getLegFootTransformation(int legNo) const
-	{
-		return legFootTransformation[legNo-1];
-	}
-	/// ‹rªŒ³‚ÌŠÖßˆÊ’u
-	const Math::Vector& getLegBasePosition(int legNo) const
-	{
-		return legBasePosition[legNo-1];
-	}
-	/// ‹r‚ÌŠÖßˆÊ’u
-	const Math::Vector& getLegJointPosition(int legNo, int jointNo) const
-	{
-		return legJointPosition[legNo-1][jointNo-1];
-	}
-	/// ‘«ˆÊ’u
-	const Math::Vector& getLegFootPosition(int legNo) const
-	{
-		return legFootPosition[legNo-1];
-	}
-	/// ‹r‚ÌŠÖßŠp“x
-	const Math::Vector& getLegJointAngle(int legNo) const
-	{
-		return legJointAngle[legNo-1];
-	}
-	/// ‹r‚ÌŠÖß‘¬“x
-	const Math::Vector& getLegJointVelocity(int legNo) const
-	{
-		return legJointVelocity[legNo-1];
-	}
-	/// ‹r‚ÌŠÖßƒgƒ‹ƒN
-	const Math::Vector& getLegJointTorque(int legNo) const
-	{
-		return legJointTorque[legNo-1];
-	}
-	/// ‹r‚Ì‰^“®‘Š
-	const Asura::LegPhase getLegPhase(int legNo) const
-	{
-		return legPhase[legNo-1];
-	}
-	/// ‘«ñŠÖßŠp“x
-	/*
-	const Math::Vector& getFootointAngle(int legNo) const//---Add
-	{
-		return FootJointAngle[legNo-1];
-	}
-	*/
-	/// ‹r‚Ìƒ{[ƒ‹‚Ë‚¶À•WiƒƒCƒ„•ÏˆÊj
-	const Math::Vector& getLegActuatorPosition(int legNo) const
-	{
-		return legActuatorPosition[legNo-1];
-	}
-	/**
-	 *	ƒNƒ[ƒ‰
-	 */
-	/// ƒNƒ[ƒ‰ªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getTrackBaseTransformation(int trackNo) const
-	{
-		return trackBaseTransformation[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰ŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getTrackJointTransformation(int trackNo, int jointNo) const
-	{
-		return trackJointTransformation[trackNo-1][jointNo-1];
-	}
-	/// ƒNƒ[ƒ‰æ’[‚Ì“¯Ÿ•ÏŠ·s—ñ
-	const Math::Matrix& getTrackEndTransformation(int trackNo) const
-	{
-		return trackEndTransformation[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰ªŒ³ˆÊ’u
-	const Math::Vector& getTrackBasePosition(int trackNo) const
-	{
-		return trackBasePosition[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖßˆÊ’u
-	const Math::Vector& getTrackJointPosition(int trackNo, int jointNo) const
-	{
-		return trackJointPosition[trackNo-1][jointNo-1];
-	}
-	/// ƒNƒ[ƒ‰æ’[‚ÌˆÊ’u
-	const Math::Vector& getTrackEndPosition(int trackNo) const
-	{
-		return trackEndPosition[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖßŠp“x
-	const Math::Vector& getTrackJointAngle(int trackNo) const
-	{
-		return trackJointAngle[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖß‘¬“x
-	const Math::Vector& getTrackJointVelocity(int trackNo) const
-	{
-		return trackJointVelocity[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖßƒgƒ‹ƒN
-	const Math::Vector& getTrackJointTorque(int trackNo) const
-	{
-		return trackJointTorque[trackNo-1];
-	}
-	/// ƒNƒ[ƒ‰‘¬“x
-	double getTrackSpeed(int trackNo) const
-	{
-		return trackSpeed[trackNo-1];
-	}
+    /**
+     *	è„š
+     */
+     /// è„šæ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getLegBaseTransformation(int legNo) const
+    {
+        return legBaseTransformation[legNo - 1];
+    }
+    /// è„šé–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getLegJointTransformation(int legNo, int jointNo) const
+    {
+        return legJointTransformation[legNo - 1][jointNo - 1];
+    }
+    /// è¶³ä½ç½®ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getLegFootTransformation(int legNo) const
+    {
+        return legFootTransformation[legNo - 1];
+    }
+    /// è„šæ ¹å…ƒã®é–¢ç¯€ä½ç½®
+    const Math::Vector& getLegBasePosition(int legNo) const
+    {
+        return legBasePosition[legNo - 1];
+    }
+    /// è„šã®é–¢ç¯€ä½ç½®
+    const Math::Vector& getLegJointPosition(int legNo, int jointNo) const
+    {
+        return legJointPosition[legNo - 1][jointNo - 1];
+    }
+    /// è¶³ä½ç½®
+    const Math::Vector& getLegFootPosition(int legNo) const
+    {
+        return legFootPosition[legNo - 1];
+    }
+    /// è„šã®é–¢ç¯€è§’åº¦
+    const Math::Vector& getLegJointAngle(int legNo) const
+    {
+        return legJointAngle[legNo - 1];
+    }
+    /// è„šã®é–¢ç¯€é€Ÿåº¦
+    const Math::Vector& getLegJointVelocity(int legNo) const
+    {
+        return legJointVelocity[legNo - 1];
+    }
+    /// è„šã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    const Math::Vector& getLegJointTorque(int legNo) const
+    {
+        return legJointTorque[legNo - 1];
+    }
+    /// è„šã®é‹å‹•ç›¸
+    const Asura::LegPhase getLegPhase(int legNo) const
+    {
+        return legPhase[legNo - 1];
+    }
+    /// è¶³é¦–é–¢ç¯€è§’åº¦
+    /*
+    const Math::Vector& getFootointAngle(int legNo) const//---Add
+    {
+      return FootJointAngle[legNo-1];
+    }
+    */
+    /// è„šã®ãƒœãƒ¼ãƒ«ã­ã˜åº§æ¨™ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰
+    const Math::Vector& getLegActuatorPosition(int legNo) const
+    {
+        return legActuatorPosition[legNo - 1];
+    }
+    /**
+     *	ã‚¯ãƒ­ãƒ¼ãƒ©
+     */
+     /// ã‚¯ãƒ­ãƒ¼ãƒ©æ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getTrackBaseTransformation(int trackNo) const
+    {
+        return trackBaseTransformation[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©é–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getTrackJointTransformation(int trackNo, int jointNo) const
+    {
+        return trackJointTransformation[trackNo - 1][jointNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©å…ˆç«¯ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    const Math::Matrix& getTrackEndTransformation(int trackNo) const
+    {
+        return trackEndTransformation[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©æ ¹å…ƒä½ç½®
+    const Math::Vector& getTrackBasePosition(int trackNo) const
+    {
+        return trackBasePosition[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€ä½ç½®
+    const Math::Vector& getTrackJointPosition(int trackNo, int jointNo) const
+    {
+        return trackJointPosition[trackNo - 1][jointNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©å…ˆç«¯ã®ä½ç½®
+    const Math::Vector& getTrackEndPosition(int trackNo) const
+    {
+        return trackEndPosition[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€è§’åº¦
+    const Math::Vector& getTrackJointAngle(int trackNo) const
+    {
+        return trackJointAngle[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€é€Ÿåº¦
+    const Math::Vector& getTrackJointVelocity(int trackNo) const
+    {
+        return trackJointVelocity[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    const Math::Vector& getTrackJointTorque(int trackNo) const
+    {
+        return trackJointTorque[trackNo - 1];
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©é€Ÿåº¦
+    double getTrackSpeed(int trackNo) const
+    {
+        return trackSpeed[trackNo - 1];
+    }
 
-/**
- *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
- *	----------------------------------------
- */
-	/**
-	 *		“·‘Ì
-	 */
-	/// “¯Ÿ•ÏŠ·s—ñ
-	void setBodyTransformation(const Math::Matrix& transformation)
-	{
-		bodyTransformation = transformation;
-	}
-	/// “·‘ÌˆÊ’u
-	void setBodyPosition(const Math::Vector& position)
-	{
-		bodyPosition = position;
-	}
-	/// “·‘Ì‘¬“x
-	void setBodyVelocity(const Math::Vector& velocity)
-	{
-		bodyVelocity = velocity;
-	}
-	/// •às•ûŒüƒxƒNƒgƒ‹
-	void setWalkingDirection(const Math::Vector& direction)
-	{
-		walkingDirection = direction;
-	}
-	/// ˆÚ“®—l®
-	void setLocomotionStyle(Asura::LocomotionStyle style)
-	{
-		locomotionStyle = style;
-	}
+    /**
+     *	----------------------------------------
+     *	ã‚»ãƒƒãƒˆé–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *		èƒ´ä½“
+      */
+      /// åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setBodyTransformation(const Math::Matrix& transformation)
+    {
+        bodyTransformation = transformation;
+    }
+    /// èƒ´ä½“ä½ç½®
+    void setBodyPosition(const Math::Vector& position)
+    {
+        bodyPosition = position;
+    }
+    /// èƒ´ä½“é€Ÿåº¦
+    void setBodyVelocity(const Math::Vector& velocity)
+    {
+        bodyVelocity = velocity;
+    }
+    /// æ­©è¡Œæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+    void setWalkingDirection(const Math::Vector& direction)
+    {
+        walkingDirection = direction;
+    }
+    /// ç§»å‹•æ§˜å¼
+    void setLocomotionStyle(Asura::LocomotionStyle style)
+    {
+        locomotionStyle = style;
+    }
 
-	/**
-	 *	‹r
-	 */
-	/// ‹rªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-	void setLegBaseTransformation(int legNo, const Math::Matrix& transformation)
-	{
-		legBaseTransformation[legNo-1] = transformation;
-	}
-	/// ‹rŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	void setLegJointTransformation(int legNo, int jointNo, const Math::Matrix& transformation)
-	{
-		legJointTransformation[legNo-1][jointNo-1] = transformation;
-	}
-	/// ‘«ˆÊ’u‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	void setLegFootTransformation(int legNo, const Math::Matrix& transformation)
-	{
-		legFootTransformation[legNo-1] = transformation;
-	}
-	/// ‹rªŒ³‚ÌŠÖßˆÊ’u
-	void setLegBasePosition(int legNo, const Math::Vector& position)
-	{
-		legBasePosition[legNo-1] = position;
-	}
-	/// ‹r‚ÌŠÖßˆÊ’u
-	void setLegJointPosition(int legNo, int jointNo, const Math::Vector& position)
-	{
-		legJointPosition[legNo-1][jointNo-1] = position;
-	}
-	/// ‘«‚ÌˆÊ’u
-	void setLegFootPosition(int legNo, const Math::Vector& position)
-	{
-		legFootPosition[legNo-1] = position;
-	}
-	/// ‹r‚ÌŠÖßŠp“x
-	void setLegJointAngle(int legNo, const Math::Vector& angle)
-	{
-		legJointAngle[legNo-1] = angle;
-	}
-	/// ‹r‚ÌŠÖß‘¬“x
-	void setLegJointVelocity(int legNo, const Math::Vector& velocity)
-	{
-		legJointVelocity[legNo-1] = velocity;
-	}
-	/// ‹r‚ÌŠÖßƒgƒ‹ƒN
-	void setLegJointTorque(int legNo, const Math::Vector& torque)
-	{
-		legJointTorque[legNo-1] = torque;
-	}
-	/// ‹r‚Ì‰^“®‘Š
-	void setLegPhase(int legNo, Asura::LegPhase phase)
-	{
-		legPhase[legNo-1] = phase;
-	}
-	///‘«ñ‚ÌŠÖßŠp“x
-	//*
-	void setFootJointAngle(int legNo, const double JointAngle)//-----Add
-	{
-		//FootJointAngle[legNo-1] = (Math::Vector)JointAngle;
-		FootJointAngle[legNo-1] = JointAngle;
-	}//*/
-	/// ‹r‚ÌƒAƒNƒ`ƒ…ƒG[ƒ^À•W
-	void setLegActuatorPosition(int legNo, const Math::Vector& ActPos)
-	{
-		legActuatorPosition[legNo-1] = ActPos;
-	}
-	/**
-	 *	ƒNƒ[ƒ‰
-	 */
-	/// ƒNƒ[ƒ‰ªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-	void setTrackBaseTransformation(int trackNo, const Math::Matrix& transformation)
-	{
-		trackBaseTransformation[trackNo-1] = transformation;
-	}
-	/// ƒNƒ[ƒ‰ŠÖß‚²‚Æ‚Ì“¯Ÿ•ÏŠ·s—ñ
-	void setTrackJointTransformation(int trackNo, int jointNo, const Math::Matrix& transformation)
-	{
-		trackJointTransformation[trackNo-1][jointNo-1] = transformation;
-	}
-	/// ƒNƒ[ƒ‰æ’[‚Ì“¯Ÿ•ÏŠ·s—ñ
-	void setTrackEndTransformation(int trackNo, const Math::Matrix& transformation)
-	{
-		trackEndTransformation[trackNo-1] = transformation;
-	}
-	/// ƒNƒ[ƒ‰ªŒ³ˆÊ’u
-	void setTrackBasePosition(int trackNo, const Math::Vector& position)
-	{
-		trackBasePosition[trackNo-1] = position;
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖßˆÊ’u
-	void setTrackJointPosition(int trackNo, int jointNo, const Math::Vector& position)
-	{
-		trackJointPosition[trackNo-1][jointNo-1] = position;
-	}
-	/// ƒNƒ[ƒ‰æ’[‚ÌˆÊ’u
-	void setTrackEndPosition(int trackNo, const Math::Vector& position)
-	{
-		trackEndPosition[trackNo-1] = position;
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖßŠp“x
-	void setTrackJointAngle(int trackNo, const Math::Vector& angle)
-	{
-		trackJointAngle[trackNo-1] = angle;
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖß‘¬“x
-	void setTrackJointVelocity(int trackNo, const Math::Vector& velocity)
-	{
-		trackJointVelocity[trackNo-1] = velocity;
-	}
-	/// ƒNƒ[ƒ‰‚ÌŠÖßƒgƒ‹ƒN
-	void setTrackJointTorque(int trackNo, const Math::Vector& torque)
-	{
-		trackJointTorque[trackNo-1] = torque;
-	}
-	/// ƒNƒ[ƒ‰‘¬“x
-	void setTrackSpeed(int trackNo, double speed)
-	{
-		trackSpeed[trackNo-1] = speed;
-	}
+    /**
+     *	è„š
+     */
+     /// è„šæ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setLegBaseTransformation(int legNo, const Math::Matrix& transformation)
+    {
+        legBaseTransformation[legNo - 1] = transformation;
+    }
+    /// è„šé–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setLegJointTransformation(int legNo, int jointNo, const Math::Matrix& transformation)
+    {
+        legJointTransformation[legNo - 1][jointNo - 1] = transformation;
+    }
+    /// è¶³ä½ç½®ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setLegFootTransformation(int legNo, const Math::Matrix& transformation)
+    {
+        legFootTransformation[legNo - 1] = transformation;
+    }
+    /// è„šæ ¹å…ƒã®é–¢ç¯€ä½ç½®
+    void setLegBasePosition(int legNo, const Math::Vector& position)
+    {
+        legBasePosition[legNo - 1] = position;
+    }
+    /// è„šã®é–¢ç¯€ä½ç½®
+    void setLegJointPosition(int legNo, int jointNo, const Math::Vector& position)
+    {
+        legJointPosition[legNo - 1][jointNo - 1] = position;
+    }
+    /// è¶³ã®ä½ç½®
+    void setLegFootPosition(int legNo, const Math::Vector& position)
+    {
+        legFootPosition[legNo - 1] = position;
+    }
+    /// è„šã®é–¢ç¯€è§’åº¦
+    void setLegJointAngle(int legNo, const Math::Vector& angle)
+    {
+        legJointAngle[legNo - 1] = angle;
+    }
+    /// è„šã®é–¢ç¯€é€Ÿåº¦
+    void setLegJointVelocity(int legNo, const Math::Vector& velocity)
+    {
+        legJointVelocity[legNo - 1] = velocity;
+    }
+    /// è„šã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    void setLegJointTorque(int legNo, const Math::Vector& torque)
+    {
+        legJointTorque[legNo - 1] = torque;
+    }
+    /// è„šã®é‹å‹•ç›¸
+    void setLegPhase(int legNo, Asura::LegPhase phase)
+    {
+        legPhase[legNo - 1] = phase;
+    }
+    ///è¶³é¦–ã®é–¢ç¯€è§’åº¦
+    //*
+    void setFootJointAngle(int legNo, const double JointAngle)//-----Add
+    {
+        //FootJointAngle[legNo-1] = (Math::Vector)JointAngle;
+        FootJointAngle[legNo - 1] = JointAngle;
+    }//*/
+    /// è„šã®ã‚¢ã‚¯ãƒãƒ¥ã‚¨ãƒ¼ã‚¿åº§æ¨™
+    void setLegActuatorPosition(int legNo, const Math::Vector& ActPos)
+    {
+        legActuatorPosition[legNo - 1] = ActPos;
+    }
+    /**
+     *	ã‚¯ãƒ­ãƒ¼ãƒ©
+     */
+     /// ã‚¯ãƒ­ãƒ¼ãƒ©æ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setTrackBaseTransformation(int trackNo, const Math::Matrix& transformation)
+    {
+        trackBaseTransformation[trackNo - 1] = transformation;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©é–¢ç¯€ã”ã¨ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setTrackJointTransformation(int trackNo, int jointNo, const Math::Matrix& transformation)
+    {
+        trackJointTransformation[trackNo - 1][jointNo - 1] = transformation;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©å…ˆç«¯ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    void setTrackEndTransformation(int trackNo, const Math::Matrix& transformation)
+    {
+        trackEndTransformation[trackNo - 1] = transformation;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©æ ¹å…ƒä½ç½®
+    void setTrackBasePosition(int trackNo, const Math::Vector& position)
+    {
+        trackBasePosition[trackNo - 1] = position;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€ä½ç½®
+    void setTrackJointPosition(int trackNo, int jointNo, const Math::Vector& position)
+    {
+        trackJointPosition[trackNo - 1][jointNo - 1] = position;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©å…ˆç«¯ã®ä½ç½®
+    void setTrackEndPosition(int trackNo, const Math::Vector& position)
+    {
+        trackEndPosition[trackNo - 1] = position;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€è§’åº¦
+    void setTrackJointAngle(int trackNo, const Math::Vector& angle)
+    {
+        trackJointAngle[trackNo - 1] = angle;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€é€Ÿåº¦
+    void setTrackJointVelocity(int trackNo, const Math::Vector& velocity)
+    {
+        trackJointVelocity[trackNo - 1] = velocity;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ã®é–¢ç¯€ãƒˆãƒ«ã‚¯
+    void setTrackJointTorque(int trackNo, const Math::Vector& torque)
+    {
+        trackJointTorque[trackNo - 1] = torque;
+    }
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©é€Ÿåº¦
+    void setTrackSpeed(int trackNo, double speed)
+    {
+        trackSpeed[trackNo - 1] = speed;
+    }
 
 private:
-    /// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
-	void newAsuraData(void);
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
+    void newAsuraData(void);
 
-	/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú‚·‚é
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’è§£æ”¾ã™ã‚‹
     void deleteAsuraData(void);
 
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‘ã“ü‰‰Zq‚Ìƒwƒ‹ƒvŠÖ”
-	void copy(const AsuraData& asuraData);
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ä»£å…¥æ¼”ç®—å­ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+    void copy(const AsuraData& asuraData);
 
 };	/// end of class AsuraData
 

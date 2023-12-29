@@ -1,22 +1,8 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		PlanData.cpp
- *  à–¾
- *		ˆÚ“®Œv‰æ‚Ìƒf[ƒ^iŠÔAˆÀ’è—]—T‚È‚Çj
- *  “ú•t
- *		ì¬“ú: 2007/02/12(MON)		XV“ú: 2007/02/19(MON)
- */
+ï»¿
+#include "Data/PlanData.h"
 
- //20200819  ˆÀ’è—]—TŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
+#include "Utility/EngConstant.h"
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
-#include "PlanData.h"
-#include "..\Utility\EngConstant.h"
- 
 
 using namespace std;
 using namespace Math;
@@ -26,93 +12,45 @@ using namespace Plan;
 
 namespace Data
 {
-/**
- *	----------------------------------------------------------------------
- *		PlanDataƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		PlanDataƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
 PlanData::PlanData()
 {
-	//stabilityMargin = 0.0;  20200819
-	elapsedTime = 0.0;
-	crabAngle = 0.0;
+    elapsedTime = 0.0;
+    crabAngle = 0.0;
 }
 
-/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 PlanData::PlanData(const PlanData& planData)
 {
-	copy(planData);
+    copy(planData);
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
-PlanData::~PlanData()
-{
-}
-
-/**
- *	----------------------------------------
- *	‰‰Zq
- *	----------------------------------------
- */
-/// ‘ã“ü‰‰Zq
 PlanData& PlanData::operator=(const PlanData& planData)
 {
-	/// ©ŒÈ‘ã“ü‚Ìƒ`ƒFƒbƒN
-	if ( &planData != this )
-	{
-		copy(planData);
-	}
+    // è‡ªå·±ä»£å…¥ã®ãƒã‚§ãƒƒã‚¯
+    if (&planData != this)
+    {
+        copy(planData);
+    }
 
-	return *this;
+    return *this;
 }
 
-/// “™‰¿‰‰Zq
+
 bool PlanData::operator==(const PlanData& planData)
 {
-	//if ( stabilityMargin != planData.stabilityMargin ){return false;}  20200819
-	if ( elapsedTime != planData.elapsedTime ){return false;}
+    if (elapsedTime != planData.elapsedTime)
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
-/// ”ñ“™‰¿‰‰Zq
-bool PlanData::operator!=(const PlanData& planData)
-{
-	if ( *this == planData )
-		return false;
-	else
-		return true;
-}
-
-/**
- *	------------------------------------------------------------
- *		PlanDataƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-/**
- *	à–¾
- *		ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Æ‘ã“ü‰‰Zq‚Ìƒwƒ‹ƒvŠÖ”
- */
 void PlanData::copy(const PlanData& planData)
 {
+    elapsedTime = planData.elapsedTime;
 
-	//stabilityMargin = planData.stabilityMargin;  20200819
-	elapsedTime = planData.elapsedTime;
-
-	return;
+    return;
 }
 
-}	/// end of namespace Data
+}  // namespace Data
