@@ -22,9 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{22C3C747-B4F7-43E3-AF29-9CE69381897A}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>ASURA2GUI</RootNamespace>
+    <RootNamespace>DesignlabRobotGui</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>ASURAGUI</ProjectName>
+    <ProjectName>DesignlabRobotGui</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -95,12 +95,12 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\Users\goto\Desktop\VisualStudio\ASURA2GUI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\goto\Desktop\VisualStudio\DesignlabRobotGui</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\goto\Desktop\VisualStudio\ASURA2GUI</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\goto\Desktop\VisualStudio\DesignlabRobotGui</AdditionalLibraryDirectories>
       <AdditionalDependencies>legacy_stdio_definitions.lib;ws2_32.lib</AdditionalDependencies>
     </Link>
     <Midl>
@@ -121,12 +121,12 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\goto\Desktop\VisualStudio\ASURA2GUI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\goto\Desktop\VisualStudio\DesignlabRobotGui</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\goto\Desktop\VisualStudio\ASURA2GUI</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\goto\Desktop\VisualStudio\DesignlabRobotGui</AdditionalLibraryDirectories>
       <AdditionalDependencies>legacy_stdio_definitions.lib;ws2_32.lib</AdditionalDependencies>
     </Link>
     <Midl>
@@ -410,7 +410,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ASURA2GUI.rc" />
+    <ResourceCompile Include="DesignlabRobotGui.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\ASURA2GUI.rc2" />
