@@ -4,12 +4,12 @@
 
 #include <algorithm>
 
-#include "Math/Matrix/Matrix.h"
 #include "Kinematics/AsuraParameter.h"
+#include "Math/Matrix/Matrix.h"
 #include "Plan/PlanParameter.h"
 
 
-namespace Data
+namespace designlab_robot_gui::data
 {
 
 class PlanData final
@@ -24,7 +24,7 @@ public:
     PlanData& operator=(const PlanData& planData);  //!< 代入演算子
 
     bool operator==(const PlanData& planData);  //!< 等価演算子
-    bool operator!=(const PlanData& planData) { return !(*this == planData); }  //!< 非等価演算子
+    inline bool operator!=(const PlanData& planData) { return !(*this == planData); }  //!< 非等価演算子
 
 
     //! 経過時間を取得する．
@@ -49,7 +49,7 @@ private:
     double crabAngle;    //!< 側行角
 };
 
-}  // namespace Data
+}  // namespace designlab_robot_gui::data
 
 
 #endif  // DESIGNLABROBOTGUI_DATA_PLANDATA_H_

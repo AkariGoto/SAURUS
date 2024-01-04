@@ -1,862 +1,826 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		AsuraGraphic.cpp
- *  à–¾
- *		OpenGL‚ğ—p‚¢‚ÄTITAN X‚ğ•`‰æ‚·‚éƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2008/07/07(MON)
- */
-
-//  20200819  ƒNƒ[ƒ‰ŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-//  20200822  •\¦‚·‚é‹rC³
-//  20201019  ‹ræ‚Ìƒ[ƒ‹ƒhÀ•W‚Æ‹rÀ•W‚ÌØ‚è‘Ö‚¦
-//  202311@ASURAŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ï»¿
 #include "asuraGraphic.h"
 
 using namespace std;
 using namespace Math;
 using namespace Const;
 using namespace Asura;
-using namespace Data;
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		AsuraGraphicƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		AsuraGraphicƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 AsuraGraphic::AsuraGraphic(HWND hWnd, AsuraData* asuraData, ViewType type)
 {
-	/// ‰Šú‰»
-	initializeAsuraGraphic(hWnd, asuraData);
+    /// åˆæœŸåŒ–
+    initializeAsuraGraphic(hWnd, asuraData);
 
-	/// ‹“_‚ğŒˆ’è
-	setViewType(type);
+    /// è¦–ç‚¹ã‚’æ±ºå®š
+    setViewType(type);
 
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 AsuraGraphic::~AsuraGraphic()
 {
-	finalizeAsuraGraphic();
+    finalizeAsuraGraphic();
 }
 
 
 /**
- *		‰Šú‰»EI—¹ˆ—
+ *		åˆæœŸåŒ–ãƒ»çµ‚äº†å‡¦ç†
  */
-/// ‰Šú‰»
+ /// åˆæœŸåŒ–
 void AsuraGraphic::initializeAsuraGraphic(HWND hWnd, AsuraData* asuraData)
 {
-	/// ƒtƒ‰ƒO‰Šú‰»
-	isAsuraDrawn = true;
-	isSupportPolygonDrawn = false;
-	isDisplayListReady = false;
-	isAnimationRecorded = false;
+    /// ãƒ•ãƒ©ã‚°åˆæœŸåŒ–
+    isAsuraDrawn = true;
+    isSupportPolygonDrawn = false;
+    isDisplayListReady = false;
+    isAnimationRecorded = false;
 
-	legCoordinate = false;  //20201019  ‹N“®‚Í‹rÀ•WŒn‚ğ•\¦‚µ‚È‚¢
+    legCoordinate = false;  //20201019  èµ·å‹•æ™‚ã¯è„šåº§æ¨™ç³»ã‚’è¡¨ç¤ºã—ãªã„
 
-	/// Å‰‚ÉOpenGL‚ÌƒfƒtƒHƒ‹ƒg‰Šú‰»‚ğs‚¤
-	if (!OpenGLObject::createGLObject(hWnd))
-		return;
+    /// æœ€åˆã«OpenGLã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆåˆæœŸåŒ–ã‚’è¡Œã†
+    if (!OpenGLObject::createGLObject(hWnd))
+        return;
 
-	/// ƒ|ƒCƒ“ƒ^‚ª—LŒø‚¾‚Á‚½‚çƒ|ƒCƒ“ƒ^‚ğƒZƒbƒg
-	if ( asuraData != NULL )
-		asuraDataSrcPtr = asuraData;
+    /// ãƒã‚¤ãƒ³ã‚¿ãŒæœ‰åŠ¹ã ã£ãŸã‚‰ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚»ãƒƒãƒˆ
+    if (asuraData != NULL)
+        asuraDataSrcPtr = asuraData;
 
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒgì¬
-	newAsuraDisplayList();
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆä½œæˆ
+    newAsuraDisplayList();
 
-	/// ‰e‚Ì€”õ
-	GLfloat floorP1[3] = {1.0f, 0.0f, (GLfloat)GRID_HEIGHT};
-	GLfloat floorP2[3] = {0.0f, 1.0f, (GLfloat)GRID_HEIGHT};
-	GLfloat floorP3[3] = {-1.0f, -1.0f, (GLfloat)GRID_HEIGHT};
+    /// å½±ã®æº–å‚™
+    GLfloat floorP1[3] = { 1.0f, 0.0f, (GLfloat)GRID_HEIGHT };
+    GLfloat floorP2[3] = { 0.0f, 1.0f, (GLfloat)GRID_HEIGHT };
+    GLfloat floorP3[3] = { -1.0f, -1.0f, (GLfloat)GRID_HEIGHT };
 
-	calcShadowPlaneEquation(planeFactorOfGridFloor, floorP1, floorP2, floorP3);
+    calcShadowPlaneEquation(planeFactorOfGridFloor, floorP1, floorP2, floorP3);
 
-	RECT rect;
-	GetClientRect(hWnd, &rect);
+    RECT rect;
+    GetClientRect(hWnd, &rect);
 
-	/// AVI€”õ
-	movieRecorder.initialize((rect.right/4)*4, (rect.bottom/4)*4, 24);
+    /// AVIæº–å‚™
+    movieRecorder.initialize((rect.right / 4) * 4, (rect.bottom / 4) * 4, 24);
 }
 
-/// I—¹ˆ—
+/// çµ‚äº†å‡¦ç†
 void AsuraGraphic::finalizeAsuraGraphic(void)
 {
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg”jŠü
-	deleteAsuraDisplayList();
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆç ´æ£„
+    deleteAsuraDisplayList();
 }
 
 /**
- *	à–¾
- *		ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì¶¬EÁ‹
+ *	èª¬æ˜
+ *		ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç”Ÿæˆãƒ»æ¶ˆå»
  */
 void AsuraGraphic::newAsuraDisplayList(void)
 {
-	if ( isDisplayListReady )
-		return;
+    if (isDisplayListReady)
+        return;
 
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì¶¬
-	int bodyList = glGenLists(1);
-	int legList = glGenLists(LEG_DISP_LIST_NUM);
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç”Ÿæˆ
+    int bodyList = glGenLists(1);
+    int legList = glGenLists(LEG_DISP_LIST_NUM);
 
-	/*  02020819
-	int trackList = glGenLists(TRACK_DISP_LIST_NUM);
+    /*  02020819
+    int trackList = glGenLists(TRACK_DISP_LIST_NUM);
 
-	// ¶¬”»’è
-	if (bodyList == 0 || legList == 0 || trackList == 0 )
-	{
-		cerr << "Error: [OpenGL::newAsuraDisplayList] Display List is not generated\n" << endl;
-		return;
-	}
-	*/
+    // ç”Ÿæˆåˆ¤å®š
+    if (bodyList == 0 || legList == 0 || trackList == 0 )
+    {
+      cerr << "Error: [OpenGL::newAsuraDisplayList] Display List is not generated\n" << endl;
+      return;
+    }
+    */
 
-	/// “·‘Ì—p‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg
-	bodyDisplayListID = bodyList;
+    /// èƒ´ä½“ç”¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆ
+    bodyDisplayListID = bodyList;
 
-	/// ‹r—p‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì€”õ
-	int i;
-	for (i=0; i<LEG_DISP_LIST_NUM; i++)
-		legDisplayListID[i] = legList + i;
+    /// è„šç”¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æº–å‚™
+    int i;
+    for (i = 0; i < LEG_DISP_LIST_NUM; i++)
+        legDisplayListID[i] = legList + i;
 
-	/// ƒNƒ[ƒ‰—p‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì€”õ
-/*	int j;
-	for (j=0; j<TRACK_DISP_LIST_NUM; j++)
-		trackDisplayListID[j] = trackList + j;*/
+    /// ã‚¯ãƒ­ãƒ¼ãƒ©ç”¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æº–å‚™
+  /*	int j;
+    for (j=0; j<TRACK_DISP_LIST_NUM; j++)
+      trackDisplayListID[j] = trackList + j;*/
 
-	/// ŠÖßF
-	//SAURUS
-	const GLfloat jointColor[4] = { 0.55f, 0.55f, 0.65f, 1.0f };
-	const GLfloat linkColor[4] = {0.156f, 0.40f, 1.0f, 1.0f};
+      /// é–¢ç¯€è‰²
+      //SAURUS
+    const GLfloat jointColor[4] = { 0.55f, 0.55f, 0.65f, 1.0f };
+    const GLfloat linkColor[4] = { 0.156f, 0.40f, 1.0f, 1.0f };
 
-	/*ASURA20231128•ÏX
-	 const GLfloat linkColor[4] = {0.55f, 0.55f, 0.65f, 1.0f};
-	 const GLfloat jointColor[4] = {0.10f, 0.50f, 0.50f, 1.0f};
-	*/
-	//const GLfloat joint4Color[4] = {0.0f, 0.0f, 1.0f, 1.0f};
-/**
- *		“·‘Ì—p‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ìì¬
- */
-	/// body
-	glNewList(bodyDisplayListID, GL_COMPILE);
-			setMaterialColor( linkColor );
-			drawBox(	-BODY_LENGTH/2, -BODY_WIDTH/Const::ROOT_2/2+50, -BODY_HEIGHT/2,
-							BODY_LENGTH/2, BODY_WIDTH/Const::ROOT_2/2-50, BODY_HEIGHT/2 );
-			drawBox(	-BODY_LENGTH/Const::ROOT_2/2+50, -BODY_WIDTH/2, -BODY_HEIGHT/2,
-							BODY_LENGTH/Const::ROOT_2/2-50, BODY_WIDTH/2, BODY_HEIGHT/2 );
+    /*ASURA20231128å¤‰æ›´
+     const GLfloat linkColor[4] = {0.55f, 0.55f, 0.65f, 1.0f};
+     const GLfloat jointColor[4] = {0.10f, 0.50f, 0.50f, 1.0f};
+    */
+    //const GLfloat joint4Color[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+  /**
+   *		èƒ´ä½“ç”¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ä½œæˆ
+   */
+   /// body
+    glNewList(bodyDisplayListID, GL_COMPILE);
+    setMaterialColor(linkColor);
+    drawBox(-BODY_LENGTH / 2, -BODY_WIDTH / Const::ROOT_2 / 2 + 50, -BODY_HEIGHT / 2,
+            BODY_LENGTH / 2, BODY_WIDTH / Const::ROOT_2 / 2 - 50, BODY_HEIGHT / 2);
+    drawBox(-BODY_LENGTH / Const::ROOT_2 / 2 + 50, -BODY_WIDTH / 2, -BODY_HEIGHT / 2,
+            BODY_LENGTH / Const::ROOT_2 / 2 - 50, BODY_WIDTH / 2, BODY_HEIGHT / 2);
 
-/*		glTranslated(BODY_LENGTH/Const::ROOT_2/2, 0, 0);	/// À•W•ÏŠ·
-			drawBox(	-40, -BODY_WIDTH/Const::ROOT_2/2, -BODY_HEIGHT/2,
-							40, BODY_WIDTH/Const::ROOT_2/2, BODY_HEIGHT/2 );
+    /*		glTranslated(BODY_LENGTH/Const::ROOT_2/2, 0, 0);	/// åº§æ¨™å¤‰æ›
+          drawBox(	-40, -BODY_WIDTH/Const::ROOT_2/2, -BODY_HEIGHT/2,
+                  40, BODY_WIDTH/Const::ROOT_2/2, BODY_HEIGHT/2 );
 
-		glTranslated(-BODY_LENGTH, 0, 0);	/// À•W•ÏŠ·
-			drawBox(	-40, -BODY_WIDTH*2/3, -BODY_HEIGHT/2,
-							40, BODY_WIDTH*2/3, BODY_HEIGHT/2 );
-*/	glEndList();
+        glTranslated(-BODY_LENGTH, 0, 0);	/// åº§æ¨™å¤‰æ›
+          drawBox(	-40, -BODY_WIDTH*2/3, -BODY_HEIGHT/2,
+                  40, BODY_WIDTH*2/3, BODY_HEIGHT/2 );
+    */	glEndList();
 
-/**
- *		‹r—p‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ìì¬
- */
-	/// Base
-	glNewList(legDisplayListID[0], GL_COMPILE);
-			setMaterialColor( jointColor );	///ŠÖß	/// Œ´“_
-			drawCylinder(30, BODY_HEIGHT+10);
-			//drawCylinder(50, BODY_HEIGHT + 50);ASURA_20231128•ÏX
-		//glTranslated(0, 0, -LINK1/2);	/// À•W•ÏŠ·		
-			//setMaterialColor( linkColor );
-			//drawBox(-30, -30, -LINK1/2, 30, 30, LINK1/2);			
-	glEndList();
+    /**
+     *		è„šç”¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ä½œæˆ
+     */
+     /// Base
+    glNewList(legDisplayListID[0], GL_COMPILE);
+    setMaterialColor(jointColor);	///é–¢ç¯€	/// åŸç‚¹
+    drawCylinder(30, BODY_HEIGHT + 10);
+    //drawCylinder(50, BODY_HEIGHT + 50);ASURA_20231128å¤‰æ›´
+  //glTranslated(0, 0, -LINK1/2);	/// åº§æ¨™å¤‰æ›		
+    //setMaterialColor( linkColor );
+    //drawBox(-30, -30, -LINK1/2, 30, 30, LINK1/2);			
+    glEndList();
 
-	/// 1.Hip
-	glNewList(legDisplayListID[1], GL_COMPILE);
-			setMaterialColor( jointColor );	///ŠÖß	/// Œ´“_
-			drawCylinder(30, BODY_HEIGHT+10);
-			//drawCylinder(50, BODY_HEIGHT + 10);ASURA_20231128•ÏX
-		glTranslated(-LINK1, 0,0 );	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0, -35,-35 ,  LINK1, 35,35);
-			//drawBox(0, -45, -45, LINK1,45, 45);ASURA_20231128•ÏX
-	glEndList();
+    /// 1.Hip
+    glNewList(legDisplayListID[1], GL_COMPILE);
+    setMaterialColor(jointColor);	///é–¢ç¯€	/// åŸç‚¹
+    drawCylinder(30, BODY_HEIGHT + 10);
+    //drawCylinder(50, BODY_HEIGHT + 10);ASURA_20231128å¤‰æ›´
+    glTranslated(-LINK1, 0, 0);	/// åº§æ¨™å¤‰æ›
+    setMaterialColor(linkColor);
+    drawBox(0, -35, -35, LINK1, 35, 35);
+    //drawBox(0, -45, -45, LINK1,45, 45);ASURA_20231128å¤‰æ›´
+    glEndList();
 
-	/// 2.Thigh
-	glNewList(legDisplayListID[2], GL_COMPILE);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(30, 60);
-			//drawCylinder(40, 70);ASURA_20231128•ÏX
-		glTranslated(-LINK2, 0, 0);	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0, -30, -30, LINK2, 30, 30);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(30, 60);
-			//drawCylinder(40, 110);ASURA_20231128•ÏX
-	glEndList();
+    /// 2.Thigh
+    glNewList(legDisplayListID[2], GL_COMPILE);
+    setMaterialColor(jointColor);///é–¢ç¯€	
+    drawCylinder(30, 60);
+    //drawCylinder(40, 70);ASURA_20231128å¤‰æ›´
+    glTranslated(-LINK2, 0, 0);	/// åº§æ¨™å¤‰æ›
+    setMaterialColor(linkColor);
+    drawBox(0, -30, -30, LINK2, 30, 30);
+    setMaterialColor(jointColor);///é–¢ç¯€	
+    drawCylinder(30, 60);
+    //drawCylinder(40, 110);ASURA_20231128å¤‰æ›´
+    glEndList();
 
-	 /// 3.Shank
-	glNewList(legDisplayListID[3], GL_COMPILE);
-		glTranslated(-LINK3, 0, 0);	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0,-25,-25, LINK3, 25, 25);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(30, 60);
-			//drawCylinder(40, 70); ASURA_20231128•ÏX
-	glEndList();
+    /// 3.Shank
+    glNewList(legDisplayListID[3], GL_COMPILE);
+    glTranslated(-LINK3, 0, 0);	/// åº§æ¨™å¤‰æ›
+    setMaterialColor(linkColor);
+    drawBox(0, -25, -25, LINK3, 25, 25);
+    setMaterialColor(jointColor);///é–¢ç¯€	
+    drawCylinder(30, 60);
+    //drawCylinder(40, 70); ASURA_20231128å¤‰æ›´
+    glEndList();
 
-	
-	 /// 4.Foot
-	glNewList(legDisplayListID[4], GL_COMPILE);
-		glTranslated(-FOOT, 0, 0);	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0, -25, -25, FOOT, 25, 25);//drawBox(3*FOOT/5, -40, -35, FOOT, 40, 35);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(30, 60);
-			//drawCylinder(40, 70); ASURA_20231128•ÏX
-	glEndList();
-	
 
-/**
- *		ƒNƒ[ƒ‰—p‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ìì¬
- */	
-/*	/// Base
-	glNewList(legDisplayListID[0], GL_COMPILE);
-			setMaterialColor( jointColor );	///ŠÖß	/// Œ´“_
-			drawCylinder(50, BODY_HEIGHT+10);
-		//glTranslated(0, 0, -LINK1/2);	/// À•W•ÏŠ·
-			//setMaterialColor( linkColor );
-			//drawBox(-30, -30, -LINK1/2, 30, 30, LINK1/2);
-	glEndList();
+    /// 4.Foot
+    glNewList(legDisplayListID[4], GL_COMPILE);
+    glTranslated(-FOOT, 0, 0);	/// åº§æ¨™å¤‰æ›
+    setMaterialColor(linkColor);
+    drawBox(0, -25, -25, FOOT, 25, 25);//drawBox(3*FOOT/5, -40, -35, FOOT, 40, 35);
+    setMaterialColor(jointColor);///é–¢ç¯€	
+    drawCylinder(30, 60);
+    //drawCylinder(40, 70); ASURA_20231128å¤‰æ›´
+    glEndList();
 
-	/// Hip
-	glNewList(legDisplayListID[1], GL_COMPILE);
-			setMaterialColor( jointColor );	///ŠÖß	/// Œ´“_
-			drawCylinder(50, BODY_HEIGHT+10);
-		glTranslated(-LINK1, 0,0 );	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0, -45,-45 ,  LINK1, 45,45);
-	glEndList();
 
-	/// Thigh
-	glNewList(legDisplayListID[2], GL_COMPILE);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(40, 70);
-		glTranslated(-LINK2, 0, 0);	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0, -30, -30, LINK2, 30, 30);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(40, 110);
-	glEndList();
+    /**
+     *		ã‚¯ãƒ­ãƒ¼ãƒ©ç”¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ä½œæˆ
+     */
+     /*	/// Base
+       glNewList(legDisplayListID[0], GL_COMPILE);
+           setMaterialColor( jointColor );	///é–¢ç¯€	/// åŸç‚¹
+           drawCylinder(50, BODY_HEIGHT+10);
+         //glTranslated(0, 0, -LINK1/2);	/// åº§æ¨™å¤‰æ›
+           //setMaterialColor( linkColor );
+           //drawBox(-30, -30, -LINK1/2, 30, 30, LINK1/2);
+       glEndList();
 
-	 /// Shank
-	glNewList(legDisplayListID[3], GL_COMPILE);
-		glTranslated(-LINK3, 0, 0);	/// À•W•ÏŠ·
-			setMaterialColor( linkColor );
-			drawBox(0,-25,-25, LINK3, 25, 25);
-			setMaterialColor( jointColor );///ŠÖß	
-			drawCylinder(40, 70);
-	glEndList();
-*/
-	/// €”õŠ®—¹
-	isDisplayListReady = true;
+       /// Hip
+       glNewList(legDisplayListID[1], GL_COMPILE);
+           setMaterialColor( jointColor );	///é–¢ç¯€	/// åŸç‚¹
+           drawCylinder(50, BODY_HEIGHT+10);
+         glTranslated(-LINK1, 0,0 );	/// åº§æ¨™å¤‰æ›
+           setMaterialColor( linkColor );
+           drawBox(0, -45,-45 ,  LINK1, 45,45);
+       glEndList();
+
+       /// Thigh
+       glNewList(legDisplayListID[2], GL_COMPILE);
+           setMaterialColor( jointColor );///é–¢ç¯€
+           drawCylinder(40, 70);
+         glTranslated(-LINK2, 0, 0);	/// åº§æ¨™å¤‰æ›
+           setMaterialColor( linkColor );
+           drawBox(0, -30, -30, LINK2, 30, 30);
+           setMaterialColor( jointColor );///é–¢ç¯€
+           drawCylinder(40, 110);
+       glEndList();
+
+        /// Shank
+       glNewList(legDisplayListID[3], GL_COMPILE);
+         glTranslated(-LINK3, 0, 0);	/// åº§æ¨™å¤‰æ›
+           setMaterialColor( linkColor );
+           drawBox(0,-25,-25, LINK3, 25, 25);
+           setMaterialColor( jointColor );///é–¢ç¯€
+           drawCylinder(40, 70);
+       glEndList();
+     */
+     /// æº–å‚™å®Œäº†
+    isDisplayListReady = true;
 
 }
 
 void AsuraGraphic::deleteAsuraDisplayList(void)
 {
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ÌÁ‹
-	glDeleteLists(bodyDisplayListID, 1);
-	glDeleteLists(legDisplayListID[0], LEG_DISP_LIST_NUM);
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æ¶ˆå»
+    glDeleteLists(bodyDisplayListID, 1);
+    glDeleteLists(legDisplayListID[0], LEG_DISP_LIST_NUM);
 
-	/*  20200819
-	glDeleteLists(trackDisplayListID[0], TRACK_DISP_LIST_NUM);
-	*/
+    /*  20200819
+    glDeleteLists(trackDisplayListID[0], TRACK_DISP_LIST_NUM);
+    */
 }
 
 /**
  *	----------------------------------------
- *	•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
+ *	æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		OpenGL‚ÌƒIƒuƒWƒFƒNƒg•`‰æ
- */
+ /**
+  *	èª¬æ˜
+  *		OpenGLã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+  */
 void AsuraGraphic::drawObjects(GLenum renderMode)
 {
-	Matrix gAb(DH_DIMENSION, DH_DIMENSION);  //20201019
+    Matrix gAb(DH_DIMENSION, DH_DIMENSION);  //20201019
 
-	switch (renderMode)
-	{
-		case GL_RENDER:
-				/// ƒV[ƒ“‚ğ•`‰æ
-				glDisable(GL_CULL_FACE);	
-					/// À•WŒn•`‰æ
-					drawCoordinateAxis(300.0, 5.0, 0.8);
-					/// Asura•`‰æ
-					drawAsura();
-				glEnable(GL_CULL_FACE);	
+    switch (renderMode)
+    {
+        case GL_RENDER:
+            /// ã‚·ãƒ¼ãƒ³ã‚’æç”»
+            glDisable(GL_CULL_FACE);
+            /// åº§æ¨™ç³»æç”»
+            drawCoordinateAxis(300.0, 5.0, 0.8);
+            /// Asuraæç”»
+            drawAsura();
+            glEnable(GL_CULL_FACE);
 
-				//20201019
-				if (legCoordinate)
-				{
-					glDisable(GL_CULL_FACE);
-					glPushMatrix();
-					/// ‹rÀ•WŒn‚É•ÏŠ·
-					gAb = asuraDataSrcPtr->getLegBaseTransformation(2);
-					transformOpenGLMatrix(gAb);
-					drawCoordinateAxis(300.0, 5.0, 0.8);
-					glPopMatrix();
-					glEnable(GL_CULL_FACE);
-				}
+            //20201019
+            if (legCoordinate)
+            {
+                glDisable(GL_CULL_FACE);
+                glPushMatrix();
+                /// è„šåº§æ¨™ç³»ã«å¤‰æ›
+                gAb = asuraDataSrcPtr->getLegBaseTransformation(2);
+                transformOpenGLMatrix(gAb);
+                drawCoordinateAxis(300.0, 5.0, 0.8);
+                glPopMatrix();
+                glEnable(GL_CULL_FACE);
+            }
 
-			break;
+            break;
 
-		case GL_SELECT:
-			break;
+        case GL_SELECT:
+            break;
 
-		default:
-			break;
-	}
+        default:
+            break;
+    }
 }
 
 /**
- *	à–¾
- *		OpenGLƒCƒ[ƒW•`‰æ
+ *	èª¬æ˜
+ *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸æç”»
  */
 void AsuraGraphic::drawScenes(void)
 {
-	drawObjects(GL_RENDER);
-	return;
+    drawObjects(GL_RENDER);
+    return;
 }
 
 /**
- *	à–¾
- *		‰e•`‰æ
+ *	èª¬æ˜
+ *		å½±æç”»
  */
 void AsuraGraphic::drawShadow(void)
 {
-	/// ‰e‚ÌŒõŒ¹
-	float lightPosition[] = {60, 80, 3000, 1};
+    /// å½±ã®å…‰æº
+    float lightPosition[] = { 60, 80, 3000, 1 };
 
-	/// “Š‰es—ñF4x4‚Ì“¯•ÏŠ·s—ñ
-	GLfloat shadowMatrix[16];
+    /// æŠ•å½±è¡Œåˆ—ï¼š4x4ã®åŒæ™‚å¤‰æ›è¡Œåˆ—
+    GLfloat shadowMatrix[16];
 
-	///ƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@ƒNƒŠƒA’l‚Ìİ’è
-	glClearStencil( 0 );
+    ///ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢å€¤ã®è¨­å®š
+    glClearStencil(0);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);
-	glLightfv(GL_LIGHT1, GL_POSITION, (float*)lightPosition);
-	/// •½–ÊË‰es—ñ‚ÌZo
-	calcShadowMatrix(shadowMatrix, planeFactorOfGridFloor, lightPosition);
-
-	
-	/// °‚ÌƒXƒeƒ“ƒVƒ‹‚ğ•t‚¯‚é
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, ~0);
-	
-	/// ‚±‚ê‚©‚ç•`‰æ‚·‚é‚à‚Ì‚ÌƒXƒeƒ“ƒVƒ‹’l‚É‚·‚×‚Ä‚Pƒ^ƒO‚ğ‚Â‚¯‚é
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	/// °‚Ì•`‰æ
-	drawGridFloor();
-
-	/**
-	 *		ƒJƒ‰[EƒfƒvƒXƒoƒbƒtƒ@ƒ}ƒXƒN‚ğƒZƒbƒg‚·‚é
-	 *		‚±‚ê‚ÅˆÈ‰º‚Ì“à—e‚ÌƒsƒNƒZƒ‹‚ÌF‚Ì’l‚ÍA‘‚«‚Ü‚ê‚È‚¢B
-	 */
-	glColorMask(0, 0, 0, 0);
-	glDepthMask(0);
-
-	/**
-	 *		°‚ÉƒIƒuƒWƒFƒNƒg‚Ì‰e‚ÌƒXƒeƒ“ƒVƒ‹‚ğ•t‚¯‚é
-	 */
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_EQUAL, 1, ~0);
-
-	/**
-	 *		‚±‚ê‚©‚ç•`‰æ‚·‚é‚à‚Ì‚ÌƒXƒeƒ“ƒVƒ‹’l‚É‚·‚×‚Ä‚Pƒ^ƒO‚ğ‚Â‚¯‚é
-	 */
-	glStencilOp(GL_KEEP,GL_KEEP ,GL_INCR);
-	glDisable(GL_DEPTH_TEST);
-	glPushMatrix();
-		glMultMatrixf(shadowMatrix);
-		glDisable(GL_CULL_FACE);	
-			drawAsura();
-		glEnable(GL_CULL_FACE);	
-	glPopMatrix();
-	glEnable(GL_DEPTH_TEST);
-
-	/**
-	 *		ƒrƒbƒgƒ}ƒXƒN‚ğ‰ğœ	
-	 */
-	glColorMask(1, 1, 1, 1);
-	glDepthMask(1);
-
-	glCullFace( GL_FRONT);
-	glEnable(GL_CULL_FACE );
-	glEnable(GL_AUTO_NORMAL );
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT1);
+    glLightfv(GL_LIGHT1, GL_POSITION, (float*)lightPosition);
+    /// å¹³é¢å°„å½±è¡Œåˆ—ã®ç®—å‡º
+    calcShadowMatrix(shadowMatrix, planeFactorOfGridFloor, lightPosition);
 
 
-	/**
-	 *		‰e‚ğ‚Â‚¯‚é
-	 */
-	glStencilFunc(GL_EQUAL, 2, ~0);
-		glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
-			glDisable(GL_DEPTH_TEST);
-				glDisable(GL_LIGHTING);
-				glDisable(GL_COLOR_MATERIAL);
-				drawGridFloor();
-				glEnable(GL_COLOR_MATERIAL);
-				glEnable(GL_LIGHTING);
-			glEnable(GL_DEPTH_TEST);
-		glDisable(GL_BLEND);
-	glDisable(GL_STENCIL_TEST);
+    /// åºŠã®ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚’ä»˜ã‘ã‚‹
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 1, ~0);
 
-	glDisable(GL_AUTO_NORMAL);
-	glDisable(GL_NORMALIZE);
+    /// ã“ã‚Œã‹ã‚‰æç”»ã™ã‚‹ã‚‚ã®ã®ã‚¹ãƒ†ãƒ³ã‚·ãƒ«å€¤ã«ã™ã¹ã¦ï¼‘ã‚¿ã‚°ã‚’ã¤ã‘ã‚‹
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    /// åºŠã®æç”»
+    drawGridFloor();
 
-	return;
+    /**
+     *		ã‚«ãƒ©ãƒ¼ãƒ»ãƒ‡ãƒ—ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒã‚¹ã‚¯ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+     *		ã“ã‚Œã§ä»¥ä¸‹ã®å†…å®¹ã®ãƒ”ã‚¯ã‚»ãƒ«ã®è‰²ã®å€¤ã¯ã€æ›¸ãè¾¼ã¾ã‚Œãªã„ã€‚
+     */
+    glColorMask(0, 0, 0, 0);
+    glDepthMask(0);
+
+    /**
+     *		åºŠã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½±ã®ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚’ä»˜ã‘ã‚‹
+     */
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL, 1, ~0);
+
+    /**
+     *		ã“ã‚Œã‹ã‚‰æç”»ã™ã‚‹ã‚‚ã®ã®ã‚¹ãƒ†ãƒ³ã‚·ãƒ«å€¤ã«ã™ã¹ã¦ï¼‘ã‚¿ã‚°ã‚’ã¤ã‘ã‚‹
+     */
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+    glDisable(GL_DEPTH_TEST);
+    glPushMatrix();
+    glMultMatrixf(shadowMatrix);
+    glDisable(GL_CULL_FACE);
+    drawAsura();
+    glEnable(GL_CULL_FACE);
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
+
+    /**
+     *		ãƒ“ãƒƒãƒˆãƒã‚¹ã‚¯ã‚’è§£é™¤
+     */
+    glColorMask(1, 1, 1, 1);
+    glDepthMask(1);
+
+    glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_AUTO_NORMAL);
+
+
+    /**
+     *		å½±ã‚’ã¤ã‘ã‚‹
+     */
+    glStencilFunc(GL_EQUAL, 2, ~0);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_COLOR_MATERIAL);
+    drawGridFloor();
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+    glDisable(GL_STENCIL_TEST);
+
+    glDisable(GL_AUTO_NORMAL);
+    glDisable(GL_NORMALIZE);
+
+    return;
 }
 
 /**
- *	à–¾
- *		OpenGLƒCƒ[ƒW‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
- *		OpenGL•`‰æ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚É‚È‚é
+ *	èª¬æ˜
+ *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
+ *		OpenGLæç”»ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«ãªã‚‹
  */
 void AsuraGraphic::renderScenes(void)
 {
-	/// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ğƒJƒŒƒ“ƒg‚É‚·‚é
-	if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
-	{
-		/// ƒoƒbƒtƒ@‚ğƒNƒŠƒAiw’è‚µ‚½ƒoƒbƒtƒ@‚ğ“Á’è‚ÌF‚ÅÁ‹j
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		glLoadIdentity();
+    /// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚«ãƒ¬ãƒ³ãƒˆã«ã™ã‚‹
+    if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
+    {
+        /// ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ï¼ˆæŒ‡å®šã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’ç‰¹å®šã®è‰²ã§æ¶ˆå»ï¼‰
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        glLoadIdentity();
 
-		/// ‹“_Œˆ’è
-		setSceneView(sceneWidth, sceneHeight);
+        /// è¦–ç‚¹æ±ºå®š
+        setSceneView(sceneWidth, sceneHeight);
 
-		/**
-		 *	ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
-		 */
-		/// ¡‚ÌÀ•WŒn‚ğ•Û‘¶‚µ‚Ä‚¨‚­
-		glPushMatrix();
-		{
-			/// ƒV[ƒ“‚ğ•`‰æ
-			drawScenes();
+        /**
+         *	ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
+         */
+         /// ä»Šã®åº§æ¨™ç³»ã‚’ä¿å­˜ã—ã¦ãŠã
+        glPushMatrix();
+        {
+            /// ã‚·ãƒ¼ãƒ³ã‚’æç”»
+            drawScenes();
 
-			/// ‰e•`‰æ
-			drawShadow();
+            /// å½±æç”»
+            drawShadow();
 
-			/// x‹r‘½ŠpŒ`•`‰æ
-			drawSupportPolygon();
-		}
-		/// À•WŒn‚ğ–ß‚·
-		glPopMatrix();
+            /// æ”¯æŒè„šå¤šè§’å½¢æç”»
+            drawSupportPolygon();
+        }
+        /// åº§æ¨™ç³»ã‚’æˆ»ã™
+        glPopMatrix();
 
-		/// ƒRƒ}ƒ“ƒh‚Ìƒtƒ‰ƒbƒVƒ…
-		if (isAnimationRecorded)//
-			movieRecorder.recordFrame();
-		else
-			glFlush();
-	}
+        /// ã‚³ãƒãƒ³ãƒ‰ã®ãƒ•ãƒ©ãƒƒã‚·ãƒ¥
+        if (isAnimationRecorded)//
+            movieRecorder.recordFrame();
+        else
+            glFlush();
+    }
 
-	/**
-	 *		ƒoƒbƒtƒ@‚ÌØ‘Ö
-	 *			ƒoƒbƒNƒoƒbƒtƒ@‚ğƒtƒƒ“ƒgƒoƒbƒtƒ@‚ÉØ‚è‘Ö‚¦CV‚µ‚¢‰æ‘œ‚ğŒ©‚¹‚é
-	 */
-	SwapBuffers( wglGetCurrentDC() );
+    /**
+     *		ãƒãƒƒãƒ•ã‚¡ã®åˆ‡æ›¿
+     *			ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã«åˆ‡ã‚Šæ›¿ãˆï¼Œæ–°ã—ã„ç”»åƒã‚’è¦‹ã›ã‚‹
+     */
+    SwapBuffers(wglGetCurrentDC());
 
-	wglMakeCurrent(deviceContextHandle, NULL);
+    wglMakeCurrent(deviceContextHandle, NULL);
 
-	return;
+    return;
 }
 
 
 /**
- *		ƒV[ƒ“‚Ì‹“_‚ğViewType‚É‚æ‚èİ’è
+ *		ã‚·ãƒ¼ãƒ³ã®è¦–ç‚¹ã‚’ViewTypeã«ã‚ˆã‚Šè¨­å®š
  */
 void AsuraGraphic::setSceneView(double width, double height)
 {
-	/// ‹“_‘®«‚É‚æ‚è‹“_‚ğ•ÏX
-	switch ( getViewType() )
-	{
-		case PERSPECTIVE:
-			setViewPoint(	cameraView.getDistance(),
-							cameraView.getAzimuth(), 
-							cameraView.getElevation(),
-							cameraView.getViewCenterPosition(1),
-							cameraView.getViewCenterPosition(2),
-							cameraView.getViewCenterPosition(3),
-							width, height
-						);
-			break;
+    /// è¦–ç‚¹å±æ€§ã«ã‚ˆã‚Šè¦–ç‚¹ã‚’å¤‰æ›´
+    switch (getViewType())
+    {
+        case PERSPECTIVE:
+            setViewPoint(cameraView.getDistance(),
+                    cameraView.getAzimuth(),
+                    cameraView.getElevation(),
+                    cameraView.getViewCenterPosition(1),
+                    cameraView.getViewCenterPosition(2),
+                    cameraView.getViewCenterPosition(3),
+                    width, height
+            );
+            break;
 
-		case TOP:
-			setViewPoint(	2500.0, -90.0, 90.0,//1200.0, -90.0, 90.0,
-							asuraDataSrcPtr->getBodyPosition()(1),
-							asuraDataSrcPtr->getBodyPosition()(2),
-							asuraDataSrcPtr->getBodyPosition()(3) - 100,
-							width, height
-						);
-			break;
-        
-		case SIDE:
-			setViewPoint(	1500.0, -90.0, 0.0,//1200.0, -90.0, 0.0,
-							asuraDataSrcPtr->getBodyPosition()(1),
-							asuraDataSrcPtr->getBodyPosition()(2),
-							asuraDataSrcPtr->getBodyPosition()(3) - 100,
-							width, height
-						);
-			break;
-    
-		case FRONT:
-			setViewPoint(	1500.0, 0.0, 0.0,//1200.0, 0.0, 0.0,
-							asuraDataSrcPtr->getBodyPosition()(1),
-							asuraDataSrcPtr->getBodyPosition()(2),
-							asuraDataSrcPtr->getBodyPosition()(3) - 100,
-							width, height
-						);
-			break;
+        case TOP:
+            setViewPoint(2500.0, -90.0, 90.0,//1200.0, -90.0, 90.0,
+                    asuraDataSrcPtr->getBodyPosition()(1),
+                    asuraDataSrcPtr->getBodyPosition()(2),
+                    asuraDataSrcPtr->getBodyPosition()(3) - 100,
+                    width, height
+            );
+            break;
 
-		default:
-			break;
+        case SIDE:
+            setViewPoint(1500.0, -90.0, 0.0,//1200.0, -90.0, 0.0,
+                    asuraDataSrcPtr->getBodyPosition()(1),
+                    asuraDataSrcPtr->getBodyPosition()(2),
+                    asuraDataSrcPtr->getBodyPosition()(3) - 100,
+                    width, height
+            );
+            break;
+
+        case FRONT:
+            setViewPoint(1500.0, 0.0, 0.0,//1200.0, 0.0, 0.0,
+                    asuraDataSrcPtr->getBodyPosition()(1),
+                    asuraDataSrcPtr->getBodyPosition()(2),
+                    asuraDataSrcPtr->getBodyPosition()(3) - 100,
+                    width, height
+            );
+            break;
+
+        default:
+            break;
 
     }
 
-	return;
+    return;
 }
 
 /**
- *		Asura‚Ì•`‰æ
+ *		Asuraã®æç”»
  */
 void AsuraGraphic::drawAsura(void)
 {
-	if (!isAsuraDrawn)
-		return;
+    if (!isAsuraDrawn)
+        return;
 
-	/// “·‘Ì•`‰æ
-	drawBody();
+    /// èƒ´ä½“æç”»
+    drawBody();
 
-	/// ƒƒRƒ‚[ƒVƒ‡ƒ“—l®‚É‚æ‚è•`‰æ‚ğ•ª‚¯‚é
-	if (asuraDataSrcPtr->getLocomotionStyle() ==  LEGGED)
-	{
-		
-		//for (int i=0; i<LEG_NUM; i++)
-			//drawLeg(i+1);
-		
-		int i=2;
-		drawLeg(i);
-	}
-	else
-	{
-		int j;
-		for (j=0; j<LEG_NUM; j++)
-			drawTrack(j+1);		
-	}
+    /// ãƒ­ã‚³ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³æ§˜å¼ã«ã‚ˆã‚Šæç”»ã‚’åˆ†ã‘ã‚‹
+    if (asuraDataSrcPtr->getLocomotionStyle() == LocomotionStyle::LEGGED)
+    {
 
-	return;
+        //for (int i=0; i<LEG_NUM; i++)
+          //drawLeg(i+1);
+
+        int i = 2;
+        drawLeg(i);
+    }
+    else
+    {
+        int j;
+        for (j = 0; j < LEG_NUM; j++)
+            drawTrack(j + 1);
+    }
+
+    return;
 }
 
 /**
- *		Asura‚Ì–{‘Ì•`‰æ
+ *		Asuraã®æœ¬ä½“æç”»
  */
 void AsuraGraphic::drawBody(void)
 {
-	/// ƒOƒ[ƒoƒ‹‚©‚ç“·‘ÌÀ•W‚Ö‚Ì•ÏŠ·s—ñ
-	Matrix gAb(DH_DIMENSION, DH_DIMENSION);
+    /// ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‹ã‚‰èƒ´ä½“åº§æ¨™ã¸ã®å¤‰æ›è¡Œåˆ—
+    Matrix gAb(DH_DIMENSION, DH_DIMENSION);
 
-	glPushMatrix();
-		/// “·‘ÌÀ•WŒn‚É•ÏŠ·
-		gAb = asuraDataSrcPtr->getBodyTransformation();
-		transformOpenGLMatrix(gAb);
-			glCallList(bodyDisplayListID);
-	glPopMatrix();
+    glPushMatrix();
+    /// èƒ´ä½“åº§æ¨™ç³»ã«å¤‰æ›
+    gAb = asuraDataSrcPtr->getBodyTransformation();
+    transformOpenGLMatrix(gAb);
+    glCallList(bodyDisplayListID);
+    glPopMatrix();
 
-	return;
+    return;
 }
 
 /**
- *		Asura‚Ì‹r•`‰æ
+ *		Asuraã®è„šæç”»
  */
 void AsuraGraphic::drawLeg(int legNo)
 {
-	if (!isDisplayListReady)
-		return;
+    if (!isDisplayListReady)
+        return;
 
-	/// ‹r‚Ìˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM ); 
+    /// è„šã®å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
 
-	Matrix trans(DH_DIMENSION, DH_DIMENSION);	/// À•W•ÏŠ·—p‚Ìs—ñ
-	Matrix bAl(DH_DIMENSION, DH_DIMENSION);		/// “·‘Ì -> ‹r
+    Matrix trans(DH_DIMENSION, DH_DIMENSION);	/// åº§æ¨™å¤‰æ›ç”¨ã®è¡Œåˆ—
+    Matrix bAl(DH_DIMENSION, DH_DIMENSION);		/// èƒ´ä½“ -> è„š
 
 
-	glPushMatrix();
-		
-		/// ‹r‚Ìƒx[ƒXÀ•WŒn‚ğæ“¾‚µ‚ÄC‹rÀ•W‚É•ÏŠ·
-		glPushMatrix();
-		bAl = asuraDataSrcPtr->getLegBaseTransformation(legNo);
-			transformOpenGLMatrix(bAl);
-				glCallList(legDisplayListID[0]);
-		glPopMatrix();
+    glPushMatrix();
 
-		/// hip
-		glPushMatrix();
-			trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 1);
-			transformOpenGLMatrix(trans);
-				glCallList(legDisplayListID[1]);
-		glPopMatrix();
+    /// è„šã®ãƒ™ãƒ¼ã‚¹åº§æ¨™ç³»ã‚’å–å¾—ã—ã¦ï¼Œè„šåº§æ¨™ã«å¤‰æ›
+    glPushMatrix();
+    bAl = asuraDataSrcPtr->getLegBaseTransformation(legNo);
+    transformOpenGLMatrix(bAl);
+    glCallList(legDisplayListID[0]);
+    glPopMatrix();
 
-		/// shank
-		glPushMatrix();
-			trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 2);
-			transformOpenGLMatrix(trans);
-				glCallList(legDisplayListID[2]);
-		glPopMatrix();
+    /// hip
+    glPushMatrix();
+    trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 1);
+    transformOpenGLMatrix(trans);
+    glCallList(legDisplayListID[1]);
+    glPopMatrix();
 
-		 /// knee
-		glPushMatrix();
-			trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 3);
-			transformOpenGLMatrix(trans);
-				glCallList(legDisplayListID[3]);
-		glPopMatrix();
+    /// shank
+    glPushMatrix();
+    trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 2);
+    transformOpenGLMatrix(trans);
+    glCallList(legDisplayListID[2]);
+    glPopMatrix();
 
-		/// foot
-		glPushMatrix();
-			trans = asuraDataSrcPtr->getLegFootTransformation(legNo);
-			transformOpenGLMatrix(trans);
-				glCallList(legDisplayListID[4]);
-		glPopMatrix();
+    /// knee
+    glPushMatrix();
+    trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 3);
+    transformOpenGLMatrix(trans);
+    glCallList(legDisplayListID[3]);
+    glPopMatrix();
 
-	glPopMatrix();
+    /// foot
+    glPushMatrix();
+    trans = asuraDataSrcPtr->getLegFootTransformation(legNo);
+    transformOpenGLMatrix(trans);
+    glCallList(legDisplayListID[4]);
+    glPopMatrix();
 
-	return;
+    glPopMatrix();
+
+    return;
 }
 
 /**
- *		Asura‚Ìƒgƒ‰ƒbƒN•`‰æ
+ *		Asuraã®ãƒˆãƒ©ãƒƒã‚¯æç”»
  */
 void AsuraGraphic::drawTrack(int trackNo)
 {
-	/*if (!isDisplayListReady)
-		return;
+    /*if (!isDisplayListReady)
+      return;
 
-	/// ‹r‚Ìˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= LEG_NUM ); 
+    /// è„šã®å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert( 1 <= trackNo && trackNo <= LEG_NUM );
 
-	Matrix trans(DH_DIMENSION, DH_DIMENSION);	/// À•W•ÏŠ·—p‚Ìs—ñ
-	Matrix bAl(DH_DIMENSION, DH_DIMENSION);		/// “·‘Ì -> ‹r
+    Matrix trans(DH_DIMENSION, DH_DIMENSION);	/// åº§æ¨™å¤‰æ›ç”¨ã®è¡Œåˆ—
+    Matrix bAl(DH_DIMENSION, DH_DIMENSION);		/// èƒ´ä½“ -> è„š
 
 
-	glPushMatrix();
-		
-		/// ‹r‚Ìƒx[ƒXÀ•WŒn‚ğæ“¾‚µ‚ÄC‹rÀ•W‚É•ÏŠ·
-		glPushMatrix();
-		bAl = asuraDataSrcPtr->getTrackBaseTransformation(trackNo);
-			transformOpenGLMatrix(bAl);
-				glCallList(trackDisplayListID[0]);
-		glPopMatrix();
+    glPushMatrix();
 
-		/// hip
-		glPushMatrix();
-		trans = asuraDataSrcPtr->getTrackJointTransformation(trackNo, 1);
-			transformOpenGLMatrix(trans);
-				glCallList(trackDisplayListID[1]);
-		glPopMatrix();
+      /// è„šã®ãƒ™ãƒ¼ã‚¹åº§æ¨™ç³»ã‚’å–å¾—ã—ã¦ï¼Œè„šåº§æ¨™ã«å¤‰æ›
+      glPushMatrix();
+      bAl = asuraDataSrcPtr->getTrackBaseTransformation(trackNo);
+        transformOpenGLMatrix(bAl);
+          glCallList(trackDisplayListID[0]);
+      glPopMatrix();
 
-		/// shank
-		glPushMatrix();
-		trans = asuraDataSrcPtr->getTrackJointTransformation(trackNo, 2);
-			transformOpenGLMatrix(trans);
-				glCallList(trackDisplayListID[2]);
-		glPopMatrix();
+      /// hip
+      glPushMatrix();
+      trans = asuraDataSrcPtr->getTrackJointTransformation(trackNo, 1);
+        transformOpenGLMatrix(trans);
+          glCallList(trackDisplayListID[1]);
+      glPopMatrix();
 
-		 /// knee
-		glPushMatrix();
-			trans = asuraDataSrcPtr->getTrackEndTransformation(trackNo);
-			transformOpenGLMatrix(trans);
-				glCallList(trackDisplayListID[3]);
-		glPopMatrix();
+      /// shank
+      glPushMatrix();
+      trans = asuraDataSrcPtr->getTrackJointTransformation(trackNo, 2);
+        transformOpenGLMatrix(trans);
+          glCallList(trackDisplayListID[2]);
+      glPopMatrix();
 
-	glPopMatrix();
+       /// knee
+      glPushMatrix();
+        trans = asuraDataSrcPtr->getTrackEndTransformation(trackNo);
+        transformOpenGLMatrix(trans);
+          glCallList(trackDisplayListID[3]);
+      glPopMatrix();
 
-	return;*/
+    glPopMatrix();
+
+    return;*/
 }
 
 
 
 /**
- *		x‹r‘½ŠpŒ`(OŠpŒ`orlŠpŒ`)‚Ì•`‰æ
+ *		æ”¯æŒè„šå¤šè§’å½¢(ä¸‰è§’å½¢orå››è§’å½¢)ã®æç”»
  */
 void AsuraGraphic::drawSupportPolygon(void)
 {
 
-	/// •`‰æƒtƒ‰ƒO
-	if ( !isSupportPolygonDrawn )
-		return;
+    /// æç”»ãƒ•ãƒ©ã‚°
+    if (!isSupportPolygonDrawn)
+        return;
 
-	int i;
-	Asura::LegPhase phase[LEG_NUM];
+    int i;
+    Asura::LegPhase phase[LEG_NUM];
 
-	for (i=0; i<LEG_NUM; i++)
-	{
-		phase[i] = asuraDataSrcPtr->getLegPhase(i+1);
-	}
+    for (i = 0; i < LEG_NUM; i++)
+    {
+        phase[i] = asuraDataSrcPtr->getLegPhase(i + 1);
+    }
 
-	/// x‹r‘½ŠpŒ`‚ÌFŒˆ’è
-	setMaterialColor( selectMaterialColor(Graphic::YELLOW) );
+    /// æ”¯æŒè„šå¤šè§’å½¢ã®è‰²æ±ºå®š
+    setMaterialColor(selectMaterialColor(Graphic::YELLOW));
 
-	if ( phase[0] == Asura::SWING )
-	{
-		drawTriangle(	asuraDataSrcPtr->getLegFootPosition(2), asuraDataSrcPtr->getLegFootPosition(3), 
-							asuraDataSrcPtr->getLegFootPosition(4), 2.0 );
-	}
-	else if ( phase[1] == Asura::SWING )
-	{
-		drawTriangle(	asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(3), 
-							asuraDataSrcPtr->getLegFootPosition(4), 2.0 );
-	}
-	else if ( phase[2] == Asura::SWING )
-	{
-		drawTriangle(	asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2), 
-							asuraDataSrcPtr->getLegFootPosition(4), 2.0 );
-	}
-	else if ( phase[3] == Asura::SWING )
-	{
-		drawTriangle(	asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2), 
-							asuraDataSrcPtr->getLegFootPosition(3), 2.0 );
-	}
-	else
-	{
-		drawQuadrangle(	asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2), 
-								asuraDataSrcPtr->getLegFootPosition(4), asuraDataSrcPtr->getLegFootPosition(3),
-								2.0 );
-	}
+    if (phase[0] == Asura::LegPhase::SWING)
+    {
+        drawTriangle(asuraDataSrcPtr->getLegFootPosition(2), asuraDataSrcPtr->getLegFootPosition(3),
+                  asuraDataSrcPtr->getLegFootPosition(4), 2.0);
+    }
+    else if (phase[1] == Asura::LegPhase::SWING)
+    {
+        drawTriangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(3),
+                  asuraDataSrcPtr->getLegFootPosition(4), 2.0);
+    }
+    else if (phase[2] == Asura::LegPhase::SWING)
+    {
+        drawTriangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2),
+                  asuraDataSrcPtr->getLegFootPosition(4), 2.0);
+    }
+    else if (phase[3] == Asura::LegPhase::SWING)
+    {
+        drawTriangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2),
+                  asuraDataSrcPtr->getLegFootPosition(3), 2.0);
+    }
+    else
+    {
+        drawQuadrangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2),
+                    asuraDataSrcPtr->getLegFootPosition(4), asuraDataSrcPtr->getLegFootPosition(3),
+                    2.0);
+    }
 
-	return;
+    return;
 }
 
 
 /**
- *		AsuraGraphicƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		AsuraGraphicã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  *
  */
-/**
- *		OpenGLÀ•W•ÏŠ·‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
- *			OpenGL—p‚Ì4x4À•W•ÏŠ·
- */
+ /**
+  *		OpenGLåº§æ¨™å¤‰æ›ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+  *			OpenGLç”¨ã®4x4åº§æ¨™å¤‰æ›
+  */
 void AsuraGraphic::transformOpenGLMatrix(const Matrix& matrix)
 {
-	/// •ÏŠ·s—ñ—v‘f
-	double T[16];
+    /// å¤‰æ›è¡Œåˆ—è¦ç´ 
+    double T[16];
 
-	int i;
-	int j;
-	int k=0;
-	
-	/// s—ñ—v‘f‚ğ”z—ñ‚ÉŠi”[
-	for (i=1; i<=DH_DIMENSION; i++)
-	{
-		for (j=1; j<=DH_DIMENSION; j++)
-		{
-			T[k] = matrix(j, i);
-			k++;
-		}
-	}
+    int i;
+    int j;
+    int k = 0;
 
-	/// Œ»İ‚Ìƒ}ƒgƒŠƒNƒX‚ÆŠ|‚¯‚é
-	glMultMatrixd(T);
+    /// è¡Œåˆ—è¦ç´ ã‚’é…åˆ—ã«æ ¼ç´
+    for (i = 1; i <= DH_DIMENSION; i++)
+    {
+        for (j = 1; j <= DH_DIMENSION; j++)
+        {
+            T[k] = matrix(j, i);
+            k++;
+        }
+    }
 
-	return;
+    /// ç¾åœ¨ã®ãƒãƒˆãƒªã‚¯ã‚¹ã¨æ›ã‘ã‚‹
+    glMultMatrixd(T);
+
+    return;
 }
 
 /**
- *	à–¾
- *		‰e‚ğ“Š‰e‚·‚é•½–Ê‚ÌŒW”‚ğŒvZ
- *	ˆø”
- *		planeEq: •½–Ê‚Ì•û’ö®‚ÌŒW””z—ñ
- *		p0: •½–Êã‚Ì’¸“_
- *		p1: •½–Êã‚Ì’¸“_
- *		p2: •½–Êã‚Ì’¸“_
+ *	èª¬æ˜
+ *		å½±ã‚’æŠ•å½±ã™ã‚‹å¹³é¢ã®ä¿‚æ•°ã‚’è¨ˆç®—
+ *	å¼•æ•°
+ *		planeEq: å¹³é¢ã®æ–¹ç¨‹å¼ã®ä¿‚æ•°é…åˆ—
+ *		p0: å¹³é¢ä¸Šã®é ‚ç‚¹
+ *		p1: å¹³é¢ä¸Šã®é ‚ç‚¹
+ *		p2: å¹³é¢ä¸Šã®é ‚ç‚¹
  */
 void AsuraGraphic::calcShadowPlaneEquation(GLfloat planeEq[], GLfloat p0[], GLfloat p1[], GLfloat p2[])
 {
-	GLfloat vector0[3], vector1[3];
+    GLfloat vector0[3], vector1[3];
 
-	/// •½–Ê‚Ì–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é‚½‚ßAŠOÏŒvZ‚É—p‚¢‚é2‚Â‚ÌƒxƒNƒgƒ‹‚ğ‹‚ß‚é
-	vector0[0] = p1[0] - p0[0];
-	vector0[1] = p1[1] - p0[1];
-	vector0[2] = p1[2] - p0[2];
+    /// å¹³é¢ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹ãŸã‚ã€å¤–ç©è¨ˆç®—ã«ç”¨ã„ã‚‹2ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
+    vector0[0] = p1[0] - p0[0];
+    vector0[1] = p1[1] - p0[1];
+    vector0[2] = p1[2] - p0[2];
 
-	vector1[0] = p2[0] - p0[0];
-	vector1[1] = p2[1] - p0[1];
-	vector1[2] = p2[2] - p0[2];
+    vector1[0] = p2[0] - p0[0];
+    vector1[1] = p2[1] - p0[1];
+    vector1[2] = p2[2] - p0[2];
 
-	/// •½–Ê‚Ì•û’ö® ax+ by + cz = d‚Ìa, b, c, d‚ğ‹‚ß‚é
-	planeEq[0] = vector0[1]*vector1[2] - vector0[2]*vector1[1];
-	planeEq[1] = -(vector0[0]*vector1[2] - vector0[2]*vector1[0]);
-	planeEq[2] = vector0[0]*vector1[1] - vector0[1]*vector1[0];
+    /// å¹³é¢ã®æ–¹ç¨‹å¼ ax+ by + cz = dã®a, b, c, dã‚’æ±‚ã‚ã‚‹
+    planeEq[0] = vector0[1] * vector1[2] - vector0[2] * vector1[1];
+    planeEq[1] = -(vector0[0] * vector1[2] - vector0[2] * vector1[0]);
+    planeEq[2] = vector0[0] * vector1[1] - vector0[1] * vector1[0];
 
-	planeEq[3] = -(planeEq[0]*p0[0] + planeEq[1]*p0[1] + planeEq[2]*p0[2]);
-	return;
+    planeEq[3] = -(planeEq[0] * p0[0] + planeEq[1] * p0[1] + planeEq[2] * p0[2]);
+    return;
 }
 
 /**
- *	à–¾
- *		–Ú“I‚Ì‰e‚ğ“Š‰e‚·‚és—ñ
- *	ˆø”
- *		matrix: “Š‰e‚µ‚½s—ñ
- *		plnaeEq: •½–Ê‚Ì•û’ö®‚ÌŒW””z—ñi—v‘f”4j
- *		lightPos: ŒõŒ¹‚Ì“¯À•WˆÊ’ui—v‘f”4j
+ *	èª¬æ˜
+ *		ç›®çš„ã®å½±ã‚’æŠ•å½±ã™ã‚‹è¡Œåˆ—
+ *	å¼•æ•°
+ *		matrix: æŠ•å½±ã—ãŸè¡Œåˆ—
+ *		plnaeEq: å¹³é¢ã®æ–¹ç¨‹å¼ã®ä¿‚æ•°é…åˆ—ï¼ˆè¦ç´ æ•°4ï¼‰
+ *		lightPos: å…‰æºã®åŒæ™‚åº§æ¨™ä½ç½®ï¼ˆè¦ç´ æ•°4ï¼‰
  */
 void AsuraGraphic::calcShadowMatrix(GLfloat matrix[], GLfloat planeEq[], GLfloat lightPos[])
 {
-	GLfloat dot;
+    GLfloat dot;
 
-	/// •½–Ê‚ÆŒõŒ¹‚Ì“àÏ‚ğŒvZ
-	dot = planeEq[0]*lightPos[0] + planeEq[1]*lightPos[1] +	planeEq[2]*lightPos[2] + planeEq[3]*lightPos[3];
+    /// å¹³é¢ã¨å…‰æºã®å†…ç©ã‚’è¨ˆç®—
+    dot = planeEq[0] * lightPos[0] + planeEq[1] * lightPos[1] + planeEq[2] * lightPos[2] + planeEq[3] * lightPos[3];
 
-	matrix[0]	= dot - lightPos[0] * planeEq[0];
-	matrix[4]	= 0.f - lightPos[0] * planeEq[1];
-	matrix[8]	= 0.f - lightPos[0] * planeEq[2];
-	matrix[12]	= 0.f - lightPos[0] * planeEq[3];
+    matrix[0] = dot - lightPos[0] * planeEq[0];
+    matrix[4] = 0.f - lightPos[0] * planeEq[1];
+    matrix[8] = 0.f - lightPos[0] * planeEq[2];
+    matrix[12] = 0.f - lightPos[0] * planeEq[3];
 
-	matrix[1]	= 0.f - lightPos[1] * planeEq[0];
-	matrix[5]	= dot - lightPos[1] * planeEq[1];
-	matrix[9]	= 0.f - lightPos[1] * planeEq[2];
-	matrix[13]	= 0.f - lightPos[1] * planeEq[3];
+    matrix[1] = 0.f - lightPos[1] * planeEq[0];
+    matrix[5] = dot - lightPos[1] * planeEq[1];
+    matrix[9] = 0.f - lightPos[1] * planeEq[2];
+    matrix[13] = 0.f - lightPos[1] * planeEq[3];
 
-	matrix[2]	= 0.f - lightPos[2] * planeEq[0];
-	matrix[6]	= 0.f - lightPos[2] * planeEq[1];
-	matrix[10]	= dot - lightPos[2] * planeEq[2];
-	matrix[14]	= 0.f - lightPos[2] * planeEq[3];
+    matrix[2] = 0.f - lightPos[2] * planeEq[0];
+    matrix[6] = 0.f - lightPos[2] * planeEq[1];
+    matrix[10] = dot - lightPos[2] * planeEq[2];
+    matrix[14] = 0.f - lightPos[2] * planeEq[3];
 
-	matrix[3]	= 0.f - lightPos[3] * planeEq[0];
-	matrix[7]	= 0.f - lightPos[3] * planeEq[1];
-	matrix[11]	= 0.f - lightPos[3] * planeEq[2];
-	matrix[15]	= dot - lightPos[3] * planeEq[3];
+    matrix[3] = 0.f - lightPos[3] * planeEq[0];
+    matrix[7] = 0.f - lightPos[3] * planeEq[1];
+    matrix[11] = 0.f - lightPos[3] * planeEq[2];
+    matrix[15] = dot - lightPos[3] * planeEq[3];
 
-	return;
+    return;
 }
 
 }

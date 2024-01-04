@@ -1,772 +1,520 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		WalkingRobot.cpp
- *  à–¾
- *		•àsƒƒ{ƒbƒg‚Ìî•ñC‰^“®Šw
- *		LegTrackƒNƒ‰ƒX‚ÌƒRƒ“ƒ|ƒWƒVƒ‡ƒ“
- *  “ú•t
- *		ì¬“ú: 2007/02/05(MON)		XV“ú: 2007/11/05(MON) SAURUS
- */
-
-//  20200819  ƒNƒ[ƒ‰ŠÖ˜AƒRƒƒ“ƒgƒAƒEƒgETrackLeg‚ğ‰î‚³‚¸‚ÉLeg‚ğŒÄ‚Ô
-//  20201015  ‰Šú‚‚³
-//  20201018  ‘æ4ŠÖß
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ï»¿
 #include "WalkingRobot.h"
 
 using namespace std;
 using namespace Math;
 using namespace Const;
 
-/**
- *	----------------------------------------------------------------------
- *		WalkingRobotƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-/**
- *				À•WŒn‚Ì’è‹`
- *
- *		 ‰EèŒn					
- *									
- *						 y		
- *		x  1			6ª		
- *	   ©	|-----------|¨	
- *	     «	|	  x		|   x			 
- *	     y	|	  ª	|		
- *			|  ©		|
-  *			|    y		|y		
- *	    x	|			|ª	
- *	   ©	|-----------|¨	
- *	     «2|			|5   x	
- *	     y	|			|
- *			|    		|y		
- *	    x	|			|ª	
- *	   ©	|-----------|¨	
- *	     «3			4   x	
- *	     y				
- */
+
+
+// åº§æ¨™ç³»ã®å®šç¾©
+// å³æ‰‹ç³»
+//                        y
+//		x  1              6â†‘
+//	   â†â—	|-----------|â—â†’
+//	     â†“	|      x    |    x
+//	     y	|	   â†‘     |
+//			    |  â†â—     |
+//          | y         |  y
+//	    x	  |           |â†‘
+//	   â†â—	|-----------|â—â†’
+// 	     â†“2|           | 5  x
+//	    y	  |           |
+//          |           |   y
+//	  x     |           | â†‘
+//     â†â— |-----------| â—â†’
+//       â†“3             4   x
+//      y
 
 namespace Asura
 {
-/**
- *	------------------------------------------------------------
- *		WalkingRobotƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
 
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 WalkingRobot::WalkingRobot()
 {
-	/// ‹rƒIƒuƒWƒFƒNƒg‚Ì¶¬
-	newTrackLegs();
+    /// è„šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+    NewTrackLegs();
 
-	/// ‰Šú‰»
-	initializeWalkingRobot();
+    /// åˆæœŸåŒ–
+    initializeWalkingRobot();
 
 }
-/// ƒfƒXƒgƒ‰ƒNƒ^
+
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 WalkingRobot::~WalkingRobot()
 {
-	/// ƒIƒuƒWƒFƒNƒgÁ‹
-	deleteTrackLegs();
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ¶ˆå»
+    DeleteTrackLegs();
 }
 
-/// ‰Šú‰»ŠÖ”
+/// åˆæœŸåŒ–é–¢æ•°
 void WalkingRobot::initializeWalkingRobot(void)
 {
-	/// “·‘ÌˆÊ’u‚Ì‰Šú‰»
-	//initializeBodyPosition(0.0, 0.0, 500.0);
-	//20201015
-	initializeBodyPosition(0.0, 0.0, Plan::TRIPODGAIT_INITIAL_BODY_POSITION[2]);
+    /// èƒ´ä½“ä½ç½®ã®åˆæœŸåŒ–
+    initializeBodyPosition(0.0, 0.0, Plan::TRIPODGAIT_INITIAL_BODY_POSITION[2]);
 
-	Vector* initialJointAngle;
-	initialJointAngle = new Vector[LEG_NUM];
+    Vector* initialJointAngle;
+    initialJointAngle = new Vector[LEG_NUM];
 
-	double* initialFootJointAngle;  //20201018
-	initialFootJointAngle = new double[LEG_NUM];  //20201018
+    double* initialFootJointAngle;  //20201018
+    initialFootJointAngle = new double[LEG_NUM];  //20201018
 
-	int i, j;
-	for (i=0; i<LEG_NUM; i++)
-		initialJointAngle[i].setSize(LEG_JOINT_NUM);
+    int i, j;
+    for (i = 0; i < LEG_NUM; i++)
+        initialJointAngle[i].setSize(LEG_JOINT_NUM);
 
-	initialJointAngle[0] = Vector(LEG_INITIAL_ANGLE1, LEG_JOINT_NUM);
-	initialJointAngle[1] = Vector(LEG_INITIAL_ANGLE2, LEG_JOINT_NUM);
-	initialJointAngle[2] = Vector(LEG_INITIAL_ANGLE3, LEG_JOINT_NUM);
-	initialJointAngle[3] = Vector(LEG_INITIAL_ANGLE4, LEG_JOINT_NUM);
-	initialJointAngle[4] = Vector(LEG_INITIAL_ANGLE5, LEG_JOINT_NUM);
-	initialJointAngle[5] = Vector(LEG_INITIAL_ANGLE6, LEG_JOINT_NUM);
+    initialJointAngle[0] = Vector(LEG_INITIAL_ANGLE1, LEG_JOINT_NUM);
+    initialJointAngle[1] = Vector(LEG_INITIAL_ANGLE2, LEG_JOINT_NUM);
+    initialJointAngle[2] = Vector(LEG_INITIAL_ANGLE3, LEG_JOINT_NUM);
+    initialJointAngle[3] = Vector(LEG_INITIAL_ANGLE4, LEG_JOINT_NUM);
+    initialJointAngle[4] = Vector(LEG_INITIAL_ANGLE5, LEG_JOINT_NUM);
+    initialJointAngle[5] = Vector(LEG_INITIAL_ANGLE6, LEG_JOINT_NUM);
 
-	//20201018
-	initialFootJointAngle[0] = LEG_INITIAL_ANGLE1[3];
-	initialFootJointAngle[1] = LEG_INITIAL_ANGLE2[3];
-	initialFootJointAngle[2] = LEG_INITIAL_ANGLE3[3];
-	initialFootJointAngle[3] = LEG_INITIAL_ANGLE4[3];
-	initialFootJointAngle[4] = LEG_INITIAL_ANGLE5[3];
-	initialFootJointAngle[5] = LEG_INITIAL_ANGLE6[3];
-	
+    //20201018
+    initialFootJointAngle[0] = LEG_INITIAL_ANGLE1[3];
+    initialFootJointAngle[1] = LEG_INITIAL_ANGLE2[3];
+    initialFootJointAngle[2] = LEG_INITIAL_ANGLE3[3];
+    initialFootJointAngle[3] = LEG_INITIAL_ANGLE4[3];
+    initialFootJointAngle[4] = LEG_INITIAL_ANGLE5[3];
+    initialFootJointAngle[5] = LEG_INITIAL_ANGLE6[3];
 
-	/// ‹rŠÖßŠp‚Ì‰Šú‰»
-	for (j=0; j<LEG_NUM; j++)
-		placeLegJointAngles( j+1, initialJointAngle[j], initialFootJointAngle[j] );
 
-	delete [] initialJointAngle;
-	delete[] initialFootJointAngle;
+    /// è„šé–¢ç¯€è§’ã®åˆæœŸåŒ–
+    for (j = 0; j < LEG_NUM; j++)
+    {
+        placeLegJointAngles(j + 1, initialJointAngle[j], initialFootJointAngle[j]);
+    }
+
+    delete[] initialJointAngle;
+    delete[] initialFootJointAngle;
 }
 
-/**
- *	----------------------------------------
- *	ƒƒ{ƒbƒg–{‘Ì‚ÉŠÖ‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-/**
- *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
- *	----------------------------------------
- */
-/// “·‘Ì‚ÌˆÊ’u‚ğüV
+/// èƒ´ä½“ã®ä½ç½®ã‚’åˆ·æ–°
 void WalkingRobot::initializeBodyTransformation(const Math::Matrix& newBodyTransformation)
 {
-	bodyData.transformation = newBodyTransformation;
+    body_data.transformation = newBodyTransformation;
 
-	int i;
-	for (i=0; i<THREE_DIMENSION; i++)
-		bodyData.position(i+1) = bodyData.transformation(i+1, 4);
+    int i;
+    for (i = 0; i < THREE_DIMENSION; i++)
+        body_data.position(i + 1) = body_data.transformation(i + 1, 4);
 
-	return;
+    return;
 }
 
-/// “·‘Ì‚ÌˆÊ’u‚ğüV
+/// èƒ´ä½“ã®ä½ç½®ã‚’åˆ·æ–°
 void WalkingRobot::initializeBodyPosition(const Math::Vector& newBodyPosition)
 {
-	bodyData.position = newBodyPosition;
+    body_data.position = newBodyPosition;
 
-	int i;
-	for (i=0; i<THREE_DIMENSION; i++)
-		bodyData.transformation(i+1, 4) = bodyData.position(i+1);
+    int i;
+    for (i = 0; i < THREE_DIMENSION; i++)
+        body_data.transformation(i + 1, 4) = body_data.position(i + 1);
 
-	return;
+    return;
 }
 void WalkingRobot::initializeBodyPosition(double x, double y, double z)
 {
-	bodyData.position(1) = x;
-	bodyData.position(2) = y;
-	bodyData.position(3) = z;
+    body_data.position(1) = x;
+    body_data.position(2) = y;
+    body_data.position(3) = z;
 
-	int i;
-	for (i=0; i<THREE_DIMENSION; i++)
-		bodyData.transformation(i+1, 4) = bodyData.position(i+1);
+    int i;
+    for (i = 0; i < THREE_DIMENSION; i++)
+        body_data.transformation(i + 1, 4) = body_data.position(i + 1);
 
-	return;
+    return;
 }
 
-/// ˆÚ“®—l®
+/// ç§»å‹•æ§˜å¼
 void WalkingRobot::setLocomotionStyle(LocomotionStyle style)
 {
-	locomotionStyle = style;
+    locomotion_style = style;
 }
 
-/// ‹r‚Ì‰^“®‘Š
+/// è„šã®é‹å‹•ç›¸
 void WalkingRobot::setLegPhase(int legNo, LegPhase phase)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
 
-	legPhases[legNo-1] = phase;
+    leg_phases[legNo - 1] = phase;
 
-	return;
+    return;
 }
 
-/**
- *	----------------------------------------
- *	‰^“®Šw
- *	----------------------------------------
- */
-/// “·‘Ì‚ÌˆÊ’u‚ğŒˆ’è‚·‚é
+/// èƒ´ä½“ã®ä½ç½®ã‚’æ±ºå®šã™ã‚‹
 Kinematics WalkingRobot::placeBodyPosition(Math::Vector& nextBodyPosition)
 {
-	/// ‰^“®ŠwŒ‹‰Ê
-	Kinematics kine;
-	/// ˆê•Û‘¶‚Ì‚½‚ß‚Ì“·‘Ì“¯Ÿ•ÏŠ·s—ñ
-	Matrix lastBodyTransform(DH_DIMENSION, DH_DIMENSION);
-	Vector presentGlobalFootPosition[LEG_NUM];
-	Vector nextLocalFootPosition[LEG_NUM];
+    /// é‹å‹•å­¦çµæœ
+    Kinematics kine;
+    /// ä¸€æ™‚ä¿å­˜ã®ãŸã‚ã®èƒ´ä½“åŒæ¬¡å¤‰æ›è¡Œåˆ—
+    Matrix lastBodyTransform(DH_DIMENSION, DH_DIMENSION);
+    Vector presentGlobalFootPosition[LEG_NUM];
+    Vector nextLocalFootPosition[LEG_NUM];
 
-	/// ƒJƒEƒ“ƒ^
-	int i, j;
+    /// ã‚«ã‚¦ãƒ³ã‚¿
+    int i, j;
 
-	/// ˆê•Û‘¶
-	lastBodyTransform = bodyData.transformation;
+    /// ä¸€æ™‚ä¿å­˜
+    lastBodyTransform = body_data.transformation;
 
-	/// “·‘ÌˆÊ’u‚ğXV‚·‚é‘O‚Ì‹r‚ÌƒOƒ[ƒoƒ‹À•W‚ğæ“¾
-	for (i=0; i<LEG_NUM; i++)
-	{
-		/// ƒxƒNƒgƒ‹ƒTƒCƒYŒˆ’è
-		presentGlobalFootPosition[i].setSize(THREE_DIMENSION);
-		/// Œ»İ‚Ì‹rˆÊ’u‚ğ“·‘ÌÀ•WŒn‚Å•Û‘¶
-		presentGlobalFootPosition[i] = transformationLocalToGlobal( trackLegs[i]->getLegFootPosition() );
-	}
+    /// èƒ´ä½“ä½ç½®ã‚’æ›´æ–°ã™ã‚‹å‰ã®è„šã®ã‚°ãƒ­ãƒ¼ãƒãƒ«åº§æ¨™ã‚’å–å¾—
+    for (i = 0; i < LEG_NUM; i++)
+    {
+        /// ãƒ™ã‚¯ãƒˆãƒ«ã‚µã‚¤ã‚ºæ±ºå®š
+        presentGlobalFootPosition[i].setSize(THREE_DIMENSION);
+        /// ç¾åœ¨ã®è„šä½ç½®ã‚’èƒ´ä½“åº§æ¨™ç³»ã§ä¿å­˜
+        presentGlobalFootPosition[i] = transformationLocalToGlobal(track_legs[i]->getLegFootPosition());
+    }
 
-	/// “·‘ÌˆÊ’u‚ğXV
-	for (i=1; i<=THREE_DIMENSION; i++)
-		bodyData.transformation(i, 4) = nextBodyPosition(i);
+    /// èƒ´ä½“ä½ç½®ã‚’æ›´æ–°
+    for (i = 1; i <= THREE_DIMENSION; i++)
+        body_data.transformation(i, 4) = nextBodyPosition(i);
 
-	/// XV‚µ‚½“·‘ÌÀ•WŒn‚Å‚ÌV‚µ‚¢ƒ[ƒJƒ‹‹rˆÊ’u‚ğŒvZ
-	for (j=0; j<LEG_NUM; j++)
-	{
-		/// ƒxƒNƒgƒ‹ƒTƒCƒYŒˆ’è
-		nextLocalFootPosition[j].setSize(THREE_DIMENSION);
-		/// “·‘ÌÀ•WŒn‚Å‚ÌŸ‚Ì‹rˆÊ’u‚ğŒvZ
-		nextLocalFootPosition[j] = transformationGlobalToLocal( presentGlobalFootPosition[j] );
-	}
+    /// æ›´æ–°ã—ãŸèƒ´ä½“åº§æ¨™ç³»ã§ã®æ–°ã—ã„ãƒ­ãƒ¼ã‚«ãƒ«è„šä½ç½®ã‚’è¨ˆç®—
+    for (j = 0; j < LEG_NUM; j++)
+    {
+        /// ãƒ™ã‚¯ãƒˆãƒ«ã‚µã‚¤ã‚ºæ±ºå®š
+        nextLocalFootPosition[j].setSize(THREE_DIMENSION);
+        /// èƒ´ä½“åº§æ¨™ç³»ã§ã®æ¬¡ã®è„šä½ç½®ã‚’è¨ˆç®—
+        nextLocalFootPosition[j] = transformationGlobalToLocal(presentGlobalFootPosition[j]);
+    }
 
-	/// x‹r‚Ì‚İ‚Å“·‘ÌˆÊ’u‚ğ•ÏX
-	for (j=0; j<LEG_NUM; j++)
-	{
-		if (legPhases[j] == SUPPORT )
-		{
-			/// V‚µ‚¢‘«æ–Ú•W’l‚É’u‚­
-			kine = trackLegs[j]->placeLegFootPosition( nextLocalFootPosition[j] );
-			
-			/// ‹ræ‚ªV‚µ‚¢w—ß’l‚É“’B‚Å‚«‚È‚©‚Á‚½‚ç
-			if ( kine != NO_KINE_ERROR )
-			{
-				/// “·‘Ì‚Ìó‘Ô‚ğÅ‰‚É–ß‚·
-				bodyData.transformation = lastBodyTransform;
+    /// æ”¯æŒè„šã®ã¿ã§èƒ´ä½“ä½ç½®ã‚’å¤‰æ›´
+    for (j = 0; j < LEG_NUM; j++)
+    {
+        if (leg_phases[j] == LegPhase::SUPPORT)
+        {
+            /// æ–°ã—ã„è¶³å…ˆç›®æ¨™å€¤ã«ç½®ã
+            kine = track_legs[j]->placeLegFootPosition(nextLocalFootPosition[j]);
 
-				/// ƒGƒ‰[ƒR[ƒh‚ğ‹L˜^
-				lastKineError = kine;
-				lastErrorTrackLegNo = i+1;
-				
-				return kine;
-			}
-		}
-	}
+            /// è„šå…ˆãŒæ–°ã—ã„æŒ‡ä»¤å€¤ã«åˆ°é”ã§ããªã‹ã£ãŸã‚‰
+            if (kine != NO_KINE_ERROR)
+            {
+                /// èƒ´ä½“ã®çŠ¶æ…‹ã‚’æœ€åˆã«æˆ»ã™
+                body_data.transformation = lastBodyTransform;
 
-	/// ‘S‚Ä¬Œ÷‚µ‚½‚Ì‚Å“·‘ÌˆÊ’uXV
-	bodyData.position = nextBodyPosition;
+                /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’è¨˜éŒ²
+                last_kinematics_error = kine;
+                last_error_track_leg_no = i + 1;
 
-	return NO_KINE_ERROR;
+                return kine;
+            }
+        }
+    }
+
+    /// å…¨ã¦æˆåŠŸã—ãŸã®ã§èƒ´ä½“ä½ç½®æ›´æ–°
+    body_data.position = nextBodyPosition;
+
+    return NO_KINE_ERROR;
 }
 
-/// “·‘Ì‚ÌˆÊ’u‚ğŒˆ’è‚·‚é
+/// èƒ´ä½“ã®ä½ç½®ã‚’æ±ºå®šã™ã‚‹
 Kinematics WalkingRobot::placeBodyPosture(Math::Matrix& nextBodyPosture)
 {
-	/// ‰^“®ŠwŒ‹‰Ê
-	Kinematics kine;
+    /// é‹å‹•å­¦çµæœ
+    Kinematics kine;
 
-	return NO_KINE_ERROR;
+    return NO_KINE_ERROR;
 }
 
-/// “·‘Ì‚ÌˆÊ’up¨‚ğ“¯‚ÉŒˆ’è‚·‚é
+/// èƒ´ä½“ã®ä½ç½®å§¿å‹¢ã‚’åŒæ™‚ã«æ±ºå®šã™ã‚‹
 Kinematics WalkingRobot::placeBodyFrame(Math::Matrix& nextBodyFrame)
 {
-	/// ‰^“®ŠwŒ‹‰Ê
-	Kinematics kine;
+    /// é‹å‹•å­¦çµæœ
+    Kinematics kine;
 
-	return NO_KINE_ERROR;
+    return NO_KINE_ERROR;
 }
 
-/**
- *	----------------------------------------
- *	‹r‚ÉŠÖ‚·‚é‚à‚Ì
- *	TrackLegƒNƒ‰ƒX‚ğ‰î‚µ‚½‹rƒNƒ‰ƒXŠÖ”‚ÌŒÄ‚Ño‚µ
- *	----------------------------------------
- */
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-/// ‹rªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
+/// è„šæ ¹å…ƒã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
 const Matrix& WalkingRobot::getLegBaseTransformation(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegBaseTransformation();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegBaseTransformation();
 }
-/// ŠÖß‚Ì“¯Ÿ•ÏŠ·s—ñ
+/// é–¢ç¯€ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
 const Matrix& WalkingRobot::getLegJointTransformation(int legNo, int jointNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
-	return trackLegs[legNo-1]->getLegJointTransformation( jointNo );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
+    return track_legs[legNo - 1]->getLegJointTransformation(jointNo);
 }
-/// ‘«— ‚Ì“¯Ÿ•ÏŠ·s—ñ
+/// è¶³è£ã®åŒæ¬¡å¤‰æ›è¡Œåˆ—
 const Matrix& WalkingRobot::getLegFootTransformation(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegFootTransformation();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegFootTransformation();
 }
-/// ‹rªŒ³‚ÌˆÊ’uƒxƒNƒgƒ‹
+/// è„šæ ¹å…ƒã®ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
 const Vector& WalkingRobot::getLegBasePosition(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegBasePosition();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegBasePosition();
 }
-/// ŠÖßˆÊ’u‚ÌˆÊ’uƒxƒNƒgƒ‹
+/// é–¢ç¯€ä½ç½®ã®ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
 const Vector& WalkingRobot::getLegJointPosition(int legNo, int jointNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
-	return trackLegs[legNo-1]->getLegJointPosition( jointNo );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
+    return track_legs[legNo - 1]->getLegJointPosition(jointNo);
 }
-/// ‘«— ˆÊ’u‚ÌˆÊ’uƒxƒNƒgƒ‹
+/// è¶³è£ä½ç½®ã®ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
 const Vector& WalkingRobot::getLegFootPosition(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegFootPosition();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegFootPosition();
 }
-/// ŠÖßŠp“xƒxƒNƒgƒ‹
+/// é–¢ç¯€è§’åº¦ãƒ™ã‚¯ãƒˆãƒ«
 const Vector& WalkingRobot::getLegJointAngle(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegJointAngle();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegJointAngle();
 }
-/// ‘«ñŠÖßŠp“x
+/// è¶³é¦–é–¢ç¯€è§’åº¦
 
 const  double WalkingRobot::getFootJointAngle(int legNo) const//------Add
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getFootJointAngle();
-	//trackLegs[legNo-1]->getFootJointAngle();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getFootJointAngle();
+    //track_legs[legNo-1]->getFootJointAngle();
 }
-// ŠÖß‘¬“xƒxƒNƒgƒ‹
+// é–¢ç¯€é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«
 const Vector& WalkingRobot::getLegJointVelocity(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegJointVelocity();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegJointVelocity();
 }
-/// ŠÖßƒgƒ‹ƒNƒxƒNƒgƒ‹
+/// é–¢ç¯€ãƒˆãƒ«ã‚¯ãƒ™ã‚¯ãƒˆãƒ«
 const Vector& WalkingRobot::getLegJointTorque(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegJointTorque();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegJointTorque();
 }
-/// ‹r‚ÌªŒ³‚ÌˆÊ’uEp¨
+/// è„šã®æ ¹å…ƒã®ä½ç½®ãƒ»å§¿å‹¢
 const Vector& WalkingRobot::getBasePose(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getBasePose();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getBasePose();
 }
-/// ‹r”Ô†‚Ìæ“¾
+/// è„šç•ªå·ã®å–å¾—
 const int WalkingRobot::getLegNo(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegNo();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegNo();
 }
-/// ŠÖß‚ÌƒGƒ‰[”Ô†
+/// é–¢ç¯€ã®ã‚¨ãƒ©ãƒ¼ç•ªå·
 const int WalkingRobot::getLegLastErrorJointNo(int legNo) const
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegLastErrorJointNo();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegLastErrorJointNo();
 }
-/// ƒ{[ƒ‹‚Ë‚¶À•WiƒƒCƒ„•ÏˆÊj
-const Vector& WalkingRobot:: getLegActuatorPosition(int legNo) const//<----add
+/// ãƒœãƒ¼ãƒ«ã­ã˜åº§æ¨™ï¼ˆãƒ¯ã‚¤ãƒ¤å¤‰ä½ï¼‰
+const Vector& WalkingRobot::getLegActuatorPosition(int legNo) const//<----add
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	return trackLegs[legNo-1]->getLegActuatorPosition();
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    return track_legs[legNo - 1]->getLegActuatorPosition();
 }
-/// ‹r”Ô†‚Ìİ’è
+/// è„šç•ªå·ã®è¨­å®š
 void WalkingRobot::setLegNo(int legNo, int no)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	assert( 1 <= no && no <= LEG_NUM );
-	trackLegs[legNo-1]->setLegNo(no);
-	return;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    assert(1 <= no && no <= LEG_NUM);
+    track_legs[legNo - 1]->setLegNo(no);
+    return;
 }
-/// ‡‰^“®Šw
+/// é †é‹å‹•å­¦
 Kinematics WalkingRobot::solveLegDirectKinematics(int legNo)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	Kinematics kine = trackLegs[legNo-1]->solveDirectKinematics();
-	return kine;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    Kinematics kine = track_legs[legNo - 1]->solveDirectKinematics();
+    return kine;
 }
-/// ‹t‰^“®Šw
+/// é€†é‹å‹•å­¦
 Kinematics WalkingRobot::solveLegInverseKinematics(int legNo)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	Kinematics kine = trackLegs[legNo-1]->solveInverseKinematics();
-	//trackLegs[legNo-1]->calculationActatorPosition();//<----add
-	return kine;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    Kinematics kine = track_legs[legNo - 1]->solveInverseKinematics();
+    //track_legs[legNo-1]->calculationActatorPosition();//<----add
+    return kine;
 }
-/// p¨w•W‚Ì•ÏX
+/// å§¿å‹¢æŒ‡æ¨™ã®å¤‰æ›´
 void WalkingRobot::setLegPoseIndicator(int legNo, int hip, int knee)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	trackLegs[legNo-1]->setLegPoseIndicator(hip, knee);
-	return;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    track_legs[legNo - 1]->setLegPoseIndicator(hip, knee);
+    return;
 }
-// ‹r‚ÌªŒ³İ’è
+// è„šã®æ ¹å…ƒè¨­å®š
 void WalkingRobot::setLegBasePose(int legNo, double x, double y, double z, double theta)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	trackLegs[legNo-1]->setLegBasePose(x, y, z, theta);
-	return;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    track_legs[legNo - 1]->setLegBasePose(x, y, z, theta);
+    return;
 }
 
 
 /**
  *	----------------------------------------
- *	‹r‚Ì‰^“®Šw
+ *	è„šã®é‹å‹•å­¦
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‘«‚ÌˆÊ’u‚ğƒZƒbƒgi‘«— ‚Íí‚Éd—Í•ûŒü‚Æ‰¼’èj
- *		‡‰^“®Šw‚Æ‹t‰^“®Šw‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚ğŠm”F‚·‚é
- *		“r’†‚ÌŠÖßˆÊ’u‚ğŒvZ‚·‚é
- */
+ /**
+  *	èª¬æ˜
+  *		è¶³ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆï¼ˆè¶³è£ã¯å¸¸ã«é‡åŠ›æ–¹å‘ã¨ä»®å®šï¼‰
+  *		é †é‹å‹•å­¦ã¨é€†é‹å‹•å­¦ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹ã‚’ç¢ºèªã™ã‚‹
+  *		é€”ä¸­ã®é–¢ç¯€ä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
+  */
 Kinematics WalkingRobot::placeLegFootPosition(int legNo, const Math::Vector& nextFootPosition)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	Kinematics kine = trackLegs[legNo-1]->placeLegFootPosition( nextFootPosition );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    Kinematics kine = track_legs[legNo - 1]->placeLegFootPosition(nextFootPosition);
 
-	if ( kine != NO_KINE_ERROR )
-	{
-		/// ƒGƒ‰[ƒR[ƒh‚ğ‹L˜^
-		lastKineError = kine;
-		lastErrorTrackLegNo = legNo;
-	}
+    if (kine != NO_KINE_ERROR)
+    {
+        /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’è¨˜éŒ²
+        last_kinematics_error = kine;
+        last_error_track_leg_no = legNo;
+    }
 
-	return kine;
+    return kine;
 }
 /**
- *	à–¾
- *		ŠÖßŠp‚ğƒZƒbƒg
- *		ƒZƒbƒg‚µ‚½ŠÖßŠp‚Å‡‰^“®Šw‚ğ‰ğ‚­
+ *	èª¬æ˜
+ *		é–¢ç¯€è§’ã‚’ã‚»ãƒƒãƒˆ
+ *		ã‚»ãƒƒãƒˆã—ãŸé–¢ç¯€è§’ã§é †é‹å‹•å­¦ã‚’è§£ã
  */
 Kinematics WalkingRobot::placeLegJointAngles(int legNo, const Math::Vector& nextJointAngle, const double& nextFootJointAngle)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	Kinematics kine = trackLegs[legNo-1]->placeLegJointAngles( nextJointAngle, nextFootJointAngle );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    Kinematics kine = track_legs[legNo - 1]->placeLegJointAngles(nextJointAngle, nextFootJointAngle);
 
-	if ( kine != NO_KINE_ERROR )
-	{
-		/// ƒGƒ‰[ƒR[ƒh‚ğ‹L˜^
-		lastKineError = kine;
-		lastErrorTrackLegNo = legNo;
-	}
+    if (kine != NO_KINE_ERROR)
+    {
+        /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’è¨˜éŒ²
+        last_kinematics_error = kine;
+        last_error_track_leg_no = legNo;
+    }
 
-	return kine;
+    return kine;
 }
 
 /**
  *	----------------------------------------
- *	ƒ„ƒRƒrƒAƒ“‚ğg‚Á‚Ä‚Ìó‘ÔŒvZ
+ *	ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³ã‚’ä½¿ã£ã¦ã®çŠ¶æ…‹è¨ˆç®—
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		ŠÖß‘¬“x: [3]
- *		‹ræ‘¬“x‚©‚çŒvZ
- */
+ /**
+  *	èª¬æ˜
+  *		é–¢ç¯€é€Ÿåº¦: [3]
+  *		è„šå…ˆé€Ÿåº¦ã‹ã‚‰è¨ˆç®—
+  */
 void WalkingRobot::calculateLegJointVelocity(int legNo, const Math::Vector& footVelocity)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	trackLegs[legNo-1]->calculateLegJointVelocity(footVelocity);
-	return;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    track_legs[legNo - 1]->calculateLegJointVelocity(footVelocity);
+    return;
 }
 /**
- *	à–¾
- *		ŠÖßƒgƒ‹ƒN: [3]
- *		‹ræ’[‚É‰Á‚í‚Á‚½‰×d‚©‚çŒvZ
+ *	èª¬æ˜
+ *		é–¢ç¯€ãƒˆãƒ«ã‚¯: [3]
+ *		è„šå…ˆç«¯ã«åŠ ã‚ã£ãŸè·é‡ã‹ã‚‰è¨ˆç®—
  */
 void WalkingRobot::calculateLegJointTorque(int legNo, const Math::Vector& footReaction)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM );
-	trackLegs[legNo-1]->calculateLegJointTorque(footReaction);
-	return;
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
+    track_legs[legNo - 1]->calculateLegJointTorque(footReaction);
+    return;
 }
-
-/**
- *	----------------------------------------
- *	ƒNƒ[ƒ‰‚ÉŠÖ‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-/// ƒNƒ[ƒ‰ªŒ³‚Ì“¯Ÿ•ÏŠ·s—ñ
-
-/*  20200819
-const Matrix& WalkingRobot::getTrackBaseTransformation(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackBaseTransformation();
-}
-/// ŠÖß‚Ì“¯Ÿ•ÏŠ·s—ñ
-const Matrix& WalkingRobot::getTrackJointTransformation(int trackNo, int jointNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	assert( 1 <= jointNo && jointNo <= LEG_JOINT_NUM );
-	return trackLegs[trackNo-1]->getTrackJointTransformation( jointNo );
-}
-/// ƒNƒ[ƒ‰æ’[‚Ì“¯Ÿ•ÏŠ·s—ñ
-const Matrix& WalkingRobot::getTrackEndTransformation(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackEndTransformation();
-}
-/// ƒNƒ[ƒ‰ªŒ³‚ÌˆÊ’uƒxƒNƒgƒ‹
-const Vector& WalkingRobot::getTrackBasePosition(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackBasePosition();
-}
-/// ƒNƒ[ƒ‰ŠÖß‚ÌˆÊ’uƒxƒNƒgƒ‹
-const Vector& WalkingRobot::getTrackJointPosition(int trackNo, int jointNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackJointPosition( jointNo );
-}
-/// ƒNƒ[ƒ‰æ’[‚ÌˆÊ’uƒxƒNƒgƒ‹
-const Vector& WalkingRobot::getTrackEndPosition(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackEndPosition();
-}
-/// ŠÖßŠp“xƒxƒNƒgƒ‹
-const Vector& WalkingRobot::getTrackJointAngle(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackJointAngle();
-}
-/// ŠÖß‘¬“xƒxƒNƒgƒ‹
-const Vector& WalkingRobot::getTrackJointVelocity(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackJointVelocity();
-}
-/// ŠÖßƒgƒ‹ƒNƒxƒNƒgƒ‹
-const Vector& WalkingRobot::getTrackJointTorque(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackJointTorque();
-}
-/// ƒNƒ[ƒ‰ƒXƒs[ƒh
-const double WalkingRobot::getTrackSpeed(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackSpeed();
-}
-/// ‹r‹ì“®•û®
-const DriveSystem WalkingRobot::getDriveSystem(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getDriveSystem();
-}
-/// ƒNƒ[ƒ‰Œ`‘Ô‚ÉÅŒã‚ÉƒGƒ‰[‚Æ‚È‚Á‚½ŠÖß”Ô†
-const int WalkingRobot::getTrackLastErrorJointNo(int trackNo) const
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	return trackLegs[trackNo-1]->getTrackLastErrorJointNo();
-}
-*/
-
-/**
- *	----------------------------------------
- *	ƒNƒ[ƒ‰‚Ì‰^“®Šw
- *	----------------------------------------
- */
-/**
- *	à–¾
- *		ƒNƒ[ƒ‰ƒ†ƒjƒbƒg‚Ìp¨‚ğ•Ï‚¦‚é
- */
-
-/*  20200819
-Kinematics WalkingRobot::changeTrackPosture(int trackNo, const Math::Vector& angle)
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	Kinematics kine = trackLegs[trackNo-1]->changeTrackPosture(angle);
-	return kine;
-}
-*/
-
-/**
- *	à–¾
- *		ŠÖß‘¬“x: [3]
- *		ƒNƒ[ƒ‰æ’[‚Ì‘¬“x‚©‚çŒvZ
- */
-/*  20200819
-void WalkingRobot::calculateTrackJointVelocity(int trackNo, const Math::Vector& trackVelocity)
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	trackLegs[trackNo-1]->calculateTrackJointVelocity( trackVelocity );
-	return;
-}
-*/
-
-/**
- *	à–¾
- *		ŠÖßƒgƒ‹ƒN: [3]
- *		ƒNƒ[ƒ‰æ’[‚É‰Á‚í‚Á‚½‰×d‚©‚çŒvZ
- */
- /*  20200819
-void WalkingRobot::calculateTrackJointTorque(int trackNo, const Math::Vector& trackReaction)
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	trackLegs[trackNo-1]->calculateTrackJointTorque( trackReaction );
-	return;
-}
-*/
-
-/**
- *	à–¾
- *		ƒNƒ[ƒ‰‘¬“x‚ğ•ÏX‚·‚é
- */
- /*  20200819
-void WalkingRobot::changeTrackSpeed(int trackNo, double trackSpeed)
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackNo && trackNo <= TRACK_NUM );
-	trackLegs[trackNo-1]->changeTrackSpeed(trackSpeed);
-	return;
-}
-*/
-
-/**
- *	à–¾
- *		‹ì“®•û®‚Ìİ’è
- *		–ß‚è’lFİ’è‚µ‚½‹ì“®•û®
- */
-/*  20200819
-DriveSystem WalkingRobot::setDriveSystem(int trackLegNo, DriveSystem ds)
-{
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= trackLegNo && trackLegNo <= TRACK_NUM );
-	return trackLegs[trackLegNo-1]->setDriveSystem( ds );
-}
-*/
 
 /**
  *	------------------------------------------------------------
- *		WalkingRobotƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		WalkingRobotã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
-/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
-void WalkingRobot::newTrackLegs(void)
+ /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
+void WalkingRobot::NewTrackLegs(void)
 {
-	/// ‹r‚Ì‰^“®‘Š‚Ì”z—ñ‚ğŠm•Û
-	legPhases = new LegPhase[LEG_NUM];
+    /// è„šã®é‹å‹•ç›¸ã®é…åˆ—ã‚’ç¢ºä¿
+    leg_phases = new LegPhase[LEG_NUM];
 
-	/// ƒNƒ‰ƒXƒ|ƒCƒ“ƒ^‚Ì”z—ñŠm•Û
-	//trackLegs = new TrackLeg*[LEG_NUM];
-	trackLegs = new Leg * [LEG_NUM];
+    /// ã‚¯ãƒ©ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®é…åˆ—ç¢ºä¿
+    //track_legs = new TrackLeg*[LEG_NUM];
+    track_legs = new Leg * [LEG_NUM];
 
-	/// ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
-	for (int i=0; i<LEG_NUM; i++)
-	{
-		//trackLegs[i] = new TrackLeg( (i+1), LEG_ROOT_POSX[i], LEG_ROOT_POSY[i], LEG_ROOT_POSZ[i], LEG_ROOT_ANGLE[i] );
-		trackLegs[i] = new Leg((i + 1), LEG_ROOT_POSX[i], LEG_ROOT_POSY[i], LEG_ROOT_POSZ[i], LEG_ROOT_ANGLE[i]);
-	}
+    /// ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
+    for (int i = 0; i < LEG_NUM; i++)
+    {
+        //track_legs[i] = new TrackLeg( (i+1), LEG_ROOT_POSX[i], LEG_ROOT_POSY[i], LEG_ROOT_POSZ[i], LEG_ROOT_ANGLE[i] );
+        track_legs[i] = new Leg((i + 1), LEG_ROOT_POSX[i], LEG_ROOT_POSY[i], LEG_ROOT_POSZ[i], LEG_ROOT_ANGLE[i]);
+    }
 
-	return;
+    return;
 }
 
-/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú‚·‚é
-void WalkingRobot::deleteTrackLegs(void)
+/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’è§£æ”¾ã™ã‚‹
+void WalkingRobot::DeleteTrackLegs(void)
 {
-	delete [] legPhases;
+    delete[] leg_phases;
 
-	/// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”jŠü
-	for (int i=0; i<LEG_NUM; i++)
-		delete trackLegs[i];
+    /// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç ´æ£„
+    for (int i = 0; i < LEG_NUM; i++)
+        delete track_legs[i];
 
-	/// ƒNƒ‰ƒXƒ|ƒCƒ“ƒ^‚Ì”jŠü
-	delete [] trackLegs;
+    /// ã‚¯ãƒ©ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®ç ´æ£„
+    delete[] track_legs;
 
-	return;
+    return;
 }
 
-/**
- *	----------------------------------------------------------------------
- *		WalkingRobot‚Ì“à•”ƒNƒ‰ƒX@BodyDataƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 WalkingRobot::BodyData::BodyData()
 {
-	initBodyData();
+    initBodyData();
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 WalkingRobot::BodyData::~BodyData()
 {
 }
 
-/**
- *	------------------------------------------------------------
- *		BodyDataƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
+/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
 void WalkingRobot::BodyData::initBodyData(void)
 {
-	/// s—ñ‚ÌƒTƒCƒYŒˆ’è
-	transformation.setSize(DH_DIMENSION, DH_DIMENSION);
-	transformation.loadIdentity();
+    /// è¡Œåˆ—ã®ã‚µã‚¤ã‚ºæ±ºå®š
+    transformation.setSize(DH_DIMENSION, DH_DIMENSION);
+    transformation.loadIdentity();
 
-	/// ˆÊ’uƒxƒNƒgƒ‹‚ÌƒTƒCƒYŒˆ’è
-	position.setSize(THREE_DIMENSION);
+    /// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚µã‚¤ã‚ºæ±ºå®š
+    position.setSize(THREE_DIMENSION);
 
-	/// ‘¬“xƒxƒNƒgƒ‹‚ÌƒTƒCƒYŒˆ’è
-	velocity.setSize(THREE_DIMENSION);
+    /// é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚µã‚¤ã‚ºæ±ºå®š
+    velocity.setSize(THREE_DIMENSION);
 
-	return;
+    return;
 }
 
-} /// end of namespace Asura
+}  // namespace Asura

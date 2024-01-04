@@ -21,13 +21,13 @@
     <ClCompile Include="Comm\SerialPort.cpp">
       <Filter>Comm</Filter>
     </ClCompile>
-    <ClCompile Include="Data\AsuraData.cpp">
+    <ClCompile Include="Data\asura_data.cpp">
       <Filter>Data</Filter>
     </ClCompile>
-    <ClCompile Include="Data\DataHandler.cpp">
+    <ClCompile Include="Data\data_handler.cpp">
       <Filter>Data</Filter>
     </ClCompile>
-    <ClCompile Include="Data\PlanData.cpp">
+    <ClCompile Include="Data\plan_data.cpp">
       <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="Graphic\AsuraGraphic.cpp">
@@ -47,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="Graphic\OpenGL\OpenGLText.cpp">
       <Filter>Graphic\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Kinematics\AsuraX.cpp">
-      <Filter>Kinematics</Filter>
     </ClCompile>
     <ClCompile Include="Kinematics\WalkingRobot.cpp">
       <Filter>Kinematics</Filter>
@@ -105,9 +102,6 @@
     <ClCompile Include="Kinematics\Leg\Leg.cpp">
       <Filter>Kinematics\Leg</Filter>
     </ClCompile>
-    <ClCompile Include="Kinematics\Leg\TrackLeg.cpp">
-      <Filter>Kinematics\Leg</Filter>
-    </ClCompile>
     <ClCompile Include="System\Console.cpp">
       <Filter>System</Filter>
     </ClCompile>
@@ -142,16 +136,13 @@
     <ClInclude Include="Comm\SerialPort.h">
       <Filter>Comm</Filter>
     </ClInclude>
-    <ClInclude Include="Data\AsuraData.h">
+    <ClInclude Include="Data\asura_data.h">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="Data\DataHandler.h">
+    <ClInclude Include="Data\data_handler.h">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="Data\PlanData.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\TitanData.h">
+    <ClInclude Include="Data\plan_data.h">
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="Graphic\AsuraGraphic.h">
@@ -226,9 +217,6 @@
     <ClInclude Include="Plan\Trajectory\Trajectory.h">
       <Filter>Plan\Trajectory</Filter>
     </ClInclude>
-    <ClInclude Include="System\BasicDirectX.h">
-      <Filter>System</Filter>
-    </ClInclude>
     <ClInclude Include="System\ComLib.h">
       <Filter>System</Filter>
     </ClInclude>
@@ -236,9 +224,6 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="System\LockObject.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="System\ViewSetting.h">
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="System\WinUserMessage.h">
@@ -259,9 +244,6 @@
     <ClInclude Include="Utility\Asc2Int.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\ColorNames.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Utility\EngConstant.h">
       <Filter>Utility</Filter>
     </ClInclude>
@@ -272,9 +254,6 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Kinematics\Leg\Leg.h">
-      <Filter>Kinematics\Leg</Filter>
-    </ClInclude>
-    <ClInclude Include="Kinematics\Leg\TrackLeg.h">
       <Filter>Kinematics\Leg</Filter>
     </ClInclude>
     <ClInclude Include="System\Console.h">

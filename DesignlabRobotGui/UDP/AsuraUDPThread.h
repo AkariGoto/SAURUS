@@ -2,8 +2,8 @@
 
 #include "..\resource.h"
 
-#include "..\Data\AsuraData.h"
-#include "..\Data\PlanData.h"
+#include "Data/asura_data.h"
+#include "Data/plan_data.h"
 
 #include "..\File\FileWriter.h"
 #include "..\Utility\RingBuffer.h"
@@ -36,11 +36,12 @@ class UDPSocket;
 using namespace UDP;
 
 
-
 // AsuraUDPTherad
 
 class AsuraUDPThread : public CWinThread
 {
+    using AsuraData = designlab_robot_gui::data::AsuraData;
+    using PlanData = designlab_robot_gui::data::PlanData;
 
     DECLARE_DYNCREATE(AsuraUDPThread)
 
@@ -196,8 +197,8 @@ protected:
 
 private:
 
-    Data::AsuraData viewAsuraXData;
-    Data::PlanData viewPlanData;
+    AsuraData viewAsuraXData;
+    PlanData viewPlanData;
 
 
 

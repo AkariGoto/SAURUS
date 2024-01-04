@@ -1,28 +1,12 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		AsuraGraphic.h
- *  à–¾
- *		OpenGL‚ğ—p‚¢‚ÄTITAN X‚ğ•`‰æ‚·‚éƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2008/07/07(MON)
- */
-
-//  20200819  ƒNƒ[ƒ‰ŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-//  20201019  ‹ræ‚Ìƒ[ƒ‹ƒhÀ•W‚Æ‹rÀ•W‚ÌØ‚è‘Ö‚¦
-
+ï»¿
 #ifndef __AsuraGraphic_h__
 #define __AsuraGraphic_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
-#include "OpenGL\OpenGLObject.h"
-#include "OpenGL\OpenGLText.h"
-#include "OpenGL\OpenGLMovie.h"
+#include "OpenGL/OpenGLObject.h"
+#include "OpenGL/OpenGLText.h"
+#include "OpenGL/OpenGLMovie.h"
 
-#include "..\Data\AsuraData.h"
+#include "Data/asura_data.h"
 
 
 namespace Graphic
@@ -30,10 +14,10 @@ namespace Graphic
 
 /**
  *	----------------------------------------------------------------------
- *		’è”éŒ¾
+ *		å®šæ•°å®£è¨€
  *	----------------------------------------------------------------------
  */
-const int LEG_DISP_LIST_NUM = Asura::LEG_JOINT_NUM+2;
+const int LEG_DISP_LIST_NUM = Asura::LEG_JOINT_NUM + 2;
 
 /*  20200819
 const int TRACK_DISP_LIST_NUM = Asura::TRACK_JOINT_NUM+2;
@@ -41,191 +25,189 @@ const int TRACK_DISP_LIST_NUM = Asura::TRACK_JOINT_NUM+2;
 
 /**
  *	----------------------------------------------------------------------
- *		AsuraGraphicƒNƒ‰ƒX
+ *		AsuraGraphicã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class AsuraGraphic : public OpenGLObject
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    using AsuraData = designlab_robot_gui::data::AsuraData;
+
 private:
-	/**
-	 *	Asura‚ğ•`‰æ‚·‚é‚½‚ß‚Ìƒf[ƒ^ƒ\[ƒX
-	 */
-	Data::AsuraData* asuraDataSrcPtr;
-	
-	/**
-	 *	ƒ€[ƒr[ƒŒƒR[ƒ_
-	 */
-	OpenGLMovie movieRecorder;
+    /**
+     *	Asuraã‚’æç”»ã™ã‚‹ãŸã‚ã®ãƒ‡ãƒ¼ã‚¿ã‚½ãƒ¼ã‚¹
+     */
+    AsuraData* asuraDataSrcPtr;
 
-	/**
-	 *	•`‰æ‚Ì‚½‚ß‚ÌOpenGL‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg
-	 */
-	int bodyDisplayListID;
-	int legDisplayListID[LEG_DISP_LIST_NUM];
+    /**
+     *	ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ¬ã‚³ãƒ¼ãƒ€
+     */
+    OpenGLMovie movieRecorder;
 
-	/*  20200819
-	int trackDisplayListID[TRACK_DISP_LIST_NUM];
-	*/
+    /**
+     *	æç”»ã®ãŸã‚ã®OpenGLã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆ
+     */
+    int bodyDisplayListID;
+    int legDisplayListID[LEG_DISP_LIST_NUM];
 
-	/**
-	 *	‰e•`‰æ—p•Ï”
-	 */
-	GLfloat planeFactorOfGridFloor[4];
+    /*  20200819
+    int trackDisplayListID[TRACK_DISP_LIST_NUM];
+    */
 
-
-	/**
-	 *	ƒtƒ‰ƒO
-	 */
-	/// •`‰æ—p
-	bool isAsuraDrawn;
-	bool isSupportPolygonDrawn;
-	bool isDisplayListReady;
-
-	/// AVI•Û‘¶—p
-	bool isAnimationRecorded;
-
-//20201019
-	bool legCoordinate;  //‹rÀ•W‚ğ•\¦‚·‚é‚©”Û‚©‚Ìƒtƒ‰ƒO
+    /**
+     *	å½±æç”»ç”¨å¤‰æ•°
+     */
+    GLfloat planeFactorOfGridFloor[4];
 
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	ãƒ•ãƒ©ã‚°
+     */
+     /// æç”»ç”¨
+    bool isAsuraDrawn;
+    bool isSupportPolygonDrawn;
+    bool isDisplayListReady;
+
+    /// AVIä¿å­˜ç”¨
+    bool isAnimationRecorded;
+
+    //20201019
+    bool legCoordinate;  //è„šåº§æ¨™ã‚’è¡¨ç¤ºã™ã‚‹ã‹å¦ã‹ã®ãƒ•ãƒ©ã‚°
+
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit AsuraGraphic(HWND hWnd = NULL, Data::AsuraData* asuraData = NULL, ViewType type = PERSPECTIVE);
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    explicit AsuraGraphic(HWND hWnd = NULL, AsuraData* asuraData = NULL,
+                          ViewType type = PERSPECTIVE);
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~AsuraGraphic();
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~AsuraGraphic();
 
-/**
- *	----------------------------------------
- *	OpenGL‚Ìİ’è‚Ì‰Šú‰»EI—¹ˆ—
- *	----------------------------------------
- */
-	/// ‰Šú‰»
-	void initializeAsuraGraphic(HWND hWnd = NULL, Data::AsuraData* asuraData = NULL);
-	/// I—¹ˆ—
-	void finalizeAsuraGraphic(void);
+    /**
+     *	----------------------------------------
+     *	OpenGLã®è¨­å®šã®åˆæœŸåŒ–ãƒ»çµ‚äº†å‡¦ç†
+     *	----------------------------------------
+     */
+     /// åˆæœŸåŒ–
+    void initializeAsuraGraphic(HWND hWnd = NULL, AsuraData* asuraData = NULL);
+    /// çµ‚äº†å‡¦ç†
+    void finalizeAsuraGraphic(void);
 
-/**
- *	à–¾
- *		ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì¶¬EÁ‹
- */
-	void newAsuraDisplayList(void);
-	void deleteAsuraDisplayList(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç”Ÿæˆãƒ»æ¶ˆå»
+     */
+    void newAsuraDisplayList(void);
+    void deleteAsuraDisplayList(void);
 
-/**
- *	----------------------------------------
- *	•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		OpenGL‚ÌƒIƒuƒWƒFƒNƒg•`‰æ
-	 */
-	virtual void drawObjects(GLenum renderMode);
+    /**
+     *	----------------------------------------
+     *	æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		OpenGLã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+      */
+    virtual void drawObjects(GLenum renderMode);
 
-/**
- *	à–¾
- *		OpenGLƒCƒ[ƒW•`‰æ
- */
-	virtual void drawScenes(void);
+    /**
+     *	èª¬æ˜
+     *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸æç”»
+     */
+    virtual void drawScenes(void);
 
-/**
- *	à–¾
- *		ƒIƒuƒWƒFƒNƒg‚Ì‰e•`‰æ
- */
-	virtual void drawShadow(void);
+    /**
+     *	èª¬æ˜
+     *		ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½±æç”»
+     */
+    virtual void drawShadow(void);
 
-	/**
-	 *	à–¾
-	 *		OpenGLƒCƒ[ƒW‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
-	 *		OpenGL•`‰æ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚É‚È‚é
-	 */
-	virtual void renderScenes(void);
+    /**
+     *	èª¬æ˜
+     *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
+     *		OpenGLæç”»ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«ãªã‚‹
+     */
+    virtual void renderScenes(void);
 
-/**
- *	à–¾
- *		ƒV[ƒ“‚Ì‹“_‚ğViewType‚É‚æ‚èİ’è
- */
-	virtual void setSceneView(double width, double height);
+    /**
+     *	èª¬æ˜
+     *		ã‚·ãƒ¼ãƒ³ã®è¦–ç‚¹ã‚’ViewTypeã«ã‚ˆã‚Šè¨­å®š
+     */
+    virtual void setSceneView(double width, double height);
 
-/**
- *	Asura‚Ì•`‰æ
- *		drawAsura			: Asura‚Ì‘S‘Ì•`‰æ
- *		drawBody			: Asura‚Ì–{‘Ì•`‰æ
- *		drawLeg				: Asura‚Ì‹r•`‰æ
-*/
-	void drawAsura(void);
-	void drawBody(void);
-	void drawLeg(int legNo);
-	void drawTrack(int trackNo);
+    /**
+     *	Asuraã®æç”»
+     *		drawAsura			: Asuraã®å…¨ä½“æç”»
+     *		drawBody			: Asuraã®æœ¬ä½“æç”»
+     *		drawLeg				: Asuraã®è„šæç”»
+    */
+    void drawAsura(void);
+    void drawBody(void);
+    void drawLeg(int legNo);
+    void drawTrack(int trackNo);
 
-/**
- *	x‹r‘½ŠpŒ`(OŠpŒ`orlŠpŒ`)‚Ì•`‰æ
- */
-	void drawSupportPolygon(void);
+    /**
+     *	æ”¯æŒè„šå¤šè§’å½¢(ä¸‰è§’å½¢orå››è§’å½¢)ã®æç”»
+     */
+    void drawSupportPolygon(void);
 
-/**
- *	x‹r‘½ŠpŒ`(OŠpŒ`orlŠpŒ`)‚ğŒ©‚¹‚é/‰B‚·
- */
-	/// Œ©‚¹‚é
-	void showSupportPolygon(void) { isSupportPolygonDrawn = true; return; }
-	/// ‰B‚·
-	void hideSupportPolygon(void) { isSupportPolygonDrawn = false; return; }
+    /**
+     *	æ”¯æŒè„šå¤šè§’å½¢(ä¸‰è§’å½¢orå››è§’å½¢)ã‚’è¦‹ã›ã‚‹/éš ã™
+     */
+     /// è¦‹ã›ã‚‹
+    void showSupportPolygon(void) { isSupportPolygonDrawn = true; return; }
+    /// éš ã™
+    void hideSupportPolygon(void) { isSupportPolygonDrawn = false; return; }
 
-/**
- *	AVI‚ğ•Û‘¶‚·‚é‚©‚Ç‚¤‚©
- */
-	/// ˜^‰æ‚·‚é
-	void startRecording(void) {isAnimationRecorded = true; return;}
-	/// ˜^‰æ’â~‚·‚é
-	void stopRecording(void) {isAnimationRecorded = false; return;}
+    /**
+     *	AVIã‚’ä¿å­˜ã™ã‚‹ã‹ã©ã†ã‹
+     */
+     /// éŒ²ç”»ã™ã‚‹
+    void startRecording(void) { isAnimationRecorded = true; return; }
+    /// éŒ²ç”»åœæ­¢ã™ã‚‹
+    void stopRecording(void) { isAnimationRecorded = false; return; }
 
-	//20201019  ‹rÀ•WŒn‚Ìƒtƒ‰ƒO‚ÌŠÖ”
-	void legCoordinateOn(void) { legCoordinate = true; }  //‹rÀ•WŒn‚ğ•\¦‚·‚é
-	void legCoordinateOff(void) { legCoordinate = false; }  //‹rÀ•WŒn‚ğ•\¦‚µ‚È‚¢
+    //20201019  è„šåº§æ¨™ç³»ã®ãƒ•ãƒ©ã‚°ã®é–¢æ•°
+    void legCoordinateOn(void) { legCoordinate = true; }  //è„šåº§æ¨™ç³»ã‚’è¡¨ç¤ºã™ã‚‹
+    void legCoordinateOff(void) { legCoordinate = false; }  //è„šåº§æ¨™ç³»ã‚’è¡¨ç¤ºã—ãªã„
 
 private:
-	/**
-	 *		OpenGLÀ•W•ÏŠ·‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
-	 *			OpenGL—p‚Ì4x4À•W•ÏŠ·
-	 */
-	void transformOpenGLMatrix(const Math::Matrix& matrix);
+    /**
+     *		OpenGLåº§æ¨™å¤‰æ›ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+     *			OpenGLç”¨ã®4x4åº§æ¨™å¤‰æ›
+     */
+    void transformOpenGLMatrix(const Math::Matrix& matrix);
 
-	/**
-	 *	à–¾
-	 *		‰e‚ğ“Š‰e‚·‚é•½–Ê‚ÌŒW”‚ğŒvZ
-	 *	ˆø”
-	 *		planeEq: •½–Ê‚Ì•û’ö®‚ÌŒW””z—ñ
-	 *		p0: •½–Êã‚Ì’¸“_
-	 *		p1: •½–Êã‚Ì’¸“_
-	 *		p2: •½–Êã‚Ì’¸“_
-	 */
-	void calcShadowPlaneEquation(GLfloat planeEq[], GLfloat p0[], GLfloat p1[], GLfloat p2[]);
+    /**
+     *	èª¬æ˜
+     *		å½±ã‚’æŠ•å½±ã™ã‚‹å¹³é¢ã®ä¿‚æ•°ã‚’è¨ˆç®—
+     *	å¼•æ•°
+     *		planeEq: å¹³é¢ã®æ–¹ç¨‹å¼ã®ä¿‚æ•°é…åˆ—
+     *		p0: å¹³é¢ä¸Šã®é ‚ç‚¹
+     *		p1: å¹³é¢ä¸Šã®é ‚ç‚¹
+     *		p2: å¹³é¢ä¸Šã®é ‚ç‚¹
+     */
+    void calcShadowPlaneEquation(GLfloat planeEq[], GLfloat p0[], GLfloat p1[], GLfloat p2[]);
 
-	/**
-	 *	à–¾
-	 *		–Ú“I‚Ì‰e‚ğ“Š‰e‚·‚és—ñ
-	 *	ˆø”
-	 *		matrix: “Š‰e‚µ‚½s—ñ
-	 *		plnaeEq: •½–Ê‚Ì•û’ö®‚ÌŒW””z—ñi—v‘f”4j
-	 *		lightPos: ŒõŒ¹‚Ì“¯À•WˆÊ’ui—v‘f”4j
-	 */
-	 void calcShadowMatrix(GLfloat matrix[], GLfloat planeEq[], GLfloat lightPos[]);
+    /**
+     *	èª¬æ˜
+     *		ç›®çš„ã®å½±ã‚’æŠ•å½±ã™ã‚‹è¡Œåˆ—
+     *	å¼•æ•°
+     *		matrix: æŠ•å½±ã—ãŸè¡Œåˆ—
+     *		plnaeEq: å¹³é¢ã®æ–¹ç¨‹å¼ã®ä¿‚æ•°é…åˆ—ï¼ˆè¦ç´ æ•°4ï¼‰
+     *		lightPos: å…‰æºã®åŒæ™‚åº§æ¨™ä½ç½®ï¼ˆè¦ç´ æ•°4ï¼‰
+     */
+    void calcShadowMatrix(GLfloat matrix[], GLfloat planeEq[], GLfloat lightPos[]);
 
 };
 

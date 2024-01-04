@@ -35,7 +35,6 @@ using namespace Math;
 using namespace Const;
 using namespace Asura;
 using namespace Plan;
-using namespace Data;
 using namespace System;
 
 // MotionPlanThread
@@ -53,10 +52,9 @@ using namespace System;
   */
 AsuraX MotionPlanThread::asuraX;
 
-AsuraData MotionPlanThread::asuraXData;
-PlanData MotionPlanThread::planData;
-//DataHandler MotionPlanThread::dataHandler(&asuraX, &asuraXData, &hybridMotion, &planData);
-DataHandler MotionPlanThread::dataHandler(&asuraX, &asuraXData, &tripodGait, &planData);  //20200820
+designlab_robot_gui::data::AsuraData MotionPlanThread::asuraXData;
+designlab_robot_gui::data::PlanData MotionPlanThread::planData;
+designlab_robot_gui::data::DataHandler MotionPlanThread::dataHandler(&asuraX, &asuraXData, &tripodGait, &planData);  //20200820
 
 TimeManager MotionPlanThread::timeManager;
 

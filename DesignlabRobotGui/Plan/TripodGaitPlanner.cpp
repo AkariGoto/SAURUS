@@ -1,31 +1,31 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		TripodGaitPlanner.cpp
- *  à–¾
- *		Šî€•à—eŒv‰æƒNƒ‰ƒXiƒgƒƒbƒg•à—e‚Å‚Ì•àsj
- *  “ú•t
- *		ì¬“ú: 2008/12/19(FRI)		XV“ú: 2018/12/19(FRI)
+ *  èª¬æ˜
+ *		åŸºæº–æ­©å®¹è¨ˆç”»ã‚¯ãƒ©ã‚¹ï¼ˆãƒˆãƒ­ãƒƒãƒˆæ­©å®¹ã§ã®æ­©è¡Œï¼‰
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2008/12/19(FRI)		æ›´æ–°æ—¥: 2018/12/19(FRI)
  */
 
-//  20200819  ˆÀ’è—]—TŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-//  20200820  TROTGAIT‚ğTRIPODGAIT‚É’uŠ·ETrotGait‚ğTripodGait‚É’uŠ·
-//  20200821  ª–{‚ÌˆÊ’u‚ğŒÅ’è
-//  20200929  x‹r‚Ìz²•ûŒü‚ğ’Ç‰Á
-//  20200930  —V‹r‚ÌŠJnˆÊ’u
-//  20201005
-//  20201016  •àsŠJn‚Ìp¨‚Ö‚ÌƒZƒbƒg
-//  20201017  •àsŠJn‚Ìp¨‚Ö‚ÌƒZƒbƒg
-//  20201018  •àsŠJn‚Ìp¨‚Ö‚ÌƒZƒbƒg
-//  20201020  “®ì’â~Œã‚ÌÄ“®ì
-//  20220713  ŠÖß‚Ì‰Â“®ˆæƒ`ƒFƒbƒN
+ //  20200819  å®‰å®šä½™è£•é–¢é€£ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+ //  20200820  TROTGAITã‚’TRIPODGAITã«ç½®æ›ãƒ»TrotGaitã‚’TripodGaitã«ç½®æ›
+ //  20200821  æ ¹æœ¬ã®ä½ç½®ã‚’å›ºå®š
+ //  20200929  æ”¯æŒè„šæ™‚ã®zè»¸æ–¹å‘ã‚’è¿½åŠ 
+ //  20200930  éŠè„šæ™‚ã®é–‹å§‹ä½ç½®
+ //  20201005
+ //  20201016  æ­©è¡Œé–‹å§‹æ™‚ã®å§¿å‹¢ã¸ã®ã‚»ãƒƒãƒˆ
+ //  20201017  æ­©è¡Œé–‹å§‹æ™‚ã®å§¿å‹¢ã¸ã®ã‚»ãƒƒãƒˆ
+ //  20201018  æ­©è¡Œé–‹å§‹æ™‚ã®å§¿å‹¢ã¸ã®ã‚»ãƒƒãƒˆ
+ //  20201020  å‹•ä½œåœæ­¢å¾Œã®å†å‹•ä½œ
+ //  20220713  é–¢ç¯€ã®å¯å‹•åŸŸãƒã‚§ãƒƒã‚¯
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include "TripodGaitPlanner.h"
-//#include <winsock2.h>
+  //#include <winsock2.h>
 using namespace std;
 using namespace Math;
 using namespace Asura;
@@ -35,1038 +35,1038 @@ namespace Plan
 {
 /**
  *	----------------------------------------------------------------------
- *		TripodGaitPlannerƒNƒ‰ƒX
+ *		TripodGaitPlannerã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 
-/**
- *	------------------------------------------------------------
- *		TripodGaitPlannerƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
+ /**
+  *	------------------------------------------------------------
+  *		TripodGaitPlannerã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°å®šç¾©
+  *	------------------------------------------------------------
+  */
 
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+  /**
+   *	----------------------------------------
+   *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+   *	----------------------------------------
+   */
+   /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 TripodGaitPlanner::TripodGaitPlanner(AsuraX* asuraPointer_, TimeManager* timeManagerPointer_)
-: Planner( asuraPointer_, timeManagerPointer_ )
+    : Planner(asuraPointer_, timeManagerPointer_)
 {
-	/// ƒIƒuƒWƒFƒNƒg‚Ì¶¬
-	newTripodGaitItems();
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+    newTripodGaitItems();
 
-	/// ‰Šú‰»
-	initializeTripodGaitPlanner();
+    /// åˆæœŸåŒ–
+    initializeTripodGaitPlanner();
 
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 TripodGaitPlanner::~TripodGaitPlanner()
 {
-	/// ƒIƒuƒWƒFƒNƒg‚Ì”jŠü
-	deleteTripodGaitItems();
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç ´æ£„
+    deleteTripodGaitItems();
 
 }
 
 /**
- *	Šî€•à—e‚Ì‰Šú‰»
+ *	åŸºæº–æ­©å®¹ã®åˆæœŸåŒ–
  */
 void TripodGaitPlanner::initializeTripodGaitPlanner(void)
 {
-	/// ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
-	//stabilityMargin = 0.0;  20200819
-	walkingCounter = 0;
+    /// ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
+    //stabilityMargin = 0.0;  20200819
+    walkingCounter = 0;
 
-	swingLegWaitingToStop = 0;
+    swingLegWaitingToStop = 0;
 
-	/// ƒtƒ‰ƒO—Ş‚Ì‰Šú‰»
-	isWalkingToGetSet = true;
-	isTrajectoryToGetSet = true;
-	isWalkingStarted = false;
-	isWaitingToStop = false;
-	isSetting = false;  //20201016
+    /// ãƒ•ãƒ©ã‚°é¡ã®åˆæœŸåŒ–
+    isWalkingToGetSet = true;
+    isTrajectoryToGetSet = true;
+    isWalkingStarted = false;
+    isWaitingToStop = false;
+    isSetting = false;  //20201016
 
-	//20201017  p¨ˆÚs‚Ég—p‚·‚é•Ï”‚Ì‰Šú‰»
-	settingStartTime = 0;
-	settingTime = 0;
+    //20201017  å§¿å‹¢ç§»è¡Œã«ä½¿ç”¨ã™ã‚‹å¤‰æ•°ã®åˆæœŸåŒ–
+    settingStartTime = 0;
+    settingTime = 0;
 
-	/// ŠÔ
-	walkingTime = 0.0;
-	cycleStartTime = 0.0;
-	normalizedWalkingTime = 0.0;
-	cycleElapsedTime = 0.0;  //20201020
+    /// æ™‚é–“
+    walkingTime = 0.0;
+    cycleStartTime = 0.0;
+    normalizedWalkingTime = 0.0;
+    cycleElapsedTime = 0.0;  //20201020
 
-	/// ƒfƒ…[ƒeƒB”ä
-	dutyFactor = TRIPODGAIT_DUTY_FACTOR;
+    /// ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£æ¯”
+    dutyFactor = TRIPODGAIT_DUTY_FACTOR;
 
-	/// •às‘¬“x‚ğŒvZ
-	walkingSpeed = TRIPODGAIT_WALKING_SPEED;
+    /// æ­©è¡Œé€Ÿåº¦ã‚’è¨ˆç®—
+    walkingSpeed = TRIPODGAIT_WALKING_SPEED;
 
-	/// ƒXƒgƒ‰ƒCƒh‚ÌƒZƒbƒg
-	stride= TRIPODGAIT_STRIDE ;
-	//changeflag=0x00;
-	
-	/// •às•ûŒü‚ÌƒZƒbƒg
-	unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, THREE_DIMENSION);//<----
+    /// ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã®ã‚»ãƒƒãƒˆ
+    stride = TRIPODGAIT_STRIDE;
+    //changeflag=0x00;
 
-	//20200929  x‹r‚Ég—p‚·‚éz²•ûŒü‚ÌƒZƒbƒg
-	unitUpDirection = Vector(UP_DIRECTION, THREE_DIMENSION);
+    /// æ­©è¡Œæ–¹å‘ã®ã‚»ãƒƒãƒˆ
+    unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, THREE_DIMENSION);//<----
 
-	/// ˆÊ’uƒxƒNƒgƒ‹‚Ì‰Šú‰»
-	footReferencePosition[0] = Vector(TRIPODGAIT_FOOT_REF_POSITION_1, THREE_DIMENSION);
-	footReferencePosition[1] = Vector(TRIPODGAIT_FOOT_REF_POSITION_2, THREE_DIMENSION);
-	footReferencePosition[2] = Vector(TRIPODGAIT_FOOT_REF_POSITION_3, THREE_DIMENSION);
-	footReferencePosition[3] = Vector(TRIPODGAIT_FOOT_REF_POSITION_4, THREE_DIMENSION);
-	footReferencePosition[4] = Vector(TRIPODGAIT_FOOT_REF_POSITION_5, THREE_DIMENSION);
-	footReferencePosition[5] = Vector(TRIPODGAIT_FOOT_REF_POSITION_6, THREE_DIMENSION);
-	/// —V‹r‰^“®
-	swingUp = Vector(TRIPODGAIT_SWING_UP, THREE_DIMENSION);
-	swingDown = Vector(TRIPODGAIT_SWING_DOWN, THREE_DIMENSION);
+    //20200929  æ”¯æŒè„šæ™‚ã«ä½¿ç”¨ã™ã‚‹zè»¸æ–¹å‘ã®ã‚»ãƒƒãƒˆ
+    unitUpDirection = Vector(UP_DIRECTION, THREE_DIMENSION);
 
-	/// ƒfƒtƒHƒ‹ƒg’l‚É‚æ‚é•à—eƒpƒ‰ƒ[ƒ^‚ÌŒvZ
-	calculateGaitParameters();
+    /// ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã®åˆæœŸåŒ–
+    footReferencePosition[0] = Vector(TRIPODGAIT_FOOT_REF_POSITION_1, THREE_DIMENSION);
+    footReferencePosition[1] = Vector(TRIPODGAIT_FOOT_REF_POSITION_2, THREE_DIMENSION);
+    footReferencePosition[2] = Vector(TRIPODGAIT_FOOT_REF_POSITION_3, THREE_DIMENSION);
+    footReferencePosition[3] = Vector(TRIPODGAIT_FOOT_REF_POSITION_4, THREE_DIMENSION);
+    footReferencePosition[4] = Vector(TRIPODGAIT_FOOT_REF_POSITION_5, THREE_DIMENSION);
+    footReferencePosition[5] = Vector(TRIPODGAIT_FOOT_REF_POSITION_6, THREE_DIMENSION);
+    /// éŠè„šé‹å‹•
+    swingUp = Vector(TRIPODGAIT_SWING_UP, THREE_DIMENSION);
+    swingDown = Vector(TRIPODGAIT_SWING_DOWN, THREE_DIMENSION);
 
-	return;
-	
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã«ã‚ˆã‚‹æ­©å®¹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨ˆç®—
+    calculateGaitParameters();
+
+    return;
+
 }
 
 /**
- *	•à—eƒpƒ‰ƒ[ƒ^‚ÌŒvZ
+ *	æ­©å®¹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨ˆç®—
  */
 void TripodGaitPlanner::calculateGaitParameters(void)
 {
-	/// ŒvZÏ‚İ‚È‚Ì‚Å•K—v‚È‚µ
-	if ( !isTrajectoryToGetSet )
-		return;
+    /// è¨ˆç®—æ¸ˆã¿ãªã®ã§å¿…è¦ãªã—
+    if (!isTrajectoryToGetSet)
+        return;
 
-	/// •àsüŠú‚ğŒvZ
-	cycleTime = (stride)/ walkingSpeed / dutyFactor;//7/8;//<------!(stride-100)
+    /// æ­©è¡Œå‘¨æœŸã‚’è¨ˆç®—
+    cycleTime = (stride) / walkingSpeed / dutyFactor;//7/8;//<------!(stride-100)
 
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-	double swingTime = 0;
-	double swingUpTime = 0;
-	double swingReturnTime = 0;
-	double swingDownTime = 0;
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+    double swingTime = 0;
+    double swingUpTime = 0;
+    double swingReturnTime = 0;
+    double swingDownTime = 0;
 
-	/// —V‹rŠÔ‚ÌŒvZ
-	swingTime=1.0-dutyFactor;//swingTime = (1+TRIPODGAIT_SWING_DOWN[2]/TRIPODGAIT_SWING_UP[2])/2;//SwingTime=0.5(1 - dutyFactor);//
-	/// iƒ†[ƒU‚É‚æ‚Á‚Ä”z•ª‚Í•ÏXj
-	swingUpTime = swingTime *1/4;
-	swingReturnTime = swingTime *2/4;
-	swingDownTime = swingTime *1/4;
+    /// éŠè„šæ™‚é–“ã®è¨ˆç®—
+    swingTime = 1.0 - dutyFactor;//swingTime = (1+TRIPODGAIT_SWING_DOWN[2]/TRIPODGAIT_SWING_UP[2])/2;//SwingTime=0.5(1 - dutyFactor);//
+    /// ï¼ˆãƒ¦ãƒ¼ã‚¶ã«ã‚ˆã£ã¦é…åˆ†ã¯å¤‰æ›´ï¼‰
+    swingUpTime = swingTime * 1 / 4;
+    swingReturnTime = swingTime * 2 / 4;
+    swingDownTime = swingTime * 1 / 4;
 
-	/// Še‹r‚Ì—V‹rŠJnŠÔ‚Ìİ’è
-	//swingStartTime[0] = dutyFactor - 0.5;
-	//swingStartTime[1] = 2*dutyFactor - 0.5;
-	//swingStartTime[2] = 2*dutyFactor - 1.0;
-	//swingStartTime[3] = dutyFactor;
-	swingStartTime[0] = 0;
-	swingStartTime[1] = dutyFactor;
-	swingStartTime[2] = 0;
-	swingStartTime[3] = dutyFactor;
-	swingStartTime[4] = 0;
-	swingStartTime[5] = dutyFactor;
-
-
-	/// —V‹rŠÔ‚ğƒZƒbƒg‚·‚é
-	int i;
-	for (i=0; i<LEG_NUM; i++)
-	{
-		setLegSwingTime(i+1, swingStartTime[i], swingUpTime, swingReturnTime, swingDownTime);
-		swingStopTime[i] = swingStartTime[i] + 1.0 - dutyFactor;
-	}
-
-	/// —V‹rŠJnˆÊ’u‚ÆI—¹ˆÊ’u‚ÌŒvZ‚¨‚æ‚Ñ‘«‰ŠúˆÊ’uŒvZ
-	double a[3];
-	a[0]= TRIPODGAIT_SWING_UP[0] + TRIPODGAIT_SWING_DOWN[0];
-	a[1]= TRIPODGAIT_SWING_UP[1] + TRIPODGAIT_SWING_DOWN[1];
-	a[2]= TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2];
-
-	int j;
-	for (j=0; j<LEG_NUM; j++)
-	{
-		swingStartPosition[j] = footReferencePosition[j]- (stride)/2*unitWalkingDirection;//<------!(stride-100) 20200930  —V‹rŠJnˆÊ’u
-		//swingStopPosition[j] = footReferencePosition[j] + (stride)/2*unitWalkingDirection+Vector(a, THREE_DIMENSION);//<------!(stride-100)//‚±‚±‚È‚¨‚·
-
-		if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] != 0)  //20200930  ã‚è‰º‚è‚Ì—V‹rI—¹ˆÊ’u
-		{
-			swingStopPosition[j] = footReferencePosition[j] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-		}
-		else  //20200930  •½’n‚Ì—V‹rI—¹ˆÊ’u
-		{
-			swingStopPosition[j] = footReferencePosition[j] + (stride) / 2 * unitWalkingDirection;
-		}
+    /// å„è„šã®éŠè„šé–‹å§‹æ™‚é–“ã®è¨­å®š
+    //swingStartTime[0] = dutyFactor - 0.5;
+    //swingStartTime[1] = 2*dutyFactor - 0.5;
+    //swingStartTime[2] = 2*dutyFactor - 1.0;
+    //swingStartTime[3] = dutyFactor;
+    swingStartTime[0] = 0;
+    swingStartTime[1] = dutyFactor;
+    swingStartTime[2] = 0;
+    swingStartTime[3] = dutyFactor;
+    swingStartTime[4] = 0;
+    swingStartTime[5] = dutyFactor;
 
 
-		
-	}
+    /// éŠè„šæ™‚é–“ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+    int i;
+    for (i = 0; i < LEG_NUM; i++)
+    {
+        setLegSwingTime(i + 1, swingStartTime[i], swingUpTime, swingReturnTime, swingDownTime);
+        swingStopTime[i] = swingStartTime[i] + 1.0 - dutyFactor;
+    }
 
-	/// —V‹r‹O“¹‚ğƒZƒbƒg‚·‚é
-	int k;
-	for (k=0; k<LEG_NUM; k++)
-	{
-		setLegSwingTrajectory(	k+1, 
-								swingStartPosition[k], 
-								swingUp, 
-								(stride)*unitWalkingDirection, //<------!(stride-100)
-								swingDown 
-							);
-	}
+    /// éŠè„šé–‹å§‹ä½ç½®ã¨çµ‚äº†ä½ç½®ã®è¨ˆç®—ãŠã‚ˆã³è¶³åˆæœŸä½ç½®è¨ˆç®—
+    double a[3];
+    a[0] = TRIPODGAIT_SWING_UP[0] + TRIPODGAIT_SWING_DOWN[0];
+    a[1] = TRIPODGAIT_SWING_UP[1] + TRIPODGAIT_SWING_DOWN[1];
+    a[2] = TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2];
 
-	/// ‰ŠúˆÊ’u‚ÌƒZƒbƒg  
-	/*  20200930
-	initialFootPosition[0] = footReferencePosition[0] - (stride)/2*unitWalkingDirection;
-	initialFootPosition[1] = footReferencePosition[1] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
-	initialFootPosition[2] = footReferencePosition[2] - (stride)/2*unitWalkingDirection;
-	initialFootPosition[3] = footReferencePosition[3] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
-	initialFootPosition[4] = footReferencePosition[4] - (stride)/2*unitWalkingDirection;
-	initialFootPosition[5] = footReferencePosition[5] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
-	*/
+    int j;
+    for (j = 0; j < LEG_NUM; j++)
+    {
+        swingStartPosition[j] = footReferencePosition[j] - (stride) / 2 * unitWalkingDirection;//<------!(stride-100) 20200930  éŠè„šé–‹å§‹ä½ç½®
+        //swingStopPosition[j] = footReferencePosition[j] + (stride)/2*unitWalkingDirection+Vector(a, THREE_DIMENSION);//<------!(stride-100)//ã“ã“ãªãŠã™
 
-	if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] > 0)
-	{
-		initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-		initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-		//initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
-		//initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-	}
-	else if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] < 0)
-	{
-		initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-		initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-		//initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
-		//initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-	}
-	else
-	{
-		initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
-		initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection;
-		//initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
-		//initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection;
-	}
+        if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] != 0)  //20200930  ä¸Šã‚Šä¸‹ã‚Šæ™‚ã®éŠè„šçµ‚äº†ä½ç½®
+        {
+            swingStopPosition[j] = footReferencePosition[j] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+        }
+        else  //20200930  å¹³åœ°ã®éŠè„šçµ‚äº†ä½ç½®
+        {
+            swingStopPosition[j] = footReferencePosition[j] + (stride) / 2 * unitWalkingDirection;
+        }
 
 
-	/// “·‘Ì‚Ì‰ŠúˆÊ’u
-	int l;
-	for (l=0; l<THREE_DIMENSION; l++)
-		initialBodyPosition(l+1) = TRIPODGAIT_INITIAL_BODY_POSITION[l];
 
-	isTrajectoryToGetSet = false;
-/*
-	WSAData wsaData;
-	WSAStartup(MAKEWORD(2,0), &wsaData);
-*/
-	return;
+    }
+
+    /// éŠè„šè»Œé“ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+    int k;
+    for (k = 0; k < LEG_NUM; k++)
+    {
+        setLegSwingTrajectory(k + 1,
+                    swingStartPosition[k],
+                    swingUp,
+                    (stride)*unitWalkingDirection, //<------!(stride-100)
+                    swingDown
+        );
+    }
+
+    /// åˆæœŸä½ç½®ã®ã‚»ãƒƒãƒˆ  
+    /*  20200930
+    initialFootPosition[0] = footReferencePosition[0] - (stride)/2*unitWalkingDirection;
+    initialFootPosition[1] = footReferencePosition[1] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
+    initialFootPosition[2] = footReferencePosition[2] - (stride)/2*unitWalkingDirection;
+    initialFootPosition[3] = footReferencePosition[3] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
+    initialFootPosition[4] = footReferencePosition[4] - (stride)/2*unitWalkingDirection;
+    initialFootPosition[5] = footReferencePosition[5] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
+    */
+
+    if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] > 0)
+    {
+        initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+        initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+        //initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
+        //initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+    }
+    else if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] < 0)
+    {
+        initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+        initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+        //initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
+        //initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
+    }
+    else
+    {
+        initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
+        initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection;
+        //initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
+        //initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection;
+    }
+
+
+    /// èƒ´ä½“ã®åˆæœŸä½ç½®
+    int l;
+    for (l = 0; l < THREE_DIMENSION; l++)
+        initialBodyPosition(l + 1) = TRIPODGAIT_INITIAL_BODY_POSITION[l];
+
+    isTrajectoryToGetSet = false;
+    /*
+      WSAData wsaData;
+      WSAStartup(MAKEWORD(2,0), &wsaData);
+    */
+    return;
 }
 
 /**
- *	•às‰Šúp¨‚ÉˆÚs
+ *	æ­©è¡ŒåˆæœŸå§¿å‹¢ã«ç§»è¡Œ
  */
 bool TripodGaitPlanner::shiftToInitialStandingPosture(void)
 {
-	Kinematics kine = NO_KINE_ERROR;
+    Kinematics kine = NO_KINE_ERROR;
 
-	/// dS‚ğ‰ŠúˆÊ’u‚É
-	asuraPointer->initializeBodyPosition(initialBodyPosition);
+    /// é‡å¿ƒã‚’åˆæœŸä½ç½®ã«
+    asuraPointer->initializeBodyPosition(initialBodyPosition);
 
-	/// ‘«ˆÊ’u‚ğ‰Šúp¨‚É
-	/*  20201016
-	int i;
-	for (i=0; i<LEG_NUM; i++)
-	{
-		kine = asuraPointer->placeLegFootPosition(i+1, initialFootPosition[i]);
+    /// è¶³ä½ç½®ã‚’åˆæœŸå§¿å‹¢ã«
+    /*  20201016
+    int i;
+    for (i=0; i<LEG_NUM; i++)
+    {
+      kine = asuraPointer->placeLegFootPosition(i+1, initialFootPosition[i]);
 
-		if (kine != NO_KINE_ERROR)
-		{
-			cerr << "[TripodGaitPlanner::shiftToInitialStandingPosture] Cannot shift to initial posture" << endl;
-			Planner::printPlanErrorMessage();
-		}
-	}
-	*/
-	isSetting = true;  //p¨ˆÚs‚Ìƒtƒ‰ƒO
+      if (kine != NO_KINE_ERROR)
+      {
+        cerr << "[TripodGaitPlanner::shiftToInitialStandingPosture] Cannot shift to initial posture" << endl;
+        Planner::printPlanErrorMessage();
+      }
+    }
+    */
+    isSetting = true;  //å§¿å‹¢ç§»è¡Œã®ãƒ•ãƒ©ã‚°
 
-	//20201017
-	//ŠeŠÖßŠp“xæ“¾
-	for (int i = 0; i < LEG_NUM; i++)
-	{
-		for (int j = 0; j < LEG_JOINT_NUM; j++)
-		{
-			initialJointAngle[i][j] = asuraPointer->getLegJointAngle(i + 1)(j + 1);
-		}
-		initialFootJointAngle[i] = asuraPointer->getFootJointAngle(i + 1);
-	}
-	for (int i = 0; i < LEG_NUM; i++)
-	{
-		kine = asuraPointer->placeLegFootPosition(i + 1, initialFootPosition[i]);
-		for (int j = 0; j < LEG_JOINT_NUM; j++)
-		{
-			finalJointAngle[i][j] = asuraPointer->getLegJointAngle(i + 1)(j + 1);
-		}
-		finalFootJointAngle[i] = asuraPointer->getFootJointAngle(i + 1);
-	}
+    //20201017
+    //å„é–¢ç¯€è§’åº¦å–å¾—
+    for (int i = 0; i < LEG_NUM; i++)
+    {
+        for (int j = 0; j < LEG_JOINT_NUM; j++)
+        {
+            initialJointAngle[i][j] = asuraPointer->getLegJointAngle(i + 1)(j + 1);
+        }
+        initialFootJointAngle[i] = asuraPointer->getFootJointAngle(i + 1);
+    }
+    for (int i = 0; i < LEG_NUM; i++)
+    {
+        kine = asuraPointer->placeLegFootPosition(i + 1, initialFootPosition[i]);
+        for (int j = 0; j < LEG_JOINT_NUM; j++)
+        {
+            finalJointAngle[i][j] = asuraPointer->getLegJointAngle(i + 1)(j + 1);
+        }
+        finalFootJointAngle[i] = asuraPointer->getFootJointAngle(i + 1);
+    }
 
-	//Š—vŠÔZo
-	for (int i = 0; i < LEG_NUM; i++)
-	{
-		for (int j = 0; j < LEG_JOINT_NUM; j++)
-		{
-			if (finalJointAngle[i][j] >= initialJointAngle[i][j])
-			{
-				angularVelosity[i][j] = ANGULAR_VELOCITY;
-			}
-			else
-			{
-				angularVelosity[i][j] = -1 * ANGULAR_VELOCITY;
-			}
-			if (finalFootJointAngle[i] >= initialFootJointAngle[i])
-			{
-				angularVelosity[i][LEG_JOINT_NUM] = ANGULAR_VELOCITY;
-			}
-			else
-			{
-				angularVelosity[i][LEG_JOINT_NUM] = -1 * ANGULAR_VELOCITY;
-			}
-		}
-		
-		t01[i] = (finalJointAngle[i][0] - initialJointAngle[i][0]) / angularVelosity[i][0];
-		t02[i] = t01[i] + (finalJointAngle[i][1] - initialJointAngle[i][1]) / angularVelosity[i][1];
-		t03[i] = t02[i] + (finalJointAngle[i][2] - initialJointAngle[i][2]) / angularVelosity[i][2];
-		t04[i] = t03[i] + (finalFootJointAngle[i] - initialFootJointAngle[i]) / angularVelosity[i][3];
-		/*
-		t01[i] = (finalJointAngle[i][0] - initialJointAngle[i][0]) / angularVelosity[i][0];
-		t02[i] = (finalJointAngle[i][1] - initialJointAngle[i][1]) / angularVelosity[i][1];
-		t03[i] = (finalJointAngle[i][2] - initialJointAngle[i][2]) / angularVelosity[i][2];
-		t04[i] = (finalFootJointAngle[i] - initialFootJointAngle[i]) / angularVelosity[i][3];
-		*/
-		if (t01[i] > t02[i] && t01[i] > t03[i] && t01[i] > t04[i])
-		{
-			t05[i] = t01[i];
-		}
-		if (t02[i] > t01[i] && t02[i] > t03[i] && t02[i] > t04[i])
-		{
-			t05[i] = t02[i];
-		}
-		if (t03[i] > t01[i] && t03[i] > t02[i] && t03[i] > t04[i])
-		{
-			t05[i] = t03[i];
-		}
-		else
-		{
-			t05[i] = t04[i];
-		}
-	}
-	
-	//p¨ˆÚsŠJnæ“¾
-	settingStartTime = timeManagerPointer->getRealTime();
+    //æ‰€è¦æ™‚é–“ç®—å‡º
+    for (int i = 0; i < LEG_NUM; i++)
+    {
+        for (int j = 0; j < LEG_JOINT_NUM; j++)
+        {
+            if (finalJointAngle[i][j] >= initialJointAngle[i][j])
+            {
+                angularVelosity[i][j] = ANGULAR_VELOCITY;
+            }
+            else
+            {
+                angularVelosity[i][j] = -1 * ANGULAR_VELOCITY;
+            }
+            if (finalFootJointAngle[i] >= initialFootJointAngle[i])
+            {
+                angularVelosity[i][LEG_JOINT_NUM] = ANGULAR_VELOCITY;
+            }
+            else
+            {
+                angularVelosity[i][LEG_JOINT_NUM] = -1 * ANGULAR_VELOCITY;
+            }
+        }
+
+        t01[i] = (finalJointAngle[i][0] - initialJointAngle[i][0]) / angularVelosity[i][0];
+        t02[i] = t01[i] + (finalJointAngle[i][1] - initialJointAngle[i][1]) / angularVelosity[i][1];
+        t03[i] = t02[i] + (finalJointAngle[i][2] - initialJointAngle[i][2]) / angularVelosity[i][2];
+        t04[i] = t03[i] + (finalFootJointAngle[i] - initialFootJointAngle[i]) / angularVelosity[i][3];
+        /*
+        t01[i] = (finalJointAngle[i][0] - initialJointAngle[i][0]) / angularVelosity[i][0];
+        t02[i] = (finalJointAngle[i][1] - initialJointAngle[i][1]) / angularVelosity[i][1];
+        t03[i] = (finalJointAngle[i][2] - initialJointAngle[i][2]) / angularVelosity[i][2];
+        t04[i] = (finalFootJointAngle[i] - initialFootJointAngle[i]) / angularVelosity[i][3];
+        */
+        if (t01[i] > t02[i] && t01[i] > t03[i] && t01[i] > t04[i])
+        {
+            t05[i] = t01[i];
+        }
+        if (t02[i] > t01[i] && t02[i] > t03[i] && t02[i] > t04[i])
+        {
+            t05[i] = t02[i];
+        }
+        if (t03[i] > t01[i] && t03[i] > t02[i] && t03[i] > t04[i])
+        {
+            t05[i] = t03[i];
+        }
+        else
+        {
+            t05[i] = t04[i];
+        }
+    }
+
+    //å§¿å‹¢ç§»è¡Œé–‹å§‹æ™‚åˆ»å–å¾—
+    settingStartTime = timeManagerPointer->getRealTime();
 
 
-	return true;
+    return true;
 }
 
 /**
  *	------------------------------------------------------------
- *	ƒI[ƒo[ƒ‰ƒCƒhŠÖ”
- *		‰^“®‚ğ‹ï‘Ì“I‚É¶¬‚·‚éŠÖ”ŒQ
+ *	ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰é–¢æ•°
+ *		é‹å‹•ã‚’å…·ä½“çš„ã«ç”Ÿæˆã™ã‚‹é–¢æ•°ç¾¤
  *	------------------------------------------------------------
  */
-/**
- *	•àsŠJn‚Ì‚½‚ß‚Ì‰Šú‰»
- */
+ /**
+  *	æ­©è¡Œé–‹å§‹ã®ãŸã‚ã®åˆæœŸåŒ–
+  */
 
 bool TripodGaitPlanner::setup(void)
 {
-	/// ƒ|ƒCƒ“ƒ^‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©‚ÌŠm”F
-	if (asuraPointer == NULL || timeManagerPointer == NULL)
-	{
-		cerr << "[TripodGaitPlanner::setup] No control object\n" << endl;
+    /// ãƒã‚¤ãƒ³ã‚¿ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹ã®ç¢ºèª
+    if (asuraPointer == NULL || timeManagerPointer == NULL)
+    {
+        cerr << "[TripodGaitPlanner::setup] No control object\n" << endl;
 
-		return false;
-	}
+        return false;
+    }
 
 
-	if (isTrajectoryToGetSet)
-	{
-		cerr << "[TripodGaitPlanner::setup] No trajectories are ready\n" << endl;
+    if (isTrajectoryToGetSet)
+    {
+        cerr << "[TripodGaitPlanner::setup] No trajectories are ready\n" << endl;
 
-		return false;
-	}
+        return false;
+    }
 
-	if (!shiftToInitialStandingPosture())
-	{
-		cerr << "[TripodGaitPlanner::setup] Cannot shift to initial posture\n" << endl;
+    if (!shiftToInitialStandingPosture())
+    {
+        cerr << "[TripodGaitPlanner::setup] Cannot shift to initial posture\n" << endl;
 
-		return false;
-	}
+        return false;
+    }
 
-	/// •às€”õŠ®—¹
-	isWalkingToGetSet = false;
+    /// æ­©è¡Œæº–å‚™å®Œäº†
+    isWalkingToGetSet = false;
 
-	cycleElapsedTime = 0.0;  //20201020
+    cycleElapsedTime = 0.0;  //20201020
 
-	//changeflag=0x00;		//’Ç‰Á
+    //changeflag=0x00;		//è¿½åŠ 
 
-	return Planner::setup();
+    return Planner::setup();
 }
 
 
-/// •às‚ğŠJn‚·‚é
+/// æ­©è¡Œã‚’é–‹å§‹ã™ã‚‹
 bool TripodGaitPlanner::startPlan(void)
 {
-	isRunning = true;  //20201020
+    isRunning = true;  //20201020
 
-	if (isWalkingToGetSet || !isRunning)
-	{
-		cerr << "[TripodGaitPlanner::startPlan] Not stand-by for walking\n" << endl;
-		
-		return false;
-	}
+    if (isWalkingToGetSet || !isRunning)
+    {
+        cerr << "[TripodGaitPlanner::startPlan] Not stand-by for walking\n" << endl;
 
-	/// •àsüŠúŠJnŠÔ‚ğXV
-	//cycleStartTime = timeManagerPointer->getRealTime();  //20201020
-	cycleStartTime = timeManagerPointer->getRealTime() - cycleElapsedTime;  //20201020
+        return false;
+    }
 
-	isWalkingStarted = true;
+    /// æ­©è¡Œå‘¨æœŸé–‹å§‹æ™‚é–“ã‚’æ›´æ–°
+    //cycleStartTime = timeManagerPointer->getRealTime();  //20201020
+    cycleStartTime = timeManagerPointer->getRealTime() - cycleElapsedTime;  //20201020
 
-	walkingCounter = 0;  //20201020
+    isWalkingStarted = true;
 
-	return Planner::startPlan();
+    walkingCounter = 0;  //20201020
+
+    return Planner::startPlan();
 }
 
-/// •às‚ğ’â~‚·‚é
+/// æ­©è¡Œã‚’åœæ­¢ã™ã‚‹
 bool TripodGaitPlanner::stopPlan(void)
 {
-	isWalkingStarted = false;
-	//isWalkingToGetSet = true;  //20201020
-	//walkingCounter = 0;  //20201020
+    isWalkingStarted = false;
+    //isWalkingToGetSet = true;  //20201020
+    //walkingCounter = 0;  //20201020
 
-	cycleElapsedTime = timeManagerPointer->getRealTime() - cycleStartTime;  //20201020
+    cycleElapsedTime = timeManagerPointer->getRealTime() - cycleStartTime;  //20201020
 
-	isRunning = false;  //20201020
+    isRunning = false;  //20201020
 
-	return Planner::stopPlan();
+    return Planner::stopPlan();
 }
 
 /**
- *	•às‚ğ1•àI—¹‚É’â~‚·‚é
+ *	æ­©è¡Œã‚’1æ­©çµ‚äº†æ™‚ã«åœæ­¢ã™ã‚‹
  */
 bool TripodGaitPlanner::standByForStop(void)
 {
-	isWaitingToStop = true;
-	
-	//20201005
-	/*
-	if (0 < normalizedWalkingTime && normalizedWalkingTime<= swingStopTime[1])
-	{
-		swingLegWaitingToStop = 1;
-	}
-	else if (swingStopTime[1] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[0])
-	{
-		swingLegWaitingToStop = 2;
-	}
-	else if (swingStopTime[0] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[2])
-	{
-		swingLegWaitingToStop = 3;
-	}
-	else if (swingStopTime[2] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[3])
-	{
-		swingLegWaitingToStop = 4;
-	}*/
-	
+    isWaitingToStop = true;
 
-/*	if (0 < normalizedWalkingTime && normalizedWalkingTime<= swingStopTime[1])
-	{
-		swingLegWaitingToStop = 1;
-	}
-	else if (swingStopTime[1] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[0])
-	{
-		swingLegWaitingToStop = 2;
-	}
-	else if (swingStopTime[0] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[2])
-	{
-		swingLegWaitingToStop = 3;
-	}
-	else if (swingStopTime[2] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[3])
-	{
-		swingLegWaitingToStop = 4;
-	}
-	else if (swingStopTime[3] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[4])
-	{
-		swingLegWaitingToStop = 5;
-	}
-	else if(swingStopTime[4] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[5])
-	{
-		swingLegWaitingToStop = 6;
-	}
-	*/
-	return isWaitingToStop;
+    //20201005
+    /*
+    if (0 < normalizedWalkingTime && normalizedWalkingTime<= swingStopTime[1])
+    {
+      swingLegWaitingToStop = 1;
+    }
+    else if (swingStopTime[1] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[0])
+    {
+      swingLegWaitingToStop = 2;
+    }
+    else if (swingStopTime[0] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[2])
+    {
+      swingLegWaitingToStop = 3;
+    }
+    else if (swingStopTime[2] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[3])
+    {
+      swingLegWaitingToStop = 4;
+    }*/
+
+
+    /*	if (0 < normalizedWalkingTime && normalizedWalkingTime<= swingStopTime[1])
+      {
+        swingLegWaitingToStop = 1;
+      }
+      else if (swingStopTime[1] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[0])
+      {
+        swingLegWaitingToStop = 2;
+      }
+      else if (swingStopTime[0] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[2])
+      {
+        swingLegWaitingToStop = 3;
+      }
+      else if (swingStopTime[2] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[3])
+      {
+        swingLegWaitingToStop = 4;
+      }
+      else if (swingStopTime[3] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[4])
+      {
+        swingLegWaitingToStop = 5;
+      }
+      else if(swingStopTime[4] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[5])
+      {
+        swingLegWaitingToStop = 6;
+      }
+      */
+    return isWaitingToStop;
 }
 
 /**
- *	‹r‰^“®‚ğ¶¬‚·‚é
+ *	è„šé‹å‹•ã‚’ç”Ÿæˆã™ã‚‹
  */
 PlanStatus TripodGaitPlanner::activateRobot(void)
 {
-/**
- *		³‹K‰»‚µ‚½•àsŠÔ‚É‚æ‚è‹r‚Ì‰^“®‚ğŒˆ’è‚·‚é
- */
-	/// “®ìó‘Ô
-	PlanStatus plan = Plan::WAIT;
-	/// ‹t‰^“®Šw‚ğ‰ğ‚¢‚½Œ‹‰Ê
-	Kinematics kine = NO_KINE_ERROR;
-	/// ƒJƒEƒ“ƒ^
-	int i;
+    /**
+     *		æ­£è¦åŒ–ã—ãŸæ­©è¡Œæ™‚é–“ã«ã‚ˆã‚Šè„šã®é‹å‹•ã‚’æ±ºå®šã™ã‚‹
+     */
+     /// å‹•ä½œçŠ¶æ…‹
+    PlanStatus plan = Plan::WAIT;
+    /// é€†é‹å‹•å­¦ã‚’è§£ã„ãŸçµæœ
+    Kinematics kine = NO_KINE_ERROR;
+    /// ã‚«ã‚¦ãƒ³ã‚¿
+    int i;
 
-	double swingTime = (1+ TRIPODGAIT_SWING_DOWN[2]/TRIPODGAIT_SWING_UP[2])/2;
+    double swingTime = (1 + TRIPODGAIT_SWING_DOWN[2] / TRIPODGAIT_SWING_UP[2]) / 2;
 
-	/*a[3] no using*/
-	/*
-	double a[3];
-	a[0]= TRIPODGAIT_SWING_UP[0] + TRIPODGAIT_SWING_DOWN[0];
-	a[1]= TRIPODGAIT_SWING_UP[1] + TRIPODGAIT_SWING_DOWN[1];
-	a[2]= TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2];
-	*/
+    /*a[3] no using*/
+    /*
+    double a[3];
+    a[0]= TRIPODGAIT_SWING_UP[0] + TRIPODGAIT_SWING_DOWN[0];
+    a[1]= TRIPODGAIT_SWING_UP[1] + TRIPODGAIT_SWING_DOWN[1];
+    a[2]= TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2];
+    */
 
-	///1,3,5—V‹r@2,4,6x
-	if (0.00 <= normalizedWalkingTime && normalizedWalkingTime < TRIPODGAIT_DUTY_FACTOR)
-	{
-		for (i=0; i<LEG_NUM; i++)
-		{
-			switch (i)
-			{
-				///‘æ 2, 4, 6‹r‚Ìx‹r‰^“®
-				case 1://2
-				case 3://4
-				case 5://6
-				{
-					if (TRIPODGAIT_SWING_UP[2] == -TRIPODGAIT_SWING_DOWN[2])  //20200929  •½–Ê‚Ìx‹r‰^“®
-					{
-						kine = asuraPointer->placeLegFootPosition(
-							i + 1,
-							initialFootPosition[i] - normalizedWalkingTime * cycleTime * walkingSpeed * unitWalkingDirection
-						);
-					}
-					else  //ã‚è‰º‚è‚Å‚Ìx‹r‰^“®
-					{
-						kine = asuraPointer->placeLegFootPosition(
-							i + 1,
-							initialFootPosition[i] - normalizedWalkingTime * cycleTime * walkingSpeed * unitWalkingDirection
-							+ normalizedWalkingTime * cycleTime * -(TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) / (cycleTime * dutyFactor) * unitUpDirection
-						);
-					}
+    ///1,3,5éŠè„šã€€2,4,6æ”¯æŒ
+    if (0.00 <= normalizedWalkingTime && normalizedWalkingTime < TRIPODGAIT_DUTY_FACTOR)
+    {
+        for (i = 0; i < LEG_NUM; i++)
+        {
+            switch (i)
+            {
+                ///ç¬¬ 2, 4, 6è„šã®æ”¯æŒè„šé‹å‹•
+                case 1://2
+                case 3://4
+                case 5://6
+                {
+                    if (TRIPODGAIT_SWING_UP[2] == -TRIPODGAIT_SWING_DOWN[2])  //20200929  å¹³é¢æ™‚ã®æ”¯æŒè„šé‹å‹•
+                    {
+                        kine = asuraPointer->placeLegFootPosition(
+                          i + 1,
+                          initialFootPosition[i] - normalizedWalkingTime * cycleTime * walkingSpeed * unitWalkingDirection
+                        );
+                    }
+                    else  //ä¸Šã‚Šä¸‹ã‚Šã§ã®æ”¯æŒè„šé‹å‹•
+                    {
+                        kine = asuraPointer->placeLegFootPosition(
+                          i + 1,
+                          initialFootPosition[i] - normalizedWalkingTime * cycleTime * walkingSpeed * unitWalkingDirection
+                          + normalizedWalkingTime * cycleTime * -(TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) / (cycleTime * dutyFactor) * unitUpDirection
+                        );
+                    }
 
-					/// x‹r‘Š‚ÉƒZƒbƒg
-					asuraPointer->setLegPhase(i+1, SUPPORT);
+                    /// æ”¯æŒè„šç›¸ã«ã‚»ãƒƒãƒˆ
+                    asuraPointer->setLegPhase(i + 1, LegPhase::SUPPORT);
 
-					//if (kine != NO_KINE_ERROR)
-					if (kine != NO_KINE_ERROR && i == 1)  //‹r2‚É‚Â‚¢‚Ä‚Ì‚İ‰Â“®ˆæ‚È‚ÇŠm”F
-					{
-						cerr << "[TripodGaitPlanner::activateRobot]" << endl;
-						Planner::printPlanErrorMessage();
+                    //if (kine != NO_KINE_ERROR)
+                    if (kine != NO_KINE_ERROR && i == 1)  //è„š2ã«ã¤ã„ã¦ã®ã¿å¯å‹•åŸŸãªã©ç¢ºèª
+                    {
+                        cerr << "[TripodGaitPlanner::activateRobot]" << endl;
+                        Planner::printPlanErrorMessage();
 
-						suspendPlan();
-						return SUSPEND;
-					}
-				}
-				break;
-				///‘æ1,3,5 ‹r‚Ì—V‹r‰^“®
-				case 0:
-				case 2:
-				case 4:
-				{
-					/// ‘OüŠú‚©‚ç‚Ì‘±‚«‚Ì‚½‚ß—V‹r‰^“®‚¾‚¯‚ÍŠÔ•â³‚Å1.0‚ğ‰Á‚¦‚é
-					plan = swingLeg(i+1, normalizedWalkingTime );
-					/// —V‹r‘Š‚ÉƒZƒbƒg
-					asuraPointer->setLegPhase(i+1, SWING);
+                        suspendPlan();
+                        return SUSPEND;
+                    }
+                }
+                break;
+                ///ç¬¬1,3,5 è„šã®éŠè„šé‹å‹•
+                case 0:
+                case 2:
+                case 4:
+                {
+                    /// å‰å‘¨æœŸã‹ã‚‰ã®ç¶šãã®ãŸã‚éŠè„šé‹å‹•ã ã‘ã¯æ™‚é–“è£œæ­£ã§1.0ã‚’åŠ ãˆã‚‹
+                    plan = swingLeg(i + 1, normalizedWalkingTime);
+                    /// éŠè„šç›¸ã«ã‚»ãƒƒãƒˆ
+                    asuraPointer->setLegPhase(i + 1, LegPhase::SWING);
 
-					//if (plan == INVALID)
-					if (plan == INVALID && i == 1)  //‹r2‚É‚Â‚¢‚Ä‚Ì‚İ‰Â“®ˆæ‚È‚ÇŠm”F
-					{
-						Planner::printPlanErrorMessage();
+                    //if (plan == INVALID)
+                    if (plan == INVALID && i == 1)  //è„š2ã«ã¤ã„ã¦ã®ã¿å¯å‹•åŸŸãªã©ç¢ºèª
+                    {
+                        Planner::printPlanErrorMessage();
 
-						suspendPlan();
-						return SUSPEND;
-					}
+                        suspendPlan();
+                        return SUSPEND;
+                    }
 
-					break;
-				}
-				default:
-					break;
-			}	/// end of switch (i)
-		}	/// end of for (i) loop222
-		asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*normalizedWalkingTime*(stride));
-	}
-	///1,3,5x@2,4,6—V‹r
-	else if (TRIPODGAIT_DUTY_FACTOR <= normalizedWalkingTime && normalizedWalkingTime < 1.00)//TRIPODGAITDUTY_FACTOR
-	{
-		for ( i = 0; i < LEG_NUM; i++)
-		{
-			switch (i)
-			{
-				/// 1, 3, 5‹r‚Ìx‹r‰^“®
-				case 0:
-				case 2:
-				case 4:
-				{//swingStopPosition[j] = footReferencePosition[j] + (stride)/2*unitWalkingDirection+Vector(a, THREE_DIMENSION);
-					/*kine = asuraPointer->placeLegFootPosition(
-								i+1,
-							 swingStopPosition[i]- (normalizedWalkingTime - swingStopTime[i])*cycleTime*walkingSpeed*unitWalkingDirection 
-								);*/
+                    break;
+                }
+                default:
+                    break;
+            }	/// end of switch (i)
+        }	/// end of for (i) loop222
+        asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection * normalizedWalkingTime * (stride));
+    }
+    ///1,3,5æ”¯æŒã€€2,4,6éŠè„š
+    else if (TRIPODGAIT_DUTY_FACTOR <= normalizedWalkingTime && normalizedWalkingTime < 1.00)//TRIPODGAITDUTY_FACTOR
+    {
+        for (i = 0; i < LEG_NUM; i++)
+        {
+            switch (i)
+            {
+                /// 1, 3, 5è„šã®æ”¯æŒè„šé‹å‹•
+                case 0:
+                case 2:
+                case 4:
+                {//swingStopPosition[j] = footReferencePosition[j] + (stride)/2*unitWalkingDirection+Vector(a, THREE_DIMENSION);
+                  /*kine = asuraPointer->placeLegFootPosition(
+                        i+1,
+                       swingStopPosition[i]- (normalizedWalkingTime - swingStopTime[i])*cycleTime*walkingSpeed*unitWalkingDirection
+                        );*/
 
-					if (TRIPODGAIT_SWING_UP[2] == -TRIPODGAIT_SWING_DOWN[2])  //20200929  •½–Ê‚Ìx‹r‰^“®
-					{
-						kine = asuraPointer->placeLegFootPosition(
-							i + 1,
-							swingStopPosition[i] - (normalizedWalkingTime - swingStopTime[i]) * cycleTime * walkingSpeed * unitWalkingDirection
-						);
-					}
-					else  //ã‚è‰º‚è‚Å‚Ìx‹r‰^“®
-					{
-						kine = asuraPointer->placeLegFootPosition(
-							i + 1,
-							swingStopPosition[i] - (normalizedWalkingTime - swingStopTime[i]) * cycleTime * walkingSpeed * unitWalkingDirection
-							+ (normalizedWalkingTime - swingStopTime[i]) * cycleTime * -(TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) / (cycleTime * dutyFactor) * unitUpDirection
-						);
-					}
-
-
-					/// x‹r‘Š‚ÉƒZƒbƒg
-					asuraPointer->setLegPhase( i+1, SUPPORT );
-
-					//if (kine != NO_KINE_ERROR
-					if ( kine != NO_KINE_ERROR && i == 1)  //‹r2‚É‚Â‚¢‚Ä‚Ì‚İ‰Â“®ˆæ‚È‚ÇŠm”F
-					{
-						cerr << "[TripodGaitPlanner::activateRobot]" << endl;
-						Planner::printPlanErrorMessage();
-
-						suspendPlan();
-						return SUSPEND;
-					}
-				}
-				break;
-				/// 2, 4, 6‹r‚Ì—V‹r‰^“®
-				case 1:
-				case 3:
-				case 5:
-				{
-					plan = swingLeg(i+1, normalizedWalkingTime );
-					/// —V‹r‘Š‚ÉƒZƒbƒg
-					asuraPointer->setLegPhase(i+1, SWING);
-
-					//if (plan == INVALID)
-					if ( plan == INVALID && i == 1)  //‹r2‚É‚Â‚¢‚Ä‚Ì‚İ‰Â“®ˆæ‚È‚ÇŠm”F
-					{
-						Planner::printPlanErrorMessage();
-	
-						suspendPlan();
-						return SUSPEND;
-					}
-				}
-				//isWaitingToStop=true;
-				break;
-
-				default: break;
-			}	/// end of switch (i)
-		}	/// end of for (i) loop
-		asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*normalizedWalkingTime*(stride));
-	}/// end of if ( normalizedWalkingTime )
-
-	/*else if ( 1.0<normalizedWalkingTime&&normalizedWalkingTime <= 1.5 )	
-	{
-		for ( i = 0; i < LEG_NUM; i++)
-		{
-		kine = asuraPointer->placeLegFootPosition(
-								i+1,
-							 swingStopPosition[i]- (1.0 - swingStopTime[i])*cycleTime*walkingSpeed*unitWalkingDirection -Vector(a, THREE_DIMENSION)*2*(normalizedWalkingTime-1.0 )
-								);
-
-					/// x‹r‘Š‚ÉƒZƒbƒg
-					asuraPointer->setLegPhase( i+1, SUPPORT );
-		asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*(stride) + Vector(a, THREE_DIMENSION)*2*(normalizedWalkingTime-1.0 ));//<------!(stride-100)
-		//printf("aa\n");
-		}
-	
-	}*/
-/// ƒƒ{ƒbƒg‚Ì“·‘ÌˆÊ’u‚ğXV	old position + direction * Time + Stride
-//asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*normalizedWalkingTime*(stride) + Vector(a, THREE_DIMENSION) );//<------!(stride-100)
-
-//–{‘Ì‚ğŒÅ’è‚·‚éê‡  20200821
-asuraPointer->initializeBodyPosition(initialBodyPosition);
-
-//–{‘Ì‚ğŒÅ’è‚µ‚È‚¢ê‡  20200821
-//asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection * normalizedWalkingTime * (stride * 2) + Vector(a, THREE_DIMENSION));//<------!(stride-100)
+                    if (TRIPODGAIT_SWING_UP[2] == -TRIPODGAIT_SWING_DOWN[2])  //20200929  å¹³é¢æ™‚ã®æ”¯æŒè„šé‹å‹•
+                    {
+                        kine = asuraPointer->placeLegFootPosition(
+                          i + 1,
+                          swingStopPosition[i] - (normalizedWalkingTime - swingStopTime[i]) * cycleTime * walkingSpeed * unitWalkingDirection
+                        );
+                    }
+                    else  //ä¸Šã‚Šä¸‹ã‚Šã§ã®æ”¯æŒè„šé‹å‹•
+                    {
+                        kine = asuraPointer->placeLegFootPosition(
+                          i + 1,
+                          swingStopPosition[i] - (normalizedWalkingTime - swingStopTime[i]) * cycleTime * walkingSpeed * unitWalkingDirection
+                          + (normalizedWalkingTime - swingStopTime[i]) * cycleTime * -(TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) / (cycleTime * dutyFactor) * unitUpDirection
+                        );
+                    }
 
 
-	return RUN;
+                    /// æ”¯æŒè„šç›¸ã«ã‚»ãƒƒãƒˆ
+                    asuraPointer->setLegPhase(i + 1, LegPhase::SUPPORT);
+
+                    //if (kine != NO_KINE_ERROR
+                    if (kine != NO_KINE_ERROR && i == 1)  //è„š2ã«ã¤ã„ã¦ã®ã¿å¯å‹•åŸŸãªã©ç¢ºèª
+                    {
+                        cerr << "[TripodGaitPlanner::activateRobot]" << endl;
+                        Planner::printPlanErrorMessage();
+
+                        suspendPlan();
+                        return SUSPEND;
+                    }
+                }
+                break;
+                /// 2, 4, 6è„šã®éŠè„šé‹å‹•
+                case 1:
+                case 3:
+                case 5:
+                {
+                    plan = swingLeg(i + 1, normalizedWalkingTime);
+                    /// éŠè„šç›¸ã«ã‚»ãƒƒãƒˆ
+                    asuraPointer->setLegPhase(i + 1, LegPhase::SWING);
+
+                    //if (plan == INVALID)
+                    if (plan == INVALID && i == 1)  //è„š2ã«ã¤ã„ã¦ã®ã¿å¯å‹•åŸŸãªã©ç¢ºèª
+                    {
+                        Planner::printPlanErrorMessage();
+
+                        suspendPlan();
+                        return SUSPEND;
+                    }
+                }
+                //isWaitingToStop=true;
+                break;
+
+                default: break;
+            }	/// end of switch (i)
+        }	/// end of for (i) loop
+        asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection * normalizedWalkingTime * (stride));
+    }/// end of if ( normalizedWalkingTime )
+
+    /*else if ( 1.0<normalizedWalkingTime&&normalizedWalkingTime <= 1.5 )
+    {
+      for ( i = 0; i < LEG_NUM; i++)
+      {
+      kine = asuraPointer->placeLegFootPosition(
+                  i+1,
+                 swingStopPosition[i]- (1.0 - swingStopTime[i])*cycleTime*walkingSpeed*unitWalkingDirection -Vector(a, THREE_DIMENSION)*2*(normalizedWalkingTime-1.0 )
+                  );
+
+            /// æ”¯æŒè„šç›¸ã«ã‚»ãƒƒãƒˆ
+            asuraPointer->setLegPhase( i+1, SUPPORT );
+      asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*(stride) + Vector(a, THREE_DIMENSION)*2*(normalizedWalkingTime-1.0 ));//<------!(stride-100)
+      //printf("aa\n");
+      }
+
+    }*/
+    /// ãƒ­ãƒœãƒƒãƒˆã®èƒ´ä½“ä½ç½®ã‚’æ›´æ–°	old position + direction * Time + Stride
+    //asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*normalizedWalkingTime*(stride) + Vector(a, THREE_DIMENSION) );//<------!(stride-100)
+
+    //æœ¬ä½“ã‚’å›ºå®šã™ã‚‹å ´åˆ  20200821
+    asuraPointer->initializeBodyPosition(initialBodyPosition);
+
+    //æœ¬ä½“ã‚’å›ºå®šã—ãªã„å ´åˆ  20200821
+    //asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection * normalizedWalkingTime * (stride * 2) + Vector(a, THREE_DIMENSION));//<------!(stride-100)
+
+
+    return RUN;
 }
 
 /**
- *	ƒƒ{ƒbƒg‚ÌuŠÔ‚Ìó‘Ô‚ğ¶¬‚·‚é
- *		w—ß’l¶¬üŠú‚²‚Æ‚ÉŒÄ‚Ño‚·‚±‚Æ‚É‚æ‚èƒƒ{ƒbƒg‚Ì˜A‘±‚È“®ì‚ğŒv‰æ‚·‚é
+ *	ãƒ­ãƒœãƒƒãƒˆã®ç¬é–“ã®çŠ¶æ…‹ã‚’ç”Ÿæˆã™ã‚‹
+ *		æŒ‡ä»¤å€¤ç”Ÿæˆå‘¨æœŸã”ã¨ã«å‘¼ã³å‡ºã™ã“ã¨ã«ã‚ˆã‚Šãƒ­ãƒœãƒƒãƒˆã®é€£ç¶šãªå‹•ä½œã‚’è¨ˆç”»ã™ã‚‹
  */
 PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
 {
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-	PlanStatus plan = RUN;
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+    PlanStatus plan = RUN;
 
-	/// •às‚ªŠJn‚³‚ê‚Ä‚È‚©‚Á‚½‚çI—¹
-	if ( !isWalkingStarted )
-	{
-		/// “®ì‚ğ’†’f‚µ‚Ä‚¢‚é‚Í•às‚à’†’f
-		if ( isSuspended )
-		{
-			return SUSPEND;
-		}
+    /// æ­©è¡ŒãŒé–‹å§‹ã•ã‚Œã¦ãªã‹ã£ãŸã‚‰çµ‚äº†
+    if (!isWalkingStarted)
+    {
+        /// å‹•ä½œã‚’ä¸­æ–­ã—ã¦ã„ã‚‹æ™‚ã¯æ­©è¡Œã‚‚ä¸­æ–­
+        if (isSuspended)
+        {
+            return SUSPEND;
+        }
 
-		//20201016
-		if (isSetting)
-		{
-			settingPlan();
-		}
+        //20201016
+        if (isSetting)
+        {
+            settingPlan();
+        }
 
-		return WAIT;
+        return WAIT;
 
-	}
+    }
 
-	/// Œv‰æŒo‰ßŠÔ‚ğŒvZ
-	Planner::elapsedTime = timeManagerPointer->getRealTime() - Planner::planStartTime;
+    /// è¨ˆç”»çµŒéæ™‚é–“ã‚’è¨ˆç®—
+    Planner::elapsedTime = timeManagerPointer->getRealTime() - Planner::planStartTime;
 
-	/// •àsüŠúŠJn‚©‚çŒ»İ‚Ü‚Å‚Ì•àsŒo‰ßŠÔ‚ğŒvZ
-	walkingTime = timeManagerPointer->getRealTime() - cycleStartTime;
-	
-	/// ³‹K‰»•àsŠÔ‚ğŒvZ
-	normalizedWalkingTime = walkingTime/cycleTime;
+    /// æ­©è¡Œå‘¨æœŸé–‹å§‹ã‹ã‚‰ç¾åœ¨æ™‚åˆ»ã¾ã§ã®æ­©è¡ŒçµŒéæ™‚é–“ã‚’è¨ˆç®—
+    walkingTime = timeManagerPointer->getRealTime() - cycleStartTime;
 
-	/// “r’†’â~‚·‚é‚Æ‚«i•às’â~ƒtƒ‰ƒO‚ª‚½‚Á‚Ä‚¢‚½‚çj
-	/*  20201005
-	if ( isWaitingToStop )
-	{
-		/// •às’â~’¼‘O‚Ì—V‹r‚Åê‡•ª‚¯
-		switch ( swingLegWaitingToStop )
-		{
-			case 1:
-				if ( swingStopTime[1] < normalizedWalkingTime )
-					stopPlan();
-				break;
+    /// æ­£è¦åŒ–æ­©è¡Œæ™‚é–“ã‚’è¨ˆç®—
+    normalizedWalkingTime = walkingTime / cycleTime;
 
-			case 2:
-				if ( swingStopTime[0] < normalizedWalkingTime )
-					stopPlan();
-				break;
+    /// é€”ä¸­åœæ­¢ã™ã‚‹ã¨ãï¼ˆæ­©è¡Œåœæ­¢ãƒ•ãƒ©ã‚°ãŒãŸã£ã¦ã„ãŸã‚‰ï¼‰
+    /*  20201005
+    if ( isWaitingToStop )
+    {
+      /// æ­©è¡Œåœæ­¢ç›´å‰ã®éŠè„šã§å ´åˆåˆ†ã‘
+      switch ( swingLegWaitingToStop )
+      {
+        case 1:
+          if ( swingStopTime[1] < normalizedWalkingTime )
+            stopPlan();
+          break;
 
-			case 3:
-				if ( swingStopTime[2] < normalizedWalkingTime )
-					stopPlan();
+        case 2:
+          if ( swingStopTime[0] < normalizedWalkingTime )
+            stopPlan();
+          break;
 
-				break;
+        case 3:
+          if ( swingStopTime[2] < normalizedWalkingTime )
+            stopPlan();
 
-			case 4:
-				if ( swingStopTime[3] < normalizedWalkingTime )
-					stopPlan();
+          break;
 
-				break;
+        case 4:
+          if ( swingStopTime[3] < normalizedWalkingTime )
+            stopPlan();
 
-			default:
-				break;
-		}
+          break;
 
-		isWaitingToStop = false;
-		swingLegWaitingToStop = 0;
-	}*/
-	
-	/// 1üŠúI—¹‚ÌŠÔŒvZ
-	if ( normalizedWalkingTime > 1.0 )
-	{
-		/// •àsƒJƒEƒ“ƒ^‚ğ‘‚â‚·
-		walkingCounter++;
+        default:
+          break;
+      }
 
-		/// •àsüŠúŠJnŠÔ‚ğXV
-		cycleStartTime = timeManagerPointer->getRealTime();
+      isWaitingToStop = false;
+      swingLegWaitingToStop = 0;
+    }*/
 
-		//20201020
+    /// 1å‘¨æœŸçµ‚äº†æ™‚ã®æ™‚é–“è¨ˆç®—
+    if (normalizedWalkingTime > 1.0)
+    {
+        /// æ­©è¡Œã‚«ã‚¦ãƒ³ã‚¿ã‚’å¢—ã‚„ã™
+        walkingCounter++;
 
-		/// “·‘Ì‚Ìâ‘ÎÀ•W‚ğXV
-		initialBodyPosition = asuraPointer->getBodyPosition();
+        /// æ­©è¡Œå‘¨æœŸé–‹å§‹æ™‚é–“ã‚’æ›´æ–°
+        cycleStartTime = timeManagerPointer->getRealTime();
 
-		/// •àsŠÔ‚Æ³‹K‰»•àsŠÔ‚ğƒŠƒZƒbƒg
-		walkingTime = 0.0;
-		normalizedWalkingTime = 0.0;
+        //20201020
 
-		//20201005
-		//stopPlan();  //1üŠú‚Å‚â‚ß‚é‚Æ‚«‚ÍƒRƒƒ“ƒgƒAƒEƒg‚ğ‰ğœ‚·‚é
-		if (isWaitingToStop)
-		{
-			stopPlan();
-			isWaitingToStop = false;
-			isWalkingToGetSet = true;
-		}
-	}
+        /// èƒ´ä½“ã®çµ¶å¯¾åº§æ¨™ã‚’æ›´æ–°
+        initialBodyPosition = asuraPointer->getBodyPosition();
 
-	/// ƒƒ{ƒbƒg‚Ì•àsüŠú‚É‡‚í‚¹‚½‹r‰^“®‚ğ¶¬‚·‚é
-	plan = activateRobot();
+        /// æ­©è¡Œæ™‚é–“ã¨æ­£è¦åŒ–æ­©è¡Œæ™‚é–“ã‚’ãƒªã‚»ãƒƒãƒˆ
+        walkingTime = 0.0;
+        normalizedWalkingTime = 0.0;
 
-	if (plan == SUSPEND)
-	{
-		stopPlan();
-	}
+        //20201005
+        //stopPlan();  //1å‘¨æœŸã§ã‚„ã‚ã‚‹ã¨ãã¯ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã‚’è§£é™¤ã™ã‚‹
+        if (isWaitingToStop)
+        {
+            stopPlan();
+            isWaitingToStop = false;
+            isWalkingToGetSet = true;
+        }
+    }
 
-	/// ˆÀ’è—]—T‚ğŒvZ
-	//calculateStabilityMargin();  20200819
+    /// ãƒ­ãƒœãƒƒãƒˆã®æ­©è¡Œå‘¨æœŸã«åˆã‚ã›ãŸè„šé‹å‹•ã‚’ç”Ÿæˆã™ã‚‹
+    plan = activateRobot();
 
-	return plan;
+    if (plan == SUSPEND)
+    {
+        stopPlan();
+    }
+
+    /// å®‰å®šä½™è£•ã‚’è¨ˆç®—
+    //calculateStabilityMargin();  20200819
+
+    return plan;
 }
 
 //20201016
 bool TripodGaitPlanner::settingPlan(void)
 {
-	//20201017
-	//Œo‰ßŠÔ‚ğ“¾‚é
-	settingTime = timeManagerPointer->getRealTime() - settingStartTime;
+    //20201017
+    //çµŒéæ™‚é–“ã‚’å¾—ã‚‹
+    settingTime = timeManagerPointer->getRealTime() - settingStartTime;
 
-	Kinematics kine = NO_KINE_ERROR;
+    Kinematics kine = NO_KINE_ERROR;
 
-	//ŠÖßŠp“x‚ğZo‚·‚é
-	for (int i = 0; i < LEG_NUM; i++)
-	{//‚PŠÖß‚²‚Æ
-		if (settingTime < 0)  //‚Ç‚ÌŠÖß‚à“®‚­‘O
-		{
-			settingJointAngle[i][0] = initialJointAngle[i][0];
-			settingJointAngle[i][1] = initialJointAngle[i][1];
-			settingJointAngle[i][2] = initialJointAngle[i][2];
-			settingFootJointAngle[i] = initialFootJointAngle[i];
-		}
-		else if (0 <= settingTime && settingTime <= t01[i])  //‘æ1ŠÖß‚ª‹ì“®’†
-		{
-			settingJointAngle[i][0] = angularVelosity[i][0] * settingTime + initialJointAngle[i][0];
-			settingJointAngle[i][1] = initialJointAngle[i][1];
-			settingJointAngle[i][2] = initialJointAngle[i][2];
-			settingFootJointAngle[i] = initialFootJointAngle[i];
-		}
-		else if (t01[i] <= settingTime && settingTime <= t02[i])  //‘æ2ŠÖß‚ª‹ì“®’†
-		{
-			settingJointAngle[i][0] = finalJointAngle[i][0];
-			settingJointAngle[i][1] = angularVelosity[i][1] * (settingTime - t01[i]) + initialJointAngle[i][1];
-			settingJointAngle[i][2] = initialJointAngle[i][2];
-			settingFootJointAngle[i] = initialFootJointAngle[i];
-		}
-		else if (t02[i] <= settingTime && settingTime <= t03[i])  //‘æ3ŠÖß‚ª‹ì“®’†
-		{
-			settingJointAngle[i][0] = finalJointAngle[i][0];
-			settingJointAngle[i][1] = finalJointAngle[i][1];
-			settingJointAngle[i][2] = angularVelosity[i][2] * (settingTime - t02[i]) + initialJointAngle[i][2];
-			settingFootJointAngle[i] = initialFootJointAngle[i];
-		}
-		else if (t03[i] <= settingTime && settingTime <= t04[i])  //‘æ4ŠÖß‚ª‹ì“®’†
-		{
-			settingJointAngle[i][0] = finalJointAngle[i][0];
-			settingJointAngle[i][1] = finalJointAngle[i][1];
-			settingJointAngle[i][2] = finalJointAngle[i][2];
-			settingFootJointAngle[i] = angularVelosity[i][3] * (settingTime - t03[i]) + initialFootJointAngle[i];
-		}
-		else if (t04[i] <= settingTime)
-		{
-			settingJointAngle[i][0] = finalJointAngle[i][0];
-			settingJointAngle[i][1] = finalJointAngle[i][1];
-			settingJointAngle[i][2] = finalJointAngle[i][2];
-			settingFootJointAngle[i] = finalFootJointAngle[i];
-		}
-		
+    //é–¢ç¯€è§’åº¦ã‚’ç®—å‡ºã™ã‚‹
+    for (int i = 0; i < LEG_NUM; i++)
+    {//ï¼‘é–¢ç¯€ã”ã¨
+        if (settingTime < 0)  //ã©ã®é–¢ç¯€ã‚‚å‹•ãå‰
+        {
+            settingJointAngle[i][0] = initialJointAngle[i][0];
+            settingJointAngle[i][1] = initialJointAngle[i][1];
+            settingJointAngle[i][2] = initialJointAngle[i][2];
+            settingFootJointAngle[i] = initialFootJointAngle[i];
+        }
+        else if (0 <= settingTime && settingTime <= t01[i])  //ç¬¬1é–¢ç¯€ãŒé§†å‹•ä¸­
+        {
+            settingJointAngle[i][0] = angularVelosity[i][0] * settingTime + initialJointAngle[i][0];
+            settingJointAngle[i][1] = initialJointAngle[i][1];
+            settingJointAngle[i][2] = initialJointAngle[i][2];
+            settingFootJointAngle[i] = initialFootJointAngle[i];
+        }
+        else if (t01[i] <= settingTime && settingTime <= t02[i])  //ç¬¬2é–¢ç¯€ãŒé§†å‹•ä¸­
+        {
+            settingJointAngle[i][0] = finalJointAngle[i][0];
+            settingJointAngle[i][1] = angularVelosity[i][1] * (settingTime - t01[i]) + initialJointAngle[i][1];
+            settingJointAngle[i][2] = initialJointAngle[i][2];
+            settingFootJointAngle[i] = initialFootJointAngle[i];
+        }
+        else if (t02[i] <= settingTime && settingTime <= t03[i])  //ç¬¬3é–¢ç¯€ãŒé§†å‹•ä¸­
+        {
+            settingJointAngle[i][0] = finalJointAngle[i][0];
+            settingJointAngle[i][1] = finalJointAngle[i][1];
+            settingJointAngle[i][2] = angularVelosity[i][2] * (settingTime - t02[i]) + initialJointAngle[i][2];
+            settingFootJointAngle[i] = initialFootJointAngle[i];
+        }
+        else if (t03[i] <= settingTime && settingTime <= t04[i])  //ç¬¬4é–¢ç¯€ãŒé§†å‹•ä¸­
+        {
+            settingJointAngle[i][0] = finalJointAngle[i][0];
+            settingJointAngle[i][1] = finalJointAngle[i][1];
+            settingJointAngle[i][2] = finalJointAngle[i][2];
+            settingFootJointAngle[i] = angularVelosity[i][3] * (settingTime - t03[i]) + initialFootJointAngle[i];
+        }
+        else if (t04[i] <= settingTime)
+        {
+            settingJointAngle[i][0] = finalJointAngle[i][0];
+            settingJointAngle[i][1] = finalJointAngle[i][1];
+            settingJointAngle[i][2] = finalJointAngle[i][2];
+            settingFootJointAngle[i] = finalFootJointAngle[i];
+        }
 
-		//‘S•”
-		/*
-		if (settingTime < 0)  //‚Ç‚ÌŠÖß‚à“®‚­‘O
-		{
-			settingJointAngle[i][0] = initialJointAngle[i][0];
-			settingJointAngle[i][1] = initialJointAngle[i][1];
-			settingJointAngle[i][2] = initialJointAngle[i][2];
-			settingFootJointAngle[i] = initialFootJointAngle[i];
-		}
-		else if (0 <= settingTime)
-		{
-			
-			if (t01[i] <= settingTime)
-			{
-				settingJointAngle[i][0] = finalJointAngle[i][0];
-			}
-			else
-			{
-				settingJointAngle[i][0] = angularVelosity[i][0] * settingTime + initialJointAngle[i][0];
-			}
 
-			if (t02[i] <= settingTime)
-			{
-				settingJointAngle[i][1] = finalJointAngle[i][1];
-			}
-			else
-			{
-				settingJointAngle[i][1] = angularVelosity[i][1] * settingTime + initialJointAngle[i][1];
-			}
+        //å…¨éƒ¨
+        /*
+        if (settingTime < 0)  //ã©ã®é–¢ç¯€ã‚‚å‹•ãå‰
+        {
+          settingJointAngle[i][0] = initialJointAngle[i][0];
+          settingJointAngle[i][1] = initialJointAngle[i][1];
+          settingJointAngle[i][2] = initialJointAngle[i][2];
+          settingFootJointAngle[i] = initialFootJointAngle[i];
+        }
+        else if (0 <= settingTime)
+        {
 
-			if (t03[i] <= settingTime)
-			{
-				settingJointAngle[i][2] = finalJointAngle[i][2];
-			}
-			else
-			{
-				settingJointAngle[i][2] = angularVelosity[i][2] * settingTime + initialJointAngle[i][2];
-			}
+          if (t01[i] <= settingTime)
+          {
+            settingJointAngle[i][0] = finalJointAngle[i][0];
+          }
+          else
+          {
+            settingJointAngle[i][0] = angularVelosity[i][0] * settingTime + initialJointAngle[i][0];
+          }
 
-			if (t04[i] <= settingTime)
-			{
-				settingFootJointAngle[i] = finalFootJointAngle[i];
-			}
-			else
-			{
-				settingFootJointAngle[i] = angularVelosity[i][3] * settingTime + initialFootJointAngle[i];
-			}
-		}
-		*/
-	}
+          if (t02[i] <= settingTime)
+          {
+            settingJointAngle[i][1] = finalJointAngle[i][1];
+          }
+          else
+          {
+            settingJointAngle[i][1] = angularVelosity[i][1] * settingTime + initialJointAngle[i][1];
+          }
 
-		//‚·‚×‚Ä‚ÌŠÖß‚ªˆÚs‚µI‚í‚Á‚½‚çisSetting‚ğfalse‚É‚·‚é
-		/*
-		if (t04[0] < settingTime && t04[1] < settingTime && t04[2] < settingTime && t04[3] < settingTime && t04[4] < settingTime && t04[5] < settingTime)
-		{
-			isSetting = false;
-			settingOver();  //20201022
-		}
-		*/
+          if (t03[i] <= settingTime)
+          {
+            settingJointAngle[i][2] = finalJointAngle[i][2];
+          }
+          else
+          {
+            settingJointAngle[i][2] = angularVelosity[i][2] * settingTime + initialJointAngle[i][2];
+          }
 
-		if (t05[0] < settingTime && t05[1] < settingTime && t05[2] < settingTime && t05[3] < settingTime && t05[4] < settingTime && t05[5] < settingTime)
-		{
-			isSetting = false;
-			//settingOver();  //20201022
-		}
+          if (t04[i] <= settingTime)
+          {
+            settingFootJointAngle[i] = finalFootJointAngle[i];
+          }
+          else
+          {
+            settingFootJointAngle[i] = angularVelosity[i][3] * settingTime + initialFootJointAngle[i];
+          }
+        }
+        */
+    }
 
-	//ŠÖßŠp“x‚â‚»‚±‚©‚çZo‚µ‚½‹ræˆÊ’u‚È‚Ç‚ğ‹L˜^‚·‚é
-	//
-	/*
-	for (int i = 0; i < LEG_NUM; i++)
-	{
-		kine = asuraPointer->placeLegJointAngles(i+1, settingJointAngle[i], settingFootJointAngle[i]);
-	
-	}
-	*/
+    //ã™ã¹ã¦ã®é–¢ç¯€ãŒç§»è¡Œã—çµ‚ã‚ã£ãŸã‚‰isSettingã‚’falseã«ã™ã‚‹
+    /*
+    if (t04[0] < settingTime && t04[1] < settingTime && t04[2] < settingTime && t04[3] < settingTime && t04[4] < settingTime && t04[5] < settingTime)
+    {
+      isSetting = false;
+      settingOver();  //20201022
+    }
+    */
 
-	//‹r2‚Ì‚İ
-	kine = asuraPointer->placeLegJointAngles(2, settingJointAngle[1], settingFootJointAngle[1]);
-	if (kine != NO_KINE_ERROR)
-	{
-		isSetting = false;
-	}
-	return true;
+    if (t05[0] < settingTime && t05[1] < settingTime && t05[2] < settingTime && t05[3] < settingTime && t05[4] < settingTime && t05[5] < settingTime)
+    {
+        isSetting = false;
+        //settingOver();  //20201022
+    }
+
+    //é–¢ç¯€è§’åº¦ã‚„ãã“ã‹ã‚‰ç®—å‡ºã—ãŸè„šå…ˆä½ç½®ãªã©ã‚’è¨˜éŒ²ã™ã‚‹
+    //
+    /*
+    for (int i = 0; i < LEG_NUM; i++)
+    {
+      kine = asuraPointer->placeLegJointAngles(i+1, settingJointAngle[i], settingFootJointAngle[i]);
+
+    }
+    */
+
+    //è„š2ã®ã¿
+    kine = asuraPointer->placeLegJointAngles(2, settingJointAngle[1], settingFootJointAngle[1]);
+    if (kine != NO_KINE_ERROR)
+    {
+        isSetting = false;
+    }
+    return true;
 }
 
 
 /**
  *	------------------------------------------------------------
- *		TripodGaitPlannerƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		TripodGaitPlannerã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
-/// •às‚Ì‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg¶¬
+ /// æ­©è¡Œã®ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 void TripodGaitPlanner::newTripodGaitItems(void)
 {
-	/// ‹rŠî€ˆÊ’u
-	footReferencePosition = new Vector[LEG_NUM];
+    /// è„šåŸºæº–ä½ç½®
+    footReferencePosition = new Vector[LEG_NUM];
 
-	/// ‘«‚Ì‰ŠúˆÊ’u
-	initialFootPosition = new Vector[LEG_NUM];
+    /// è¶³ã®åˆæœŸä½ç½®
+    initialFootPosition = new Vector[LEG_NUM];
 
-	/// —V‹rŠJnˆÊ’u
-	swingStartPosition = new Vector[LEG_NUM];
+    /// éŠè„šé–‹å§‹ä½ç½®
+    swingStartPosition = new Vector[LEG_NUM];
 
-	/// —V‹rI—¹ˆÊ’u
-	swingStopPosition = new Vector[LEG_NUM];
+    /// éŠè„šçµ‚äº†ä½ç½®
+    swingStopPosition = new Vector[LEG_NUM];
 
-	/// ƒxƒNƒgƒ‹‚ÌƒTƒCƒYŒˆ’è
-	initialBodyPosition.setSize(THREE_DIMENSION);
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚µã‚¤ã‚ºæ±ºå®š
+    initialBodyPosition.setSize(THREE_DIMENSION);
 
-	unitWalkingDirection.setSize(THREE_DIMENSION);
-	unitUpDirection.setSize(THREE_DIMENSION);  //20200929
-	swingUp.setSize(THREE_DIMENSION);
-	swingDown.setSize(THREE_DIMENSION);
+    unitWalkingDirection.setSize(THREE_DIMENSION);
+    unitUpDirection.setSize(THREE_DIMENSION);  //20200929
+    swingUp.setSize(THREE_DIMENSION);
+    swingDown.setSize(THREE_DIMENSION);
 
-	/// ‹rˆÊ’uŠÖŒW
-	int i;
-	for (i=0; i<LEG_NUM; i++)
-	{
-		footReferencePosition[i].setSize(THREE_DIMENSION);
-		initialFootPosition[i].setSize(THREE_DIMENSION);
-		swingStartPosition[i].setSize(THREE_DIMENSION);
-		swingStopPosition[i].setSize(THREE_DIMENSION);
-	}
+    /// è„šä½ç½®é–¢ä¿‚
+    int i;
+    for (i = 0; i < LEG_NUM; i++)
+    {
+        footReferencePosition[i].setSize(THREE_DIMENSION);
+        initialFootPosition[i].setSize(THREE_DIMENSION);
+        swingStartPosition[i].setSize(THREE_DIMENSION);
+        swingStopPosition[i].setSize(THREE_DIMENSION);
+    }
 
-	/// —V‹rŠJnŠÔ
-	swingStartTime = new double[LEG_NUM];
-	/// —V‹rI—¹ŠÔ
-	swingStopTime = new double[LEG_NUM];
+    /// éŠè„šé–‹å§‹æ™‚é–“
+    swingStartTime = new double[LEG_NUM];
+    /// éŠè„šçµ‚äº†æ™‚é–“
+    swingStopTime = new double[LEG_NUM];
 
-	//20201017  p¨ˆÚs
-	initialJointAngle = new Vector[LEG_NUM];
-	finalJointAngle = new Vector[LEG_NUM];
-	settingJointAngle = new Vector[LEG_NUM];
-	initialFootJointAngle = new double[LEG_NUM];
-	finalFootJointAngle = new double[LEG_NUM];
-	settingFootJointAngle = new double[LEG_NUM];
-	angularVelosity = new Vector[LEG_NUM];
-	t01 = new double[LEG_NUM];
-	t02 = new double[LEG_NUM];
-	t03 = new double[LEG_NUM];
-	t04 = new double[LEG_NUM];
-	t05 = new double[LEG_NUM];
+    //20201017  å§¿å‹¢ç§»è¡Œ
+    initialJointAngle = new Vector[LEG_NUM];
+    finalJointAngle = new Vector[LEG_NUM];
+    settingJointAngle = new Vector[LEG_NUM];
+    initialFootJointAngle = new double[LEG_NUM];
+    finalFootJointAngle = new double[LEG_NUM];
+    settingFootJointAngle = new double[LEG_NUM];
+    angularVelosity = new Vector[LEG_NUM];
+    t01 = new double[LEG_NUM];
+    t02 = new double[LEG_NUM];
+    t03 = new double[LEG_NUM];
+    t04 = new double[LEG_NUM];
+    t05 = new double[LEG_NUM];
 
-	for (int i = 0; i < LEG_NUM; i++)
-	{
-		initialJointAngle[i].setSize(LEG_JOINT_NUM);
-		finalJointAngle[i].setSize(LEG_JOINT_NUM);
-		settingJointAngle[i].setSize(LEG_JOINT_NUM);
-		initialFootJointAngle[i] = 0;
-		finalFootJointAngle[i] = 0;
-		settingFootJointAngle[i] = 0;
-		angularVelosity[i].setSize(LEG_JOINT_NUM + 1);
-		t01[i] = 0;
-		t02[i] = 0;
-		t03[i] = 0;
-		t04[i] = 0;
-		t05[i] = 0;
-	}
+    for (int i = 0; i < LEG_NUM; i++)
+    {
+        initialJointAngle[i].setSize(LEG_JOINT_NUM);
+        finalJointAngle[i].setSize(LEG_JOINT_NUM);
+        settingJointAngle[i].setSize(LEG_JOINT_NUM);
+        initialFootJointAngle[i] = 0;
+        finalFootJointAngle[i] = 0;
+        settingFootJointAngle[i] = 0;
+        angularVelosity[i].setSize(LEG_JOINT_NUM + 1);
+        t01[i] = 0;
+        t02[i] = 0;
+        t03[i] = 0;
+        t04[i] = 0;
+        t05[i] = 0;
+    }
 
 
-	return;
+    return;
 
 }
 
-/// •às‚Ì‚½‚ß‚ÌƒIƒuƒWƒFƒNƒgÁ‹
+/// æ­©è¡Œã®ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ¶ˆå»
 void TripodGaitPlanner::deleteTripodGaitItems(void)
 {
-	delete [] footReferencePosition;
-	delete [] initialFootPosition;
-	delete [] swingStartPosition;
-	delete [] swingStopPosition;
+    delete[] footReferencePosition;
+    delete[] initialFootPosition;
+    delete[] swingStartPosition;
+    delete[] swingStopPosition;
 
-	delete [] swingStartTime;
-	delete [] swingStopTime;
+    delete[] swingStartTime;
+    delete[] swingStopTime;
 
-	//20201017
-	delete[] initialJointAngle;
-	delete[] finalJointAngle;
-	delete[] initialFootJointAngle;
-	delete[] finalFootJointAngle;
-	delete[] angularVelosity;
-	delete[] t01;
-	delete[] t02;
-	delete[] t03;
-	delete[] t04;
-	delete[] t05;
+    //20201017
+    delete[] initialJointAngle;
+    delete[] finalJointAngle;
+    delete[] initialFootJointAngle;
+    delete[] finalFootJointAngle;
+    delete[] angularVelosity;
+    delete[] t01;
+    delete[] t02;
+    delete[] t03;
+    delete[] t04;
+    delete[] t05;
 
-	return;
+    return;
 }
 
 }	/// end of namespace Plan

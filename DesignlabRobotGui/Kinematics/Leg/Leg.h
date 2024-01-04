@@ -1,59 +1,24 @@
-﻿/**
- *  ファイル名
- *		Leg.h
- *  説明
- *		1脚の関節や足先に関する情報，運動学などを解く
- *  日付
- *		作成日: 2007/01/31(WED)		更新日: 2018/02/12(MON)
- */
-
- //20201015  第4リンク
- //20201018  第4関節
- //20221026  リンク4姿勢
-
+﻿
 #ifndef __Leg_h__
 #define __Leg_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ヘッダファイルインクルード
- *	----------------------------------------------------------------------
- */
 #include <cassert>
-#include "..\..\Math\Matrix\Matrix.h"
-#include "..\AsuraParameter.h"
+
+#include "Math/Matrix/Matrix.h"
+#include "Kinematics/AsuraParameter.h"
 
 namespace Asura
 {
 
-/**
- *	----------------------------------------------------------------------
- *		Legクラス
- *	----------------------------------------------------------------------
- */
 class Leg
 {
-    /**
-     *	------------------------------------------------------------
-     *		内部クラスの宣言
-     *	------------------------------------------------------------
-     */
-     /**
-      *		LegDataクラス：脚の情報
-      */
-    class LegData
+    class LegData final
     {
-        /**
-         *	------------------------------------------------------------
-         *		メンバ変数
-         *	------------------------------------------------------------
-         */
     public:
-        /**
-         *	座標系は全て胴体座標系（ここではグローバル座標）
-         */
-         /// 同時変換行列
-         /// 脚根元: [4x4]
+        // 座標系は全て胴体座標系（ここではグローバル座標）
+
+        /// 同時変換行列
+        /// 脚根元: [4x4]
         Math::Matrix	baseTransformation;
         /// 関節: [4x4]x3
         Math::Matrix* jointTransformation;
@@ -314,27 +279,27 @@ public:
       *	同次変換行列
       */
       /// 脚根元
-    Math::Matrix legBaseHomogeneousTransformation(void);
+    Math::Matrix legBaseHomogeneousTransformation();
     /// 関節
     Math::Matrix legJointHomogeneousTransformation(int jointNo);
     /// 足裏
-    Math::Matrix legFootHomogeneousTransformation(void);
+    Math::Matrix legFootHomogeneousTransformation();
 
     /**
      *	逆同次変換行列
      */
      /// 脚根元
-    Math::Matrix legBaseInverseHomogeneousTransformation(void);
+    Math::Matrix legBaseInverseHomogeneousTransformation();
     /// 関節
     Math::Matrix legJointInverseHomogeneousTransformation(int jointNo);
     /// 足裏
-    Math::Matrix legFootInverseHomogeneousTransformation(void);
+    Math::Matrix legFootInverseHomogeneousTransformation();
 
     /// 順運動学
-    Kinematics solveDirectKinematics(void);
+    Kinematics solveDirectKinematics();
 
     /// 逆運動学
-    Kinematics solveInverseKinematics(void);
+    Kinematics solveInverseKinematics();
 
     /// 姿勢指標の変更
     void setLegPoseIndicator(int hip = 1, int knee = 1);
@@ -347,10 +312,10 @@ public:
      *	----------------------------------------
      */
      /// 関節の可動範囲を調査
-    Kinematics checkLegJointMotionRange(void);
+    Kinematics checkLegJointMotionRange();
 
     /// 脚のリーチを調査
-    Kinematics checkLegFootReachRange(void);
+    Kinematics checkLegFootReachRange();
 
     /**
      *	----------------------------------------
@@ -371,9 +336,9 @@ public:
      *		セットした関節角で順運動学を解く
      */
     Kinematics placeLegJointAngles(const Math::Vector& nextJointAngle, const double& nextFootJointAngle);
-    //20201018  const double& nextFootJointAngle追加
 
-    void setLegTipAngle(const double angle) { legData.LegTipAngle = angle; return; }  //20221026
+
+    void setLegTipAngle(const double angle) { legData.LegTipAngle = angle; }
 
     /**
      *	----------------------------------------
@@ -531,22 +496,7 @@ inline Math::Matrix Leg::legFootHomogeneousTransformation(void)
 {
     /// 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
-    /// 足首関節角度
-    //double angle = Const::PI / 2 - legData.jointAngle(2) - legData.jointAngle(3);//変更
 
-    //20201015
-    /*
-    double angle;
-    if (StandardPos)  //StandardPosがtrueの時のみ第4リンクが地面と平行として順運動学を解く
-    {
-      angle = 0;
-    }
-    else  //それ以外の場合は第4リンクは地面と垂直
-    {
-      angle = Const::PI / 2 - legData.jointAngle(2) - legData.jointAngle(3);//変更
-    }
-    */
-    //20201018
     double angle = legData.FootjointAngle;
 
     A(1, 1) = cos(angle);
@@ -585,15 +535,15 @@ inline Math::Matrix Leg::legFootHomogeneousTransformation(void)
  /// 脚根元
 inline Math::Matrix Leg::legBaseInverseHomogeneousTransformation(void)
 {
-    /// 戻り値の行列
+    // 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
     A(1, 1) = cos(basePose(4));
-    A(2, 1) = -sin(basePose(4));//-追加
+    A(2, 1) = -sin(basePose(4));
     A(3, 1) = 0;
     A(4, 1) = 0;
 
-    A(1, 2) = sin(basePose(4));//-追加
+    A(1, 2) = sin(basePose(4));
     A(2, 2) = cos(basePose(4));
     A(3, 2) = 0;
     A(4, 2) = 0;
@@ -611,13 +561,12 @@ inline Math::Matrix Leg::legBaseInverseHomogeneousTransformation(void)
     return A;
 }
 
-/// 関節
-inline Math::Matrix Leg::legJointInverseHomogeneousTransformation(int jointNo)
+inline Math::Matrix Leg::legJointInverseHomogeneousTransformation(const int jointNo)
 {
-    /// 引数チェック
+    // 引数チェック
     assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-    /// 戻り値の行列
+    // 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
     A(1, 1) = cos(legData.jointAngle(jointNo));
@@ -643,14 +592,15 @@ inline Math::Matrix Leg::legJointInverseHomogeneousTransformation(int jointNo)
     return A;
 }
 
-/// 足裏
-inline Math::Matrix Leg::legFootInverseHomogeneousTransformation(void)
+
+inline Math::Matrix Leg::legFootInverseHomogeneousTransformation()
 {
-    /// 戻り値の行列
+    // 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
-    /// 足首関節角度<-----変数で置き換える
+
+    // 足首関節角度<-----変数で置き換える
     //double angle = Const::PI/2 - legData.jointAngle(2) - legData.jointAngle(3);
-    double angle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);  //20221026
+    const double angle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);
 
     A(1, 1) = cos(angle);
     A(2, 1) = -sin(angle);
@@ -679,5 +629,4 @@ inline Math::Matrix Leg::legFootInverseHomogeneousTransformation(void)
 }	/// end of namespace Asura
 
 
-#endif	/// __Leg_h__
-
+#endif  // DESIGNLABROBOTGUI_KINEMATICS_LEG_LEG_H_

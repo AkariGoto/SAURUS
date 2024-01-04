@@ -1,34 +1,17 @@
-﻿/**
- *  File: AsuraParameter.h
- *
- *  Description: AsuraXに関する定数パラメータ
- *
- *  Created: 2007/01/31(Wed)
- *  Updated: 2018/01/24(Mon)
- *
- *  Copyright (C) Tokyo Institute of Technology Hirose Lab.
- */
+﻿
+#ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURAPARAMETER_H_
+#define DESIGNLABROBOTGUI_KINEMATICS_ASURAPARAMETER_H_
 
- //  20200819  クローラ関連コメントアウト
- //  20200824
- //	20220713  パラメータ修正
+#include "Math/MathLibrary.h"
+#include "Math/MathConstant.h"
 
-#ifndef __AsuraParameter_h__
-#define __AsuraParameter_h__
-
-#include "..\Math\MathLibrary.h"
-#include "..\Math\MathConstant.h"
 
 namespace Asura
 {
 
 const double	STEP = 200;	//段差高さ
-//const double	Depth				=6;		//突起の食い込み深さ←段差高さによって変える	
-/**
- *		脚パラメータ
- */
 
- /// 関節数
+/// 関節数
 const int		LEG_JOINT_NUM = 3;  //第4関節は受動関節//第４関節は足首扱い20231127
 //const int		LEG_JOINT_NUM = 4;  //20200824
 
@@ -138,19 +121,11 @@ const double	BODY_HEIGHT = 156;//69.0;ASURA_20231128
 const double	WIDTH_CLAWLER = 441.0;
 const double	WIDTH_CL_FOOT = 491.0;
 
-//const double	LEG_ROOT_POSX[]		= {BODY_LENGTH/2,		-BODY_LENGTH/2,	-BODY_LENGTH/2,	BODY_LENGTH/2};
-//const double	LEG_ROOT_POSY[]		= {BODY_WIDTH/2,		BODY_WIDTH/2,		-BODY_WIDTH/2,		-BODY_WIDTH/2};
-//const double	LEG_ROOT_POSZ[]		= {0,							0,							0,							0};
-//const double	LEG_ROOT_ANGLE[]	= {Const::PI/2,			Const::PI/2,				-Const::PI/2,			-Const::PI/2};
 const double	LEG_ROOT_POSX[] = { BODY_LENGTH / Const::ROOT_2 / 2,	0.0,			-BODY_LENGTH / Const::ROOT_2 / 2,	-BODY_LENGTH / Const::ROOT_2 / 2,	0.0,				BODY_LENGTH / Const::ROOT_2 / 2 };
 const double	LEG_ROOT_POSY[] = { BODY_WIDTH / Const::ROOT_2 / 2,	BODY_WIDTH / 2,	BODY_WIDTH / Const::ROOT_2 / 2,		-BODY_WIDTH / Const::ROOT_2 / 2,	-BODY_WIDTH / 2,		-BODY_WIDTH / Const::ROOT_2 / 2 };
 const double	LEG_ROOT_POSZ[] = { 0,							0,				0,								0,								0,					0 };
 const double	LEG_ROOT_ANGLE[] = { Const::PI / 4,					Const::PI / 2,	Const::PI * 3 / 4,					-Const::PI * 3 / 4,					-Const::PI / 2,		-Const::PI / 4 };
 
-//const double	LEG_INITIAL_ANGLE1[]	= {-Const::PI/2, 0.0, Const::PI};
-//const double	LEG_INITIAL_ANGLE2[]	= {Const::PI/2, 0.0, Const::PI};
-//const double	LEG_INITIAL_ANGLE3[]	= {-Const::PI/2, 0.0, Const::PI};
-//const double	LEG_INITIAL_ANGLE4[]	= {Const::PI/2, 0.0, Const::PI};
 const double	LEG_INITIAL_ANGLE1[] = { 0.0, 0.0, 0.0, 0.0 };
 const double	LEG_INITIAL_ANGLE2[] = { 0.0, 0.0, 0.0, 0.0 };
 const double	LEG_INITIAL_ANGLE3[] = { 0.0, 0.0, 0.0, 0.0 };
@@ -194,35 +169,33 @@ typedef enum
     KINE_ERROR_JOINT_TORQUE_LIMIT,		/// 11 /// 関節トルクが制限以上
 } Kinematics;
 
-/**
- *		脚の駆動方式
- */
-typedef enum
+
+//! @enum DriveSystem
+//! @brief 脚の駆動方式
+enum DriveSystem : int
 {
     LEG,
     TRACK,
-} DriveSystem;
+};
 
-/**
- *		脚の相状態
- */
-typedef enum
+//! @enum LegPhase
+//! @brief 脚の相状態
+enum class LegPhase : int
 {
     SUPPORT,
     SWING
-} LegPhase;
+};
 
-/**
- *		ロボットの移動形態
- */
-typedef enum
+//! @enum LocomotionStyle
+//! @brief ロボットの移動形態
+enum class LocomotionStyle : int
 {
     LEGGED,
     TRACKED,
     HYBRID,
-} LocomotionStyle;
+};
 
 }
 
 
-#endif /// __AsuraParameter_h__
+#endif  // DESIGNLABROBOTGUI_KINEMATICS_ASURAPARAMETER_H_

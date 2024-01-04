@@ -1,230 +1,139 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		MotionPlanThread.h
- *  à–¾
- *		•à—eŒv‰æ‚ğs‚¤ƒXƒŒƒbƒh¶¬ƒNƒ‰ƒX‚ÌéŒ¾ƒNƒ‰ƒX
- *		 UIƒXƒŒƒbƒh‚Æ‚µ‚Äì¬‚·‚é‚½‚ßCWinThread‚©‚ç”h¶
- *  “ú•t
- *		ì¬“ú: 2014/04/28(MON)		XV“ú:
- */
+ï»¿
+#ifndef DESIGNLABROBOTGUI_MOTION_PLAN_THREAD_H_
+#define DESIGNLABROBOTGUI_MOTION_PLAN_THREAD_H_
 
-//  20200820  ƒCƒ“ƒNƒ‹[ƒh‚·‚éƒNƒ‰ƒX–¼‚ğTrotGait.h‚©‚çTripodGait.h‚ÉC³EURGEAxisControlƒ_ƒCƒAƒƒOŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-
-#pragma once
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
 #include <afxmt.h>
 
-#include "..\..\Kinematics\AsuraX.h"
-#include "..\..\Data\AsuraData.h"
-#include "..\..\Data\PlanData.h"
-#include "..\..\Data\DataHandler.h"
+#include "Data/asura_data.h"
+#include "Data/plan_data.h"
+#include "Data/data_handler.h"
+#include "Kinematics/AsuraX.h"
+#include "Plan/PlanParameter.h"
+#include "Plan/PlannerManager.h"
+#include "Plan/TripodGaitPlanner.h"
 
-#include "..\..\Plan\PlanParameter.h"
-#include "..\..\Plan\PlannerManager.h"
-//#include "..\..\Plan\AxisControlPlanner.h"
-//
-//#include "..\..\Plan\CrawlGaitPlanner.h"
-//#include "..\..\Plan\TrotGaitPlanner.h"
-#include "..\..\Plan\TripodGaitPlanner.h"  //  20200820
-//#include "..\..\Plan\TrackDrivePlanner.h"
-//#include "..\..\Plan\ModeChangePlanner.h"
-//#include "..\..\Plan\HybridMotionPlanner.h"
-//#include "..\..\Plan\URGMotionPlanner.h"		//’Ç‰Á
 
 #include "..\Timer\MultiMediaTimer.h"
 #include "TimedMotionProcedure.h"
 #include "..\WinUserMessage.h"
-//#include "ASURA2GUI/UDP/AsuraUDPThread.h"
 #include "..\..\UDP/AsuraUDPThread.h"
 
 
-/**
- *	----------------------------------------------------------------------
- *		’Ç‰Á‚ÌƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
- *	----------------------------------------------------------------------
- */
-//class CAxisControlDialog;  20200820
-//class CSerialPortDialog;
+
 class AsuraUDPThread;
 
-/**
- *	----------------------------------------------------------------------
- *		MotionPlanThreadƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
+
 class MotionPlanThread : public CWinThread
 {
-	DECLARE_DYNCREATE(MotionPlanThread)
+    using AsuraData = designlab_robot_gui::data::AsuraData;
+    using PlanData = designlab_robot_gui::data::PlanData;
+    using DataHandler = designlab_robot_gui::data::DataHandler;
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    DECLARE_DYNCREATE(MotionPlanThread)
 
-/**
- *		Asura‚ÌƒLƒlƒ}ƒeƒBƒNƒXƒIƒuƒWƒFƒNƒg
- */
-	static Asura::AsuraX asuraX;
+    /**
+     *		Asuraã®ã‚­ãƒãƒãƒ†ã‚£ã‚¯ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+    static Asura::AsuraX asuraX;
 
-/**
- *		ƒf[ƒ^ƒIƒuƒWƒFƒNƒg
- */
-	/// ƒLƒlƒ}ƒeƒBƒNƒXƒf[ƒ^
-	static Data::AsuraData asuraXData;
-	/// ƒvƒ‰ƒ“ƒf[ƒ^
-	static Data::PlanData planData;
-	/// ƒf[ƒ^ƒnƒ“ƒhƒ‰ƒIƒuƒWƒFƒNƒg
-	static Data::DataHandler dataHandler;
+    /**
+     *		ãƒ‡ãƒ¼ã‚¿ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+     /// ã‚­ãƒãƒãƒ†ã‚£ã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+    static AsuraData asuraXData;
+    /// ãƒ—ãƒ©ãƒ³ãƒ‡ãƒ¼ã‚¿
+    static PlanData planData;
+    /// ãƒ‡ãƒ¼ã‚¿ãƒãƒ³ãƒ‰ãƒ©ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    static DataHandler dataHandler;
 
-/**
- *		“®ìŒv‰æƒIƒuƒWƒFƒNƒg
- */
-	static Plan::PlannerManager		plannerManager;
-	//static Plan::AxisControlPlanner	axisControl;
+    /**
+     *		å‹•ä½œè¨ˆç”»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+    static Plan::PlannerManager		plannerManager;
 
-	//static Plan::CrawlGaitPlanner	crawlGait;
-	static Plan::TripodGaitPlanner	tripodGait;  //20200820
-	//static Plan::TrackDrivePlanner	trackDrive;
-	//static Plan::ModeChangePlanner	modeChange;
-	//static Plan::HybridMotionPlanner	hybridMotion;
-	//static Plan::URGMotionPlanner	URGMotion;		//’Ç‰Á
-
-/**
- *		ƒ^ƒCƒ}ƒIƒuƒWƒFƒNƒg
- */
-	System::TimedMotionProcedure*	pTimedMotionProcedure;
-	System::MultiMediaTimer*		pMultiMediaTimer;
-	static Plan::TimeManager		timeManager;
-
-/**
- *		ƒ_ƒCƒAƒƒOŠÖ˜A
- */
-	/// ƒ|ƒCƒ“ƒ^
-	//CAxisControlDialog* pAxisControlDialog;  20200820
-	//CSerialPortDialog*	pSerialPortDialog;
-	AsuraUDPThread* pUDPThread;
-	/// CAxisControlDialog
-	//static double axisCtrlData[Plan::AC_DLG_AXIS_NUM];  20200820
-
-/**
- *		ƒtƒ‰ƒO
- */
-	/// ƒXƒŒƒbƒh‚ª—LŒø‚©‚Ç‚¤‚©
-	BOOL isAlive;
-
-	/// ’ÊM‚ª—LŒø‚©‚Ç‚¤‚©
-	bool isCommAlive;
-
-	//DWORD URGThreadID;  20200820
+    static Plan::TripodGaitPlanner	tripodGait;  //20200820
 
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    System::TimedMotionProcedure* pTimedMotionProcedure;
+    System::MultiMediaTimer* pMultiMediaTimer;
+    static Plan::TimeManager		timeManager;
+
+
+    AsuraUDPThread* pUDPThread;
+
+
+
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+    BOOL isAlive;
+
+    /// é€šä¿¡ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+    bool isCommAlive;
+
+    //DWORD URGThreadID;  20200820
+
+
+
 protected:
 
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	MotionPlanThread();           // “®“I¶¬‚Åg—p‚³‚ê‚é protected ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~MotionPlanThread();
+
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    MotionPlanThread();           // å‹•çš„ç”Ÿæˆã§ä½¿ç”¨ã•ã‚Œã‚‹ protected ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~MotionPlanThread();
 
 public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
+    virtual BOOL InitInstance();
+    virtual int ExitInstance();
 
-/**
- *	------------------------------------------------------------
- *		©ìŠÖ”
- *	------------------------------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		‰Šú‰»
-	 */
-	void initializeMotionPlanThread(void);
 
-	/**
-	 *	à–¾
-	 *		I—¹ˆ—
-	 */
-	void finalizeMotionPlanThread(void);
+    /**
+     *	èª¬æ˜
+     *		åˆæœŸåŒ–
+     */
+    void initializeMotionPlanThread();
 
-	/**
-	 *	à–¾
-	 *		ƒXƒŒƒbƒh‚ª—LŒø‚©‚Ç‚¤‚©
-	 */
-	BOOL isRunning(void) const{return isAlive;}
+    /**
+     *	èª¬æ˜
+     *		çµ‚äº†å‡¦ç†
+     */
+    void finalizeMotionPlanThread();
 
-	/**
-	 *	à–¾
-	 *		‘€ì‚·‚éƒ_ƒCƒAƒƒO‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğƒZƒbƒg
-	 */
-	/// ²§Œäƒ_ƒCƒAƒƒO
-	//void acquireAxisControlDialog(CAxisControlDialog* pDlg);
-	/// ƒVƒŠƒAƒ‹’ÊMƒ_ƒCƒAƒƒO
-	//void acquireSerialPortDialog(CSerialPortDialog* pDlg);
+    /**
+     *	èª¬æ˜
+     *		ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+     */
+    BOOL isRunning() const { return isAlive; }
 
-	void MotionPlanThread::acquireAsuraUDPThread(AsuraUDPThread* pDlg);
+    void MotionPlanThread::acquireAsuraUDPThread(AsuraUDPThread* pDlg);
 
-DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
-/**
- *	------------------------------------------------------------
- *		¶¬‚³‚ê‚½AƒƒbƒZ[ƒWŠ„‚è“–‚ÄŠÖ”
- *	------------------------------------------------------------
- */
+
 protected:
-/**
- *		ƒJƒXƒ^ƒ€ƒƒbƒZ[ƒWƒ}ƒbƒvŠJn
- */
-	/// ƒXƒŒƒbƒhI—¹
-	afx_msg void OnEndThread(WPARAM wParam, LPARAM lParam);
-	/// ƒf[ƒ^‚ğƒƒCƒ“ƒXƒŒƒbƒh‚É‘—M
-	afx_msg void OnSendViewData(WPARAM wParam, LPARAM lParam);
-	/// •à—e‚ÌƒZƒbƒgƒAƒbƒv
-	afx_msg void OnSetupMotion(WPARAM wParam, LPARAM lParam);
-	/// •à—eƒXƒ^[ƒg
-	afx_msg void OnStartMotion(WPARAM wParam, LPARAM lParam);
-	/// •à—eƒXƒgƒbƒv
-	afx_msg void OnStopMotion(WPARAM wParam, LPARAM lParam);
-	/// •à—e¶¬
-	afx_msg void OnGenerateMotion(WPARAM wParam, LPARAM lParam);
 
-	/// CAxisControlDialogŠÖ˜A
-	/// ‹r”Ô†İ’è
-	//afx_msg void OnAxisCtrlDlgLegNo(WPARAM wParam, LPARAM lParam);
-	/// §Œäƒ‚[ƒhİ’è
-	//afx_msg void OnAxisCtrlDlgCtrlMode(WPARAM wParam, LPARAM lParam);
-	/// ƒXƒ‰ƒCƒ_[’lóM
-	//afx_msg void OnAxisCtrlDlgRecieveSldrData(WPARAM wParam, LPARAM lParam);
-	/// ƒ_ƒCƒAƒƒO‚Éƒf[ƒ^‘—M
-	//afx_msg void OnAxisCtrlDlgSendData(WPARAM wParam, LPARAM lParam);
+    // ã‚«ã‚¹ã‚¿ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒƒãƒ—é–‹å§‹
 
-	/// ’ÊMŠÖŒW
-	/// ƒf[ƒ^‘—MŠJn
-	afx_msg void OnStartDataSending(WPARAM wParam, LPARAM lParam);
-	/// ƒf[ƒ^‘—M’â~
-	afx_msg void OnStopDataSending(WPARAM wParam, LPARAM lParam);
+    // ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†
+    afx_msg void OnEndThread(WPARAM wParam, LPARAM lParam);
+    /// ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã«é€ä¿¡
+    afx_msg void OnSendViewData(WPARAM wParam, LPARAM lParam);
+    /// æ­©å®¹ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
+    afx_msg void OnSetupMotion(WPARAM wParam, LPARAM lParam);
+    /// æ­©å®¹ã‚¹ã‚¿ãƒ¼ãƒˆ
+    afx_msg void OnStartMotion(WPARAM wParam, LPARAM lParam);
+    /// æ­©å®¹ã‚¹ãƒˆãƒƒãƒ—
+    afx_msg void OnStopMotion(WPARAM wParam, LPARAM lParam);
+    /// æ­©å®¹ç”Ÿæˆ
+    afx_msg void OnGenerateMotion(WPARAM wParam, LPARAM lParam);
 
-	/// URGThreadƒAƒhƒŒƒXƒZƒbƒg
-	//afx_msg void OnURGThreadSet(WPARAM wParam, LPARAM lParam);
+    /// é€šä¿¡é–¢ä¿‚
+    /// ãƒ‡ãƒ¼ã‚¿é€ä¿¡é–‹å§‹
+    afx_msg void OnStartDataSending(WPARAM wParam, LPARAM lParam);
+    /// ãƒ‡ãƒ¼ã‚¿é€ä¿¡åœæ­¢
+    afx_msg void OnStopDataSending(WPARAM wParam, LPARAM lParam);
 
-/**
- *		ƒJƒXƒ^ƒ€ƒƒbƒZ[ƒWƒ}ƒbƒvI—¹
- */
+
 };
 
 
+#endif //DESIGNLABROBOTGUI_MOTION_PLAN_THREAD_H_

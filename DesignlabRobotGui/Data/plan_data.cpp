@@ -1,16 +1,10 @@
 ﻿
-#include "Data/PlanData.h"
+#include "Data/plan_data.h"
 
 #include "Utility/EngConstant.h"
 
 
-using namespace std;
-using namespace Math;
-using namespace Const;
-using namespace Asura;
-using namespace Plan;
-
-namespace Data
+namespace designlab_robot_gui::data
 {
 
 PlanData::PlanData()

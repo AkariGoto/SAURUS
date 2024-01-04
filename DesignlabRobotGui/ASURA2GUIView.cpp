@@ -32,7 +32,6 @@
 
 
 using namespace Const;  //20200819
-using namespace Data;  //20200821
 using namespace Graphic;  //  20200819
 using namespace Plan;  //20200824
 

@@ -15,7 +15,6 @@
 using namespace std;
 using namespace Const;
 using namespace Asura;
-using namespace Data;
 using namespace Plan;
 using namespace System;
 

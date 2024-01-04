@@ -1,55 +1,23 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		AsuraX.h
- *  à–¾
- *		AsuraX‚ÌƒLƒlƒ}ƒeƒBƒNƒXƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/01(SAT)
- */
+ï»¿
+#ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_
+#define DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_
 
-#ifndef __AsuraX_h__
-#define __AsuraX_h__
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
 #include "WalkingRobot.h"
 
 namespace Asura
 {
-/**
- *	----------------------------------------------------------------------
- *		AsuraXƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-class AsuraX : public WalkingRobot
+
+class AsuraX final : public WalkingRobot
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
-private:
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
 public:
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	AsuraX();
-	explicit AsuraX(const Math::Vector& bodyPosition);
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    AsuraX() = default;
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~AsuraX();
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    ~AsuraX() = default;
+};
 
-private:
-};	/// end of class Asura
-
-}	/// end of namespace Asura
+}  // namespace Asura
 
 
-#endif	/// __Asura_h__
+#endif  // DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_

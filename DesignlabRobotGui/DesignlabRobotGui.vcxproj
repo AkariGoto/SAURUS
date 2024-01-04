@@ -209,9 +209,9 @@
     <ClInclude Include="Comm\SciPacket.h" />
     <ClInclude Include="Comm\SciRingBuffer.h" />
     <ClInclude Include="Comm\SerialPort.h" />
-    <ClInclude Include="Data\AsuraData.h" />
-    <ClInclude Include="Data\DataHandler.h" />
-    <ClInclude Include="Data\PlanData.h" />
+    <ClInclude Include="Data\asura_data.h" />
+    <ClInclude Include="Data\data_handler.h" />
+    <ClInclude Include="Data\plan_data.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Graphic\AsuraGraphic.h" />
     <ClInclude Include="Graphic\OpenGL\AviMaker.h" />
@@ -276,15 +276,15 @@
     <ClCompile Include="Comm\SerialPort.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Data\DataHandler.cpp">
+    <ClCompile Include="Data\data_handler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="Data\PlanData.cpp">
+    <ClCompile Include="Data\plan_data.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="Data\AsuraData.cpp">
+    <ClCompile Include="Data\asura_data.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Graphic\AsuraGraphic.cpp">
@@ -308,9 +308,6 @@
     </ClCompile>
     <ClCompile Include="Graphic\OpenGL\OpenGLText.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Kinematics\AsuraX.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Kinematics\Leg\Leg.cpp">

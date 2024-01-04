@@ -1,20 +1,20 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Planner.cpp
- *  à–¾
- *		‘ÎÛ‚Æ‚·‚éWalkingRobotƒIƒuƒWƒFƒNƒg‚ÌŠî–{“®ì‚ğ¶¬‚·‚éƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2007/03/06(TUE)		XV“ú: 2007/03/12(MON)
+ *  èª¬æ˜
+ *		å¯¾è±¡ã¨ã™ã‚‹WalkingRobotã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åŸºæœ¬å‹•ä½œã‚’ç”Ÿæˆã™ã‚‹ã‚¯ãƒ©ã‚¹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/03/06(TUE)		æ›´æ–°æ—¥: 2007/03/12(MON)
  */
 
-//  20200819  ˆÀ’è—]—TŠÖ˜AƒRƒƒ“ƒgƒAƒEƒg
-//  20201020  “®ì’â~Œã‚ÌÄ“®ì
- 
- /**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ //  20200819  å®‰å®šä½™è£•é–¢é€£ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+ //  20201020  å‹•ä½œåœæ­¢å¾Œã®å†å‹•ä½œ
+
+  /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include "Planner.h"
 #include "..\Math\MathLibrary.h"
 #include "..\Math\Matrix\Matrix.h"
@@ -28,494 +28,494 @@ namespace Plan
 {
 /**
  *	----------------------------------------------------------------------
- *		PlannerƒNƒ‰ƒX
+ *		Plannerã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 
-/**
- *	------------------------------------------------------------
- *		PlannerƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
+ /**
+  *	------------------------------------------------------------
+  *		Plannerã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°å®šç¾©
+  *	------------------------------------------------------------
+  */
 
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+  /**
+   *	----------------------------------------
+   *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+   *	----------------------------------------
+   */
+   /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Planner::Planner(AsuraX* asuraPointer_, TimeManager* timeManagerPointer_)
 {
-	/// ƒ|ƒCƒ“ƒ^‚ÌƒZƒbƒg
-	asuraPointer = asuraPointer_;
-	timeManagerPointer = timeManagerPointer_;
+    /// ãƒã‚¤ãƒ³ã‚¿ã®ã‚»ãƒƒãƒˆ
+    asuraPointer = asuraPointer_;
+    timeManagerPointer = timeManagerPointer_;
 
-	/// ‹O“¹—v‘f‚ğ¶¬
-	newTrajectories();
+    /// è»Œé“è¦ç´ ã‚’ç”Ÿæˆ
+    newTrajectories();
 
-	/// ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
-	isRunning = false;
-	isSuspended = false;
+    /// ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
+    isRunning = false;
+    isSuspended = false;
 
-	//stabilityMargin = 0.0;  20200819
-	elapsedTime = 0.0;
-	planStartTime = 0.0;
+    //stabilityMargin = 0.0;  20200819
+    elapsedTime = 0.0;
+    planStartTime = 0.0;
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Planner::~Planner()
 {
-	/// ƒkƒ‹ƒ|ƒCƒ“ƒ^‚ğƒZƒbƒg
-	asuraPointer = NULL;
+    /// ãƒŒãƒ«ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚»ãƒƒãƒˆ
+    asuraPointer = NULL;
 
-	/// ‹O“¹—v‘f‚ğÁ‹
-	deleteTrajectories();
+    /// è»Œé“è¦ç´ ã‚’æ¶ˆå»
+    deleteTrajectories();
 }
 
 
 /**
- *		§Œä‚·‚é•àsƒƒ{ƒbƒgƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
+ *		åˆ¶å¾¡ã™ã‚‹æ­©è¡Œãƒ­ãƒœãƒƒãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
  */
-/// ƒ|ƒCƒ“ƒ^‚ğæ“¾
+ /// ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 void Planner::acquireAsura(AsuraX* ptr)
 {
-	/// Œ»İ‚Ìƒ|ƒCƒ“ƒ^‚ğƒŠƒZƒbƒg
-	releaseAsura();
+    /// ç¾åœ¨ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
+    releaseAsura();
 
-	asuraPointer = ptr;
+    asuraPointer = ptr;
 
-	return;
+    return;
 }
-/// ƒ|ƒCƒ“ƒ^‚ğ‰ğ•ú
+/// ãƒã‚¤ãƒ³ã‚¿ã‚’è§£æ”¾
 void Planner::releaseAsura(void)
 {
-	asuraPointer = NULL;
+    asuraPointer = NULL;
 
-	return;
+    return;
 }
 
 /**
- *		g—p‚·‚éŠÔŠÇ—ƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
+ *		ä½¿ç”¨ã™ã‚‹æ™‚é–“ç®¡ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
  */
 
-/// ƒ|ƒCƒ“ƒ^‚ğæ“¾
+ /// ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 void Planner::acquireTimeManager(TimeManager* ptr)
 {
-	/// Œ»İ‚Ìƒ|ƒCƒ“ƒ^‚ğƒŠƒZƒbƒg
-	releaseTimeManager();
+    /// ç¾åœ¨ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
+    releaseTimeManager();
 
-	timeManagerPointer = ptr;
+    timeManagerPointer = ptr;
 
-	return;
+    return;
 }
 
-/// ƒ|ƒCƒ“ƒ^‚ğ‰ğ•ú
+/// ãƒã‚¤ãƒ³ã‚¿ã‚’è§£æ”¾
 void Planner::releaseTimeManager(void)
 {
-	timeManagerPointer = NULL;
+    timeManagerPointer = NULL;
 
-	return;
+    return;
 }
 
 /**
- *		‹O“¹ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+ *		è»Œé“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
  */
-/// —V‹r‹O“¹‚ğİ’è‚·‚é
+ /// éŠè„šè»Œé“ã‚’è¨­å®šã™ã‚‹
 void Planner::setLegSwingTrajectory(
-		int legNo, 
-		const Math::Vector& start,
-		const Math::Vector& upPhase,
-		const Math::Vector& returnPhase, 
-		const Math::Vector& downPhase
-	)
+    int legNo,
+    const Math::Vector& start,
+    const Math::Vector& upPhase,
+    const Math::Vector& returnPhase,
+    const Math::Vector& downPhase
+)
 {
-	/// ‹r‚Ìˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM ); 
+    /// è„šã®å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
 
-	/// ‹O“¹—v‘f‚ğƒZƒbƒg
-	legTrajectory[legNo-1].setLegTrajectory(start, upPhase, returnPhase, downPhase);
+    /// è»Œé“è¦ç´ ã‚’ã‚»ãƒƒãƒˆ
+    legTrajectory[legNo - 1].setLegTrajectory(start, upPhase, returnPhase, downPhase);
 
-	return;
+    return;
 }
 
-/// —V‹rŠÔ‚ğİ’è‚·‚é
+/// éŠè„šæ™‚é–“ã‚’è¨­å®šã™ã‚‹
 void Planner::setLegSwingTime(
-		int legNo, 
-		double start,
-		double upPhase, 
-		double returnPhase, 
-		double downPhase
-	)
+    int legNo,
+    double start,
+    double upPhase,
+    double returnPhase,
+    double downPhase
+)
 {
-	/// ‹r‚Ìˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM ); 
+    /// è„šã®å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
 
-	/// ‹O“¹—v‘f‚ğƒZƒbƒg
-	legTrajectory[legNo-1].setLegTrajectoryTime(start, upPhase, returnPhase, downPhase);
+    /// è»Œé“è¦ç´ ã‚’ã‚»ãƒƒãƒˆ
+    legTrajectory[legNo - 1].setLegTrajectoryTime(start, upPhase, returnPhase, downPhase);
 
-	return;
+    return;
 }
 
 /**
- *		—V‹r‚Ì‹O“¹ã‚ÌˆÊ’u‚ğæ“¾‚·‚é
+ *		éŠè„šã®è»Œé“ä¸Šã®ä½ç½®ã‚’å–å¾—ã™ã‚‹
  */
 Vector Planner::getLegSwingPosition(int legNo, double splitTime)
 {
-	/// ‹r‚Ìˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <= LEG_NUM ); 
+    /// è„šã®å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
 
-	return legTrajectory[legNo-1].getPosition(splitTime);
+    return legTrajectory[legNo - 1].getPosition(splitTime);
 }
 
 /**
  *	----------------------------------------
- *	ÀÛ‚É“®ì‚ğs‚¤ŠÖ”
+ *	å®Ÿéš›ã«å‹•ä½œã‚’è¡Œã†é–¢æ•°
  *	----------------------------------------
  */
-/**
- *		—V‹r‚·‚é
- *		—\‚ßƒ†[ƒU‚ªİ’è‚µ‚½‹O“¹‚ğ—V‹r‚·‚é
- */
+ /**
+  *		éŠè„šã™ã‚‹
+  *		äºˆã‚ãƒ¦ãƒ¼ã‚¶ãŒè¨­å®šã—ãŸè»Œé“ã‚’éŠè„šã™ã‚‹
+  */
 PlanStatus Planner::swingLeg(int legNo, double splitTime)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( 1 <= legNo && legNo <=LEG_NUM );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(1 <= legNo && legNo <= LEG_NUM);
 
-/**
- *		ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
- */
-	/// ‰^“®Šw‚ÌŒ‹‰Ê
-	Kinematics kine;
-	/// ƒGƒ‰[‚ğ‹N‚±‚µ‚½ŠÖß”Ô†
-	int errorJointNo = 0;
+    /**
+     *		ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+     */
+     /// é‹å‹•å­¦ã®çµæœ
+    Kinematics kine;
+    /// ã‚¨ãƒ©ãƒ¼ã‚’èµ·ã“ã—ãŸé–¢ç¯€ç•ªå·
+    int errorJointNo = 0;
 
-	/// “®ì’â~’†‚¾‚Á‚½‚ç—V‹r‚µ‚È‚¢
-	if ( isSuspended )
-	{
-		return (SUSPEND);
-	}
+    /// å‹•ä½œåœæ­¢ä¸­ã ã£ãŸã‚‰éŠè„šã—ãªã„
+    if (isSuspended)
+    {
+        return (SUSPEND);
+    }
 
-	/// —V‹rŠÔ“à‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
-	if ( ( legTrajectory[legNo-1].getStartTime() < splitTime ) && ( splitTime < legTrajectory[legNo-1].getGoalTime() ) )
-	{
-		/// ˆø”‚ÌŠÔ‚Å‚Ì‹O“¹ã‚ÌˆÊ’u‚ğæ“¾
-		/// PTP§Œä‚É‚æ‚èC‘«‚ğ–Ú•WˆÊ’u‚ÉƒZƒbƒg
-		kine = asuraPointer->placeLegFootPosition( legNo, legTrajectory[legNo-1].getPosition(splitTime) );
+    /// éŠè„šæ™‚é–“å†…ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
+    if ((legTrajectory[legNo - 1].getStartTime() < splitTime) && (splitTime < legTrajectory[legNo - 1].getGoalTime()))
+    {
+        /// å¼•æ•°ã®æ™‚é–“ã§ã®è»Œé“ä¸Šã®ä½ç½®ã‚’å–å¾—
+        /// PTPåˆ¶å¾¡ã«ã‚ˆã‚Šï¼Œè¶³ã‚’ç›®æ¨™ä½ç½®ã«ã‚»ãƒƒãƒˆ
+        kine = asuraPointer->placeLegFootPosition(legNo, legTrajectory[legNo - 1].getPosition(splitTime));
 
-		/// ‹t‰^“®Šw‚ª‰ğ‚¯‚½‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
-		if ( kine != NO_KINE_ERROR )
-		{
-			printPlanErrorMessage();
-			return INVALID;
-		}
+        /// é€†é‹å‹•å­¦ãŒè§£ã‘ãŸã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
+        if (kine != NO_KINE_ERROR)
+        {
+            printPlanErrorMessage();
+            return INVALID;
+        }
 
-		/// ‹r‚Ìó‘Ô‚ğ—V‹r‚ÉƒZƒbƒg
-		asuraPointer->setLegPhase(legNo, SWING);
-	}
-	else
-	{
-		/// ˆø”‚ÌŠÔ‚Å‚Ì‹O“¹ã‚ÌˆÊ’u‚ğæ“¾
-		/// PTP§Œä‚É‚æ‚èC‘«‚ğ–Ú•WˆÊ’u‚ÉƒZƒbƒg
-		kine = asuraPointer->placeLegFootPosition( legNo, legTrajectory[legNo-1].getPosition(splitTime) );
+        /// è„šã®çŠ¶æ…‹ã‚’éŠè„šã«ã‚»ãƒƒãƒˆ
+        asuraPointer->setLegPhase(legNo, LegPhase::SWING);
+    }
+    else
+    {
+        /// å¼•æ•°ã®æ™‚é–“ã§ã®è»Œé“ä¸Šã®ä½ç½®ã‚’å–å¾—
+        /// PTPåˆ¶å¾¡ã«ã‚ˆã‚Šï¼Œè¶³ã‚’ç›®æ¨™ä½ç½®ã«ã‚»ãƒƒãƒˆ
+        kine = asuraPointer->placeLegFootPosition(legNo, legTrajectory[legNo - 1].getPosition(splitTime));
 
-		/// ‹t‰^“®Šw‚ª‰ğ‚¯‚½‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
-		if ( kine != NO_KINE_ERROR )
-		{
-			printPlanErrorMessage();
-			return INVALID;
-		}
+        /// é€†é‹å‹•å­¦ãŒè§£ã‘ãŸã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
+        if (kine != NO_KINE_ERROR)
+        {
+            printPlanErrorMessage();
+            return INVALID;
+        }
 
-		/// ‹r‚Ìó‘Ô‚ğx‹r‚ÉƒZƒbƒg
-		asuraPointer->setLegPhase(legNo, SUPPORT);
+        /// è„šã®çŠ¶æ…‹ã‚’æ”¯æŒè„šã«ã‚»ãƒƒãƒˆ
+        asuraPointer->setLegPhase(legNo, LegPhase::SUPPORT);
 
-		/// “®ìI—¹
-		return END;
-	}
+        /// å‹•ä½œçµ‚äº†
+        return END;
+    }
 
-	/// “®ìÀs’†
-	return RUN;
+    /// å‹•ä½œå®Ÿè¡Œä¸­
+    return RUN;
 }
 
 /**
- *		“·‘Ì„i
+ *		èƒ´ä½“æ¨é€²
  */
 PlanStatus Planner::moveBody(double splitTime)
 {
 
-	/// “®ì’â~’†‚¾‚Á‚½‚ç—V‹r‚µ‚È‚¢
-	if ( isSuspended )
-	{
-		return (SUSPEND);
-	}
+    /// å‹•ä½œåœæ­¢ä¸­ã ã£ãŸã‚‰éŠè„šã—ãªã„
+    if (isSuspended)
+    {
+        return (SUSPEND);
+    }
 
-/**
- *		ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
- */
-	/// ‹O“¹ã‚Ì–Ú•W‹ræˆÊ’u
-	Vector targetPosition(THREE_DIMENSION);
-	/// ‰^“®Šw‚ÌŒ‹‰Ê
-	Kinematics kine;
-	/// ƒGƒ‰[‚ğ‹N‚±‚µ‚½‹r”Ô†
-	int errorLegNo = 0;
-	/// ƒGƒ‰[‚ğ‹N‚±‚µ‚½ŠÖß”Ô†
-	int errorJointNo = 0;
+    /**
+     *		ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+     */
+     /// è»Œé“ä¸Šã®ç›®æ¨™è„šå…ˆä½ç½®
+    Vector targetPosition(THREE_DIMENSION);
+    /// é‹å‹•å­¦ã®çµæœ
+    Kinematics kine;
+    /// ã‚¨ãƒ©ãƒ¼ã‚’èµ·ã“ã—ãŸè„šç•ªå·
+    int errorLegNo = 0;
+    /// ã‚¨ãƒ©ãƒ¼ã‚’èµ·ã“ã—ãŸé–¢ç¯€ç•ªå·
+    int errorJointNo = 0;
 
-	/// ˆø”‚ÌŠÔ‚Å‚Ì‹O“¹ã‚ÌˆÊ’u‚ğŒvZ
-	targetPosition = bodyTrajectory->getPosition(splitTime);
+    /// å¼•æ•°ã®æ™‚é–“ã§ã®è»Œé“ä¸Šã®ä½ç½®ã‚’è¨ˆç®—
+    targetPosition = bodyTrajectory->getPosition(splitTime);
 
-	/// PTP§Œä‚É‚æ‚èdS‚ğ–Ú•WˆÊ’u‚ÉƒZƒbƒg
-	kine = asuraPointer->placeBodyPosition(targetPosition);
+    /// PTPåˆ¶å¾¡ã«ã‚ˆã‚Šé‡å¿ƒã‚’ç›®æ¨™ä½ç½®ã«ã‚»ãƒƒãƒˆ
+    kine = asuraPointer->placeBodyPosition(targetPosition);
 
-	/// ‹t‰^“®‚ª‰ğ‚¯‚é‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
-	if ( kine != NO_KINE_ERROR )
-	{
-		Planner::printPlanErrorMessage();
+    /// é€†é‹å‹•ãŒè§£ã‘ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
+    if (kine != NO_KINE_ERROR)
+    {
+        Planner::printPlanErrorMessage();
 
-		return INVALID;
-	}
+        return INVALID;
+    }
 
-	/// “·‘Ì„iŠÔ“à‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
-	if ( !( bodyTrajectory->getStartTime() < splitTime ) || !( splitTime < bodyTrajectory->getGoalTime() ) )
-	{
-		return END;
-	}
+    /// èƒ´ä½“æ¨é€²æ™‚é–“å†…ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+    if (!(bodyTrajectory->getStartTime() < splitTime) || !(splitTime < bodyTrajectory->getGoalTime()))
+    {
+        return END;
+    }
 
-	return RUN;
+    return RUN;
 
 
 }
 
 /**
- *		ƒGƒ‰[ƒƒbƒZ[ƒW‚Ìo—Í
+ *		ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡ºåŠ›
  */
 void Planner::printPlanErrorMessage(void)
 {
-	Kinematics kine = asuraPointer->getLastKineError();
-	int legNo = asuraPointer->getLastErrorTrackLegNo();
-	int jointNo = asuraPointer->getLegLastErrorJointNo(legNo);
-	char error[256] = "No error";
+    Kinematics kine = asuraPointer->getLastKineError();
+    int legNo = asuraPointer->getLastErrorTrackLegNo();
+    int jointNo = asuraPointer->getLegLastErrorJointNo(legNo);
+    char error[256] = "No error";
 
-	switch ( kine )
-	{
-		case KINE_ERROR_UNREACHABLE:
-			sprintf_s(error, "Unreachable operation");
-			break;
-		
-		case KINE_ERROR_SINGULAR:
-			sprintf_s(error, "Singular posture");
-			break;
+    switch (kine)
+    {
+        case KINE_ERROR_UNREACHABLE:
+            sprintf_s(error, "Unreachable operation");
+            break;
 
-		case KINE_ERROR_ELSE:
-			sprintf_s(error, "Uncertain error");
-			break;
+        case KINE_ERROR_SINGULAR:
+            sprintf_s(error, "Singular posture");
+            break;
 
-		case KINE_ERROR_REACH_RADIUS_UNDER:
-			sprintf_s(error, "Under minimum horizontal reach");
-			break;
+        case KINE_ERROR_ELSE:
+            sprintf_s(error, "Uncertain error");
+            break;
 
-		case KINE_ERROR_REACH_RADIUS_OVER:
-			sprintf_s(error, "Over maximum horizontal reach");
-			break;
+        case KINE_ERROR_REACH_RADIUS_UNDER:
+            sprintf_s(error, "Under minimum horizontal reach");
+            break;
 
-		case KINE_ERROR_REACH_HEIGHT_UNDER:
-			sprintf_s(error, "Under minimum vertical reach");
-			break;
+        case KINE_ERROR_REACH_RADIUS_OVER:
+            sprintf_s(error, "Over maximum horizontal reach");
+            break;
 
-		case KINE_ERROR_REACH_HEIGHT_OVER:
-			sprintf_s(error, "Under maximum vertical reach");
-			break;
+        case KINE_ERROR_REACH_HEIGHT_UNDER:
+            sprintf_s(error, "Under minimum vertical reach");
+            break;
 
-		case KINE_ERROR_JOINT_UNDER_LIMIT:
-			sprintf_s(error, "Under minimum joint angle");
-			break;
+        case KINE_ERROR_REACH_HEIGHT_OVER:
+            sprintf_s(error, "Under maximum vertical reach");
+            break;
 
-		case KINE_ERROR_JOINT_OVER_LIMIT:
-			sprintf_s(error, "Over maximum joint angle");
-			break;
+        case KINE_ERROR_JOINT_UNDER_LIMIT:
+            sprintf_s(error, "Under minimum joint angle");
+            break;
 
-		case KINE_ERROR_JOINT_VELOCITY_LIMIT:
-			sprintf_s(error, "Over maximum joint angular velocity");
-			break;
+        case KINE_ERROR_JOINT_OVER_LIMIT:
+            sprintf_s(error, "Over maximum joint angle");
+            break;
 
-		case KINE_ERROR_JOINT_TORQUE_LIMIT:
-			sprintf_s(error, "Over maximum joint torque velocity");
-			break;
-	}
+        case KINE_ERROR_JOINT_VELOCITY_LIMIT:
+            sprintf_s(error, "Over maximum joint angular velocity");
+            break;
 
-	cout << " Joint-" << jointNo << " of " << "Leg-" << legNo << ":" << error << endl;	
+        case KINE_ERROR_JOINT_TORQUE_LIMIT:
+            sprintf_s(error, "Over maximum joint torque velocity");
+            break;
+    }
+
+    cout << " Joint-" << jointNo << " of " << "Leg-" << legNo << ":" << error << endl;
 }
 
 /**
  *	----------------------------------------
- *	‰^“®‚ğ‹ï‘Ì“I‚É¶¬‚·‚éŠÖ”ŒQ 
+ *	é‹å‹•ã‚’å…·ä½“çš„ã«ç”Ÿæˆã™ã‚‹é–¢æ•°ç¾¤
  *	----------------------------------------
  */
-/// •àsŠJn‚Ì‚½‚ß‚Ì‰Šú‰»
+ /// æ­©è¡Œé–‹å§‹ã®ãŸã‚ã®åˆæœŸåŒ–
 bool Planner::setup(void)
 {
-	elapsedTime = 0.0;  //20201020
-	stopElapsedTime = elapsedTime;  //20201020
+    elapsedTime = 0.0;  //20201020
+    stopElapsedTime = elapsedTime;  //20201020
 
-	/// “®ìŠJn
-	isRunning = true;
+    /// å‹•ä½œé–‹å§‹
+    isRunning = true;
 
-	return true;
+    return true;
 }
 
-/// •às‚ğŠJn‚·‚é
+/// æ­©è¡Œã‚’é–‹å§‹ã™ã‚‹
 bool Planner::startPlan(void)
 {
-	/// ƒvƒ‰ƒ“ƒjƒ“ƒOŠJnŠÔ‚ğİ’è
-	//planStartTime = timeManagerPointer->getRealTime();  //20201020
-	planStartTime = timeManagerPointer->getRealTime() - stopElapsedTime;  //elapsedTime‚Í‹N“®‚Í0
+    /// ãƒ—ãƒ©ãƒ³ãƒ‹ãƒ³ã‚°é–‹å§‹æ™‚é–“ã‚’è¨­å®š
+    //planStartTime = timeManagerPointer->getRealTime();  //20201020
+    planStartTime = timeManagerPointer->getRealTime() - stopElapsedTime;  //elapsedTimeã¯èµ·å‹•æ™‚ã¯0
 
-	return true;
+    return true;
 }
-	
-/// •às‚ğ’â~‚·‚é
+
+/// æ­©è¡Œã‚’åœæ­¢ã™ã‚‹
 bool Planner::stopPlan(void)
 {
-	//isRunning = false;  //20201020
+    //isRunning = false;  //20201020
 
-	stopElapsedTime = elapsedTime;  //20201020
+    stopElapsedTime = elapsedTime;  //20201020
 
-	return true;
+    return true;
 }
 
 bool Planner::standByForStop(void)
 {
-	return true;
+    return true;
 }
 
 /**
- *		ˆÀ’è—]—T‚ÌŒvZ
- *			ˆø”: d—Í•ûŒü¬•ª
+ *		å®‰å®šä½™è£•ã®è¨ˆç®—
+ *			å¼•æ•°: é‡åŠ›æ–¹å‘æˆåˆ†
  */
-/*  20200819
-double Planner::calculateStabilityMargin(double gx, double gy, double gz)
-{
-	/// ‘«ˆÊ’u
-	Vector foot[LEG_NUM];
-	/// dSˆÊ’u
-	Vector cog;
-	/// d—Í•ûŒü
-	Vector gravity( positionVector(gx, gy, gz) );
-	/// ‹r‚Ì‘Š
-	LegPhase phase[LEG_NUM];
-	/// dSˆÊ’u
-	Vector body(THREE_DIMENSION);
+ /*  20200819
+ double Planner::calculateStabilityMargin(double gx, double gy, double gz)
+ {
+   /// è¶³ä½ç½®
+   Vector foot[LEG_NUM];
+   /// é‡å¿ƒä½ç½®
+   Vector cog;
+   /// é‡åŠ›æ–¹å‘
+   Vector gravity( positionVector(gx, gy, gz) );
+   /// è„šã®ç›¸
+   LegPhase phase[LEG_NUM];
+   /// é‡å¿ƒä½ç½®
+   Vector body(THREE_DIMENSION);
 
-	/// ‘«ˆÊ’u‚Ìæ“¾
-	int i;
-	for (i=0; i<LEG_NUM; i++)
-	{
-		foot[i].setSize(THREE_DIMENSION);
+   /// è¶³ä½ç½®ã®å–å¾—
+   int i;
+   for (i=0; i<LEG_NUM; i++)
+   {
+     foot[i].setSize(THREE_DIMENSION);
 
-		foot[i] = asuraPointer->transformationLocalToGlobal( 
-									asuraPointer->getLegFootPosition(i+1) 
-									);
-	}
+     foot[i] = asuraPointer->transformationLocalToGlobal(
+                   asuraPointer->getLegFootPosition(i+1)
+                   );
+   }
 
-	/// dSˆÊ’u‚Ìæ“¾
-	body = asuraPointer->getBodyPosition();
+   /// é‡å¿ƒä½ç½®ã®å–å¾—
+   body = asuraPointer->getBodyPosition();
 
-	/// ‹r‚Ì‰^“®‘Š‚Ìæ“¾
-	int j;
-	for (j=0; j<LEG_NUM; j++ )
-		phase[j] = asuraPointer->getLegPhase( j+1 );
-
-
-	/// ‹r‘Š–ˆ‚ÉˆÀ’è—]—T‚ğŒvZ
-	if ( phase[0] == SWING )
-		stabilityMargin = stabilityMarginForTriangle( foot[1], foot[2], foot[3],  body, gravity );
-	else if ( phase[1] == SWING )
-		stabilityMargin = stabilityMarginForTriangle( foot[0], foot[2], foot[3], body, gravity );
-	else if ( phase[2] == SWING )
-		stabilityMargin = stabilityMarginForTriangle( foot[0], foot[1], foot[3], body, gravity );
-	else if ( phase[3] == SWING )
-		stabilityMargin = stabilityMarginForTriangle( foot[0], foot[1], foot[2], body, gravity );
-	else
-		stabilityMargin = stabilityMarginForQuadrangle( foot[0], foot[2], foot[3], foot[3], body, gravity );
+   /// è„šã®é‹å‹•ç›¸ã®å–å¾—
+   int j;
+   for (j=0; j<LEG_NUM; j++ )
+     phase[j] = asuraPointer->getLegPhase( j+1 );
 
 
-	return stabilityMargin;
-}
-*/
+   /// è„šç›¸æ¯ã«å®‰å®šä½™è£•ã‚’è¨ˆç®—
+   if ( phase[0] == SWING )
+     stabilityMargin = stabilityMarginForTriangle( foot[1], foot[2], foot[3],  body, gravity );
+   else if ( phase[1] == SWING )
+     stabilityMargin = stabilityMarginForTriangle( foot[0], foot[2], foot[3], body, gravity );
+   else if ( phase[2] == SWING )
+     stabilityMargin = stabilityMarginForTriangle( foot[0], foot[1], foot[3], body, gravity );
+   else if ( phase[3] == SWING )
+     stabilityMargin = stabilityMarginForTriangle( foot[0], foot[1], foot[2], body, gravity );
+   else
+     stabilityMargin = stabilityMarginForQuadrangle( foot[0], foot[2], foot[3], foot[3], body, gravity );
 
 
-/**
- *		PlannerƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
- *
+   return stabilityMargin;
+ }
  */
+
+
+ /**
+  *		Plannerã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
+  *
+  */
 void Planner::newTrajectories(void)
 {
-	legTrajectory = new LegTrajectory[LEG_NUM];
-	bodyTrajectory = new BodyTrajectory;
+    legTrajectory = new LegTrajectory[LEG_NUM];
+    bodyTrajectory = new BodyTrajectory;
 
-	return;
+    return;
 }
 
 void Planner::deleteTrajectories(void)
 {
-	delete [] legTrajectory;
-	delete bodyTrajectory;
+    delete[] legTrajectory;
+    delete bodyTrajectory;
 
-	return;
+    return;
 }
 
 /**
- *		ˆÀ’è—]—T‚ÌŒvZ‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
+ *		å®‰å®šä½™è£•ã®è¨ˆç®—ã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
  */
 
-/*  20200819
-/// x‹rOŠpŒ`‚ÌˆÀ’è—]—T
-double Planner::stabilityMarginForTriangle(	const Vector& foot1, const Vector& foot2, const Vector& foot3, 
-															const Vector& cog, const Vector& gravity)
-{
-	/// ˆÀ’è—]—T
-	double stability;
+ /*  20200819
+ /// æ”¯æŒè„šä¸‰è§’å½¢æ™‚ã®å®‰å®šä½™è£•
+ double Planner::stabilityMarginForTriangle(	const Vector& foot1, const Vector& foot2, const Vector& foot3,
+                               const Vector& cog, const Vector& gravity)
+ {
+   /// å®‰å®šä½™è£•
+   double stability;
 
-	/// x‹rOŠpŒ`‚Ì–@üƒxƒNƒgƒ‹
-	Vector triangleNormal(THREE_DIMENSION);
-	/// dS‚Ìx‹rOŠpŒ`‚Ö‚Ì“Š‰e“_
-	Vector cogProjection(THREE_DIMENSION);
+   /// æ”¯æŒè„šä¸‰è§’å½¢ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+   Vector triangleNormal(THREE_DIMENSION);
+   /// é‡å¿ƒã®æ”¯æŒè„šä¸‰è§’å½¢ã¸ã®æŠ•å½±ç‚¹
+   Vector cogProjection(THREE_DIMENSION);
 
-	/// x‹rOŠpŒ`‚Ì–@üƒxƒNƒgƒ‹‚ğŒvZ
-	triangleNormal = normalVectorOfPlane( foot1, foot2, foot3 );
+   /// æ”¯æŒè„šä¸‰è§’å½¢ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+   triangleNormal = normalVectorOfPlane( foot1, foot2, foot3 );
 
-	/// dS‚Ìd—Í•ûŒü‚Ö‚Ìx‹rOŠpŒ`‚Æ‚ÌŒğ“_‚ğŒvZ
-	cogProjection = intersectPointLineAndPlane(cog, gravity, foot1, triangleNormal);
-	
-	/// ˆÀ’è—]—T‚ğŒvZ
-	stability = minDistanceToTriangleEdge(cogProjection, foot1, foot2, foot3);
+   /// é‡å¿ƒã®é‡åŠ›æ–¹å‘ã¸ã®æ”¯æŒè„šä¸‰è§’å½¢ã¨ã®äº¤ç‚¹ã‚’è¨ˆç®—
+   cogProjection = intersectPointLineAndPlane(cog, gravity, foot1, triangleNormal);
 
-	return stability;
-}
+   /// å®‰å®šä½™è£•ã‚’è¨ˆç®—
+   stability = minDistanceToTriangleEdge(cogProjection, foot1, foot2, foot3);
 
-/// x‹rlŠpŒ`‚ÌˆÀ’è—]—T
-double Planner::stabilityMarginForQuadrangle(	const Vector& foot1, const Vector& foot2, 
-																const Vector& foot3, const Vector& foot4, 
-																const Vector& cog, const Vector& gravity)
-{
-	/// ˆÀ’è—]—T
-	double stability;
-	
-	/// x‹rOŠpŒ`‚Ì–@üƒxƒNƒgƒ‹
-	Vector quadrangleNormal(THREE_DIMENSION);
-	/// dS‚Ìx‹rOŠpŒ`‚Ö‚Ì“Š‰e“_
-	Vector cogProjection(THREE_DIMENSION);
+   return stability;
+ }
 
-	/// x‹rOŠpŒ`‚Ì–@üƒxƒNƒgƒ‹‚ğŒvZ
-	quadrangleNormal = normalVectorOfPlane(foot1, foot2, foot3);
-	/// dS‚Ìd—Í•ûŒü‚Ö‚Ìx‹rOŠpŒ`‚Æ‚ÌŒğ“_‚ğŒvZ
-	cogProjection = intersectPointLineAndPlane(cog, gravity, foot1, quadrangleNormal);
-	
-	/// ˆÀ’è—]—T‚ğŒvZ
-	stability = minDistanceToQuadrangleEdge(cogProjection, foot1, foot2, foot3, foot4);
+ /// æ”¯æŒè„šå››è§’å½¢æ™‚ã®å®‰å®šä½™è£•
+ double Planner::stabilityMarginForQuadrangle(	const Vector& foot1, const Vector& foot2,
+                                 const Vector& foot3, const Vector& foot4,
+                                 const Vector& cog, const Vector& gravity)
+ {
+   /// å®‰å®šä½™è£•
+   double stability;
 
-	return stability;
-}
-*/
+   /// æ”¯æŒè„šä¸‰è§’å½¢ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+   Vector quadrangleNormal(THREE_DIMENSION);
+   /// é‡å¿ƒã®æ”¯æŒè„šä¸‰è§’å½¢ã¸ã®æŠ•å½±ç‚¹
+   Vector cogProjection(THREE_DIMENSION);
+
+   /// æ”¯æŒè„šä¸‰è§’å½¢ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+   quadrangleNormal = normalVectorOfPlane(foot1, foot2, foot3);
+   /// é‡å¿ƒã®é‡åŠ›æ–¹å‘ã¸ã®æ”¯æŒè„šä¸‰è§’å½¢ã¨ã®äº¤ç‚¹ã‚’è¨ˆç®—
+   cogProjection = intersectPointLineAndPlane(cog, gravity, foot1, quadrangleNormal);
+
+   /// å®‰å®šä½™è£•ã‚’è¨ˆç®—
+   stability = minDistanceToQuadrangleEdge(cogProjection, foot1, foot2, foot3, foot4);
+
+   return stability;
+ }
+ */
 
 }	/// end of namespace Plan
 
