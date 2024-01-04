@@ -1,25 +1,24 @@
-#pragma once
+ï»¿#pragma once
 
 #include "..\resource.h"
 
 #include "..\Data\AsuraData.h"
 #include "..\Data\PlanData.h"
 
-#include "..\System\ViewSetting.h"
 #include "..\File\FileWriter.h"
 #include "..\Utility\RingBuffer.h"
 
-//2020/08/21’Ç‰Á
+//2020/08/21è¿½åŠ 
 #include "Udp.h"
 #include "UDPPacket.h"
 
-// WinSock 20210622’Ç‰Á
+// WinSock 20210622è¿½åŠ 
 #include <winsock2.h>
 #pragma comment(lib, "wsock32.lib")
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
-//SerialPort.h‚Ì
+//SerialPort.hã®
 #include <afx.h>
 #include <windows.h>
 #include <afxwin.h>
@@ -31,7 +30,7 @@
 #include "..\System\Thread\TimedMotionProcedure.h"
 #include "..\System\Thread\MotionPlanThread.h"
 
-//ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
+//ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
 class UDPSocket;
 
 using namespace UDP;
@@ -43,193 +42,193 @@ using namespace UDP;
 class AsuraUDPThread : public CWinThread
 {
 
-	DECLARE_DYNCREATE(AsuraUDPThread)
-	
-/**
- *		ƒ^ƒCƒ}ƒIƒuƒWƒFƒNƒg
- */
-	System::TimedMotionProcedure*	 pTimedUDPProcedure;
-	System::MultiMediaTimer*		 pMultiMediaTimer;
-	static Plan::TimeManager		 timeManager;
+    DECLARE_DYNCREATE(AsuraUDPThread)
 
-/**
- *		ƒtƒ‰ƒO
- */
- /// ƒXƒŒƒbƒh‚ª—LŒø‚©‚Ç‚¤‚©
-	BOOL isAlive;
+    /**
+     *		ã‚¿ã‚¤ãƒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+    System::TimedMotionProcedure* pTimedUDPProcedure;
+    System::MultiMediaTimer* pMultiMediaTimer;
+    static Plan::TimeManager		 timeManager;
 
-	/// ’ÊM‚ª—LŒø‚©‚Ç‚¤‚©
-	bool isCommAlive;
+    /**
+     *		ãƒ•ãƒ©ã‚°
+     */
+     /// ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+    BOOL isAlive;
 
-	//bool isListeningStopped;
-	
+    /// é€šä¿¡ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+    bool isCommAlive;
+
+    //bool isListeningStopped;
+
 
 
 protected:
-	AsuraUDPThread();           // “®“I¶¬‚Åg—p‚³‚ê‚é protected ƒRƒ“ƒXƒgƒ‰ƒNƒ^[
-	virtual ~AsuraUDPThread();
+    AsuraUDPThread();           // å‹•çš„ç”Ÿæˆã§ä½¿ç”¨ã•ã‚Œã‚‹ protected ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼
+    virtual ~AsuraUDPThread();
 
 public:
-	virtual BOOL InitInstance();	//‰Šú‰»
-	virtual int ExitInstance();
+    virtual BOOL InitInstance();	//åˆæœŸåŒ–
+    virtual int ExitInstance();
 
 
-	/**
-	 *	à–¾
-	 *		ŠJnˆ—
-	 */
-	void initializeAsuraUDPThread(void);
+    /**
+     *	èª¬æ˜
+     *		é–‹å§‹å‡¦ç†
+     */
+    void initializeAsuraUDPThread(void);
 
-	/**
-	 *	à–¾
-	 *		I—¹ˆ—
-	 */
-	void finalizeAsuraUDPThread(void);
+    /**
+     *	èª¬æ˜
+     *		çµ‚äº†å‡¦ç†
+     */
+    void finalizeAsuraUDPThread(void);
 
-	/*
-	*
-	* ƒpƒPƒbƒgƒf[ƒ^ì¬
-	*
-	*/
+    /*
+    *
+    * ãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ä½œæˆ
+    *
+    */
 
-	char buildPacket(UDP::SciPacketType type, int address, int command);
+    char buildPacket(UDP::SciPacketType type, int address, int command);
 
-	/**
-	 *	à–¾
-	 *		ƒXƒŒƒbƒh‚ª—LŒø‚©‚Ç‚¤‚©
-	 */
-	BOOL isRunning(void) const { return isAlive; }
+    /**
+     *	èª¬æ˜
+     *		ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+     */
+    BOOL isRunning(void) const { return isAlive; }
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 protected:
-	
-
-	/// ƒXƒŒƒbƒhI—¹
-	afx_msg void OnEndThread(WPARAM wParam, LPARAM lParam);
-	/// ’ÊMŠJn
-	afx_msg void OnStartPortListening(WPARAM wParam, LPARAM lParam);
-	/// ’ÊM’â~
-	afx_msg void OnStopPortListening(WPARAM wParam, LPARAM lParam);
-
-	/// w—ß’l‚ğƒƒ{ƒbƒg‚Ö‘—M
-	afx_msg void OnSendCommandData(WPARAM wParam, LPARAM lParam);
-
-	/*–¢À‘•20210622
-	/// ƒƒOŠJn
-	afx_msg void OnStartLogging(WPARAM wParam, LPARAM lParam);
-	/// ƒƒO’â~
-	afx_msg void OnStopLogging(WPARAM wParam, LPARAM lParam);
-	*/
 
 
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†
+    afx_msg void OnEndThread(WPARAM wParam, LPARAM lParam);
+    /// é€šä¿¡é–‹å§‹
+    afx_msg void OnStartPortListening(WPARAM wParam, LPARAM lParam);
+    /// é€šä¿¡åœæ­¢
+    afx_msg void OnStopPortListening(WPARAM wParam, LPARAM lParam);
+
+    /// æŒ‡ä»¤å€¤ã‚’ãƒ­ãƒœãƒƒãƒˆã¸é€ä¿¡
+    afx_msg void OnSendCommandData(WPARAM wParam, LPARAM lParam);
+
+    /*æœªå®Ÿè£…20210622
+    /// ãƒ­ã‚°é–‹å§‹
+    afx_msg void OnStartLogging(WPARAM wParam, LPARAM lParam);
+    /// ãƒ­ã‚°åœæ­¢
+    afx_msg void OnStopLogging(WPARAM wParam, LPARAM lParam);
+    */
 
 
 
-/*
- *	ƒ|[ƒg”Ô†
- */
-	u_short s_portNo=10004;			/// ©•ª‚Ìƒ|[ƒg”Ô†
-	u_short c_portNo=10003;				/// ‘Šè‚Ìƒ|[ƒg”Ô†
- /*
- *	IPƒAƒhƒŒƒX
- */
-	//char server_IPAdress[14]="192.168.0.154";			/// ©•ª‚ÌIPƒAƒhƒŒƒX
-	const char server_IPAdress[14] = "192.168.0.157";			/// ©•ª‚ÌIPƒAƒhƒŒƒX
-	const char client_IPAdress[14] = "192.168.0.169";			/// ‘—MæIPƒAƒhƒŒƒX
 
 
-	SOCKET sock;
-	struct sockaddr_in server_addr, client_addr;
-	int port;
-	const char* addr;
-
-/*********************  \‘¢‘Ì  ***************************/
-
-	/// overlapped\‘¢‘Ì
-	//OVERLAPPED		readOverLappedStruct;
-	//OVERLAPPED		writeOverLappedStruct;
-
-
-/**
- *	ƒCƒxƒ“ƒg”z—ñ
- */
- /// ŠeƒCƒxƒ“ƒg–ˆ‚É—pˆÓ‚µ‚½ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹
- /// WaitForMultipleObjectsŠÖ”‚Ì‚½‚ß‚É€”õ
-	//HANDLE		readEventHandles[2];
-	//HANDLE		writeEventHandles[2];
-
-	/// ƒXƒŒƒbƒhI—¹ƒnƒ“ƒhƒ‹
-	//HANDLE		readThreadTerminateHandle;
-//HANDLE		writeThreadTerminateHandle;
+    /*
+     *	ãƒãƒ¼ãƒˆç•ªå·
+     */
+    u_short s_portNo = 10004;			/// è‡ªåˆ†ã®ãƒãƒ¼ãƒˆç•ªå·
+    u_short c_portNo = 10003;				/// ç›¸æ‰‹ã®ãƒãƒ¼ãƒˆç•ªå·
+    /*
+    *	IPã‚¢ãƒ‰ãƒ¬ã‚¹
+    */
+    //char server_IPAdress[14]="192.168.0.154";			/// è‡ªåˆ†ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
+    const char server_IPAdress[14] = "192.168.0.157";			/// è‡ªåˆ†ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
+    const char client_IPAdress[14] = "192.168.0.169";			/// é€ä¿¡å…ˆIPã‚¢ãƒ‰ãƒ¬ã‚¹
 
 
-/**
-	 *	ƒoƒbƒtƒ@
-	 */
-	 /// ƒoƒbƒtƒ@ƒTƒCƒY
-	static const int MAX_BUFFER_SIZE = 2048;
+    SOCKET sock;
+    struct sockaddr_in server_addr, client_addr;
+    int port;
+    const char* addr;
 
-	/**
-	 *	ˆêƒoƒbƒtƒ@
-	 */
-	 /// óMƒoƒbƒtƒ@
-	//unsigned char* readBuffer;
-	/// ‘—Mƒoƒbƒtƒ@
-	unsigned char* writeBuffer{};
+    /*********************  æ§‹é€ ä½“  ***************************/
 
-	/// óM‹L˜^ƒoƒbƒtƒ@
-	//unsigned char* SciRingBufferreceiveBuffer;
+      /// overlappedæ§‹é€ ä½“
+      //OVERLAPPED		readOverLappedStruct;
+      //OVERLAPPED		writeOverLappedStruct;
 
-	/// ‘—óMƒTƒCƒY
-	//DWORD bytesToRead{};
-	DWORD bytesToWrite{};
 
-	/// óMƒoƒbƒtƒ@ƒTƒCƒY
-	//DWORD		readBufferSize;
-	/// ‘—Mƒoƒbƒtƒ@ƒTƒCƒY
-	DWORD writeBufferSize{};
-	UINT writeBufferSize_{};
-	int bytesToSend{};
+    /**
+     *	ã‚¤ãƒ™ãƒ³ãƒˆé…åˆ—
+     */
+     /// å„ã‚¤ãƒ™ãƒ³ãƒˆæ¯ã«ç”¨æ„ã—ãŸã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+     /// WaitForMultipleObjectsé–¢æ•°ã®ãŸã‚ã«æº–å‚™
+      //HANDLE		readEventHandles[2];
+      //HANDLE		writeEventHandles[2];
+
+      /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ãƒãƒ³ãƒ‰ãƒ«
+      //HANDLE		readThreadTerminateHandle;
+    //HANDLE		writeThreadTerminateHandle;
+
+
+    /**
+       *	ãƒãƒƒãƒ•ã‚¡
+       */
+       /// ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+    static const int MAX_BUFFER_SIZE = 2048;
+
+    /**
+     *	ä¸€æ™‚ãƒãƒƒãƒ•ã‚¡
+     */
+     /// å—ä¿¡ãƒãƒƒãƒ•ã‚¡
+    //unsigned char* readBuffer;
+    /// é€ä¿¡ãƒãƒƒãƒ•ã‚¡
+    unsigned char* writeBuffer{};
+
+    /// å—ä¿¡è¨˜éŒ²ãƒãƒƒãƒ•ã‚¡
+    //unsigned char* SciRingBufferreceiveBuffer;
+
+    /// é€å—ä¿¡ã‚µã‚¤ã‚º
+    //DWORD bytesToRead{};
+    DWORD bytesToWrite{};
+
+    /// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+    //DWORD		readBufferSize;
+    /// é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+    DWORD writeBufferSize{};
+    UINT writeBufferSize_{};
+    int bytesToSend{};
 
 
 
 
 private:
 
-	Data::AsuraData viewAsuraXData;
-	Data::PlanData viewPlanData;
-
-	
-
-
-	/**
-	 *	ƒpƒPƒbƒgƒ^ƒCƒv
-	 */
-	UDP::SciPacketType sciPacketType;
-
-	/**
-	 *	‘—Mƒoƒbƒtƒ@
-	 */
-	//char longPacket[UDP::SCI_PACKET_SIZE_LONG];//unsigned char
-	char longPacket[32];
-	unsigned char shortPacket[UDP::SCI_MAX_JOINT_NUM][UDP::SCI_PACKET_SIZE_SHORT];
-
-	char onelegPacket[UDP::SCI_PACKET_SIZE_ONELEG];//’Ç‰Á
-
-
-	//bool buildPacket(UDP::SciPacketType type, char* packet, int address, int command);
-
-	//UDPSocket* pUdpPort;
-
-	//void writeData(AsuraUDPThread* port, COMSTAT& comStat);
+    Data::AsuraData viewAsuraXData;
+    Data::PlanData viewPlanData;
 
 
 
-	/// “¯ŠúƒIƒuƒWƒFƒNƒg
-	//System::CriticalSection	criticalSection;
 
-	//UDPSocket* pUDPSocket;
+    /**
+     *	ãƒ‘ã‚±ãƒƒãƒˆã‚¿ã‚¤ãƒ—
+     */
+    UDP::SciPacketType sciPacketType;
+
+    /**
+     *	é€ä¿¡ãƒãƒƒãƒ•ã‚¡
+     */
+     //char longPacket[UDP::SCI_PACKET_SIZE_LONG];//unsigned char
+    char longPacket[32];
+    unsigned char shortPacket[UDP::SCI_MAX_JOINT_NUM][UDP::SCI_PACKET_SIZE_SHORT];
+
+    char onelegPacket[UDP::SCI_PACKET_SIZE_ONELEG];//è¿½åŠ 
+
+
+    //bool buildPacket(UDP::SciPacketType type, char* packet, int address, int command);
+
+    //UDPSocket* pUdpPort;
+
+    //void writeData(AsuraUDPThread* port, COMSTAT& comStat);
+
+
+
+    /// åŒæœŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    //System::CriticalSection	criticalSection;
+
+    //UDPSocket* pUDPSocket;
 
 };
 

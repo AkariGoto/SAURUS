@@ -241,9 +241,6 @@
     <ClInclude Include="Plan\Trajectory\Trajectory.h" />
     <ClInclude Include="Plan\TripodGaitPlanner.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="System\BasicDirectX.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="System\ComLib.h" />
     <ClInclude Include="System\Console.h" />
     <ClInclude Include="System\DebugOutput.h" />
@@ -251,9 +248,6 @@
     <ClInclude Include="System\Thread\MotionPlanThread.h" />
     <ClInclude Include="System\Thread\TimedMotionProcedure.h" />
     <ClInclude Include="System\Timer\MultiMediaTimer.h" />
-    <ClInclude Include="System\ViewSetting.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="System\WinUserMessage.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UDP\AsuraUDPThread.h" />
@@ -262,9 +256,6 @@
     <ClInclude Include="UDP\UDPPacket.h" />
     <ClInclude Include="Utility\ArrayList.h" />
     <ClInclude Include="Utility\Asc2Int.h" />
-    <ClInclude Include="Utility\ColorNames.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Utility\EngConstant.h" />
     <ClInclude Include="Utility\RingBuffer.h" />
     <ClInclude Include="Utility\SafeOperation.h" />
