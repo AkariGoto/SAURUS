@@ -212,9 +212,6 @@
     <ClInclude Include="Data\AsuraData.h" />
     <ClInclude Include="Data\DataHandler.h" />
     <ClInclude Include="Data\PlanData.h" />
-    <ClInclude Include="Data\TitanData.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Graphic\AsuraGraphic.h" />
     <ClInclude Include="Graphic\OpenGL\AviMaker.h" />
@@ -227,9 +224,6 @@
     <ClInclude Include="Kinematics\AsuraParameter.h" />
     <ClInclude Include="Kinematics\AsuraX.h" />
     <ClInclude Include="Kinematics\Leg\Leg.h" />
-    <ClInclude Include="Kinematics\Leg\TrackLeg.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Kinematics\WalkingRobot.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Math\MathConstant.h" />
@@ -331,11 +325,6 @@
     <ClCompile Include="Kinematics\Leg\Leg.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Kinematics\Leg\TrackLeg.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Kinematics\WalkingRobot.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
