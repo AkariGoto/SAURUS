@@ -6,23 +6,25 @@
 #include "Math/MathConstant.h"
 
 
+// constexpr を使うと，コンパイル時に定数に置き換えられる．
+// 実行時に定数( const がついている変数 )を読み込むよりも高速に動作する．
+// また，配列の要素数にも使える．
+
 namespace Asura
 {
 
-const double	STEP = 200;	//段差高さ
+const double STEP = 200;  //!< 段差高さ．
 
-/// 関節数
-const int		LEG_JOINT_NUM = 3;  //第4関節は受動関節//第４関節は足首扱い20231127
-//const int		LEG_JOINT_NUM = 4;  //20200824
+constexpr int LEG_JOINT_NUM = 3;  // 関節数．第4関節は受動関節で足首扱い．
+// constexpr int LEG_JOINT_NUM = 4;
 
 /// 関節No
 const int		FIRST_JOINT = 1;
 const int		SECOND_JOINT = 2;
 const int		THIRD_JOINT = 3;
 
-/// 1脚のアクチュエータ数
-const int		LEG_ACT_NUM = 4; //追加
-//const int		LEG_ACT_NUM			= 4; //追加
+
+constexpr int LEG_ACT_NUM = 4;  //!< 1脚のアクチュエータ数．
 
 /// 各リンク長
 const double	LINK1 = 161.0; //106.5;
@@ -41,31 +43,32 @@ const double	LINK3H = 30.0;					//脛リンクの厚さ
 //const double	Pulley_Radius		= 33.00;//26.0;
 const double	Pulley_Radius = 33.75;//26.0;
 
-/// 各関節の可動範囲 (単位: degree)
-//SAURUS
-const double	LEG_ANGLE1_MIN = -45.0 / 180 * Const::PI;
-const double	LEG_ANGLE1_MAX = 45.0 / 180 * Const::PI;
-const double	LEG_ANGLE2_MIN = -75.0 / 180 * Const::PI;
-const double	LEG_ANGLE2_MAX = 75.0 / 180 * Const::PI;
-const double	LEG_ANGLE3_MIN = -130.0 / 180 * Const::PI;
-const double	LEG_ANGLE3_MAX = 130.0 / 180 * Const::PI;
-const double	LEG_ANGLE4_MIN = -90.0 / 180 * Const::PI;
-const double	LEG_ANGLE4_MAX = 140.0 / 180 * Const::PI;
-/*ASURA
-const double	LEG_ANGLE1_MIN		=	-45.0 / 180 * Const::PI;
-const double	LEG_ANGLE1_MAX		=	45.0 / 180 * Const::PI;
-const double	LEG_ANGLE2_MIN		=	-75.0 / 180 * Const::PI;
-const double	LEG_ANGLE2_MAX		=	75.0 / 180 * Const::PI;
-const double	LEG_ANGLE3_MIN		=	-130.0 / 180 * Const::PI;
-const double	LEG_ANGLE3_MAX		=	130.0 / 180 * Const::PI;
-const double	LEG_ANGLE4_MIN		=	-90.0 / 180 * Const::PI;
-const double	LEG_ANGLE4_MAX		=	140.0 / 180 * Const::PI;
-*/
+// SAURUSの各関節の可動範囲 (単位: degree)
+const double LEG_ANGLE1_MIN = -45.0 / 180 * Const::PI;
+const double LEG_ANGLE1_MAX = 45.0 / 180 * Const::PI;
+const double LEG_ANGLE2_MIN = -75.0 / 180 * Const::PI;
+const double LEG_ANGLE2_MAX = 75.0 / 180 * Const::PI;
+const double LEG_ANGLE3_MIN = -130.0 / 180 * Const::PI;
+const double LEG_ANGLE3_MAX = 130.0 / 180 * Const::PI;
+const double LEG_ANGLE4_MIN = -90.0 / 180 * Const::PI;
+const double LEG_ANGLE4_MAX = 140.0 / 180 * Const::PI;
+
+// ASURA
+// const double	LEG_ANGLE1_MIN = -45.0 / 180 * Const::PI;
+// const double	LEG_ANGLE1_MAX = 45.0 / 180 * Const::PI;
+// const double	LEG_ANGLE2_MIN = -75.0 / 180 * Const::PI;
+// const double	LEG_ANGLE2_MAX = 75.0 / 180 * Const::PI;
+// const double	LEG_ANGLE3_MIN = -130.0 / 180 * Const::PI;
+// const double	LEG_ANGLE3_MAX = 130.0 / 180 * Const::PI;
+// const double	LEG_ANGLE4_MIN = -90.0 / 180 * Const::PI;
+// const double	LEG_ANGLE4_MAX = 140.0 / 180 * Const::PI;
+
 
 /// 脚の到達範囲 (単位 : mm)
 /// 半径方向
 const double	REACH_RADIUS_MIN = 0.0;
 const double	REACH_RADIUS_MAX = 1500.0;
+
 /// 高さ方向
 const double	REACH_HEIGHT_MIN = -2000.0;
 const double	REACH_HEIGHT_MAX = 2000.0;
@@ -81,13 +84,7 @@ const double	FOOT_REACTION_Y		= 30.0;
 const double	FOOT_REACTION_Z		= 30.0;
 */
 
-
-
-/**
- *		クローラパラメータ
- */
-
- /// 関節数
+/// 関節数
 const int		TRACK_JOINT_NUM = 3;		//修正
 
 /// 各関節の可動範囲 (単位 : degree)
@@ -147,12 +144,10 @@ const double	GROUSER = 50.0;//グローサー間距離[mm]
 const double	HGr = HG - WHEELRADIUS;
 
 const double	GroDis = 15;	//グローサの距離
-/**
- *		列挙子の定義
- */
- /**
-  *		運動学の結果
-  */
+
+
+//! @enum Kinematics
+//! @brief 運動学の結果
 typedef enum
 {
     NO_KINE_ERROR,						///  0 /// エラーなし

@@ -164,7 +164,7 @@ void CASURA2GUIView::initializeCASURA2GUIView(void)
 
     legCoordinateSystem = false;  //20201019  最初はワールド座標系に設定
 
-    //tomerIDの決定
+    // timerIDの決定
     timerID = 1;
 
     /// コンソール作成
@@ -346,7 +346,7 @@ void CASURA2GUIView::updateFormView(void)
 
 
     /// 時間を更新
-    data.Format(TEXT("%5.3lf"), viewPlanData.getElapsedTime()); SetDlgItemText(IDC_ELAPSED_TIME, data);
+    data.Format(TEXT("%5.3lf"), viewPlanData.elapsed_time); SetDlgItemText(IDC_ELAPSED_TIME, data);
 
     //ログ取得
     if (isDriving)
@@ -357,7 +357,7 @@ void CASURA2GUIView::updateFormView(void)
 
     //関節の表示
     double joint4 = 0;
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegJointAngle(2)(1) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](1) * RAD2DEG);
     SetDlgItemText(IDC_JOINT1, data);
 
     //ログ取得
@@ -367,7 +367,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegJointAngle(2)(2) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](2) * RAD2DEG);
     SetDlgItemText(IDC_JOINT2, data);
 
     //ログ取得
@@ -377,7 +377,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegJointAngle(2)(3) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](3) * RAD2DEG);
     SetDlgItemText(IDC_JOINT3, data);
 
     //ログ取得
@@ -390,7 +390,7 @@ void CASURA2GUIView::updateFormView(void)
     //joint4 = Const::PI / 2 - viewAsuraXData.getLegJointAngle(2)(2) - viewAsuraXData.getLegJointAngle(2)(3);
     //data.Format(TEXT("%5.1lf"), joint4 * RAD2DEG);
     //SetDlgItemText(IDC_JOINT4, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getFootJointAngle(2) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.foot_joint_angle[1] * RAD2DEG);
     SetDlgItemText(IDC_JOINT4, data);
 
     //ログ取得
@@ -404,25 +404,25 @@ void CASURA2GUIView::updateFormView(void)
 
     double shaft_diameter = 11.5;
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegActuatorPosition(2)(1) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](1) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
     //data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegActuatorPosition(2)(1));
     SetDlgItemText(IDC_ACT1, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegActuatorPosition(2)(2) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](2) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT2, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegActuatorPosition(2)(3) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](3) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT3, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegActuatorPosition(2)(4) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](4) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT4, data);
 
     //脚先位置の表示
     //20201019
     if (legCoordinateSystem)
     {
-        worldFootPosition[2](1) = viewAsuraXData.getLegFootPosition(2)(1);
-        worldFootPosition[2](2) = viewAsuraXData.getLegFootPosition(2)(2);
-        worldFootPosition[2](3) = viewAsuraXData.getLegFootPosition(2)(3);
+        worldFootPosition[2](1) = viewAsuraXData.leg_foot_position[1](1);
+        worldFootPosition[2](2) = viewAsuraXData.leg_foot_position[1](2);
+        worldFootPosition[2](3) = viewAsuraXData.leg_foot_position[1](3);
         worldFootPosition[2](4) = 1;
-        localFootPosition[2] = viewAsuraXData.getLegBaseTransformation(2).inversion() * worldFootPosition[2];
+        localFootPosition[2] = viewAsuraXData.leg_base_transformation[1].inversion() * worldFootPosition[2];
         data.Format(TEXT("%5.1lf"), localFootPosition[2](1));
         SetDlgItemText(IDC_FOOTX, data);
 
@@ -456,7 +456,7 @@ void CASURA2GUIView::updateFormView(void)
     }
     else
     {
-        data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegFootPosition(2)(1));
+        data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_foot_position[1](1));
         SetDlgItemText(IDC_FOOTX, data);
 
         //ログ取得
@@ -466,7 +466,7 @@ void CASURA2GUIView::updateFormView(void)
             txtFile.WriteString(L",");
         }
 
-        data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegFootPosition(2)(2));
+        data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_foot_position[1](2));
         SetDlgItemText(IDC_FOOTY, data);
 
         //ログ取得
@@ -476,7 +476,7 @@ void CASURA2GUIView::updateFormView(void)
             txtFile.WriteString(L",");
         }
 
-        data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegFootPosition(2)(3));
+        data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_foot_position[1](3));
         SetDlgItemText(IDC_FOOTZ, data);
 
         //ログ取得
@@ -605,7 +605,7 @@ void CASURA2GUIView::OnClickedCheckLog()
 
 /**
  *	------------------------------------------------------------
- *		CAsuraWareViewのprivateなメンバ関数
+ *		CAsuraWareViewの privateなメンバ関数
  *	------------------------------------------------------------
  */
  /**

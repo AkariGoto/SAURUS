@@ -27,9 +27,6 @@
     <ClCompile Include="Data\data_handler.cpp">
       <Filter>Data</Filter>
     </ClCompile>
-    <ClCompile Include="Data\plan_data.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
     <ClCompile Include="Graphic\AsuraGraphic.cpp">
       <Filter>Graphic</Filter>
     </ClCompile>

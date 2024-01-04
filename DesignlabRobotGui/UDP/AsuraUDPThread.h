@@ -45,9 +45,7 @@ class AsuraUDPThread : public CWinThread
 
     DECLARE_DYNCREATE(AsuraUDPThread)
 
-    /**
-     *		タイマオブジェクト
-     */
+
     System::TimedMotionProcedure* pTimedUDPProcedure;
     System::MultiMediaTimer* pMultiMediaTimer;
     static Plan::TimeManager		 timeManager;

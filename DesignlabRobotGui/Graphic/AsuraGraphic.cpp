@@ -285,7 +285,7 @@ void AsuraGraphic::drawObjects(GLenum renderMode)
                 glDisable(GL_CULL_FACE);
                 glPushMatrix();
                 /// 脚座標系に変換
-                gAb = asuraDataSrcPtr->getLegBaseTransformation(2);
+                gAb = asuraDataSrcPtr->leg_base_transformation[1];
                 transformOpenGLMatrix(gAb);
                 drawCoordinateAxis(300.0, 5.0, 0.8);
                 glPopMatrix();
@@ -456,10 +456,6 @@ void AsuraGraphic::renderScenes(void)
     return;
 }
 
-
-/**
- *		シーンの視点をViewTypeにより設定
- */
 void AsuraGraphic::setSceneView(double width, double height)
 {
     /// 視点属性により視点を変更
@@ -477,30 +473,31 @@ void AsuraGraphic::setSceneView(double width, double height)
             break;
 
         case TOP:
-            setViewPoint(2500.0, -90.0, 90.0,//1200.0, -90.0, 90.0,
-                    asuraDataSrcPtr->getBodyPosition()(1),
-                    asuraDataSrcPtr->getBodyPosition()(2),
-                    asuraDataSrcPtr->getBodyPosition()(3) - 100,
-                    width, height
-            );
-            break;
+        {
+            setViewPoint(2500.0, -90.0, 90.0,
+                         asuraDataSrcPtr->body_position(1),
+                         asuraDataSrcPtr->body_position(2),
+                         asuraDataSrcPtr->body_position(3) - 100,
+                         width, height);
 
+            break;
+        }
         case SIDE:
-            setViewPoint(1500.0, -90.0, 0.0,//1200.0, -90.0, 0.0,
-                    asuraDataSrcPtr->getBodyPosition()(1),
-                    asuraDataSrcPtr->getBodyPosition()(2),
-                    asuraDataSrcPtr->getBodyPosition()(3) - 100,
-                    width, height
-            );
-            break;
+        {
+            setViewPoint(1500.0, -90.0, 0.0,
+                         asuraDataSrcPtr->body_position(1),
+                         asuraDataSrcPtr->body_position(2),
+                         asuraDataSrcPtr->body_position(3) - 100,
+                         width, height);
 
+            break;
+        }
         case FRONT:
-            setViewPoint(1500.0, 0.0, 0.0,//1200.0, 0.0, 0.0,
-                    asuraDataSrcPtr->getBodyPosition()(1),
-                    asuraDataSrcPtr->getBodyPosition()(2),
-                    asuraDataSrcPtr->getBodyPosition()(3) - 100,
-                    width, height
-            );
+            setViewPoint(1500.0, 0.0, 0.0,
+                         asuraDataSrcPtr->body_position(1),
+                         asuraDataSrcPtr->body_position(2),
+                         asuraDataSrcPtr->body_position(3) - 100,
+                         width, height);
             break;
 
         default:
@@ -523,7 +520,7 @@ void AsuraGraphic::drawAsura(void)
     drawBody();
 
     /// ロコモーション様式により描画を分ける
-    if (asuraDataSrcPtr->getLocomotionStyle() == LocomotionStyle::LEGGED)
+    if (asuraDataSrcPtr->locomotion_style == LocomotionStyle::LEGGED)
     {
 
         //for (int i=0; i<LEG_NUM; i++)
@@ -552,7 +549,7 @@ void AsuraGraphic::drawBody(void)
 
     glPushMatrix();
     /// 胴体座標系に変換
-    gAb = asuraDataSrcPtr->getBodyTransformation();
+    gAb = asuraDataSrcPtr->body_transformation;
     transformOpenGLMatrix(gAb);
     glCallList(bodyDisplayListID);
     glPopMatrix();
@@ -560,13 +557,13 @@ void AsuraGraphic::drawBody(void)
     return;
 }
 
-/**
- *		Asuraの脚描画
- */
 void AsuraGraphic::drawLeg(int legNo)
 {
     if (!isDisplayListReady)
+    {
         return;
+    }
+
 
     /// 脚の引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -579,35 +576,35 @@ void AsuraGraphic::drawLeg(int legNo)
 
     /// 脚のベース座標系を取得して，脚座標に変換
     glPushMatrix();
-    bAl = asuraDataSrcPtr->getLegBaseTransformation(legNo);
+    bAl = asuraDataSrcPtr->leg_base_transformation[legNo - 1];
     transformOpenGLMatrix(bAl);
     glCallList(legDisplayListID[0]);
     glPopMatrix();
 
     /// hip
     glPushMatrix();
-    trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 1);
+    trans = asuraDataSrcPtr->leg_joint_transformation[legNo - 1][0];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[1]);
     glPopMatrix();
 
     /// shank
     glPushMatrix();
-    trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 2);
+    trans = asuraDataSrcPtr->leg_joint_transformation[legNo - 1][1];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[2]);
     glPopMatrix();
 
     /// knee
     glPushMatrix();
-    trans = asuraDataSrcPtr->getLegJointTransformation(legNo, 3);
+    trans = asuraDataSrcPtr->leg_joint_transformation[legNo - 1][2];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[3]);
     glPopMatrix();
 
     /// foot
     glPushMatrix();
-    trans = asuraDataSrcPtr->getLegFootTransformation(legNo);
+    trans = asuraDataSrcPtr->leg_foot_transformation[legNo - 1];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[4]);
     glPopMatrix();
@@ -622,49 +619,6 @@ void AsuraGraphic::drawLeg(int legNo)
  */
 void AsuraGraphic::drawTrack(int trackNo)
 {
-    /*if (!isDisplayListReady)
-      return;
-
-    /// 脚の引数チェック
-    assert( 1 <= trackNo && trackNo <= LEG_NUM );
-
-    Matrix trans(DH_DIMENSION, DH_DIMENSION);	/// 座標変換用の行列
-    Matrix bAl(DH_DIMENSION, DH_DIMENSION);		/// 胴体 -> 脚
-
-
-    glPushMatrix();
-
-      /// 脚のベース座標系を取得して，脚座標に変換
-      glPushMatrix();
-      bAl = asuraDataSrcPtr->getTrackBaseTransformation(trackNo);
-        transformOpenGLMatrix(bAl);
-          glCallList(trackDisplayListID[0]);
-      glPopMatrix();
-
-      /// hip
-      glPushMatrix();
-      trans = asuraDataSrcPtr->getTrackJointTransformation(trackNo, 1);
-        transformOpenGLMatrix(trans);
-          glCallList(trackDisplayListID[1]);
-      glPopMatrix();
-
-      /// shank
-      glPushMatrix();
-      trans = asuraDataSrcPtr->getTrackJointTransformation(trackNo, 2);
-        transformOpenGLMatrix(trans);
-          glCallList(trackDisplayListID[2]);
-      glPopMatrix();
-
-       /// knee
-      glPushMatrix();
-        trans = asuraDataSrcPtr->getTrackEndTransformation(trackNo);
-        transformOpenGLMatrix(trans);
-          glCallList(trackDisplayListID[3]);
-      glPopMatrix();
-
-    glPopMatrix();
-
-    return;*/
 }
 
 
@@ -672,7 +626,7 @@ void AsuraGraphic::drawTrack(int trackNo)
 /**
  *		支持脚多角形(三角形or四角形)の描画
  */
-void AsuraGraphic::drawSupportPolygon(void)
+void AsuraGraphic::drawSupportPolygon()
 {
 
     /// 描画フラグ
@@ -684,7 +638,7 @@ void AsuraGraphic::drawSupportPolygon(void)
 
     for (i = 0; i < LEG_NUM; i++)
     {
-        phase[i] = asuraDataSrcPtr->getLegPhase(i + 1);
+        phase[i] = asuraDataSrcPtr->leg_phase[i];
     }
 
     /// 支持脚多角形の色決定
@@ -692,28 +646,28 @@ void AsuraGraphic::drawSupportPolygon(void)
 
     if (phase[0] == Asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->getLegFootPosition(2), asuraDataSrcPtr->getLegFootPosition(3),
-                  asuraDataSrcPtr->getLegFootPosition(4), 2.0);
+        drawTriangle(asuraDataSrcPtr->leg_foot_position[1], asuraDataSrcPtr->leg_foot_position[2],
+                     asuraDataSrcPtr->leg_foot_position[3], 2.0);
     }
     else if (phase[1] == Asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(3),
-                  asuraDataSrcPtr->getLegFootPosition(4), 2.0);
+        drawTriangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[2],
+                     asuraDataSrcPtr->leg_foot_position[3], 2.0);
     }
     else if (phase[2] == Asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2),
-                  asuraDataSrcPtr->getLegFootPosition(4), 2.0);
+        drawTriangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[1],
+                     asuraDataSrcPtr->leg_foot_position[3], 2.0);
     }
     else if (phase[3] == Asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2),
-                  asuraDataSrcPtr->getLegFootPosition(3), 2.0);
+        drawTriangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[1],
+                     asuraDataSrcPtr->leg_foot_position[2], 2.0);
     }
     else
     {
-        drawQuadrangle(asuraDataSrcPtr->getLegFootPosition(1), asuraDataSrcPtr->getLegFootPosition(2),
-                    asuraDataSrcPtr->getLegFootPosition(4), asuraDataSrcPtr->getLegFootPosition(3),
+        drawQuadrangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[1],
+                    asuraDataSrcPtr->leg_foot_position[3], asuraDataSrcPtr->leg_foot_position[2],
                     2.0);
     }
 
@@ -722,7 +676,7 @@ void AsuraGraphic::drawSupportPolygon(void)
 
 
 /**
- *		AsuraGraphicクラスのprivateなメンバ関数
+ *		AsuraGraphicクラスの private なメンバ関数
  *
  */
  /**

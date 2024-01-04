@@ -17,11 +17,6 @@ AsuraData::AsuraData(const AsuraData& asuraData)
     copy(asuraData);
 }
 
-AsuraData::~AsuraData()
-{
-    deleteAsuraData();
-}
-
 AsuraData& AsuraData::operator=(const AsuraData& asuraData)
 {
     if (&asuraData != this)
@@ -34,31 +29,31 @@ AsuraData& AsuraData::operator=(const AsuraData& asuraData)
 
 bool AsuraData::operator==(const AsuraData& asuraData)
 {
-    if (bodyTransformation != asuraData.bodyTransformation) { return false; }
-    if (bodyPosition != asuraData.bodyPosition) { return false; }
-    if (bodyVelocity != asuraData.bodyVelocity) { return false; }
-    if (walkingDirection != asuraData.walkingDirection) { return false; }
+    if (body_transformation != asuraData.body_transformation) { return false; }
+    if (body_position != asuraData.body_position) { return false; }
+    if (body_velocity != asuraData.body_velocity) { return false; }
+    if (walking_direction != asuraData.walking_direction) { return false; }
     if (locomotion_style != asuraData.locomotion_style) { return false; }
 
     for (int i = 0; i < Asura::LEG_NUM; i++)
     {
-        if (legBaseTransformation[i] != asuraData.legBaseTransformation[i]) { return false; }
-        if (legBasePosition[i] != asuraData.legBasePosition[i]) { return false; }
+        if (leg_base_transformation[i] != asuraData.leg_base_transformation[i]) { return false; }
+        if (leg_base_position[i] != asuraData.leg_base_position[i]) { return false; }
 
         for (int j = 0; j <= Asura::LEG_JOINT_NUM; j++)
         {
-            if (legJointTransformation[i][j] != asuraData.legJointTransformation[i][j]) { return false; }
-            if (legJointPosition[i][j] != asuraData.legJointPosition[i][j]) { return false; }
+            if (leg_joint_transformation[i][j] != asuraData.leg_joint_transformation[i][j]) { return false; }
+            if (leg_joint_position[i][j] != asuraData.leg_joint_position[i][j]) { return false; }
         }
 
-        if (legFootTransformation[i] != asuraData.legFootTransformation[i]) { return false; }
-        if (legFootPosition[i] != asuraData.legFootPosition[i]) { return false; }
+        if (leg_foot_transformation[i] != asuraData.leg_foot_transformation[i]) { return false; }
+        if (leg_foot_position[i] != asuraData.leg_foot_position[i]) { return false; }
 
-        if (legJointAngle[i] != asuraData.legJointAngle[i]) { return false; }
-        if (legJointVelocity[i] != asuraData.legJointVelocity[i]) { return false; }
-        if (legJointTorque[i] != asuraData.legJointTorque[i]) { return false; }
+        if (leg_joint_angle[i] != asuraData.leg_joint_angle[i]) { return false; }
+        if (leg_joint_velocity[i] != asuraData.leg_joint_velocity[i]) { return false; }
+        if (leg_joint_torque[i] != asuraData.leg_joint_torque[i]) { return false; }
 
-        if (legPhase[i] != asuraData.legPhase[i]) { return false; }
+        if (leg_phase[i] != asuraData.leg_phase[i]) { return false; }
     }
 
     return true;
@@ -78,166 +73,91 @@ bool AsuraData::operator!=(const AsuraData& asuraData)
 
 void AsuraData::newAsuraData()
 {
-    /// インクリメント変数
-    int i, j;
+    // 胴体
 
-    /// メンバ変数の初期化
-    /**
-     *	胴体
-     */
-     /// 同次変換行列のサイズ決定
-    bodyTransformation.setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
-    bodyTransformation.loadIdentity();
+    // 同次変換行列のサイズ決定
+    body_transformation.setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    body_transformation.loadIdentity();
 
-    /// 胴体位置
-    bodyPosition.setSize(Const::THREE_DIMENSION);
+    // 胴体位置
+    body_position.setSize(Const::THREE_DIMENSION);
 
-    /// 胴体速度
-    bodyVelocity.setSize(Const::THREE_DIMENSION);
+    // 胴体速度
+    body_velocity.setSize(Const::THREE_DIMENSION);
 
-    /// 歩行方向
-    walkingDirection.setSize(Const::THREE_DIMENSION);
+    // 歩行方向
+    walking_direction.setSize(Const::THREE_DIMENSION);
 
-    /// 移動様式
+    // 移動様式
     locomotion_style = Asura::LocomotionStyle::LEGGED;
 
-
-    /// オブジェクトのポインタのメモリ領域確保
-    legJointTransformation = new Matrix * [Asura::LEG_NUM];
-    legJointPosition = new Vector * [Asura::LEG_NUM];
-
-
-    /// オブジェクトのメモリ領域確保
-    legBaseTransformation = new Matrix[Asura::LEG_NUM];
-    legBasePosition = new Vector[Asura::LEG_NUM];
-
-    legFootTransformation = new Matrix[Asura::LEG_NUM];
-    legFootPosition = new Vector[Asura::LEG_NUM];
-
-    legJointAngle = new Vector[Asura::LEG_NUM];
-    legJointVelocity = new Vector[Asura::LEG_NUM];
-    legJointTorque = new Vector[Asura::LEG_NUM];
-    legActuatorPosition = new Vector[Asura::LEG_NUM];
-
-    /// 脚の運動相
-    legPhase = new Asura::LegPhase[Asura::LEG_NUM];
-
-    FootJointAngle = new double[Asura::LEG_NUM];
-
-    for (i = 0; i < Asura::LEG_NUM; i++)
-    {
-        /// オブジェクトのメモリ領域確保
-        legJointTransformation[i] = new Matrix[Asura::LEG_JOINT_NUM];
-        legJointPosition[i] = new Vector[Asura::LEG_JOINT_NUM];
-
-        /// 行列のサイズ決定		
-        for (j = 0; j < Asura::LEG_JOINT_NUM; j++)
-        {
-            legJointTransformation[i][j].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
-            legJointTransformation[i][j].loadIdentity();
-
-            legJointPosition[i][j].setSize(Const::THREE_DIMENSION);
-        }
-
-        legBaseTransformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
-        legBaseTransformation[i].loadIdentity();
-
-        legBasePosition[i].setSize(Const::THREE_DIMENSION);
-
-        legFootTransformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
-        legFootTransformation[i].loadIdentity();
-
-        legFootPosition[i].setSize(Const::THREE_DIMENSION);
-
-        legJointAngle[i].setSize(Asura::LEG_JOINT_NUM);
-        legJointVelocity[i].setSize(Asura::LEG_JOINT_NUM);
-        legJointTorque[i].setSize(Asura::LEG_JOINT_NUM);
-        legActuatorPosition[i].setSize(Asura::LEG_ACT_NUM);
-
-        legPhase[i] = Asura::LegPhase::SUPPORT;
-
-        FootJointAngle[i] = 0;
-    }
-
-    return;
-}
-
-void AsuraData::deleteAsuraData()
-{
-    /// 脚根元の同次変換行列
-    delete[] legBaseTransformation;
-
-    /// 脚関節の同次変換行列
     for (int i = 0; i < Asura::LEG_NUM; i++)
     {
-        delete[] legJointTransformation[i];
+        // 行列のサイズ決定		
+        for (int j = 0; j < Asura::LEG_JOINT_NUM; j++)
+        {
+            leg_joint_transformation[i][j].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+            leg_joint_transformation[i][j].loadIdentity();
+
+            leg_joint_position[i][j].setSize(Const::THREE_DIMENSION);
+        }
+
+        leg_base_transformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+        leg_base_transformation[i].loadIdentity();
+
+        leg_base_position[i].setSize(Const::THREE_DIMENSION);
+
+        leg_foot_transformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+        leg_foot_transformation[i].loadIdentity();
+
+        leg_foot_position[i].setSize(Const::THREE_DIMENSION);
+
+        leg_joint_angle[i].setSize(Asura::LEG_JOINT_NUM);
+        leg_joint_velocity[i].setSize(Asura::LEG_JOINT_NUM);
+        leg_joint_torque[i].setSize(Asura::LEG_JOINT_NUM);
+        leg_actuator_position[i].setSize(Asura::LEG_ACT_NUM);
+
+        leg_phase[i] = Asura::LegPhase::SUPPORT;
+
+        foot_joint_angle[i] = 0;
     }
-
-
-    delete[] legJointTransformation;
-
-    /// 足先の同時変換行列
-    delete[] legFootTransformation;
-
-    /// 脚根元の位置ベクトル
-    delete[] legBasePosition;
-
-    /// 脚関節の位置ベクトル
-    for (int j = 0; j < Asura::LEG_NUM; j++)
-    {
-        delete[] legJointPosition[j];
-    }
-
-    delete[] legJointPosition;
-
-    /// 足位置
-    delete[] legFootPosition;
-
-    /// 脚関節の角度，角速度，トルクベクトル
-    delete[] legJointAngle;
-    delete[] legJointVelocity;
-    delete[] legJointTorque;
-    //delete [] FootJointAngle;//----Add
-
-    /// 脚の運動相
-    delete[] legPhase;
 
     return;
 }
 
 void AsuraData::copy(const AsuraData& asuraData)
 {
-    bodyTransformation = asuraData.bodyTransformation;
-    bodyPosition = asuraData.bodyPosition;
-    bodyVelocity = asuraData.bodyVelocity;
-    walkingDirection = asuraData.walkingDirection;
+    body_transformation = asuraData.body_transformation;
+    body_position = asuraData.body_position;
+    body_velocity = asuraData.body_velocity;
+    walking_direction = asuraData.walking_direction;
     locomotion_style = asuraData.locomotion_style;
 
     for (int i = 0; i < Asura::LEG_NUM; i++)
     {
-        legBaseTransformation[i] = asuraData.legBaseTransformation[i];
-        legBasePosition[i] = asuraData.legBasePosition[i];
+        leg_base_transformation[i] = asuraData.leg_base_transformation[i];
+        leg_base_position[i] = asuraData.leg_base_position[i];
 
         for (int j = 0; j < Asura::LEG_JOINT_NUM; j++)
         {
-            legJointTransformation[i][j] = asuraData.legJointTransformation[i][j];
-            legJointPosition[i][j] = asuraData.legJointPosition[i][j];
+            leg_joint_transformation[i][j] = asuraData.leg_joint_transformation[i][j];
+            leg_joint_position[i][j] = asuraData.leg_joint_position[i][j];
         }
 
         for (int j = 0; j < Asura::LEG_ACT_NUM; j++)
         {
-            legActuatorPosition[i] = asuraData.legActuatorPosition[i];
+            leg_actuator_position[i] = asuraData.leg_actuator_position[i];
         }
 
-        legFootTransformation[i] = asuraData.legFootTransformation[i];
-        legFootPosition[i] = asuraData.legFootPosition[i];
+        leg_foot_transformation[i] = asuraData.leg_foot_transformation[i];
+        leg_foot_position[i] = asuraData.leg_foot_position[i];
 
-        legJointAngle[i] = asuraData.legJointAngle[i];
-        legJointVelocity[i] = asuraData.legJointVelocity[i];
-        legJointTorque[i] = asuraData.legJointTorque[i];
-        FootJointAngle[i] = asuraData.FootJointAngle[i];
+        leg_joint_angle[i] = asuraData.leg_joint_angle[i];
+        leg_joint_velocity[i] = asuraData.leg_joint_velocity[i];
+        leg_joint_torque[i] = asuraData.leg_joint_torque[i];
+        foot_joint_angle[i] = asuraData.foot_joint_angle[i];
 
-        legPhase[i] = asuraData.legPhase[i];
+        leg_phase[i] = asuraData.leg_phase[i];
     }
 
     return;

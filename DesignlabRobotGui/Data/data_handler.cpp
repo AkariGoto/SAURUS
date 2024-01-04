@@ -28,7 +28,7 @@ void DataHandler::acquireAsuraDataSource(AsuraX* asuraPointer)
     asuraDataSourcePointer = asuraPointer;
 }
 
-void DataHandler::releaseAsuraDataSource(void)
+void DataHandler::releaseAsuraDataSource()
 {
     asuraDataSourcePointer = NULL;
 }
@@ -40,7 +40,7 @@ void DataHandler::acquirePlanDataSource(Planner* planPointer)
     planDataSourcePointer = planPointer;
 }
 
-void DataHandler::releasePlanDataSource(void)
+void DataHandler::releasePlanDataSource()
 {
     planDataSourcePointer = NULL;
 }
@@ -52,12 +52,11 @@ void DataHandler::acquireAsuraDataTarget(AsuraData* dataPointer)
     asuraDataTargetPointer = dataPointer;
 }
 
-void DataHandler::releaseAsuraDataTarget(void)
+void DataHandler::releaseAsuraDataTarget()
 {
     asuraDataTargetPointer = NULL;
 }
 
-/// 取得
 void DataHandler::acquirePlanDataTarget(PlanData* dataPointer)
 {
     releasePlanDataTarget();
@@ -65,234 +64,214 @@ void DataHandler::acquirePlanDataTarget(PlanData* dataPointer)
     planDataTargetPointer = dataPointer;
 }
 
-/// 解放
-void DataHandler::releasePlanDataTarget(void)
+
+void DataHandler::releasePlanDataTarget()
 {
     planDataTargetPointer = NULL;
 }
 
-/**
- *	データの取り込みと転送
- */
- /// 転送
-void DataHandler::exportAsuraData(void)
+void DataHandler::exportAsuraData()
 {
-
 }
 
-/// 取り込み
-void DataHandler::importAsuraData(void)
+
+void DataHandler::importAsuraData()
 {
-    /// インクリメント変数
-    int i;
-    int j;
+    // 胴体に関するデータを更新
+    asuraData.body_transformation = asuraDataSourcePointer->getBodyTransformation();
+    asuraData.body_position = asuraDataSourcePointer->getBodyPosition();
+    asuraData.body_velocity = asuraDataSourcePointer->getBodyVelocity();
 
-    /// 胴体に関するデータを更新
-    asuraData.setBodyTransformation(asuraDataSourcePointer->getBodyTransformation());
-    asuraData.setBodyPosition(asuraDataSourcePointer->getBodyPosition());
-    asuraData.setBodyVelocity(asuraDataSourcePointer->getBodyVelocity());
-
-    /**
-     *	脚に関するデータを更新
-     *	座標系は絶対座標系に変換
-     */
-    for (i = 0; i < LEG_NUM; i++)
+    // 脚に関するデータを更新
+    // 座標系は絶対座標系に変換
+    for (int i = 0; i < Asura::LEG_NUM; i++)
     {
-        asuraData.setLegBaseTransformation(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegBaseTransformation(i + 1))
-        );
-        asuraData.setLegBasePosition(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegBasePosition(i + 1))
-        );
+        asuraData.leg_base_transformation[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegBaseTransformation(i + 1));
 
-        for (j = 0; j < LEG_JOINT_NUM; j++)
+
+        asuraData.leg_base_position[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegBasePosition(i + 1));
+
+
+        for (int j = 0; j < Asura::LEG_JOINT_NUM; j++)
         {
-            asuraData.setLegJointTransformation(i + 1, j + 1,
-              asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegJointTransformation(i + 1, j + 1))
-            );
-            asuraData.setLegJointPosition(i + 1, j + 1,
-              asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegJointPosition(i + 1, j + 1))
-            );
+            asuraData.leg_joint_transformation[i][j] =
+                asuraDataSourcePointer->transformationLocalToGlobal(
+                    asuraDataSourcePointer->getLegJointTransformation(i + 1, j + 1));
+
+            asuraData.leg_joint_position[i][j] =
+                asuraDataSourcePointer->transformationLocalToGlobal(
+                    asuraDataSourcePointer->getLegJointPosition(i + 1, j + 1));
         }
 
-        asuraData.setLegFootTransformation(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegFootTransformation(i + 1))
-        );
-        asuraData.setLegFootPosition(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegFootPosition(i + 1))
-        );
+        asuraData.leg_foot_transformation[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegFootTransformation(i + 1));
 
-        asuraData.setLegJointAngle(i + 1, asuraDataSourcePointer->getLegJointAngle(i + 1));
-        asuraData.setLegJointVelocity(i + 1, asuraDataSourcePointer->getLegJointVelocity(i + 1));
-        asuraData.setLegJointTorque(i + 1, asuraDataSourcePointer->getLegJointTorque(i + 1));
-        asuraData.setLegPhase(i + 1, asuraDataSourcePointer->getLegPhase(i + 1));
-        asuraData.setLegActuatorPosition(i + 1, asuraDataSourcePointer->getLegActuatorPosition(i + 1));///-----add
-        asuraData.setFootJointAngle(i + 1, asuraDataSourcePointer->getFootJointAngle(i + 1));///---------------add
+        asuraData.leg_foot_position[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegFootPosition(i + 1));
+
+
+        asuraData.leg_joint_angle[i] = asuraDataSourcePointer->getLegJointAngle(i + 1);
+        asuraData.leg_joint_velocity[i] = asuraDataSourcePointer->getLegJointVelocity(i + 1);
+        asuraData.leg_joint_torque[i] = asuraDataSourcePointer->getLegJointTorque(i + 1);
+        asuraData.leg_phase[i] = asuraDataSourcePointer->getLegPhase(i + 1);
+        asuraData.leg_actuator_position[i] = asuraDataSourcePointer->getLegActuatorPosition(i + 1);
+        asuraData.foot_joint_angle[i] = asuraDataSourcePointer->getFootJointAngle(i + 1);
     }
 
     return;
 }
 
-/// 転送
-void DataHandler::exportPlanData(void)
+void DataHandler::exportPlanData()
 {
 }
 
-/// 取り込み
-void DataHandler::importPlanData(void)
+void DataHandler::importPlanData()
 {
-    planData.setElapsedTime(planDataSourcePointer->getElapsedTime());
+    planData.elapsed_time = planDataSourcePointer->getElapsedTime();
 
     return;
 }
 
-/**
- *		データ渡し
- *			直接データ元からデータ先への代入
- */
-void DataHandler::handleAsuraData(void)
+void DataHandler::handleAsuraData()
 {
-    /// インクリメント変数
-    int i;
-    int j;
-
     /// 胴体に関するデータを更新
-    asuraDataTargetPointer->setBodyTransformation(asuraDataSourcePointer->getBodyTransformation());
-    asuraDataTargetPointer->setBodyPosition(asuraDataSourcePointer->getBodyPosition());
-    asuraDataTargetPointer->setBodyVelocity(asuraDataSourcePointer->getBodyVelocity());
+    asuraDataTargetPointer->body_transformation = asuraDataSourcePointer->getBodyTransformation();
+    asuraDataTargetPointer->body_position = asuraDataSourcePointer->getBodyPosition();
+    asuraDataTargetPointer->body_velocity = asuraDataSourcePointer->getBodyVelocity();
 
-    /**
-     *		脚に関するデータを更新
-     *		座標系は絶対座標系に変換
-     */
-    for (i = 0; i < LEG_NUM; i++)
+    // 脚に関するデータを更新
+    // 座標系は絶対座標系に変換
+    for (int i = 0; i < LEG_NUM; i++)
     {
-        asuraDataTargetPointer->setLegBaseTransformation(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegBaseTransformation(i + 1))
-        );
-        asuraDataTargetPointer->setLegBasePosition(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegBasePosition(i + 1))
-        );
+        asuraDataTargetPointer->leg_base_transformation[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegBaseTransformation(i + 1));
 
-        for (j = 0; j < LEG_JOINT_NUM; j++)
+        asuraDataTargetPointer->leg_base_position[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegBasePosition(i + 1));
+
+        for (int j = 0; j < LEG_JOINT_NUM; j++)
         {
-            asuraDataTargetPointer->setLegJointTransformation(i + 1, j + 1,
-              asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegJointTransformation(i + 1, j + 1))
-            );
-            asuraDataTargetPointer->setLegJointPosition(i + 1, j + 1,
-              asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegJointPosition(i + 1, j + 1))
-            );
+            asuraDataTargetPointer->leg_joint_transformation[i][j] =
+                asuraDataSourcePointer->transformationLocalToGlobal(
+                    asuraDataSourcePointer->getLegJointTransformation(i + 1, j + 1));
+
+            asuraDataTargetPointer->leg_joint_position[i][j] =
+                asuraDataSourcePointer->transformationLocalToGlobal(
+                    asuraDataSourcePointer->getLegJointPosition(i + 1, j + 1));
         }
 
-        asuraDataTargetPointer->setLegFootTransformation(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegFootTransformation(i + 1))
-        );
-        asuraDataTargetPointer->setLegFootPosition(i + 1,
-          asuraDataSourcePointer->transformationLocalToGlobal(asuraDataSourcePointer->getLegFootPosition(i + 1))
-        );
+        asuraDataTargetPointer->leg_foot_transformation[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                asuraDataSourcePointer->getLegFootTransformation(i + 1));
 
-        asuraDataTargetPointer->setLegJointAngle(i + 1, asuraDataSourcePointer->getLegJointAngle(i + 1));
-        asuraDataTargetPointer->setLegJointVelocity(i + 1, asuraDataSourcePointer->getLegJointVelocity(i + 1));
-        asuraDataTargetPointer->setLegJointTorque(i + 1, asuraDataSourcePointer->getLegJointTorque(i + 1));
-        asuraDataTargetPointer->setLegPhase(i + 1, asuraDataSourcePointer->getLegPhase(i + 1));
-        asuraDataTargetPointer->setFootJointAngle(i + 1, asuraDataSourcePointer->getFootJointAngle(i + 1));//--add
-        asuraDataTargetPointer->setLegActuatorPosition(i + 1, asuraDataSourcePointer->getLegActuatorPosition(i + 1));//--add
+        asuraDataTargetPointer->leg_foot_position[i] =
+            asuraDataSourcePointer->transformationLocalToGlobal(
+                            asuraDataSourcePointer->getLegFootPosition(i + 1));
+
+        asuraDataTargetPointer->leg_joint_angle[i] = asuraDataSourcePointer->getLegJointAngle(i + 1);
+        asuraDataTargetPointer->leg_joint_velocity[i] = asuraDataSourcePointer->getLegJointVelocity(i + 1);
+        asuraDataTargetPointer->leg_joint_torque[i] = asuraDataSourcePointer->getLegJointTorque(i + 1);
+        asuraDataTargetPointer->leg_phase[i] = asuraDataSourcePointer->getLegPhase(i + 1);
+        asuraDataTargetPointer->foot_joint_angle[i] = asuraDataSourcePointer->getFootJointAngle(i + 1);
+        asuraDataTargetPointer->leg_actuator_position[i] = asuraDataSourcePointer->getLegActuatorPosition(i + 1);
     }
 
     return;
 }
 
-void DataHandler::handlePlanData(void)
+void DataHandler::handlePlanData()
 {
     if (planDataTargetPointer == NULL)
+    {
         return;
+    }
 
-    //planDataTargetPointer->setStabilityMargin(planDataSourcePointer->getStabilityMargin());  20200819
-    planDataTargetPointer->setElapsedTime(planDataSourcePointer->getElapsedTime());
+
+    planDataTargetPointer->elapsed_time = planDataSourcePointer->getElapsedTime();
 
     return;
 }
 
 const Math::Matrix& DataHandler::getLegBaseTransformation(int legNo) const
 {
-    /// 引数チェック
+    // 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegBaseTransformation(legNo);
+    return asuraData.leg_base_transformation[legNo - 1];
 }
 
-/// 脚関節ごとの同次変換行列
 const Math::Matrix& DataHandler::getLegJointTransformation(int legNo, int jointNo) const
 {
-    /// 引数チェック
+    // 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-    return asuraData.getLegJointTransformation(legNo, jointNo);
+    return asuraData.leg_joint_transformation[legNo - 1][jointNo - 1];
 }
 
-/// 足位置ごとの同次変換行列
 const Math::Matrix& DataHandler::getLegFootTransformation(int legNo) const
 {
-    /// 引数チェック
+    // 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegFootTransformation(legNo);
+    return asuraData.leg_foot_transformation[legNo - 1];
 }
 
-/// 脚の根元位置
 const Math::Vector& DataHandler::getLegBasePosition(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegBasePosition(legNo);
+    return asuraData.leg_base_position[legNo - 1];
 }
 
-/// 脚の関節位置
 const Math::Vector& DataHandler::getLegJointPosition(int legNo, int jointNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-    return asuraData.getLegJointPosition(legNo, jointNo);
+    return asuraData.leg_joint_position[legNo - 1][jointNo - 1];
 }
 
-/// 足位置
 const Math::Vector& DataHandler::getLegFootPosition(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegFootPosition(legNo);
+    return asuraData.leg_foot_position[legNo - 1];
 }
 
-/// 脚の関節角度
 const Math::Vector& DataHandler::getLegJointAngle(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegJointAngle(legNo);
+    return asuraData.leg_joint_angle[legNo - 1];
 }
 
-/// 脚の関節速度
 const Math::Vector& DataHandler::getLegJointVelocity(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegJointVelocity(legNo);
+    return asuraData.leg_joint_velocity[legNo - 1];
 }
 
-/// 脚の関節トルク
 const Math::Vector& DataHandler::getLegJointTorque(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegJointTorque(legNo);
+    return asuraData.leg_joint_torque[legNo - 1];
 }
 
 /// 脚の運動相
@@ -301,7 +280,7 @@ const LegPhase DataHandler::getLegPhase(int legNo) const
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
 
-    return asuraData.getLegPhase(legNo);
+    return asuraData.leg_phase[legNo - 1];
 }
 
 }  // namespace Data

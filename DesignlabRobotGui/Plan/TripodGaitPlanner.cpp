@@ -736,7 +736,7 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
     }
 
     /// 計画経過時間を計算
-    Planner::elapsedTime = timeManagerPointer->getRealTime() - Planner::planStartTime;
+    Planner::elapsed_time = timeManagerPointer->getRealTime() - Planner::planStartTime;
 
     /// 歩行周期開始から現在時刻までの歩行経過時間を計算
     walkingTime = timeManagerPointer->getRealTime() - cycleStartTime;

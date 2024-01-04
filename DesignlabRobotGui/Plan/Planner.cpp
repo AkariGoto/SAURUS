@@ -58,7 +58,7 @@ Planner::Planner(AsuraX* asuraPointer_, TimeManager* timeManagerPointer_)
     isSuspended = false;
 
     //stabilityMargin = 0.0;  20200819
-    elapsedTime = 0.0;
+    elapsed_time = 0.0;
     planStartTime = 0.0;
 }
 
@@ -353,8 +353,8 @@ void Planner::printPlanErrorMessage(void)
  /// 歩行開始のための初期化
 bool Planner::setup(void)
 {
-    elapsedTime = 0.0;  //20201020
-    stopElapsedTime = elapsedTime;  //20201020
+    elapsed_time = 0.0;  //20201020
+    stopElapsedTime = elapsed_time;  //20201020
 
     /// 動作開始
     isRunning = true;
@@ -377,7 +377,7 @@ bool Planner::stopPlan(void)
 {
     //isRunning = false;  //20201020
 
-    stopElapsedTime = elapsedTime;  //20201020
+    stopElapsedTime = elapsed_time;  //20201020
 
     return true;
 }

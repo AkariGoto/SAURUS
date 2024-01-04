@@ -1,11 +1,10 @@
-﻿// AsuraUDPTherad.cpp : 実装ファイル
-//
+﻿
+#include <winsock2.h>
+#include <WS2tcpip.h>
 
 #include "stdafx.h"
 #include "AsuraUDPThread.h"
 #include "UDPPacket.h"
-#include <winsock2.h>
-#include <WS2tcpip.h>
 
 
 #pragma comment(lib, "wsock32.lib")
@@ -30,11 +29,6 @@ BEGIN_MESSAGE_MAP(AsuraUDPThread, CWinThread)
     ON_MESSAGE(WM_DLG_COMM_START_LISTEN, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStartPortListening)
     ON_MESSAGE(WM_DLG_COMM_STOP_LISTEN, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStopPortListening)
     ON_MESSAGE(WM_PLAN_SENDING_COMM_DATA, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnSendCommandData)
-
-    /* ログ 未実装20210622
-    ON_MESSAGE(WM_DLG_COMM_START_LOGGING, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStartLogging)
-    ON_MESSAGE(WM_DLG_COMM_STOP_LOGGING, (LRESULT(AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM))OnStopLogging)
-    */
 
 END_MESSAGE_MAP()
 
@@ -325,7 +319,7 @@ char AsuraUDPThread::buildPacket(SciPacketType type, int address, int command)
                 {
                     /// 脚関節データ取得
                     /// 単位をDegに修正し、100倍して有効数字5桁の正の整数にする（16bit）
-                    data = (int)((viewAsuraXData.getLegJointAngle((int)((address - 1) / 3) + 1)(((address - 1) % 3) + 1) * RAD2DEG + 180.0) * 100.0);	/// <-オフセットして正値に
+                    data = (int)((viewAsuraXData.leg_joint_angle[(int)((address - 1) / 3)](((address - 1) % 3) + 1) * RAD2DEG + 180.0) * 100.0);	/// <-オフセットして正値に
                     //data =(int)(commTitanData.getLegActuatorPosition(1)*100);
 
                     /// バッファに一時保存 
@@ -488,7 +482,7 @@ char AsuraUDPThread::buildPacket(SciPacketType type, int address, int command)
                     //data =123*100; 
                     //data =(unsigned __int32)(-123*100);
 
-                    Actpos = 100 * viewAsuraXData.getLegActuatorPosition(i + 1)(j + 1);
+                    Actpos = 100 * viewAsuraXData.leg_actuator_position[i](j + 1);
 
                     if (Actpos >= 0)
                     {

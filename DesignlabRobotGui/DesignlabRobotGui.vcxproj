@@ -280,10 +280,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="Data\plan_data.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\katayama\Desktop\重泉伶樹\05プログラム\ASURA2GUI\ASURA2GUI</AdditionalIncludeDirectories>
-    </ClCompile>
     <ClCompile Include="Data\asura_data.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

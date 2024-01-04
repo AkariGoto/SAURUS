@@ -83,46 +83,46 @@ public:
      *	胴体
      */
      /// 同次変換行列
-    const Math::Matrix& getBodyTransformation() const { return asuraData.getBodyTransformation(); }
+    const Matrix& getBodyTransformation() const { return asuraData.body_transformation; }
 
     /// 胴体位置
-    const Math::Vector& getBodyPosition() const { return asuraData.getBodyPosition(); }
+    const Vector& getBodyPosition() const { return asuraData.body_position; }
 
     /// 胴体速度
-    const Math::Vector& getBodyVelocity() const { return asuraData.getBodyVelocity(); }
+    const Vector& getBodyVelocity() const { return asuraData.body_velocity; }
 
     /**
      *	脚
      */
      /// 脚根元ごとの同次変換行列
-    const Math::Matrix& getLegBaseTransformation(int legNo) const;
+    const Matrix& getLegBaseTransformation(int legNo) const;
 
     /// 脚関節ごとの同次変換行列
-    const Math::Matrix& getLegJointTransformation(int legNo, int jointNo) const;
+    const Matrix& getLegJointTransformation(int legNo, int jointNo) const;
 
     /// 足位置ごとの同次変換行列
-    const Math::Matrix& getLegFootTransformation(int legNo) const;
+    const Matrix& getLegFootTransformation(int legNo) const;
 
     /// 脚の根元位置
-    const Math::Vector& getLegBasePosition(int legNo) const;
+    const Vector& getLegBasePosition(int legNo) const;
 
     /// 脚の関節位置
-    const Math::Vector& getLegJointPosition(int legNo, int jointNo) const;
+    const Vector& getLegJointPosition(int legNo, int jointNo) const;
 
     /// 足位置
-    const Math::Vector& getLegFootPosition(int legNo) const;
+    const Vector& getLegFootPosition(int legNo) const;
 
     /// 脚の関節角度
-    const Math::Vector& getLegJointAngle(int legNo) const;
+    const Vector& getLegJointAngle(int legNo) const;
 
     /// 脚の関節速度
-    const Math::Vector& getLegJointVelocity(int legNo) const;
+    const Vector& getLegJointVelocity(int legNo) const;
 
     /// 脚の関節トルク
-    const Math::Vector& getLegJointTorque(int legNo) const;
+    const Vector& getLegJointTorque(int legNo) const;
 
     /// 脚の運動相
-    const Asura::LegPhase getLegPhase(int legNo) const;
+    const LegPhase getLegPhase(int legNo) const;
 
 
 
@@ -131,13 +131,11 @@ public:
      */
     const PlanData& getPlanData() const { return planData; }
 
-    const double getElapsedTime() const { return planData.getElapsedTime(); }
+    const double getElapsedTime() const { return planData.elapsed_time; }
 
 private:
-    /**
-     *	データを取得するロボットへのポインタ
-     */
-     /// キネマティクスデータ
+
+    /// キネマティクスデータ
     AsuraX* asuraDataSourcePointer;
     /// 計画データ
     Planner* planDataSourcePointer;

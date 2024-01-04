@@ -67,7 +67,7 @@ protected:
      /// 安定余裕
      //double stabilityMargin;  20200819
      /// 行動開始からの経過時間
-    double elapsedTime;
+    double elapsed_time;
     /// プランニング開始時間
     double planStartTime;
 
@@ -125,7 +125,7 @@ public:
       /// 安定余裕
       //double getStabilityMargin(void) const{return stabilityMargin;}  20200819
       /// 計画開始からの経過時間
-    double getElapsedTime(void) const { return elapsedTime; }
+    double getElapsedTime(void) const { return elapsed_time; }
     /// 開始時間
     double getPlanStartTime(void) const { return planStartTime; }
 
@@ -155,7 +155,7 @@ public:
      /// 安定余裕
      //void setStabilityMargin(double margin) {stabilityMargin = margin; return;}  20200819
      /// 経過時間
-    void setElapsedTime(double time) { elapsedTime = time; return; }
+    void setElapsedTime(double time) { elapsed_time = time; return; }
     /// 開始時間
     void setPlanStartTime(double time) { planStartTime = time; return; }
 
