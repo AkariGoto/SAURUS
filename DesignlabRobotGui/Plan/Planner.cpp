@@ -211,7 +211,7 @@ PlanStatus Planner::moveBody(double splitTime)
 
 void Planner::printPlanErrorMessage()
 {
-    asura::Kinematics kine = asuraPointer->getLastKineError();
+    asura::Kinematics kine = asuraPointer->getLastKinematicsError();
     int legNo = asuraPointer->getLastErrorTrackLegNo();
     int jointNo = asuraPointer->getLegLastErrorJointNo(legNo);
     char error[256] = "No error";

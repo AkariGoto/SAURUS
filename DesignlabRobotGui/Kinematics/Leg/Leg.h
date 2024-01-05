@@ -291,7 +291,7 @@ public:
      *		ボールねじ位置計算（ワイヤ変位）
      */
      ///指令値変換
-    void calculationActatorPosition(void);
+    void calculationActuatorPosition();
 
 private:
     /**

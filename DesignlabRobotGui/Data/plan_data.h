@@ -2,12 +2,6 @@
 #ifndef DESIGNLABROBOTGUI_DATA_PLANDATA_H_
 #define DESIGNLABROBOTGUI_DATA_PLANDATA_H_
 
-#include <algorithm>
-
-#include "Kinematics/asura_parameter.h"
-#include "Math/Matrix/Matrix.h"
-#include "Plan/plan_parameter.h"
-
 
 namespace designlab_robot_gui::data
 {

@@ -332,7 +332,7 @@ Kinematics WalkingRobot::SolveLegInverseKinematics(int legNo)
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     Kinematics kine = track_legs[legNo - 1]->solveInverseKinematics();
-    //track_legs[legNo-1]->calculationActatorPosition();//<----add
+    //track_legs[legNo-1]->calculationActuatorPosition();//<----add
     return kine;
 }
 /// 姿勢指標の変更

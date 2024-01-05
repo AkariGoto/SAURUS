@@ -61,7 +61,7 @@ public:
     //! 移動様式
     const LocomotionStyle getLocomotionStyle() const { return locomotion_style; }
     //!運動学エラー
-    const Kinematics getLastKineError() const { return last_kinematics_error; }
+    const Kinematics getLastKinematicsError() const { return last_kinematics_error; }
 
     //! 脚オブジェクト
     //const TrackLeg& getTrackLeg(int legNo) const;    20200819

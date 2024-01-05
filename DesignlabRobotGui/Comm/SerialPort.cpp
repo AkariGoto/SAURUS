@@ -1,805 +1,805 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		SerialPort.cpp
- *  à–¾
- *		ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğƒ`ƒFƒbƒN‚µƒf[ƒ^‚ğ‘—óM‚·‚é
- *		ƒ|[ƒg‚É•Ï‰»‚ª‹N‚±‚Á‚½‚çƒ†[ƒU‚É’Ê’m‚·‚é
- *		‘—óM—p‚ÌƒXƒŒƒbƒh‚à•Ê“rì¬‚·‚é
- *  “ú•t
- *		ì¬“ú: 2007/04/01(Sat)		XV“ú: 2007/11/03(Sat)
+ *  èª¬æ˜
+ *		ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’ãƒã‚§ãƒƒã‚¯ã—ãƒ‡ãƒ¼ã‚¿ã‚’é€å—ä¿¡ã™ã‚‹
+ *		ãƒãƒ¼ãƒˆã«å¤‰åŒ–ãŒèµ·ã“ã£ãŸã‚‰ãƒ¦ãƒ¼ã‚¶ã«é€šçŸ¥ã™ã‚‹
+ *		é€å—ä¿¡ç”¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‚‚åˆ¥é€”ä½œæˆã™ã‚‹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/04/01(Sat)		æ›´æ–°æ—¥: 2007/11/03(Sat)
  */
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include <cassert>
 #include <process.h>
-//#include "ASURA2GUI/pch.h"
+  //#include "ASURA2GUI/pch.h"
 #include "..\pch.h"
 #include "SerialPort.h"
 #include "..\System\DebugOutput.h"
-#include <winsock2.h>//’Ç‰Á
+#include <winsock2.h>//è¿½åŠ 
 
 namespace Comm
 {
 /**
  *	----------------------------------------------------------------------
- *		SerialPortƒNƒ‰ƒX
+ *		SerialPortã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 
-/**
- *	------------------------------------------------------------
- *		SerialPortƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-/**
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
- */
+ /**
+  *	------------------------------------------------------------
+  *		SerialPortã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°å®šç¾©
+  *	------------------------------------------------------------
+  */
+  /**
+   *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+   */
 SerialPort::SerialPort()
 {
-/**
- *	ƒ|[ƒg”Ô†
- */
-	/// ©•ª‚Ìƒ|[ƒg”Ô†
-	local_portNo		= 10004;
-	/// ‘Šè‚Ìƒ|[ƒg”Ô†
-	remort_portNo		= 10003;
-/**
- *	IPƒAƒhƒŒƒX
- */
-	/// ©•ª‚ÌIPƒAƒhƒŒƒX
-	//sprintf(local_IPAdress,"192.168.0.154");
-	sprintf(local_IPAdress, "192.168.0.157");
-	/// ‘Šè‚ÌIPƒAƒhƒŒƒX
-	sprintf(remort_IPAdress,"192.168.0.169");	//‘—MæIPƒAƒhƒŒƒX
+    /**
+     *	ãƒãƒ¼ãƒˆç•ªå·
+     */
+     /// è‡ªåˆ†ã®ãƒãƒ¼ãƒˆç•ªå·
+    local_portNo = 10004;
+    /// ç›¸æ‰‹ã®ãƒãƒ¼ãƒˆç•ªå·
+    remort_portNo = 10003;
+    /**
+     *	IPã‚¢ãƒ‰ãƒ¬ã‚¹
+     */
+     /// è‡ªåˆ†ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
+     //sprintf(local_IPAdress,"192.168.0.154");
+    sprintf(local_IPAdress, "192.168.0.157");
+    /// ç›¸æ‰‹ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
+    sprintf(remort_IPAdress, "192.168.0.169");	//é€ä¿¡å…ˆIPã‚¢ãƒ‰ãƒ¬ã‚¹
 
 
-/**
- *	WASData,Soketƒnƒ“ƒhƒ‹‰Šú‰»
- *
- *	WASStartup	¸”s:  
- *				¬Œ÷:  0	
- *
- *	soket		¸”s: SOCKET_ERROR(-1)
- *				¬Œ÷: •‰‚Å‚È‚¢(ŠÜ0)ƒ\ƒPƒbƒg‹Lqq
- */
-	WSAHandle	= 1;
-	sockHandle	= INVALID_SOCKET ;
+    /**
+     *	WASData,Soketãƒãƒ³ãƒ‰ãƒ«åˆæœŸåŒ–
+     *
+     *	WASStartup	å¤±æ•—:
+     *				æˆåŠŸ:  0
+     *
+     *	soket		å¤±æ•—: SOCKET_ERROR(-1)
+     *				æˆåŠŸ: è² ã§ãªã„(å«0)ã‚½ã‚±ãƒƒãƒˆè¨˜è¿°å­
+     */
+    WSAHandle = 1;
+    sockHandle = INVALID_SOCKET;
 
-/**
- *	ƒI[ƒi[ƒEƒBƒ“ƒhƒE‰Šú‰»
- */
-	commOwnerWindowHandle = NULL;
+    /**
+     *	ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åˆæœŸåŒ–
+     */
+    commOwnerWindowHandle = NULL;
 
-/**
- *	COMƒ|[ƒgƒnƒ“ƒhƒ‹‚Ì‰Šú‰»
- */
-	commHandle = NULL;
+    /**
+     *	COMãƒãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ«ã®åˆæœŸåŒ–
+     */
+    commHandle = NULL;
 
-/** 
- *	OVERLAPPED\‘¢‘Ì‚Ìƒƒ“ƒo•Ï”‚ğ0‚É‚·‚é
- */
-	readOverLappedStruct.Offset = 0;
-	writeOverLappedStruct.Offset = 0;
-	readOverLappedStruct.OffsetHigh = 0;
-	writeOverLappedStruct.OffsetHigh = 0;
+    /**
+     *	OVERLAPPEDæ§‹é€ ä½“ã®ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’0ã«ã™ã‚‹
+     */
+    readOverLappedStruct.Offset = 0;
+    writeOverLappedStruct.Offset = 0;
+    readOverLappedStruct.OffsetHigh = 0;
+    writeOverLappedStruct.OffsetHigh = 0;
 
-	/// ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹‚Ì‰Šú‰»
-	readOverLappedStruct.hEvent		= NULL;
-	writeOverLappedStruct.hEvent	= NULL;
+    /// ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã®åˆæœŸåŒ–
+    readOverLappedStruct.hEvent = NULL;
+    writeOverLappedStruct.hEvent = NULL;
 
-	/// ƒoƒbƒtƒ@‚Ì‰Šú‰»
-	/// óM—p
-	readBuffer = NULL;
-	/// ‘—M—p
-	writeBuffer = NULL;
+    /// ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
+    /// å—ä¿¡ç”¨
+    readBuffer = NULL;
+    /// é€ä¿¡ç”¨
+    writeBuffer = NULL;
 
-	/// ‘—óMƒTƒCƒY
-	bytesToRead = 0;
-	bytesToWrite = 0;
+    /// é€å—ä¿¡ã‚µã‚¤ã‚º
+    bytesToRead = 0;
+    bytesToWrite = 0;
 
-/**
- *	ƒXƒŒƒbƒhŠÖ˜A‚Ì‰Šú‰»
- */
-	/// ƒnƒ“ƒhƒ‹
-	readThreadTerminateHandle = NULL;
-	writeThreadTerminateHandle = NULL;
+    /**
+     *	ã‚¹ãƒ¬ãƒƒãƒ‰é–¢é€£ã®åˆæœŸåŒ–
+     */
+     /// ãƒãƒ³ãƒ‰ãƒ«
+    readThreadTerminateHandle = NULL;
+    writeThreadTerminateHandle = NULL;
 
-	/// ƒXƒŒƒbƒhƒtƒ‰ƒO
-	isReadThreadAlive = FALSE;
-	isWriteThreadAlive = FALSE;
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ•ãƒ©ã‚°
+    isReadThreadAlive = FALSE;
+    isWriteThreadAlive = FALSE;
 
-/**
- *	ƒtƒ‰ƒO‚Ì‰Šú‰»
- */
-	isListeningStopped = true;
-	isCommOpen = false;
+    /**
+     *	ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
+     */
+    isListeningStopped = true;
+    isCommOpen = false;
 }
 
 /**
- *	ƒfƒXƒgƒ‰ƒNƒ^
+ *	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  */
 SerialPort::~SerialPort()
 {
-	closeSerialPort();
+    closeSerialPort();
 }
 
 /**
- *	à–¾
- *		ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğŠJ‚­
- *	ˆø”
- *		hOwnerWnd: COMƒ|[ƒg‚ÌeƒEƒBƒ“ƒhƒE
- *		portNum: COMƒ|[ƒg”Ô†
- *		baudRate: ƒ{[ƒŒ[ƒg
- *		parity: ƒpƒŠƒeƒB
- *		dataBits: ƒf[ƒ^ƒrƒbƒg
- *		stopBits: ƒXƒgƒbƒvƒrƒbƒg
- *		commEvents: ƒ†[ƒU‚ªİ’è‚·‚é’ÊMƒCƒxƒ“ƒg
- *		readBufferSize_: óMƒoƒbƒtƒ@‚ÌƒTƒCƒY
- *		writeBufferSize_: ‘—Mƒoƒbƒtƒ@‚ÌƒTƒCƒY
+ *	èª¬æ˜
+ *		ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‹ã
+ *	å¼•æ•°
+ *		hOwnerWnd: COMãƒãƒ¼ãƒˆã®è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+ *		portNum: COMãƒãƒ¼ãƒˆç•ªå·
+ *		baudRate: ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆ
+ *		parity: ãƒ‘ãƒªãƒ†ã‚£
+ *		dataBits: ãƒ‡ãƒ¼ã‚¿ãƒ“ãƒƒãƒˆ
+ *		stopBits: ã‚¹ãƒˆãƒƒãƒ—ãƒ“ãƒƒãƒˆ
+ *		commEvents: ãƒ¦ãƒ¼ã‚¶ãŒè¨­å®šã™ã‚‹é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆ
+ *		readBufferSize_: å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+ *		writeBufferSize_: é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
  */
-BOOL SerialPort::openSerialPort(	HWND hOwnerWnd,				/// óMƒ|[ƒg‚ÌeƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-									UINT portNo,				/// ƒ|[ƒg”Ô†
-									UINT baudRate,				/// ƒ{[ƒŒ[ƒg
-									char parity,				/// ƒpƒŠƒeƒB
-									UINT dataBits,				/// ƒf[ƒ^ƒrƒbƒg
-									UINT stopBits,				/// ƒXƒgƒbƒvƒrƒbƒg
-									DWORD commEvent_,			/// ƒCƒxƒ“ƒg
-									UINT readBufferSize_,		/// óMƒoƒbƒtƒ@ƒTƒCƒY
-									UINT writeBufferSize_		/// ‘—Mƒoƒbƒtƒ@ƒTƒCƒY
-								)
+BOOL SerialPort::openSerialPort(HWND hOwnerWnd,				/// å—ä¿¡ãƒãƒ¼ãƒˆã®è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+                  UINT portNo,				/// ãƒãƒ¼ãƒˆç•ªå·
+                  UINT baudRate,				/// ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆ
+                  char parity,				/// ãƒ‘ãƒªãƒ†ã‚£
+                  UINT dataBits,				/// ãƒ‡ãƒ¼ã‚¿ãƒ“ãƒƒãƒˆ
+                  UINT stopBits,				/// ã‚¹ãƒˆãƒƒãƒ—ãƒ“ãƒƒãƒˆ
+                  DWORD commEvent_,			/// ã‚¤ãƒ™ãƒ³ãƒˆ
+                  UINT readBufferSize_,		/// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+                  UINT writeBufferSize_		/// é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
+)
 {
-/**
- *	ˆø”ƒ`ƒFƒbƒN
- */
-	//DEBUG_ASSERT(portNo > 0 && portNo < 6);
-//	DEBUG_ASSERT(commOwnerWindowHandle != NULL);
+    /**
+     *	å¼•æ•°ãƒã‚§ãƒƒã‚¯
+     */
+     //DEBUG_ASSERT(portNo > 0 && portNo < 6);
+   //	DEBUG_ASSERT(commOwnerWindowHandle != NULL);
 
-/**
- *	ƒXƒŒƒbƒhŠm”F
- */
-	/// Šù‚ÉƒXƒŒƒbƒh‚ª‘–‚Á‚Ä‚¢‚½‚çÁ‹
-	if (isWriteThreadAlive)
-	{
-		do
-		{
-			SetEvent(writeThreadTerminateHandle);//ƒCƒxƒ“ƒgƒIƒuƒWƒFƒNƒg‚ğƒVƒOƒiƒ‹ó‘Ô‚É‚·‚é
-		} while (isWriteThreadAlive);
+   /**
+    *	ã‚¹ãƒ¬ãƒƒãƒ‰ç¢ºèª
+    */
+    /// æ—¢ã«ã‚¹ãƒ¬ãƒƒãƒ‰ãŒèµ°ã£ã¦ã„ãŸã‚‰æ¶ˆå»
+    if (isWriteThreadAlive)
+    {
+        do
+        {
+            SetEvent(writeThreadTerminateHandle);//ã‚¤ãƒ™ãƒ³ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã«ã™ã‚‹
+        } while (isWriteThreadAlive);
 
-		DEBUG_TRACE(TEXT("Thread ended\n"));
-	}
+        DEBUG_TRACE(TEXT("Thread ended\n"));
+    }
 
-	if (isReadThreadAlive)
-	{
-		do
-		{
-			SetEvent(readThreadTerminateHandle);
-		} while (isReadThreadAlive);
+    if (isReadThreadAlive)
+    {
+        do
+        {
+            SetEvent(readThreadTerminateHandle);
+        } while (isReadThreadAlive);
 
-		DEBUG_TRACE(TEXT("Thread ended\n"));
-	}
+        DEBUG_TRACE(TEXT("Thread ended\n"));
+    }
 
-/**
- *	ƒCƒxƒ“ƒgì¬
- */
-	///OVERLAPPED\‘¢‘Ì‚Ì‘—óMƒCƒxƒ“ƒg
-	if (readOverLappedStruct.hEvent != NULL)
-		ResetEvent(readOverLappedStruct.hEvent);
-	readOverLappedStruct.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    /**
+     *	ã‚¤ãƒ™ãƒ³ãƒˆä½œæˆ
+     */
+     ///OVERLAPPEDæ§‹é€ ä½“ã®é€å—ä¿¡ã‚¤ãƒ™ãƒ³ãƒˆ
+    if (readOverLappedStruct.hEvent != NULL)
+        ResetEvent(readOverLappedStruct.hEvent);
+    readOverLappedStruct.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
-	if (writeOverLappedStruct.hEvent != NULL)
-		ResetEvent(writeOverLappedStruct.hEvent);
-	writeOverLappedStruct.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    if (writeOverLappedStruct.hEvent != NULL)
+        ResetEvent(writeOverLappedStruct.hEvent);
+    writeOverLappedStruct.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
-	/// ƒXƒŒƒbƒh”jŠüƒCƒxƒ“ƒg
-	if (readThreadTerminateHandle != NULL)
-		ResetEvent(readThreadTerminateHandle);
-	readThreadTerminateHandle = CreateEvent(NULL, TRUE, FALSE, NULL);
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ç ´æ£„ã‚¤ãƒ™ãƒ³ãƒˆ
+    if (readThreadTerminateHandle != NULL)
+        ResetEvent(readThreadTerminateHandle);
+    readThreadTerminateHandle = CreateEvent(NULL, TRUE, FALSE, NULL);
 
-	if (writeThreadTerminateHandle != NULL)
-		ResetEvent(writeThreadTerminateHandle);
-	writeThreadTerminateHandle = CreateEvent(NULL, TRUE, FALSE, NULL);
+    if (writeThreadTerminateHandle != NULL)
+        ResetEvent(writeThreadTerminateHandle);
+    writeThreadTerminateHandle = CreateEvent(NULL, TRUE, FALSE, NULL);
 
-	/// ƒCƒxƒ“ƒg”z—ñ‚Ì‰Šú‰»iHANDLEŒ^‚Ívoid*‚È‚Ì‚Å‰Šú‰»‚Í‚±‚±‚Ì‚İ‚Å—Ç‚¢j
-	readEventHandles[0] = readThreadTerminateHandle;
-	readEventHandles[1] = readOverLappedStruct.hEvent;
+    /// ã‚¤ãƒ™ãƒ³ãƒˆé…åˆ—ã®åˆæœŸåŒ–ï¼ˆHANDLEå‹ã¯void*ãªã®ã§åˆæœŸåŒ–ã¯ã“ã“ã®ã¿ã§è‰¯ã„ï¼‰
+    readEventHandles[0] = readThreadTerminateHandle;
+    readEventHandles[1] = readOverLappedStruct.hEvent;
 
-	writeEventHandles[0] = writeThreadTerminateHandle;
-	writeEventHandles[1] = writeOverLappedStruct.hEvent;
+    writeEventHandles[0] = writeThreadTerminateHandle;
+    writeEventHandles[1] = writeOverLappedStruct.hEvent;
 
-/**
- *	ƒ|[ƒgİ’è
- */
-	/// ƒVƒŠƒAƒ‹ƒ|[ƒg‚ÌŠ—LŒ ‚ğ‚ÂiƒƒbƒZ[ƒW‚ğó‚¯‚éjƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ğƒZƒbƒg
-	commOwnerWindowHandle = hOwnerWnd;
+    /**
+     *	ãƒãƒ¼ãƒˆè¨­å®š
+     */
+     /// ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã®æ‰€æœ‰æ¨©ã‚’æŒã¤ï¼ˆãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹ï¼‰ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚»ãƒƒãƒˆ
+    commOwnerWindowHandle = hOwnerWnd;
 
-	/// ƒ|[ƒg”Ô†ƒZƒbƒg
-	commPortNumber = portNo;
+    /// ãƒãƒ¼ãƒˆç•ªå·ã‚»ãƒƒãƒˆ
+    commPortNumber = portNo;
 
-/*************************************************************************************
- *	                       winsockİ’è
- */
-///***********************************************************************************
-	
-	///winsock‰Šú‰»
-	WSAHandle = WSAStartup(MAKEWORD(2,0), &wsaData);///Ver.2.0
-	//WSAHandle = WSASYSNOTREADY;//ˆÓ}“IƒGƒ‰[
+    /*************************************************************************************
+     *	                       winsockè¨­å®š
+     */
+     ///***********************************************************************************
+
+       ///winsockåˆæœŸåŒ–
+    WSAHandle = WSAStartup(MAKEWORD(2, 0), &wsaData);///Ver.2.0
+    //WSAHandle = WSASYSNOTREADY;//æ„å›³çš„ã‚¨ãƒ©ãƒ¼
 
 
-	///ƒGƒ‰[ˆ—@(‰Šú‰»‚ª¸”s‚·‚é‚Æwinsock‚Ì‹@”\‚ªg‚¦‚È‚¢‚Ì‚Å—vŠm”F)
-	///WSAStartup :¬Œ÷‚µ‚½ê‡,–ß‚è’l0	
-	assert(WSAHandle == 0);
-	if (WSAHandle == 0){
-		///WSASETUP¬Œ÷
-		//DEBUG_TRACE(TEXT("WSASETUP\n"));
-	}
-	else if (WSAHandle != 0) {
-		switch (WSAHandle) {
-			///ƒlƒbƒgƒ[ƒNƒTƒuƒVƒXƒeƒ€‚ªƒlƒbƒgƒ[ƒN‚Ö‚ÌÚ‘±‚ğ€”õ‚Å‚«‚Ä‚¢‚È‚¢
-			case WSASYSNOTREADY:
-				DEBUG_TRACE(TEXT("WSASYSNOTREADY\n"));
-			break;
-			///—v‹‚³‚ê‚½winsock‚Ìƒo[ƒWƒ‡ƒ“‚ªƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚È‚¢
-			case WSAVERNOTSUPPORTED:
-				DEBUG_TRACE(TEXT("WSAVERNOTSUPPORTED\n"));
-			break;
-			///ƒuƒƒbƒLƒ“ƒO‘€ì‚ÌÀs’†‚Å‚ ‚é‚©A ‚Ü‚½‚ÍƒT[ƒrƒXƒvƒƒoƒCƒ_‚ªƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğˆ—‚µ‚Ä‚¢‚é
-			case WSAEINPROGRESS:
-				DEBUG_TRACE(TEXT("WSAEINPROGRESS\n"));
-			break;
-			///winsock‚ªˆ—‚Å‚«‚éÅ‘åƒvƒƒZƒX”‚É’B‚µ‚½
-			case WSAEPROCLIM:
-				DEBUG_TRACE(TEXT("WSAEPROCLIM\n"));
-			break;
-			///	‘æ“ñˆø”‚Å‚ ‚élpWSAData ‚Í—LŒø‚Èƒ|ƒCƒ“ƒ^‚Å‚Í‚È‚¢
-			case WSAEFAULT:
-				DEBUG_TRACE(TEXT("WSAEFAULT\n"));
-			break;
-			assert(WSAHandle =! 0);
-		}
-		return FALSE;
-	}//*/
-/**
- *	ƒoƒbƒtƒ@ŠÖŒW
- */
-	/// ƒoƒbƒtƒ@—Ìˆæ‚ÌŠm•Û
-	if (readBufferSize != NULL) delete [] readBuffer;
-	if (readBufferSize_ > MAX_BUFFER_SIZE) readBufferSize_ = MAX_BUFFER_SIZE;
-	readBuffer = new unsigned char[readBufferSize_];
-
-	if (writeBuffer != NULL) delete [] writeBuffer;
-	if (writeBufferSize_ > MAX_BUFFER_SIZE) writeBufferSize_ = MAX_BUFFER_SIZE;
-	writeBuffer = new char[writeBufferSize_];
-	//writeBuffer = new unsigned char[writeBufferSize_];
-
-	/// ƒŠƒ“ƒOƒoƒbƒtƒ@‚Ìİ’è
-	receiveBuffer.initialize(11);
-
-	/// ƒoƒbƒtƒ@ƒTƒCƒY‚Ìİ’è
-	readBufferSize = readBufferSize_;
-	writeBufferSize = writeBufferSize_;
-
-	/// ƒoƒbƒtƒ@‚Ì‰Šú‰»
-	ZeroMemory(readBuffer, readBufferSize);
-	ZeroMemory(writeBuffer, writeBufferSize);
-
-/**
- *	‚»‚Ì‘¼
- */
-	/// ’ÊMƒCƒxƒ“ƒg‚Ìİ’è
-	commEvent = commEvent_;
-
-	/// COMƒ|[ƒg‚Ì‚½‚ß‚Ì•¶š—ñ
-	LPTSTR portNoStr = (LPTSTR)malloc(256);
-	LPTSTR dcbStr = (LPTSTR)malloc(256);
-
-/**
- *	”r‘¼ˆ—ŠJn
- */
-	criticalSection.lock();
-	
-	/// ƒ\ƒPƒbƒg‚ªŠù‚ÉŠJ‚¢‚Ä‚¢‚½‚çC•Â‚¶‚é
-	if (commHandle != NULL)
-	{
-		///CloseHandle(commHandle);
-		//closesocket(sockHandle); ///ƒ\ƒPƒbƒg•Â½
-		commHandle = NULL;
-	}
-///*
-
-	
-	///ƒ\ƒPƒbƒgì¬
-	sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
-	//AF_INET‚ÍIPv4ASOCK_DGRAM‚ÍUDP’ÊMA0‚ÍH
-	
-	
-	///ƒGƒ‰[ˆ—
-	///¸”s‚µ‚½‚çsocket‚Í-1‚ğ•Ô‚·
-	if(sockHandle =! -1){
-		#define SOCK_HANDLE_VALUE ((HANDLE)(2))
-		commHandle = SOCK_HANDLE_VALUE;///<---ƒnƒ“ƒhƒ‹‚Ì’l‚ª‚í‚©‚ç‚È‚¢
-	}
-	///ƒGƒ‰[
-	else if (sockHandle == -1){//INVALID_SOCKET
-		///ƒGƒ‰[’l‚ğ•\¦ (VC++ƒGƒ‰[ƒ‹ƒbƒNƒAƒbƒv‚ÉƒGƒ‰[’l‚ğ“ü—Í‚µ‚ÄŠm”F‚µ‚Ä‚­‚¾‚³‚¢)
-		DEBUG_TRACE(TEXT("socket error : %d\n", WSAGetLastError()));
-		assert(sockHandle=! -1);
+    ///ã‚¨ãƒ©ãƒ¼å‡¦ç†ã€€(åˆæœŸåŒ–ãŒå¤±æ•—ã™ã‚‹ã¨winsockã®æ©Ÿèƒ½ãŒä½¿ãˆãªã„ã®ã§è¦ç¢ºèª)
+    ///WSAStartup :æˆåŠŸã—ãŸå ´åˆ,æˆ»ã‚Šå€¤0	
+    assert(WSAHandle == 0);
+    if (WSAHandle == 0) {
+        ///WSASETUPæˆåŠŸ
+        //DEBUG_TRACE(TEXT("WSASETUP\n"));
+    }
+    else if (WSAHandle != 0) {
+        switch (WSAHandle) {
+            ///ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚µãƒ–ã‚·ã‚¹ãƒ†ãƒ ãŒãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã¸ã®æ¥ç¶šã‚’æº–å‚™ã§ãã¦ã„ãªã„
+            case WSASYSNOTREADY:
+                DEBUG_TRACE(TEXT("WSASYSNOTREADY\n"));
+                break;
+                ///è¦æ±‚ã•ã‚ŒãŸwinsockã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„
+            case WSAVERNOTSUPPORTED:
+                DEBUG_TRACE(TEXT("WSAVERNOTSUPPORTED\n"));
+                break;
+                ///ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°æ“ä½œã®å®Ÿè¡Œä¸­ã§ã‚ã‚‹ã‹ã€ ã¾ãŸã¯ã‚µãƒ¼ãƒ“ã‚¹ãƒ—ãƒ­ãƒã‚¤ãƒ€ãŒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’å‡¦ç†ã—ã¦ã„ã‚‹
+            case WSAEINPROGRESS:
+                DEBUG_TRACE(TEXT("WSAEINPROGRESS\n"));
+                break;
+                ///winsockãŒå‡¦ç†ã§ãã‚‹æœ€å¤§ãƒ—ãƒ­ã‚»ã‚¹æ•°ã«é”ã—ãŸ
+            case WSAEPROCLIM:
+                DEBUG_TRACE(TEXT("WSAEPROCLIM\n"));
+                break;
+                ///	ç¬¬äºŒå¼•æ•°ã§ã‚ã‚‹lpWSAData ã¯æœ‰åŠ¹ãªãƒã‚¤ãƒ³ã‚¿ã§ã¯ãªã„
+            case WSAEFAULT:
+                DEBUG_TRACE(TEXT("WSAEFAULT\n"));
+                break;
+                assert(WSAHandle = !0);
+        }
         return FALSE;
-	}
-//*/
-	/// COMƒ|[ƒg‚ªŠù‚ÉŠJ‚¢‚Ä‚¢‚½‚çC•Â‚¶‚é
-	if (commHandle != NULL)
-	{
-		CloseHandle(commHandle);
-		commHandle = NULL;
-	}
+    }//*/
+  /**
+   *	ãƒãƒƒãƒ•ã‚¡é–¢ä¿‚
+   */
+   /// ãƒãƒƒãƒ•ã‚¡é ˜åŸŸã®ç¢ºä¿
+    if (readBufferSize != NULL) delete[] readBuffer;
+    if (readBufferSize_ > MAX_BUFFER_SIZE) readBufferSize_ = MAX_BUFFER_SIZE;
+    readBuffer = new unsigned char[readBufferSize_];
 
-	/// ƒ|[ƒg‚ğŠJ‚­‚½‚ß‚Ì•¶š—ñ‚Ì€”õ
-	wsprintf(portNoStr, TEXT("COM%d"), portNo);
-	wsprintf(dcbStr, TEXT("baud=%d parity=%c data=%d stop=%d"), baudRate, parity, dataBits, stopBits);
+    if (writeBuffer != NULL) delete[] writeBuffer;
+    if (writeBufferSize_ > MAX_BUFFER_SIZE) writeBufferSize_ = MAX_BUFFER_SIZE;
+    writeBuffer = new char[writeBufferSize_];
+    //writeBuffer = new unsigned char[writeBufferSize_];
 
-	/// COMƒ|[ƒg‚Ö‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-/*	commHandle = CreateFile(	portNoStr,						/// ’ÊMƒ|[ƒg•¶š—ñ (COMX)
-								GENERIC_READ | GENERIC_WRITE,	/// “Ç‚İ‚İ/‘‚«‚İ‚Ìí—Ş
-								0,								/// ’ÊMƒ|[ƒg‚È‚Ì‚Å”r‘¼ƒAƒNƒZƒX‚ÅŠJ‚­
-								NULL,							/// æ“¾‚µ‚½ƒnƒ“ƒhƒ‹‚ÌqƒvƒƒZƒX‚Ö‚ÌŒp³‚ğ‹–‰Â‚·‚é‚©‚Ç‚¤‚©‚ğŒˆ‚ß‚éSECURITY_ATTRIBUTES\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğw’è
-								OPEN_EXISTING,					/// ’ÊMƒfƒoƒCƒX‚ğŠJ‚­‚Í‚±‚Ìƒtƒ‰ƒOiOPEN_EXISTINGj‚ğw’è‚·‚é
-								FILE_FLAG_OVERLAPPED,			/// ”ñ“¯Šú“üo—Íiƒtƒ@ƒCƒ‹‚É‘Î‚µ‚Ä•¡”‚Ì‘€ì‚ğ“¯‚És‚¤‚±‚Æ‚ª‰Â”\j
-								0);								/// ƒeƒ“ƒvƒŒ[ƒgƒtƒ@ƒCƒ‹‚Ö‚ÌGENERIC_READƒAƒNƒZƒX‚ğ‚Âƒnƒ“ƒhƒ‹‚ğw’èi0‚ğw’è‚·‚éj
+    /// ãƒªãƒ³ã‚°ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
+    receiveBuffer.initialize(11);
 
-	/// COMƒ|[ƒg‚ªŠJ‚©‚ê‚½‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
-	if (commHandle == INVALID_HANDLE_VALUE)
-	{
-		/// ƒ|[ƒg‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
-		free(portNoStr);
-		free(dcbStr);
+    /// ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã®è¨­å®š
+    readBufferSize = readBufferSize_;
+    writeBufferSize = writeBufferSize_;
 
-		DEBUG_TRACE(TEXT("Failed to open COM Port Reason: %d\n"), GetLastError());
+    /// ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
+    ZeroMemory(readBuffer, readBufferSize);
+    ZeroMemory(writeBuffer, writeBufferSize);
 
-		return FALSE;
-	}
-*/
-	/// ‘—óMƒoƒbƒtƒ@‚Ì—e—Ê‚ğİ’è
+    /**
+     *	ãã®ä»–
+     */
+     /// é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆã®è¨­å®š
+    commEvent = commEvent_;
+
+    /// COMãƒãƒ¼ãƒˆã®ãŸã‚ã®æ–‡å­—åˆ—
+    LPTSTR portNoStr = (LPTSTR)malloc(256);
+    LPTSTR dcbStr = (LPTSTR)malloc(256);
+
+    /**
+     *	æ’ä»–å‡¦ç†é–‹å§‹
+     */
+    criticalSection.lock();
+
+    /// ã‚½ã‚±ãƒƒãƒˆãŒæ—¢ã«é–‹ã„ã¦ã„ãŸã‚‰ï¼Œé–‰ã˜ã‚‹
+    if (commHandle != NULL)
+    {
+        ///CloseHandle(commHandle);
+        //closesocket(sockHandle); ///ã‚½ã‚±ãƒƒãƒˆé–‰é–
+        commHandle = NULL;
+    }
+    ///*
+
+
+      ///ã‚½ã‚±ãƒƒãƒˆä½œæˆ
+    sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
+    //AF_INETã¯IPv4ã€SOCK_DGRAMã¯UDPé€šä¿¡ã€0ã¯ï¼Ÿ
+
+
+    ///ã‚¨ãƒ©ãƒ¼å‡¦ç†
+    ///å¤±æ•—ã—ãŸã‚‰socketã¯-1ã‚’è¿”ã™
+    if (sockHandle = !- 1) {
+#define SOCK_HANDLE_VALUE ((HANDLE)(2))
+        commHandle = SOCK_HANDLE_VALUE;///<---ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ãŒã‚ã‹ã‚‰ãªã„
+    }
+    ///ã‚¨ãƒ©ãƒ¼
+    else if (sockHandle == -1) {//INVALID_SOCKET
+        ///ã‚¨ãƒ©ãƒ¼å€¤ã‚’è¡¨ç¤º (VC++ã‚¨ãƒ©ãƒ¼ãƒ«ãƒƒã‚¯ã‚¢ãƒƒãƒ—ã«ã‚¨ãƒ©ãƒ¼å€¤ã‚’å…¥åŠ›ã—ã¦ç¢ºèªã—ã¦ãã ã•ã„)
+        DEBUG_TRACE(TEXT("socket error : %d\n", WSAGetLastError()));
+        assert(sockHandle = !- 1);
+        return FALSE;
+    }
+    //*/
+      /// COMãƒãƒ¼ãƒˆãŒæ—¢ã«é–‹ã„ã¦ã„ãŸã‚‰ï¼Œé–‰ã˜ã‚‹
+    if (commHandle != NULL)
+    {
+        CloseHandle(commHandle);
+        commHandle = NULL;
+    }
+
+    /// ãƒãƒ¼ãƒˆã‚’é–‹ããŸã‚ã®æ–‡å­—åˆ—ã®æº–å‚™
+    wsprintf(portNoStr, TEXT("COM%d"), portNo);
+    wsprintf(dcbStr, TEXT("baud=%d parity=%c data=%d stop=%d"), baudRate, parity, dataBits, stopBits);
+
+    /// COMãƒãƒ¼ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+  /*	commHandle = CreateFile(	portNoStr,						/// é€šä¿¡ãƒãƒ¼ãƒˆæ–‡å­—åˆ— (COMX)
+                  GENERIC_READ | GENERIC_WRITE,	/// èª­ã¿è¾¼ã¿/æ›¸ãè¾¼ã¿ã®ç¨®é¡
+                  0,								/// é€šä¿¡ãƒãƒ¼ãƒˆãªã®ã§æ’ä»–ã‚¢ã‚¯ã‚»ã‚¹ã§é–‹ã
+                  NULL,							/// å–å¾—ã—ãŸãƒãƒ³ãƒ‰ãƒ«ã®å­ãƒ—ãƒ­ã‚»ã‚¹ã¸ã®ç¶™æ‰¿ã‚’è¨±å¯ã™ã‚‹ã‹ã©ã†ã‹ã‚’æ±ºã‚ã‚‹SECURITY_ATTRIBUTESæ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’æŒ‡å®š
+                  OPEN_EXISTING,					/// é€šä¿¡ãƒ‡ãƒã‚¤ã‚¹ã‚’é–‹ãæ™‚ã¯ã“ã®ãƒ•ãƒ©ã‚°ï¼ˆOPEN_EXISTINGï¼‰ã‚’æŒ‡å®šã™ã‚‹
+                  FILE_FLAG_OVERLAPPED,			/// éåŒæœŸå…¥å‡ºåŠ›ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾ã—ã¦è¤‡æ•°ã®æ“ä½œã‚’åŒæ™‚ã«è¡Œã†ã“ã¨ãŒå¯èƒ½ï¼‰
+                  0);								/// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®GENERIC_READã‚¢ã‚¯ã‚»ã‚¹ã‚’æŒã¤ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒ‡å®šï¼ˆ0ã‚’æŒ‡å®šã™ã‚‹ï¼‰
+
+    /// COMãƒãƒ¼ãƒˆãŒé–‹ã‹ã‚ŒãŸã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
+    if (commHandle == INVALID_HANDLE_VALUE)
+    {
+      /// ãƒãƒ¼ãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸæ™‚
+      free(portNoStr);
+      free(dcbStr);
+
+      DEBUG_TRACE(TEXT("Failed to open COM Port Reason: %d\n"), GetLastError());
+
+      return FALSE;
+    }
+  */
+  /// é€å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®å®¹é‡ã‚’è¨­å®š
 
 /**
- *	COMƒ|[ƒg‚Ì‰Šúİ’è
+ *	COMãƒãƒ¼ãƒˆã®åˆæœŸè¨­å®š
  */
-/*	if (SetupComm(commHandle, readBufferSize, writeBufferSize))
-	{
-		/// COMMTIMEOUTS\‘¢‘Ì‚Ìİ’è
-		if (initializeCommTimeouts())
-		{
-			//
-			 *	SetCommMask()
-			 *		COMƒ|[ƒg‚Å‚Ìƒf[ƒ^‚Ì’…M‚â‰ñüó‘ÔƒGƒ‰[‚Ì”­¶Co—Íƒoƒbƒtƒ@‚ÌÅŒã‚Ì•¶š‘—M‚È‚Ç‚Ì
-			 *		•¡”‚ÌƒCƒxƒ“ƒg‚ğ‚Ü‚Æ‚ß‚ÄŠÄ‹‚·‚éŠÖ”
-			 *		‘æ1ˆø”: ’ÊMƒfƒoƒCƒX‚Ö‚Ìƒnƒ“ƒhƒ‹
-			 *		‘æ2ˆø”: ŠÄ‹‚·‚éƒCƒxƒ“ƒg
-			//
-			if (SetCommMask(commHandle, commEvent_))
-			{
-				/// Œ»İ‚ÌCOMƒ|[ƒg‚Ì’ÊMİ’è‚ğæ“¾‚·‚é
-				if (GetCommState(commHandle, &commDCBStruct))
-				{
-					/// DCB\‘¢‘Ì‚Ìİ’è
-					if (initializeCommDCB(dcbStr))
-					{
-						/// COMƒ|[ƒg‚Ì’ÊMİ’è‚ğs‚¤
-						if ( SetCommState(commHandle, &commDCBStruct))
-						{
-						}
-						else	/// COMƒ|[ƒg‚Ì’ÊMİ’è¸”s
-						{
-							outputProcessErrorMessage("SetCommState()");
-						}
-					}
-					else	/// DCB\‘¢‘Ì‚Ìİ’è¸”s
-					{
-						outputProcessErrorMessage("initializeCommTimeouts");
-					}
-				}
-				else	/// Œ»İ‚ÌCOMƒ|[ƒg‚Ì’ÊMİ’è‚Ìæ“¾¸”s
-				{
-					outputProcessErrorMessage("GetCommState()");
-				}
-			}
-			else	/// SetCommMask()¸”s
-			{
-				outputProcessErrorMessage("SetCommMask()");
-			}
-		}
-		else	/// COMMTIMEOUTS\‘¢‘Ì‚Ìİ’è¸”s
-		{
-			outputProcessErrorMessage("initializeCommTimeouts()");		
-		}
-	}
-	else
-	{
-		/// ‘—óMƒoƒbƒtƒ@‚Ìİ’è¸”s
-		outputProcessErrorMessage("SetupComm()");
-	}
+ /*	if (SetupComm(commHandle, readBufferSize, writeBufferSize))
+   {
+     /// COMMTIMEOUTSæ§‹é€ ä½“ã®è¨­å®š
+     if (initializeCommTimeouts())
+     {
+       //
+        *	SetCommMask()
+        *		COMãƒãƒ¼ãƒˆã§ã®ãƒ‡ãƒ¼ã‚¿ã®ç€ä¿¡ã‚„å›ç·šçŠ¶æ…‹ã‚¨ãƒ©ãƒ¼ã®ç™ºç”Ÿï¼Œå‡ºåŠ›ãƒãƒƒãƒ•ã‚¡ã®æœ€å¾Œã®æ–‡å­—é€ä¿¡ãªã©ã®
+        *		è¤‡æ•°ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã¾ã¨ã‚ã¦ç›£è¦–ã™ã‚‹é–¢æ•°
+        *		ç¬¬1å¼•æ•°: é€šä¿¡ãƒ‡ãƒã‚¤ã‚¹ã¸ã®ãƒãƒ³ãƒ‰ãƒ«
+        *		ç¬¬2å¼•æ•°: ç›£è¦–ã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆ
+       //
+       if (SetCommMask(commHandle, commEvent_))
+       {
+         /// ç¾åœ¨ã®COMãƒãƒ¼ãƒˆã®é€šä¿¡è¨­å®šã‚’å–å¾—ã™ã‚‹
+         if (GetCommState(commHandle, &commDCBStruct))
+         {
+           /// DCBæ§‹é€ ä½“ã®è¨­å®š
+           if (initializeCommDCB(dcbStr))
+           {
+             /// COMãƒãƒ¼ãƒˆã®é€šä¿¡è¨­å®šã‚’è¡Œã†
+             if ( SetCommState(commHandle, &commDCBStruct))
+             {
+             }
+             else	/// COMãƒãƒ¼ãƒˆã®é€šä¿¡è¨­å®šå¤±æ•—
+             {
+               outputProcessErrorMessage("SetCommState()");
+             }
+           }
+           else	/// DCBæ§‹é€ ä½“ã®è¨­å®šå¤±æ•—
+           {
+             outputProcessErrorMessage("initializeCommTimeouts");
+           }
+         }
+         else	/// ç¾åœ¨ã®COMãƒãƒ¼ãƒˆã®é€šä¿¡è¨­å®šã®å–å¾—å¤±æ•—
+         {
+           outputProcessErrorMessage("GetCommState()");
+         }
+       }
+       else	/// SetCommMask()å¤±æ•—
+       {
+         outputProcessErrorMessage("SetCommMask()");
+       }
+     }
+     else	/// COMMTIMEOUTSæ§‹é€ ä½“ã®è¨­å®šå¤±æ•—
+     {
+       outputProcessErrorMessage("initializeCommTimeouts()");
+     }
+   }
+   else
+   {
+     /// é€å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®è¨­å®šå¤±æ•—
+     outputProcessErrorMessage("SetupComm()");
+   }
 
 
-	/// ’ÊMƒ|[ƒgİ’è‚Ì‚½‚ß‚Ì•¶š—ñÁ‹
-	free( portNoStr );
-	free( dcbStr );
+   /// é€šä¿¡ãƒãƒ¼ãƒˆè¨­å®šã®ãŸã‚ã®æ–‡å­—åˆ—æ¶ˆå»
+   free( portNoStr );
+   free( dcbStr );
 
-	/// Šù‚É‚ ‚éCOMƒ|[ƒg‚Ì‘—óMƒoƒbƒtƒ@‚ğƒNƒŠƒA‚·‚é
-	PurgeComm(commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
-*/
-
-/**
- *	”r‘¼ˆ—I—¹
+   /// æ—¢ã«ã‚ã‚‹COMãƒãƒ¼ãƒˆã®é€å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
+   PurgeComm(commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
  */
-	criticalSection.unlock();
 
-	/// ƒtƒ‰ƒO‚Ì‰Šú‰»
-	isListeningStopped = false;
-	isCommOpen = true;
+ /**
+  *	æ’ä»–å‡¦ç†çµ‚äº†
+  */
+    criticalSection.unlock();
 
-	/// ƒfƒoƒbƒO—p
-	DEBUG_TRACE( TEXT("Initialization for communication port %d completed.\nUse Start monitor to communicate.\n"), portNo );
+    /// ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
+    isListeningStopped = false;
+    isCommOpen = true;
 
-	return TRUE;
+    /// ãƒ‡ãƒãƒƒã‚°ç”¨
+    DEBUG_TRACE(TEXT("Initialization for communication port %d completed.\nUse Start monitor to communicate.\n"), portNo);
+
+    return TRUE;
 
 }	/// end of openSerialPort()
 
 /**
- *	à–¾
- *		ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğ•Â‚¶‚é
- *		ƒ\ƒPƒbƒg‚ğ•Â‚¶‚é
+ *	èª¬æ˜
+ *		ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‰ã˜ã‚‹
+ *		ã‚½ã‚±ãƒƒãƒˆã‚’é–‰ã˜ã‚‹
  */
 void SerialPort::closeSerialPort(void)
 {
-	// Šù‚É•Â‚¶‚ç‚ê‚Ä‚¢‚½‚çI—¹
-	if (!isCommOpen)
-		return;
+    // æ—¢ã«é–‰ã˜ã‚‰ã‚Œã¦ã„ãŸã‚‰çµ‚äº†
+    if (!isCommOpen)
+        return;
 
-	/// ƒXƒŒƒbƒh‚ªsuspend‚³‚ê‚Ä‚½‚çAÄŠJ
-	if (isListeningStopped)
-		restartListening();
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ãŒsuspendã•ã‚Œã¦ãŸã‚‰ã€å†é–‹
+    if (isListeningStopped)
+        restartListening();
 
-	///ƒ\ƒPƒbƒg‚ğ•Â‚¶‚é
-	closesocket(sockHandle);
+    ///ã‚½ã‚±ãƒƒãƒˆã‚’é–‰ã˜ã‚‹
+    closesocket(sockHandle);
 
-	///winsockI—¹
-	WSACleanup();
+    ///winsockçµ‚äº†
+    WSACleanup();
 
-/**
- *	ƒXƒŒƒbƒhI—¹
- */
-	do
-	{
-		SetEvent(writeThreadTerminateHandle);
-	} while (isWriteThreadAlive);
+    /**
+     *	ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†
+     */
+    do
+    {
+        SetEvent(writeThreadTerminateHandle);
+    } while (isWriteThreadAlive);
 
-	/// ƒXƒŒƒbƒh‚ÌI—¹‘Ò‚¿
-	WaitForSingleObject(writeThreadPointer->m_hThread, INFINITE);
-
-
-	do
-	{
-		SetEvent(readThreadTerminateHandle);
-	} while (isReadThreadAlive);
-
-	/// ƒXƒŒƒbƒh‚ÌI—¹‘Ò‚¿
-	WaitForSingleObject(readThreadPointer->m_hThread, INFINITE);
-
-	DEBUG_TRACE( TEXT("Threads ended\n") );
-
-	/// ƒXƒŒƒbƒhƒIƒuƒWƒFƒNƒg‚ÌÁ‹
-	delete writeThreadPointer;
-	delete readThreadPointer;
-
-/**
- *	ƒoƒbƒtƒ@‚ÌŒãn––
- */
-	if (writeBuffer != NULL)
-	{
-		delete [] writeBuffer;
-		writeBuffer = NULL;
-	}
-
-	if (readBuffer != NULL)
-	{
-		delete [] readBuffer;
-		readBuffer = NULL;
-	}
-
-/**
- *	ƒnƒ“ƒhƒ‹‚ğ•Â‚¶‚é
- */
-	/// OVERLAPPED\‘¢‘Ì‚ÌƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹
-	if (readOverLappedStruct.hEvent != NULL)
-	{
-		CloseHandle(readOverLappedStruct.hEvent);
-		readOverLappedStruct.hEvent = NULL;
-	}
-
-	/// OVERLAPPED\‘¢‘Ì‚ÌƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹
-	if (writeOverLappedStruct.hEvent != NULL)
-	{
-		CloseHandle(writeOverLappedStruct.hEvent);
-		writeOverLappedStruct.hEvent = NULL;
-	}
-
-	/// ƒXƒŒƒbƒhI—¹‚ÌƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹
-	if (readThreadTerminateHandle != NULL)
-	{
-		CloseHandle(readThreadTerminateHandle);
-		readThreadTerminateHandle = NULL;
-	}
-
-	/// ƒXƒŒƒbƒhI—¹‚ÌƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹
-	if (writeThreadTerminateHandle != NULL)
-	{
-		CloseHandle(writeThreadTerminateHandle);
-		writeThreadTerminateHandle = NULL;
-	}
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†å¾…ã¡
+    WaitForSingleObject(writeThreadPointer->m_hThread, INFINITE);
 
 
-	/// –¢ˆ—I—¹Cƒoƒbƒtƒ@‚ÌƒNƒŠƒA
-	if (commHandle)
-		PurgeComm(commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+    do
+    {
+        SetEvent(readThreadTerminateHandle);
+    } while (isReadThreadAlive);
 
-	/// COMƒ|[ƒgƒnƒ“ƒhƒ‹
-	if (commHandle != INVALID_HANDLE_VALUE && commHandle != NULL)
-	{
-		CloseHandle(commHandle);
-		commHandle = NULL;
-	}
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†å¾…ã¡
+    WaitForSingleObject(readThreadPointer->m_hThread, INFINITE);
 
-	/// ƒtƒ‰ƒOˆ—
-	isListeningStopped = true;
-	isCommOpen = false;
+    DEBUG_TRACE(TEXT("Threads ended\n"));
+
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ¶ˆå»
+    delete writeThreadPointer;
+    delete readThreadPointer;
+
+    /**
+     *	ãƒãƒƒãƒ•ã‚¡ã®å¾Œå§‹æœ«
+     */
+    if (writeBuffer != NULL)
+    {
+        delete[] writeBuffer;
+        writeBuffer = NULL;
+    }
+
+    if (readBuffer != NULL)
+    {
+        delete[] readBuffer;
+        readBuffer = NULL;
+    }
+
+    /**
+     *	ãƒãƒ³ãƒ‰ãƒ«ã‚’é–‰ã˜ã‚‹
+     */
+     /// OVERLAPPEDæ§‹é€ ä½“ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+    if (readOverLappedStruct.hEvent != NULL)
+    {
+        CloseHandle(readOverLappedStruct.hEvent);
+        readOverLappedStruct.hEvent = NULL;
+    }
+
+    /// OVERLAPPEDæ§‹é€ ä½“ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+    if (writeOverLappedStruct.hEvent != NULL)
+    {
+        CloseHandle(writeOverLappedStruct.hEvent);
+        writeOverLappedStruct.hEvent = NULL;
+    }
+
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+    if (readThreadTerminateHandle != NULL)
+    {
+        CloseHandle(readThreadTerminateHandle);
+        readThreadTerminateHandle = NULL;
+    }
+
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+    if (writeThreadTerminateHandle != NULL)
+    {
+        CloseHandle(writeThreadTerminateHandle);
+        writeThreadTerminateHandle = NULL;
+    }
+
+
+    /// æœªå‡¦ç†çµ‚äº†ï¼Œãƒãƒƒãƒ•ã‚¡ã®ã‚¯ãƒªã‚¢
+    if (commHandle)
+        PurgeComm(commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+
+    /// COMãƒãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ«
+    if (commHandle != INVALID_HANDLE_VALUE && commHandle != NULL)
+    {
+        CloseHandle(commHandle);
+        commHandle = NULL;
+    }
+
+    /// ãƒ•ãƒ©ã‚°å‡¦ç†
+    isListeningStopped = true;
+    isCommOpen = false;
 }
 
 /**
- *	à–¾
- *		DCB‚Ìİ’è
- *	ˆø”
- *		deviceCtrlStr: ƒfƒoƒCƒX§Œäî•ñ‚ğ•\‚·•¶š—ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+ *	èª¬æ˜
+ *		DCBã®è¨­å®š
+ *	å¼•æ•°
+ *		deviceCtrlStr: ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡æƒ…å ±ã‚’è¡¨ã™æ–‡å­—åˆ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿
  */
 BOOL SerialPort::initializeCommDCB(LPTSTR deviceCtrlStr)
 {
-	/**
-	 *	Šî–{İ’è‚Íˆø”‚Å‚ ‚édeviceCtrlStr‚É‚æ‚Á‚ÄŒˆ’è‚·‚é
-	 *	BaudRate, Parity, DataBit, StopBit
-	 */
+    /**
+     *	åŸºæœ¬è¨­å®šã¯å¼•æ•°ã§ã‚ã‚‹deviceCtrlStrã«ã‚ˆã£ã¦æ±ºå®šã™ã‚‹
+     *	BaudRate, Parity, DataBit, StopBit
+     */
+
+     /**
+    *	ãƒ•ãƒ­ãƒ¼åˆ¶å¾¡
+    */
+    //commDCBStruct.fOutxCtsFlow		= FALSE;				/// CTSãƒ•ãƒ­ãƒ¼åˆ¶å¾¡ãªã—
+    //commDCBStruct.fOutxDsrFlow		= FALSE;				/// DSRãƒ•ãƒ­ãƒ¼åˆ¶å¾¡ãªã—
+    commDCBStruct.fDtrControl = DTR_CONTROL_ENABLE;	/// DTRãƒ©ã‚¤ãƒ³æœ‰åŠ¹
+    commDCBStruct.fRtsControl = RTS_CONTROL_ENABLE;	/// RTSãƒ©ã‚¤ãƒ³æœ‰åŠ¹
+    //commDCBStruct.fDsrSensitivity		= FALSE;				/// DSRåˆ¶å¾¡ãªã— 
 
     /**
-	 *	ƒtƒ[§Œä
-	 */
-	//commDCBStruct.fOutxCtsFlow		= FALSE;				/// CTSƒtƒ[§Œä‚È‚µ
-	//commDCBStruct.fOutxDsrFlow		= FALSE;				/// DSRƒtƒ[§Œä‚È‚µ
-	commDCBStruct.fDtrControl			= DTR_CONTROL_ENABLE;	/// DTRƒ‰ƒCƒ“—LŒø
-	commDCBStruct.fRtsControl			= RTS_CONTROL_ENABLE;	/// RTSƒ‰ƒCƒ“—LŒø
-	//commDCBStruct.fDsrSensitivity		= FALSE;				/// DSR§Œä‚È‚µ 
-    
-	/**
-	 *	XON/XOFF
-	 */
-	commDCBStruct.fOutX					= FALSE;				/// XON‚È‚µ
-	commDCBStruct.fInX					= FALSE;				/// XOFF‚È‚µ
-	//commDCBStruct.fTXContinueOnXoff	= TRUE;					/// XON‘—MŒã‚à‘—M‚ğŒp‘±
-	//commDCBStruct.XonLim				= 2048;					/// XON‚ª‘—‚ç‚ê‚é‚Ü‚Å‚ÉŠi”[‚Å‚«‚éÅ¬ƒoƒCƒg”
-	//commDCBStruct.XoffLim				= 2048;					/// XOFF‚ª‘—‚ç‚ê‚é‚Ü‚Å‚ÉŠi”[‚Å‚«‚éÅ¬ƒoƒCƒg”
-	//commDCBStruct.XonChar				= 0x11;					/// XONƒLƒƒƒ‰ƒNƒ^
-	//commDCBStruct.XoffChar			= 0x13;					/// XOFFƒLƒƒƒ‰ƒNƒ^ 
-    
-	/** 
-	 *	‚»‚Ì‘¼‚Ì§Œä
-	 */
-	commDCBStruct.fBinary				= TRUE;					/// ƒoƒCƒiƒŠƒ‚[ƒh
-	//commDCBStruct.fNull				= FALSE;				/// NULLƒoƒCƒg‚Í”jŠü‚µ‚È‚¢
-	commDCBStruct.fAbortOnError			= FALSE;				/// ƒGƒ‰[‚Í“Ç‚İ‘‚«‘€ì‚ğI—¹
-	//commDCBStruct.fErrorChar			= FALSE;				/// ƒpƒŠƒeƒBƒGƒ‰[‚ÌƒLƒƒƒ‰ƒNƒ^’uŠ·‚È‚µ
-	//commDCBStruct.ErrorChar			= 0x00;					/// ’uŠ·ƒLƒƒƒ‰ƒNƒ^
-	//commDCBStruct.EofChar				= 0x03;					/// ƒf[ƒ^I—¹ƒLƒƒƒ‰ƒNƒ^
-	//commDCBStruct.EvtChar				= 0x0a;					/// ƒCƒxƒ“ƒgƒLƒƒƒ‰ƒNƒ^ 
+     *	XON/XOFF
+     */
+    commDCBStruct.fOutX = FALSE;				/// XONãªã—
+    commDCBStruct.fInX = FALSE;				/// XOFFãªã—
+    //commDCBStruct.fTXContinueOnXoff	= TRUE;					/// XONé€ä¿¡å¾Œã‚‚é€ä¿¡ã‚’ç¶™ç¶š
+    //commDCBStruct.XonLim				= 2048;					/// XONãŒé€ã‚‰ã‚Œã‚‹ã¾ã§ã«æ ¼ç´ã§ãã‚‹æœ€å°ãƒã‚¤ãƒˆæ•°
+    //commDCBStruct.XoffLim				= 2048;					/// XOFFãŒé€ã‚‰ã‚Œã‚‹ã¾ã§ã«æ ¼ç´ã§ãã‚‹æœ€å°ãƒã‚¤ãƒˆæ•°
+    //commDCBStruct.XonChar				= 0x11;					/// XONã‚­ãƒ£ãƒ©ã‚¯ã‚¿
+    //commDCBStruct.XoffChar			= 0x13;					/// XOFFã‚­ãƒ£ãƒ©ã‚¯ã‚¿ 
 
-	/// DCB\‘¢‘Ì‚ğİ’è‚·‚é
-	if (BuildCommDCB(deviceCtrlStr, &commDCBStruct))
-	{
-		return TRUE;
-	}
-	else
-	{
-		outputProcessErrorMessage("BuildCommDCB()");
-		return FALSE;
-	}
+    /**
+     *	ãã®ä»–ã®åˆ¶å¾¡
+     */
+    commDCBStruct.fBinary = TRUE;					/// ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰
+    //commDCBStruct.fNull				= FALSE;				/// NULLãƒã‚¤ãƒˆã¯ç ´æ£„ã—ãªã„
+    commDCBStruct.fAbortOnError = FALSE;				/// ã‚¨ãƒ©ãƒ¼æ™‚ã¯èª­ã¿æ›¸ãæ“ä½œã‚’çµ‚äº†
+    //commDCBStruct.fErrorChar			= FALSE;				/// ãƒ‘ãƒªãƒ†ã‚£ã‚¨ãƒ©ãƒ¼æ™‚ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ç½®æ›ãªã—
+    //commDCBStruct.ErrorChar			= 0x00;					/// ç½®æ›ã‚­ãƒ£ãƒ©ã‚¯ã‚¿
+    //commDCBStruct.EofChar				= 0x03;					/// ãƒ‡ãƒ¼ã‚¿çµ‚äº†ã‚­ãƒ£ãƒ©ã‚¯ã‚¿
+    //commDCBStruct.EvtChar				= 0x0a;					/// ã‚¤ãƒ™ãƒ³ãƒˆã‚­ãƒ£ãƒ©ã‚¯ã‚¿ 
+
+    /// DCBæ§‹é€ ä½“ã‚’è¨­å®šã™ã‚‹
+    if (BuildCommDCB(deviceCtrlStr, &commDCBStruct))
+    {
+        return TRUE;
+    }
+    else
+    {
+        outputProcessErrorMessage("BuildCommDCB()");
+        return FALSE;
+    }
 
 
 }
 
 /**
- *	à–¾
- *		COMMTIMEOUTS‚Ìİ’è
+ *	èª¬æ˜
+ *		COMMTIMEOUTSã®è¨­å®š
  */
 BOOL SerialPort::initializeCommTimeouts(void)
 {
-/**
- *	ƒ^ƒCƒ€ƒAƒEƒg‚ğİ’è‚µCóMŠJn‚©‚ç10msˆÈ“à‚É‰“š‚ª–³‚¯‚ê‚Î–³‰“š
- */
-/**
- *	óMƒ^ƒCƒ€ƒAƒEƒg
- *		ReadTotalTimeoutMultiplier x óMƒoƒCƒg” + ReadTotalTimeoutConstant
- *	‘—Mƒ^ƒCƒ€ƒAƒEƒg
- *		WriteTotalTimeoutMultiplier x ‘—MƒoƒCƒg” + WriteTotalTimeoutConstant
- */
-	memset(&commTimeoutsStruct, 0, sizeof(commTimeoutsStruct));
+    /**
+     *	ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’è¨­å®šã—ï¼Œå—ä¿¡é–‹å§‹ã‹ã‚‰10msä»¥å†…ã«å¿œç­”ãŒç„¡ã‘ã‚Œã°ç„¡å¿œç­”
+     */
+     /**
+      *	å—ä¿¡ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+      *		ReadTotalTimeoutMultiplier x å—ä¿¡ãƒã‚¤ãƒˆæ•° + ReadTotalTimeoutConstant
+      *	é€ä¿¡ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+      *		WriteTotalTimeoutMultiplier x é€ä¿¡ãƒã‚¤ãƒˆæ•° + WriteTotalTimeoutConstant
+      */
+    memset(&commTimeoutsStruct, 0, sizeof(commTimeoutsStruct));
 
-	commTimeoutsStruct.ReadIntervalTimeout = 100;
-	commTimeoutsStruct.ReadTotalTimeoutMultiplier = 0;
-	commTimeoutsStruct.ReadTotalTimeoutConstant = 0;
-	
-	commTimeoutsStruct.WriteTotalTimeoutMultiplier = 100;
-	commTimeoutsStruct.WriteTotalTimeoutConstant = 100;
+    commTimeoutsStruct.ReadIntervalTimeout = 100;
+    commTimeoutsStruct.ReadTotalTimeoutMultiplier = 0;
+    commTimeoutsStruct.ReadTotalTimeoutConstant = 0;
 
-	if (!SetCommTimeouts(commHandle, &commTimeoutsStruct))
-	{
-		outputProcessErrorMessage("SetCommTimeouts()");
-		return FALSE;
-	}
+    commTimeoutsStruct.WriteTotalTimeoutMultiplier = 100;
+    commTimeoutsStruct.WriteTotalTimeoutConstant = 100;
 
-	return TRUE;
+    if (!SetCommTimeouts(commHandle, &commTimeoutsStruct))
+    {
+        outputProcessErrorMessage("SetCommTimeouts()");
+        return FALSE;
+    }
+
+    return TRUE;
 
 }
 
 /**
- *	COMƒ|[ƒg‚ÌŠÄ‹ŠÖ”iƒXƒŒƒbƒhŠJnE’â~EI—¹j
+ *	COMãƒãƒ¼ãƒˆã®ç›£è¦–é–¢æ•°ï¼ˆã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ãƒ»åœæ­¢ãƒ»çµ‚äº†ï¼‰
  */
-/// ƒ‚ƒjƒ^ƒŠƒ“ƒOŠJn
+ /// ãƒ¢ãƒ‹ã‚¿ãƒªãƒ³ã‚°é–‹å§‹
 BOOL SerialPort::startListening(void)
 {
-	/**
-	 *	CWinThread* AfxBeginThread(	AFX_THREADPROC pfnThreadProc, 
-     *								LPVOID pParam, 
-	 *								int nPriority = THREAD_PRIORITY_NORMAL, 
-	 *								UINT nStackSize = 0, 
-	 *								DWORD dwCreateFlags = 0, 
-	 *								LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL )
-	 */
+    /**
+     *	CWinThread* AfxBeginThread(	AFX_THREADPROC pfnThreadProc,
+       *								LPVOID pParam,
+     *								int nPriority = THREAD_PRIORITY_NORMAL,
+     *								UINT nStackSize = 0,
+     *								DWORD dwCreateFlags = 0,
+     *								LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL )
+     */
 
-//////////óMƒXƒŒƒbƒhŠJn///////////////////////////////////////////////////////////
-	readThreadPointer = AfxBeginThread(	readEventListenThread,    //§ŒäŠÖ”
-										(LPVOID)this,             //§ŒäŠÖ”‚É“n‚·ƒpƒ‰ƒ[ƒ^
-										THREAD_PRIORITY_NORMAL,   //ƒXƒŒƒbƒh‚Ì—Dæ‡ˆÊ
-										0,                        //ì¬’¼Œã‚ÉƒXƒŒƒbƒh‚ğŠJn
-										CREATE_SUSPENDED
-										);
+     //////////å—ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹///////////////////////////////////////////////////////////
+    readThreadPointer = AfxBeginThread(readEventListenThread,    //åˆ¶å¾¡é–¢æ•°
+                      (LPVOID)this,             //åˆ¶å¾¡é–¢æ•°ã«æ¸¡ã™ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+                      THREAD_PRIORITY_NORMAL,   //ã‚¹ãƒ¬ãƒƒãƒ‰ã®å„ªå…ˆé †ä½
+                      0,                        //ä½œæˆç›´å¾Œã«ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é–‹å§‹
+                      CREATE_SUSPENDED
+    );
 
-	readThreadPointer->m_bAutoDelete=FALSE;
-	readThreadPointer->ResumeThread();
+    readThreadPointer->m_bAutoDelete = FALSE;
+    readThreadPointer->ResumeThread();
 
-	
-///////// ‘—MƒXƒŒƒbƒhŠJn///////////////////////////////////////////////////////////
-	writeThreadPointer = AfxBeginThread(	writeEventListenThread,
-											(LPVOID)this,
-											THREAD_PRIORITY_NORMAL,
-											0,
-											CREATE_SUSPENDED
-										);
 
-	writeThreadPointer->m_bAutoDelete=FALSE;
-	writeThreadPointer->ResumeThread();
+    ///////// é€ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹///////////////////////////////////////////////////////////
+    writeThreadPointer = AfxBeginThread(writeEventListenThread,
+                        (LPVOID)this,
+                        THREAD_PRIORITY_NORMAL,
+                        0,
+                        CREATE_SUSPENDED
+    );
 
-	DEBUG_TRACE( TEXT("Thread started\n") );
+    writeThreadPointer->m_bAutoDelete = FALSE;
+    writeThreadPointer->ResumeThread();
 
-	/// ƒtƒ‰ƒO‚Ì”½“]
-	isListeningStopped = false;
+    DEBUG_TRACE(TEXT("Thread started\n"));
 
-	return TRUE;	
+    /// ãƒ•ãƒ©ã‚°ã®åè»¢
+    isListeningStopped = false;
+
+    return TRUE;
 }
 
-/// ƒ‚ƒjƒ^ƒŠƒ“ƒOÄŠJ
+/// ãƒ¢ãƒ‹ã‚¿ãƒªãƒ³ã‚°å†é–‹
 BOOL SerialPort::restartListening(void)
 {
-	if (!isListeningStopped)
-		return FALSE;
+    if (!isListeningStopped)
+        return FALSE;
 
-	/// ƒXƒŒƒbƒhÄŠJ
-	readThreadPointer->ResumeThread();
-	writeThreadPointer->ResumeThread();
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰å†é–‹
+    readThreadPointer->ResumeThread();
+    writeThreadPointer->ResumeThread();
 
-	DEBUG_TRACE( TEXT("Thread resumed\n") );
+    DEBUG_TRACE(TEXT("Thread resumed\n"));
 
-	/// ƒtƒ‰ƒO‚ÌŒˆ’è
-	isListeningStopped = false;
+    /// ãƒ•ãƒ©ã‚°ã®æ±ºå®š
+    isListeningStopped = false;
 
-	return TRUE;	
+    return TRUE;
 }
 
-/// ƒ‚ƒjƒ^ƒŠƒ“ƒO’â~
+/// ãƒ¢ãƒ‹ã‚¿ãƒªãƒ³ã‚°åœæ­¢
 BOOL SerialPort::stopListening(void)
 {
-	if (isListeningStopped)
-		return FALSE;
+    if (isListeningStopped)
+        return FALSE;
 
-	/// ƒXƒŒƒbƒh’â~
-	readThreadPointer->SuspendThread();
-	writeThreadPointer->SuspendThread();
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢
+    readThreadPointer->SuspendThread();
+    writeThreadPointer->SuspendThread();
 
-	DEBUG_TRACE( TEXT("Thread suspended\n") );
+    DEBUG_TRACE(TEXT("Thread suspended\n"));
 
-	/// ƒtƒ‰ƒO‚ÌŒˆ’è
-	isListeningStopped = true;
+    /// ãƒ•ãƒ©ã‚°ã®æ±ºå®š
+    isListeningStopped = true;
 
-	return TRUE;
+    return TRUE;
 }
 
 /**
- *	à–¾
- *		COMƒ|[ƒg‚Öƒf[ƒ^‚ğ‘—M
- *	ˆø”
- *		sendData: ‘‚«‚İƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
- *		bytesToSend: ‘‚«‚İƒTƒCƒY
+ *	èª¬æ˜
+ *		COMãƒãƒ¼ãƒˆã¸ãƒ‡ãƒ¼ã‚¿ã‚’é€ä¿¡
+ *	å¼•æ•°
+ *		sendData: æ›¸ãè¾¼ã¿ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+ *		bytesToSend: æ›¸ãè¾¼ã¿ã‚µã‚¤ã‚º
  */
-void SerialPort::sendData( char* sendData, DWORD bytesToSend)//unsigned char
+void SerialPort::sendData(char* sendData, DWORD bytesToSend)//unsigned char
 {
-	//sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
-	/// COMƒ|[ƒg‚ªŠJ‚©‚ê‚Ä‚¢‚é‚©‚Ìƒ`ƒFƒbƒN
-	//assert(commHandle != 0);
-	
-	/// ‰Šú‰»
-	memset(writeBuffer, 0, sizeof(writeBuffer));
+    //sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
+    /// COMãƒãƒ¼ãƒˆãŒé–‹ã‹ã‚Œã¦ã„ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
+    //assert(commHandle != 0);
 
-	/// ƒf[ƒ^ƒRƒs[
-	int i;
-	for (i=0; i<(int)bytesToSend; i++)
-	{
-		///Winsock2‚Ìsendto‚ÍcharŒ^”z—ñ‚È‚Ì‚Å’ˆÓ
-		writeBuffer[i] = sendData[i];//(char)
-	}
+    /// åˆæœŸåŒ–
+    memset(writeBuffer, 0, sizeof(writeBuffer));
 
-	/// ‘—MƒoƒCƒg”‘ã“ü
-	bytesToWrite = bytesToSend;
+    /// ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
+    int i;
+    for (i = 0; i < (int)bytesToSend; i++)
+    {
+        ///Winsock2ã®sendtoã¯charå‹é…åˆ—ãªã®ã§æ³¨æ„
+        writeBuffer[i] = sendData[i];//(char)
+    }
 
-	/// ‘‚«‚İƒXƒŒƒbƒh‚Ì‚½‚ß‚Ì‘—MƒCƒxƒ“ƒgƒZƒbƒg
-	SetEvent(writeOverLappedStruct.hEvent);
+    /// é€ä¿¡ãƒã‚¤ãƒˆæ•°ä»£å…¥
+    bytesToWrite = bytesToSend;
 
-	return;
+    /// æ›¸ãè¾¼ã¿ã‚¹ãƒ¬ãƒƒãƒ‰ã®ãŸã‚ã®é€ä¿¡ã‚¤ãƒ™ãƒ³ãƒˆã‚»ãƒƒãƒˆ
+    SetEvent(writeOverLappedStruct.hEvent);
+
+    return;
 }
 
 /**
  *	------------------------------------------------------------
- *		SerialPort‚Ìprotected‚Èƒƒ“ƒoŠÖ”
+ *		SerialPortã®protectedãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
 
-/**	
- *	à–¾
- *		’ÊMƒGƒ‰[‚Ìæ“¾
- *	ˆø”
- *		‘‚«‚İæ‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
+ /**
+  *	èª¬æ˜
+  *		é€šä¿¡ã‚¨ãƒ©ãƒ¼ã®å–å¾—
+  *	å¼•æ•°
+  *		æ›¸ãè¾¼ã¿å…ˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
+  */
 void SerialPort::outputProcessErrorMessage(char* errorText)
 {
-	TCHAR* message;
-	TCHAR error[1024];
+    TCHAR* message;
+    TCHAR error[1024];
 
-	FormatMessage(	FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL,
-					GetLastError(),
-					MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),	/// ƒfƒtƒHƒ‹ƒgŒ¾Œê
-					(TCHAR*)&message,
-					0,
-					NULL
-					);
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+            NULL,
+            GetLastError(),
+            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),	/// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨€èª
+            (TCHAR*)&message,
+            0,
+            NULL
+    );
 
-	_stprintf(	error, 
-				TEXT("WARNING:  %S Failed with the following error: \n%s\nPort: %d\n"), 
-				errorText, 
-				message, 
-				commPortNumber
-				);
+    _stprintf(error,
+          TEXT("WARNING:  %S Failed with the following error: \n%s\nPort: %d\n"),
+          errorText,
+          message,
+          commPortNumber
+    );
 
-	MessageBox(NULL, error, TEXT("Serial Port Application Error"), MB_ICONSTOP);
+    MessageBox(NULL, error, TEXT("Serial Port Application Error"), MB_ICONSTOP);
 
-	LocalFree(message);
+    LocalFree(message);
 }
 
 
@@ -811,649 +811,649 @@ void SerialPort::outputProcessErrorMessage(char* errorText)
 
 
 /**
- *	óM‚É—p‚¢‚éƒXƒŒƒbƒhŠÖ”
+ *	å—ä¿¡ã«ç”¨ã„ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰é–¢æ•°
  */
 UINT SerialPort::readEventListenThread(LPVOID pUserData)//LPVOID UserData
 {
-/*	/// ˆø”‚ÌVOIDƒ|ƒCƒ“ƒ^‚ğSerialPortƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^‚ÖƒLƒƒƒXƒg
-	SerialPort* port = (SerialPort*) pUserData;
-	
-	/// ƒXƒŒƒbƒh‚ª‘–‚Á‚Ä‚¢‚é‚±‚Æ‚ğ’Ê’m‚·‚é‚½‚ßCó‘Ô•Ï”‚ğTRUE‚É‚·‚é
-	port->isReadThreadAlive = TRUE;	
-		
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-	DWORD		eventMask = 0;
-	DWORD		readThreadEvents = 0;
-	DWORD		readEventMask = 0;
-	DWORD		commErrors = 0;
-	BOOL		isEventOccurred = TRUE;
-	COMSTAT		comStat;
+    /*	/// å¼•æ•°ã®VOIDãƒã‚¤ãƒ³ã‚¿ã‚’SerialPortã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ã¸ã‚­ãƒ£ã‚¹ãƒˆ
+      SerialPort* port = (SerialPort*) pUserData;
 
-	/// ƒ|[ƒg‚ªŠJ‚©‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN‚µ‚ÄC‹N“®‚É’ÊMƒoƒbƒtƒ@‚ğƒNƒŠƒA
-	if (port->commHandle)
-		PurgeComm(port->commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+      /// ã‚¹ãƒ¬ãƒƒãƒ‰ãŒèµ°ã£ã¦ã„ã‚‹ã“ã¨ã‚’é€šçŸ¥ã™ã‚‹ãŸã‚ï¼ŒçŠ¶æ…‹å¤‰æ•°ã‚’TRUEã«ã™ã‚‹
+      port->isReadThreadAlive = TRUE;
 
-	//
-	 //	–³ŒÀƒ‹[ƒv
-	 //	‚±‚Ìƒ‹[ƒv‚ÍƒXƒŒƒbƒh‚ª‘–‚Á‚Ä‚¢‚éŒÀ‚èŒp‘±
-	 //
-	while (1) 
-	{ 
-		//
-		 //	WaitCommEventŠÖ”‚ÌŒÄ‚Ño‚µ
-		 //		‚½‚¾‚µC’ÊMƒ|[ƒg‚ğ”ñ“¯Šú‚ÅŠJ‚¢‚½‚½‚ß‚·‚®‚ÉI—¹‚·‚é
-		 //
-		 //		‚±‚ÌŒÄ‚Ño‚µ‚É‚æ‚èCoverLappedStruct‚Ìƒƒ“ƒo‚Å‚ ‚éhEventireadEventHandles[1]j‚ğ
-		 //		“Ç‚İ‚İ‰Â”\‚Èbyteƒf[ƒ^‚ª‚È‚¯‚ê‚ÎƒŠƒZƒbƒgó‘Ô‚ÉC“Ç‚İ‚İ‰Â”\‚Èƒf[ƒ^‚ª‚ ‚ê‚ÎƒZƒbƒgó‘Ô‚É‚·‚é
-		 //
-		 //		‚±‚ÌƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹‚ªƒŠƒZƒbƒgó‘Ô‚Å‚ ‚é‚ÆC’ÊMƒ|[ƒg‚Éƒf[ƒ^‚ª—ˆ‚½‚ÉƒZƒbƒgó‘Ô‚É‚È‚é
-		 //		‚È‚¨C‚±‚Ì‚ÍOverLapped\‘¢‘Ì‚Éè“®ƒŠƒZƒbƒgƒCƒxƒ“ƒg‚Ìƒnƒ“ƒhƒ‹‚ğw’è‚µ‚Ä‚¨‚­•K—v‚ª‚ ‚é
-		 //
-		isEventOccurred = WaitCommEvent(port->commHandle, &eventMask, &port->readOverLappedStruct);
+      /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+      DWORD		eventMask = 0;
+      DWORD		readThreadEvents = 0;
+      DWORD		readEventMask = 0;
+      DWORD		commErrors = 0;
+      BOOL		isEventOccurred = TRUE;
+      COMSTAT		comStat;
 
-		/// ˆÈ‰º‚ÅóM‚ª‚ ‚Á‚½‚©‚Ç‚¤‚©‚ÌŠm”F
-		if ( !isEventOccurred )	/// óMƒCƒxƒ“ƒg‚ª‚È‚©‚Á‚½‚ç
-		{
-			 //
-			 //	WaitCommEventŠÖ”‚ªFALSE‚ğ•Ô‚µ‚½ê‡CƒvƒƒZƒX‚É‚æ‚èƒGƒ‰[‚ªŒˆ’è‚³‚ê‚é
-			 //	ˆÈ‰º‚Å‚Ì‚»‚ÌƒGƒ‰[‚Ì“Á’è‚ğs‚¤
-			 //
-			switch (commErrors = GetLastError()) 
-			{ 
-				case ERROR_IO_PENDING: 	
-				{ 
-					/// ‚±‚ÌƒGƒ‰[‚Íƒ|[ƒg‚Éƒf[ƒ^‚ª‚È‚¢ê‡‚Ì’Êí‚Ì–ß‚è’l
-					/// “Á‚É‰½‚à‚¹‚¸‚É‘±‚¯‚é
-					break;
-				}
-				case 87:
-				{
-					/// Windows NTŒn‚Ìê‡C‰½‚©‚Ì——R‚Å•Ô‹p‚³‚ê‚é‚±‚Æ‚ª‚ ‚é
-					/// ‚µ‚©‚µ“Á‚É–â‘è‚È‚¢‚Ì‚ÅŒp‘±‰Â
-					break;
-				}
-				default:
-				{
-					/// ‘¼‚Ì‘S‚Ä‚ÌƒGƒ‰[F[‚ÈƒGƒ‰[‚ª‹N‚«‚½‚±‚Æ‚ğ¦‚·
-					/// ‚µ‚½‚ª‚Á‚Ä‚±‚ÌƒGƒ‰[ˆ—‚ğ‚·‚é
-					port->outputProcessErrorMessage( "WaitCommEvent()" );
-					break;
-				}
-			}	/// switch ( commErrors = GetLastError() ) 
-		}	/// end if isEventOccurred
-*/
-		/**
-		 *	óM‘Ò‹@ŠÖ”
-		 *	‚±‚ÌŠÖ”‚É‚æ‚è1‚Â‚ÌƒCƒxƒ“ƒg‚ª”­¶‚·‚é‚Ü‚ÅƒXƒŒƒbƒh‚ª’ÊíƒuƒƒbƒN‚³‚ê‚é
-		 */
-		/**
-		 *	DWORD WaitForMultipleObjects(
-		 *				DWORD  nCount,				/// ƒIƒuƒWƒFƒNƒg‚Ì”
-		 *				CONST HANDLE *pHandles,		/// ƒnƒ“ƒhƒ‹‚Ì”z—ñ
-		 *				BOOL   bWaitAll,			/// ‘Ò‹@ƒCƒxƒ“ƒg‚ÌƒVƒOƒiƒ‹ó‘Ô‚ğ1‚Â‚©‚·‚×‚Ä‘Ò‚Â‚©‚Ìƒtƒ‰ƒO
-		 *				DWORD  dwMilliseconds		/// ƒ^ƒCƒ€ƒAƒEƒgŠÔ
-		 *				);
-		 */
-		//readThreadEvents = WaitForMultipleObjects(2, port->readEventHandles, FALSE, INFINITE);
+      /// ãƒãƒ¼ãƒˆãŒé–‹ã‹ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã—ã¦ï¼Œèµ·å‹•æ™‚ã«é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢
+      if (port->commHandle)
+        PurgeComm(port->commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
 
-		/**
-		 *	WaitCommEventŠÖ”‚É‚æ‚èƒCƒxƒ“ƒg‚ğŒŸ’m‚µ‚½ê‡
-		 *	ÀÛ‚Éƒoƒbƒtƒ@‚Éƒf[ƒ^‚ª‚ ‚é‚©ƒ`ƒFƒbƒN‚·‚é
-		 */
-		/**
-		 *	ClearCommError()
-		 *		ƒGƒ‰[‚ğƒNƒŠƒA‚·‚é‚±‚Æ‚ª–Ú“I‚Å‚ ‚é‚Ì‚ÅC–{—ˆ‚Ì–Ú“I‚Æ‚ÍˆÙ‚È‚éD
-		 *		‚µ‚©‚µC‚±‚ÌŠÖ”‚É‚æ‚è•Ô‚³‚ê‚é\‘¢‘ÌCOMSTAT‚ÉC
-		 *		óMƒoƒbƒtƒ@’†‚Ìƒf[ƒ^”‚ğ‚ ‚ç‚í‚·ƒƒ“ƒocbInQue ‚ª‚ ‚é‚Ì‚Å, 
-		 *		‚±‚ÌŠÖ”‚ğŒÄ‚Ño‚µCóMƒf[ƒ^”‚ğæ“¾‚·‚é
-		 */
-/*		isEventOccurred = ClearCommError(port->commHandle, &commErrors, &comStat);
+      //
+       //	ç„¡é™ãƒ«ãƒ¼ãƒ—
+       //	ã“ã®ãƒ«ãƒ¼ãƒ—ã¯ã‚¹ãƒ¬ãƒƒãƒ‰ãŒèµ°ã£ã¦ã„ã‚‹é™ã‚Šç¶™ç¶š
+       //
+      while (1)
+      {
+        //
+         //	WaitCommEventé–¢æ•°ã®å‘¼ã³å‡ºã—
+         //		ãŸã ã—ï¼Œé€šä¿¡ãƒãƒ¼ãƒˆã‚’éåŒæœŸã§é–‹ã„ãŸãŸã‚ã™ãã«çµ‚äº†ã™ã‚‹
+         //
+         //		ã“ã®å‘¼ã³å‡ºã—ã«ã‚ˆã‚Šï¼ŒoverLappedStructã®ãƒ¡ãƒ³ãƒã§ã‚ã‚‹hEventï¼ˆreadEventHandles[1]ï¼‰ã‚’
+         //		èª­ã¿è¾¼ã¿å¯èƒ½ãªbyteãƒ‡ãƒ¼ã‚¿ãŒãªã‘ã‚Œã°ãƒªã‚»ãƒƒãƒˆçŠ¶æ…‹ã«ï¼Œèª­ã¿è¾¼ã¿å¯èƒ½ãªãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Œã°ã‚»ãƒƒãƒˆçŠ¶æ…‹ã«ã™ã‚‹
+         //
+         //		ã“ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ãŒãƒªã‚»ãƒƒãƒˆçŠ¶æ…‹ã§ã‚ã‚‹ã¨ï¼Œé€šä¿¡ãƒãƒ¼ãƒˆã«ãƒ‡ãƒ¼ã‚¿ãŒæ¥ãŸæ™‚ã«ã‚»ãƒƒãƒˆçŠ¶æ…‹ã«ãªã‚‹
+         //		ãªãŠï¼Œã“ã®æ™‚ã¯OverLappedæ§‹é€ ä½“ã«æ‰‹å‹•ãƒªã‚»ãƒƒãƒˆã‚¤ãƒ™ãƒ³ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒ‡å®šã—ã¦ãŠãå¿…è¦ãŒã‚ã‚‹
+         //
+        isEventOccurred = WaitCommEvent(port->commHandle, &eventMask, &port->readOverLappedStruct);
 
-		switch (readThreadEvents)
-		{
-			case WAIT_OBJECT_0:	/// ƒXƒŒƒbƒhƒVƒƒƒbƒgƒ_ƒEƒ“ƒCƒxƒ“ƒg
-			{
-				/// ‚±‚ÌƒCƒxƒ“ƒg‚ÍÅ—Dæ‚Å‚ ‚èÅ‰‚É’ñ‹Ÿ‚³‚ê‚é
-			 	port->isReadThreadAlive = FALSE;
-				
-				/// ƒXƒŒƒbƒh”jŠü
-				AfxEndThread(100);
-				
-				break;
-			}
-		
-			case WAIT_OBJECT_0 + 1:	/// “Ç‚İ‚İƒCƒxƒ“ƒg
-			{
-				/// óMƒoƒbƒtƒ@‚ğŠm”F‚µ‚ÄCƒf[ƒ^‚ª‚È‚¯‚ê‚Î–³ŒÀƒ‹[ƒv‚ÌÅ‰‚É–ß‚é
-				if ( comStat.cbInQue == 0 )
-					continue;
+        /// ä»¥ä¸‹ã§å—ä¿¡ãŒã‚ã£ãŸã‹ã©ã†ã‹ã®ç¢ºèª
+        if ( !isEventOccurred )	/// å—ä¿¡ã‚¤ãƒ™ãƒ³ãƒˆãŒãªã‹ã£ãŸã‚‰
+        {
+           //
+           //	WaitCommEventé–¢æ•°ãŒFALSEã‚’è¿”ã—ãŸå ´åˆï¼Œãƒ—ãƒ­ã‚»ã‚¹ã«ã‚ˆã‚Šã‚¨ãƒ©ãƒ¼ãŒæ±ºå®šã•ã‚Œã‚‹
+           //	ä»¥ä¸‹ã§ã®ãã®ã‚¨ãƒ©ãƒ¼ã®ç‰¹å®šã‚’è¡Œã†
+           //
+          switch (commErrors = GetLastError())
+          {
+            case ERROR_IO_PENDING:
+            {
+              /// ã“ã®ã‚¨ãƒ©ãƒ¼ã¯ãƒãƒ¼ãƒˆã«ãƒ‡ãƒ¼ã‚¿ãŒãªã„å ´åˆã®é€šå¸¸ã®æˆ»ã‚Šå€¤
+              /// ç‰¹ã«ä½•ã‚‚ã›ãšã«ç¶šã‘ã‚‹
+              break;
+            }
+            case 87:
+            {
+              /// Windows NTç³»ã®å ´åˆï¼Œä½•ã‹ã®ç†ç”±ã§è¿”å´ã•ã‚Œã‚‹ã“ã¨ãŒã‚ã‚‹
+              /// ã—ã‹ã—ç‰¹ã«å•é¡Œãªã„ã®ã§ç¶™ç¶šå¯
+              break;
+            }
+            default:
+            {
+              /// ä»–ã®å…¨ã¦ã®ã‚¨ãƒ©ãƒ¼ï¼šæ·±åˆ»ãªã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸã“ã¨ã‚’ç¤ºã™
+              /// ã—ãŸãŒã£ã¦ã“ã®ã‚¨ãƒ©ãƒ¼å‡¦ç†ã‚’ã™ã‚‹
+              port->outputProcessErrorMessage( "WaitCommEvent()" );
+              break;
+            }
+          }	/// switch ( commErrors = GetLastError() )
+        }	/// end if isEventOccurred
+    */
+    /**
+     *	å—ä¿¡å¾…æ©Ÿé–¢æ•°
+     *	ã“ã®é–¢æ•°ã«ã‚ˆã‚Š1ã¤ã®ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã™ã‚‹ã¾ã§ã‚¹ãƒ¬ãƒƒãƒ‰ãŒé€šå¸¸ãƒ–ãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
+     */
+     /**
+      *	DWORD WaitForMultipleObjects(
+      *				DWORD  nCount,				/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°
+      *				CONST HANDLE *pHandles,		/// ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—
+      *				BOOL   bWaitAll,			/// å¾…æ©Ÿã‚¤ãƒ™ãƒ³ãƒˆã®ã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã‚’1ã¤ã‹ã™ã¹ã¦å¾…ã¤ã‹ã®ãƒ•ãƒ©ã‚°
+      *				DWORD  dwMilliseconds		/// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚é–“
+      *				);
+      */
+      //readThreadEvents = WaitForMultipleObjects(2, port->readEventHandles, FALSE, INFINITE);
 
-				/// COMƒ|[ƒg‚ÌƒCƒxƒ“ƒg‚ğæ“¾‚·‚é
-				GetCommMask(port->commHandle, &readEventMask);
+      /**
+       *	WaitCommEventé–¢æ•°ã«ã‚ˆã‚Šã‚¤ãƒ™ãƒ³ãƒˆã‚’æ¤œçŸ¥ã—ãŸå ´åˆ
+       *	å®Ÿéš›ã«ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+       */
+       /**
+        *	ClearCommError()
+        *		ã‚¨ãƒ©ãƒ¼ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ã“ã¨ãŒç›®çš„ã§ã‚ã‚‹ã®ã§ï¼Œæœ¬æ¥ã®ç›®çš„ã¨ã¯ç•°ãªã‚‹ï¼
+        *		ã—ã‹ã—ï¼Œã“ã®é–¢æ•°ã«ã‚ˆã‚Šè¿”ã•ã‚Œã‚‹æ§‹é€ ä½“COMSTATã«ï¼Œ
+        *		å—ä¿¡ãƒãƒƒãƒ•ã‚¡ä¸­ã®ãƒ‡ãƒ¼ã‚¿æ•°ã‚’ã‚ã‚‰ã‚ã™ãƒ¡ãƒ³ãƒcbInQue ãŒã‚ã‚‹ã®ã§,
+        *		ã“ã®é–¢æ•°ã‚’å‘¼ã³å‡ºã—ï¼Œå—ä¿¡ãƒ‡ãƒ¼ã‚¿æ•°ã‚’å–å¾—ã™ã‚‹
+        */
+        /*		isEventOccurred = ClearCommError(port->commHandle, &commErrors, &comStat);
 
-				//
-				 //	óMˆÈŠO‚ÌƒCƒxƒ“ƒg‚ª‹N‚±‚Á‚Ä‚¢‚½‚ç‚Ü‚¸ˆ—‚·‚é
-				 //
-				/// CTSi‘—M‰ÂjM†‚Ìó‘Ô‚ª•Ï‰»
-				if ( readEventMask & EV_CTS && port->commOwnerWindowHandle != NULL)
-					::SendMessage(port->commOwnerWindowHandle, 
-										WM_COMM_CTS_DETECTED, 
-										(WPARAM) 0, 
-										(LPARAM) port->commPortNumber);
+            switch (readThreadEvents)
+            {
+              case WAIT_OBJECT_0:	/// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆ
+              {
+                /// ã“ã®ã‚¤ãƒ™ãƒ³ãƒˆã¯æœ€å„ªå…ˆã§ã‚ã‚Šæœ€åˆã«æä¾›ã•ã‚Œã‚‹
+                port->isReadThreadAlive = FALSE;
 
-				/// “ü—Íã‚ÅƒuƒŒ[ƒN‚ğŒŸo
-				if ( readEventMask & EV_BREAK && port->commOwnerWindowHandle != NULL)
-					::SendMessage(port->commOwnerWindowHandle, 
-										WM_COMM_BREAK_DETECTED, 
-										(WPARAM) 2, 
-										(LPARAM) port->commPortNumber);
+                /// ã‚¹ãƒ¬ãƒƒãƒ‰ç ´æ£„
+                AfxEndThread(100);
 
-				/// ‰ñüó‘ÔƒGƒ‰[‚ª”­¶iCE_FRAMEACE_OVERRUNACE_RXPARITYj
-				if ( readEventMask & EV_ERR && port->commOwnerWindowHandle != NULL)
-					::SendMessage(port->commOwnerWindowHandle, 
-										WM_COMM_ERR_DETECTED, 
-										(WPARAM) 3, 
-										(LPARAM) port->commPortNumber);
+                break;
+              }
 
-				/// ŒÄ‚Ño‚µM†‚ğŒŸo
-				if ( readEventMask & EV_RING && port->commOwnerWindowHandle != NULL)
-					::SendMessage(port->commOwnerWindowHandle, 
-										WM_COMM_RING_DETECTED, 
-										(WPARAM) 4, 
-										(LPARAM) port->commPortNumber);
+              case WAIT_OBJECT_0 + 1:	/// èª­ã¿è¾¼ã¿ã‚¤ãƒ™ãƒ³ãƒˆ
+              {
+                /// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºèªã—ã¦ï¼Œãƒ‡ãƒ¼ã‚¿ãŒãªã‘ã‚Œã°ç„¡é™ãƒ«ãƒ¼ãƒ—ã®æœ€åˆã«æˆ»ã‚‹
+                if ( comStat.cbInQue == 0 )
+                  continue;
 
-				/// COMƒ|[ƒg‚©‚ç•¶š—ñƒf[ƒ^‚ğóM
-				if ( readEventMask & EV_RXCHAR )
-				{
-					readData(port, comStat);//‚±‚±‚ğ‚¢‚¶‚Á‚Äo—Í
-				}
+                /// COMãƒãƒ¼ãƒˆã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹
+                GetCommMask(port->commHandle, &readEventMask);
 
-				break;
-			}
-			default:
-				break;
-		} /// end of switch
+                //
+                 //	å—ä¿¡ä»¥å¤–ã®ã‚¤ãƒ™ãƒ³ãƒˆãŒèµ·ã“ã£ã¦ã„ãŸã‚‰ã¾ãšå‡¦ç†ã™ã‚‹
+                 //
+                /// CTSï¼ˆé€ä¿¡å¯ï¼‰ä¿¡å·ã®çŠ¶æ…‹ãŒå¤‰åŒ–
+                if ( readEventMask & EV_CTS && port->commOwnerWindowHandle != NULL)
+                  ::SendMessage(port->commOwnerWindowHandle,
+                            WM_COMM_CTS_DETECTED,
+                            (WPARAM) 0,
+                            (LPARAM) port->commPortNumber);
 
-		/// óMƒoƒbƒtƒ@‚Ìƒf[ƒ^“Ç‚İ‚İ‚ªI‚í‚Á‚½“_‚ÅƒCƒxƒ“ƒgƒŠƒZƒbƒg
-		ResetEvent(port->readOverLappedStruct.hEvent);
+                /// å…¥åŠ›ä¸Šã§ãƒ–ãƒ¬ãƒ¼ã‚¯ã‚’æ¤œå‡º
+                if ( readEventMask & EV_BREAK && port->commOwnerWindowHandle != NULL)
+                  ::SendMessage(port->commOwnerWindowHandle,
+                            WM_COMM_BREAK_DETECTED,
+                            (WPARAM) 2,
+                            (LPARAM) port->commPortNumber);
 
-	} /// –³ŒÀƒ‹[ƒv
-	*/
-	return 0;
-	
+                /// å›ç·šçŠ¶æ…‹ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿï¼ˆCE_FRAMEã€CE_OVERRUNã€CE_RXPARITYï¼‰
+                if ( readEventMask & EV_ERR && port->commOwnerWindowHandle != NULL)
+                  ::SendMessage(port->commOwnerWindowHandle,
+                            WM_COMM_ERR_DETECTED,
+                            (WPARAM) 3,
+                            (LPARAM) port->commPortNumber);
+
+                /// å‘¼ã³å‡ºã—ä¿¡å·ã‚’æ¤œå‡º
+                if ( readEventMask & EV_RING && port->commOwnerWindowHandle != NULL)
+                  ::SendMessage(port->commOwnerWindowHandle,
+                            WM_COMM_RING_DETECTED,
+                            (WPARAM) 4,
+                            (LPARAM) port->commPortNumber);
+
+                /// COMãƒãƒ¼ãƒˆã‹ã‚‰æ–‡å­—åˆ—ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
+                if ( readEventMask & EV_RXCHAR )
+                {
+                  readData(port, comStat);//ã“ã“ã‚’ã„ã˜ã£ã¦å‡ºåŠ›
+                }
+
+                break;
+              }
+              default:
+                break;
+            } /// end of switch
+
+            /// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿ãŒçµ‚ã‚ã£ãŸæ™‚ç‚¹ã§ã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚»ãƒƒãƒˆ
+            ResetEvent(port->readOverLappedStruct.hEvent);
+
+          } /// ç„¡é™ãƒ«ãƒ¼ãƒ—
+          */
+    return 0;
+
 }
 
 /**
- *	óMƒXƒŒƒbƒh‚Å—p‚¢‚éóMƒoƒbƒtƒ@‚©‚ç‚Ì“Ç‚İo‚µŠÖ”
+ *	å—ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰ã§ç”¨ã„ã‚‹å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ã®èª­ã¿å‡ºã—é–¢æ•°
  */
 void SerialPort::readData(SerialPort* port, COMSTAT& comStat)
 {
-	BOOL	isReadingToTry		= TRUE;		/// “Ç‚İ‚İ‚ğs‚¤‚©‚Ç‚¤‚©
-	BOOL	isReadingCompleted	= TRUE;		/// “Ç‚İ‚İ‚ªŠ®—¹‚µ‚½‚©‚Ç‚¤‚©
-	BOOL	isReadingSucceeded	= TRUE;		/// “Ç‚İ‚İ‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©
-	DWORD	errorCode				= 0;		/// ƒGƒ‰[
-	DWORD	bytesRead				= 0;		/// “Ç‚İ‚ñ‚¾ƒoƒCƒg”
-	int i;										/// ƒJƒEƒ“ƒ^			
-
-	
-	/////////////////////UDPóM////////////////////////////////////
-	///ƒ\ƒPƒbƒgì¬
-/*	port->sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
-
-	assert(port->WSAHandle =! 0);
-	
-	
-	port->addr.sin_family	= AF_INET;									///ƒAƒhƒŒƒXƒtƒ@ƒ~ƒŠ
-	port->addr.sin_port		= htons(port->remort_portNo);//htons(10003);//					///‘Šè‚Ìƒ|[ƒg”Ô†
-	port->addr.sin_addr.S_un.S_addr = inet_addr(port->remort_IPAdress);//inet_addr("192.168.0.169");//	///‘Šè‚ÌIPƒAƒhƒŒƒX
-	
-		
-	bind(port->sockHandle, (struct sockaddr *)&(port->addr), sizeof(port->addr));
-	
-	while(1){
-	
-	///ƒ\ƒPƒbƒg‚Ìƒf[ƒ^‚ğóM
-		isReadingSucceeded =recvfrom( port->sockHandle, 
-									port->readBuffer,//Rxbuffer,
-									port->bytesToRead,//length2,
-									0, 
-									(struct sockaddr *)&port->addr, 
-									sizeof(port->addr));
-	
-		if(isReadingSucceeded == -1);
-	
-	}
-
-	*/
+    BOOL	isReadingToTry = TRUE;		/// èª­ã¿è¾¼ã¿ã‚’è¡Œã†ã‹ã©ã†ã‹
+    BOOL	isReadingCompleted = TRUE;		/// èª­ã¿è¾¼ã¿ãŒå®Œäº†ã—ãŸã‹ã©ã†ã‹
+    BOOL	isReadingSucceeded = TRUE;		/// èª­ã¿è¾¼ã¿ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹
+    DWORD	errorCode = 0;		/// ã‚¨ãƒ©ãƒ¼
+    DWORD	bytesRead = 0;		/// èª­ã¿è¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°
+    int i;										/// ã‚«ã‚¦ãƒ³ã‚¿			
 
 
-	
-	/**
-	 *	–³ŒÀƒ‹[ƒvŠJn
-	 *	“Ç‚İ‚Ş‚×‚«‘S‚Ä‚Ìƒf[ƒ^ˆ—‚ªI—¹‚µ‚Ä‰‚ß‚Äƒ‹[ƒv‚ğ”²‚¯‚é
-	 */
-	while (1)
-	{ 
+    /////////////////////UDPå—ä¿¡////////////////////////////////////
+    ///ã‚½ã‚±ãƒƒãƒˆä½œæˆ
+  /*	port->sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
 
-		ZeroMemory(port->readBuffer, MAX_BUFFER_SIZE);//ƒƒ‚ƒŠ[‚Ì’†g‚ğ0‚É‚·‚é
+    assert(port->WSAHandle =! 0);
 
-		/**
-		 *	”r‘¼ˆ—ŠJn
-		 *	COMƒ|[ƒg‚ÌŠ—LŒ ‚ğæ“¾‚·‚é
-		 */ 
-		port->criticalSection.lock();
 
-		/**
-		 *	ClearCommError()‚É‚æ‚èCOMSTAT\‘¢‘Ì‚ğXV‚µ‘¼‚ÌƒGƒ‰[‚ğÁ‹
-		 */
-		isReadingSucceeded = ClearCommError(port->commHandle, &errorCode, &comStat);
-		port->bytesToRead = comStat.cbInQue;
+    port->addr.sin_family	= AF_INET;									///ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ•ã‚¡ãƒŸãƒª
+    port->addr.sin_port		= htons(port->remort_portNo);//htons(10003);//					///ç›¸æ‰‹ã®ãƒãƒ¼ãƒˆç•ªå·
+    port->addr.sin_addr.S_un.S_addr = inet_addr(port->remort_IPAdress);//inet_addr("192.168.0.169");//	///ç›¸æ‰‹ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
 
-		/// ”r‘¼ˆ—I—¹
-		port->criticalSection.unlock();
 
-		/// “Ç‚İ‚Ş‚×‚«ƒf[ƒ^‚ ‚é‚©‚Ç‚¤‚©Šm”F‚µC‚È‚©‚Á‚½‚çƒ‹[ƒv‚©‚ç”²‚¯‚é
-		if (port->bytesToRead == 0)
-		{
-			break;
-		}
-		else if (port->bytesToRead > 0)
-		{
-			isReadingToTry = TRUE;
+    bind(port->sockHandle, (struct sockaddr *)&(port->addr), sizeof(port->addr));
 
-			/// “Ç‚İ‚à‚¤‚Æ‚·‚éƒoƒbƒtƒ@ƒTƒCƒY‚ªÅ‘å’l‚æ‚è‘å‚«‚©‚Á‚½‚ç
-			if ( port->bytesToRead > port->readBufferSize )
-				port->bytesToRead = port->readBufferSize;
-		}
+    while(1){
 
-		/**
-		 *	”r‘¼ˆ—ŠJn
-		 *	“Ç‚İ‚Ş‘O‚ÉCOMƒ|[ƒg‚ÌŠ—LŒ ‚ğæ“¾‚·‚é
-		 */
-		port->criticalSection.lock();
-		
-		/// ƒf[ƒ^“Ç‚İ‚İ‚ğs‚¤ê‡
-		if (isReadingToTry)
-		{
-			/// •Ï”‚Ì‰Šú‰»
-			port->readOverLappedStruct.Offset = 0;
-			port->readOverLappedStruct.OffsetHigh = 0;
+    ///ã‚½ã‚±ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
+      isReadingSucceeded =recvfrom( port->sockHandle,
+                    port->readBuffer,//Rxbuffer,
+                    port->bytesToRead,//length2,
+                    0,
+                    (struct sockaddr *)&port->addr,
+                    sizeof(port->addr));
 
-			//ƒ|[ƒg‚©‚çƒf[ƒ^‚ğ“Ç‚İ‚Ş
-			isReadingSucceeded = ReadFile(	
-											port->commHandle,					/// ‘ÎÛCOMƒ|[ƒg‚Ö‚Ìƒnƒ“ƒhƒ‹ 
-											port->readBuffer,					/// óMƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
-											port->bytesToRead,					/// “Ç‚İ‚à‚¤‚Æ‚·‚éƒoƒCƒg”
-											&bytesRead,							/// ÀÛ‚É“Ç‚İ‚ñ‚¾ƒoƒCƒg”
-											&port->readOverLappedStruct		/// î•ñ‚ğ‘‚«‚ŞOVERLAPPED\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^
-										);
+      if(isReadingSucceeded == -1);
 
-			/// “Ç‚İ‚İƒGƒ‰[‚ªo‚½ê‡‚Ìˆ— 
-			if (!isReadingSucceeded)  
-			{ 
-				switch ( errorCode = GetLastError() )
-				{
-					case ERROR_IO_PENDING: 	
-					{ 
-						/**
-						 *	”ñ“¯Šú“üo—ÍiReadFile()j‚ª‚Ü‚¾ˆ—’†‚Å‚ ‚é
-						 *	‚µ‚½‚ª‚Á‚ÄCGetOverlappedResults()‚Å–Œãˆ—‚ğs‚¤
-						 */
-						isReadingCompleted = FALSE;
-						break;
-					}
-					default:
-					{
-						/// —\Šú‚µ‚È‚¢ƒGƒ‰[‚È‚Ì‚ÅC‚±‚ÌƒGƒ‰[ˆ—
-						port->outputProcessErrorMessage( "ReadFile()" );
-						break;
-					} 
-				}	/// end of switch
-			}
-			else
-			{
-				/// ReadFile()‚ªI—¹‚µ‚½ê‡
-				/// ‚±‚Ìê‡GetOverlappedResults()‚ğŒÄ‚Ño‚·•K—v‚Í–³‚¢
-				isReadingCompleted = TRUE;
-			}	/// close if ( !isReadingSuccessed )
+    }
 
-		}	/// close if ( isReadingToTry )
+    */
 
-		/**
-		 *	ReadFile()‚ªI—¹‚µ‚È‚©‚Á‚½‚Ì‚ÅGetOverlappedResult()‚É‚æ‚è“Ç‚İ‚İ“®ì‚ğŠ®—¹‚³‚¹‚é
-		 */
-		if (!isReadingCompleted)
-		{
-			/**
-			 *	GetOverlappedResult
-			 *		‘æ‚Pˆø”Fƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹
-			 *		‘æ‚Qˆø”FOVERLAPPED\‘¢‘Ì‚ÌƒAƒhƒŒƒX
-			 *		‘æ‚Rˆø”Fˆ—Ï‚İ‚ÌƒoƒCƒg”‚ğó‚¯æ‚é•Ï”‚ÌƒAƒhƒŒƒX
-			 *		‘æ‚Sˆø”Fƒtƒ‰ƒO
-			 *
-			 *	”ñ“¯ŠúI/O‚ª‚Ü‚¾Š®—¹‚µ‚Ä‚¢‚È‚©‚Á‚½ê‡C‘æ4ˆø”‚Ìƒtƒ‰ƒO‚ª
-			 *	TRUE‚¾‚ÆŠ®—¹‚·‚é‚Ü‚ÅŠÖ”‚Ì“à•”‚Å‘Ò‹@‚µCFALSE‚¾‚Æ‘Ò‚½‚¸‚ÉŠÖ”‚©‚ç–ß‚éD
-			 */
-			isReadingSucceeded = GetOverlappedResult(
-														port->commHandle,				/// COMƒ|[ƒgƒnƒ“ƒhƒ‹ 
-														&port->readOverLappedStruct,	/// î•ñ‚ğ‘‚«‚ŞOverlapped\‘¢‘Ì
-														&bytesRead,						/// “Ç‚İ‚ñ‚¾ƒoƒCƒg”
-														TRUE							/// ‘Ò‹@ƒtƒ‰ƒO
-													);
 
-			/// ƒGƒ‰[ƒR[ƒhˆ— 
-			if ( !isReadingSucceeded )  
-			{
-				port->outputProcessErrorMessage( "GetOverlappedResults() in ReadFile()" );
-			}
 
-		}  /// close if ( !isReadingCompleted )
+    /**
+     *	ç„¡é™ãƒ«ãƒ¼ãƒ—é–‹å§‹
+     *	èª­ã¿è¾¼ã‚€ã¹ãå…¨ã¦ã®ãƒ‡ãƒ¼ã‚¿å‡¦ç†ãŒçµ‚äº†ã—ã¦åˆã‚ã¦ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
+     */
+    while (1)
+    {
 
-		/// ˆêóMƒoƒbƒtƒ@‚©‚ç‹L˜^—pƒŠƒ“ƒOƒoƒbƒtƒ@‚É•Û‘¶
-		for (i=0;i<(int)bytesRead;i++)
-			port->receiveBuffer.get(&port->readBuffer[i]);
+        ZeroMemory(port->readBuffer, MAX_BUFFER_SIZE);//ãƒ¡ãƒ¢ãƒªãƒ¼ã®ä¸­èº«ã‚’0ã«ã™ã‚‹
 
-		/**
-		 *	”r‘¼ˆ—I—¹
-		 *	“Ç‚İ‚ŞI‚í‚Á‚½‚Ì‚ÅCOMƒ|[ƒg‚ÌŠ—LŒ ‚ğ•úŠü
-		 */
-		port->criticalSection.unlock();
+        /**
+         *	æ’ä»–å‡¦ç†é–‹å§‹
+         *	COMãƒãƒ¼ãƒˆã®æ‰€æœ‰æ¨©ã‚’å–å¾—ã™ã‚‹
+         */
+        port->criticalSection.lock();
 
-		/**
-		 *	Š—LŒ ‚ğ‚Á‚Ä‚éeƒEƒBƒ“ƒhƒE‚ÖóM‚ğ’Ê’m
-		 *	’Ê’mƒpƒ‰ƒ[ƒ^F
-		 *		wParamF“Ç‚İ‚İƒf[ƒ^
-		 *		lParamFCOMƒ|[ƒg”Ô†	
-		 */
-		/// ƒI[ƒi[ƒEƒBƒ“ƒhƒE‚Öƒ|ƒXƒg
-		if (port->commOwnerWindowHandle != NULL) 
-			::PostMessage(
-							port->commOwnerWindowHandle, 
-							WM_COMM_RXCHAR, 
-							(WPARAM)(port->readBuffer), 
-							MAKELPARAM( (WORD)port->commPortNumber, (WORD)bytesRead )
-						);
-	}	/// –³ŒÀƒ‹[ƒv‚ÌI‚í‚è
+        /**
+         *	ClearCommError()ã«ã‚ˆã‚ŠCOMSTATæ§‹é€ ä½“ã‚’æ›´æ–°ã—ä»–ã®ã‚¨ãƒ©ãƒ¼ã‚’æ¶ˆå»
+         */
+        isReadingSucceeded = ClearCommError(port->commHandle, &errorCode, &comStat);
+        port->bytesToRead = comStat.cbInQue;
+
+        /// æ’ä»–å‡¦ç†çµ‚äº†
+        port->criticalSection.unlock();
+
+        /// èª­ã¿è¾¼ã‚€ã¹ããƒ‡ãƒ¼ã‚¿ã‚ã‚‹ã‹ã©ã†ã‹ç¢ºèªã—ï¼Œãªã‹ã£ãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æŠœã‘ã‚‹
+        if (port->bytesToRead == 0)
+        {
+            break;
+        }
+        else if (port->bytesToRead > 0)
+        {
+            isReadingToTry = TRUE;
+
+            /// èª­ã¿è¾¼ã‚‚ã†ã¨ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºãŒæœ€å¤§å€¤ã‚ˆã‚Šå¤§ãã‹ã£ãŸã‚‰
+            if (port->bytesToRead > port->readBufferSize)
+                port->bytesToRead = port->readBufferSize;
+        }
+
+        /**
+         *	æ’ä»–å‡¦ç†é–‹å§‹
+         *	èª­ã¿è¾¼ã‚€å‰ã«COMãƒãƒ¼ãƒˆã®æ‰€æœ‰æ¨©ã‚’å–å¾—ã™ã‚‹
+         */
+        port->criticalSection.lock();
+
+        /// ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿ã‚’è¡Œã†å ´åˆ
+        if (isReadingToTry)
+        {
+            /// å¤‰æ•°ã®åˆæœŸåŒ–
+            port->readOverLappedStruct.Offset = 0;
+            port->readOverLappedStruct.OffsetHigh = 0;
+
+            //ãƒãƒ¼ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+            isReadingSucceeded = ReadFile(
+                            port->commHandle,					/// å¯¾è±¡COMãƒãƒ¼ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ« 
+                            port->readBuffer,					/// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+                            port->bytesToRead,					/// èª­ã¿è¾¼ã‚‚ã†ã¨ã™ã‚‹ãƒã‚¤ãƒˆæ•°
+                            &bytesRead,							/// å®Ÿéš›ã«èª­ã¿è¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°
+                            &port->readOverLappedStruct		/// æƒ…å ±ã‚’æ›¸ãè¾¼ã‚€OVERLAPPEDæ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+            );
+
+            /// èª­ã¿è¾¼ã¿ã‚¨ãƒ©ãƒ¼ãŒå‡ºãŸå ´åˆã®å‡¦ç† 
+            if (!isReadingSucceeded)
+            {
+                switch (errorCode = GetLastError())
+                {
+                    case ERROR_IO_PENDING:
+                    {
+                        /**
+                         *	éåŒæœŸå…¥å‡ºåŠ›ï¼ˆReadFile()ï¼‰ãŒã¾ã å‡¦ç†ä¸­ã§ã‚ã‚‹
+                         *	ã—ãŸãŒã£ã¦ï¼ŒGetOverlappedResults()ã§äº‹å¾Œå‡¦ç†ã‚’è¡Œã†
+                         */
+                        isReadingCompleted = FALSE;
+                        break;
+                    }
+                    default:
+                    {
+                        /// äºˆæœŸã—ãªã„ã‚¨ãƒ©ãƒ¼ãªã®ã§ï¼Œã“ã®ã‚¨ãƒ©ãƒ¼å‡¦ç†
+                        port->outputProcessErrorMessage("ReadFile()");
+                        break;
+                    }
+                }	/// end of switch
+            }
+            else
+            {
+                /// ReadFile()ãŒçµ‚äº†ã—ãŸå ´åˆ
+                /// ã“ã®å ´åˆGetOverlappedResults()ã‚’å‘¼ã³å‡ºã™å¿…è¦ã¯ç„¡ã„
+                isReadingCompleted = TRUE;
+            }	/// close if ( !isReadingSuccessed )
+
+        }	/// close if ( isReadingToTry )
+
+        /**
+         *	ReadFile()ãŒçµ‚äº†ã—ãªã‹ã£ãŸã®ã§GetOverlappedResult()ã«ã‚ˆã‚Šèª­ã¿è¾¼ã¿å‹•ä½œã‚’å®Œäº†ã•ã›ã‚‹
+         */
+        if (!isReadingCompleted)
+        {
+            /**
+             *	GetOverlappedResult
+             *		ç¬¬ï¼‘å¼•æ•°ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+             *		ç¬¬ï¼’å¼•æ•°ï¼šOVERLAPPEDæ§‹é€ ä½“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+             *		ç¬¬ï¼“å¼•æ•°ï¼šå‡¦ç†æ¸ˆã¿ã®ãƒã‚¤ãƒˆæ•°ã‚’å—ã‘å–ã‚‹å¤‰æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+             *		ç¬¬ï¼”å¼•æ•°ï¼šãƒ•ãƒ©ã‚°
+             *
+             *	éåŒæœŸI/OãŒã¾ã å®Œäº†ã—ã¦ã„ãªã‹ã£ãŸå ´åˆï¼Œç¬¬4å¼•æ•°ã®ãƒ•ãƒ©ã‚°ãŒ
+             *	TRUEã ã¨å®Œäº†ã™ã‚‹ã¾ã§é–¢æ•°ã®å†…éƒ¨ã§å¾…æ©Ÿã—ï¼ŒFALSEã ã¨å¾…ãŸãšã«é–¢æ•°ã‹ã‚‰æˆ»ã‚‹ï¼
+             */
+            isReadingSucceeded = GetOverlappedResult(
+                                  port->commHandle,				/// COMãƒãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ« 
+                                  &port->readOverLappedStruct,	/// æƒ…å ±ã‚’æ›¸ãè¾¼ã‚€Overlappedæ§‹é€ ä½“
+                                  &bytesRead,						/// èª­ã¿è¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°
+                                  TRUE							/// å¾…æ©Ÿãƒ•ãƒ©ã‚°
+            );
+
+            /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å‡¦ç† 
+            if (!isReadingSucceeded)
+            {
+                port->outputProcessErrorMessage("GetOverlappedResults() in ReadFile()");
+            }
+
+        }  /// close if ( !isReadingCompleted )
+
+        /// ä¸€æ™‚å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰è¨˜éŒ²ç”¨ãƒªãƒ³ã‚°ãƒãƒƒãƒ•ã‚¡ã«ä¿å­˜
+        for (i = 0; i < (int)bytesRead; i++)
+            port->receiveBuffer.get(&port->readBuffer[i]);
+
+        /**
+         *	æ’ä»–å‡¦ç†çµ‚äº†
+         *	èª­ã¿è¾¼ã‚€çµ‚ã‚ã£ãŸã®ã§COMãƒãƒ¼ãƒˆã®æ‰€æœ‰æ¨©ã‚’æ”¾æ£„
+         */
+        port->criticalSection.unlock();
+
+        /**
+         *	æ‰€æœ‰æ¨©ã‚’æŒã£ã¦ã‚‹è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸å—ä¿¡ã‚’é€šçŸ¥
+         *	é€šçŸ¥ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼š
+         *		wParamï¼šèª­ã¿è¾¼ã¿ãƒ‡ãƒ¼ã‚¿
+         *		lParamï¼šCOMãƒãƒ¼ãƒˆç•ªå·
+         */
+         /// ã‚ªãƒ¼ãƒŠãƒ¼ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ãƒã‚¹ãƒˆ
+        if (port->commOwnerWindowHandle != NULL)
+            ::PostMessage(
+                    port->commOwnerWindowHandle,
+                    WM_COMM_RXCHAR,
+                    (WPARAM)(port->readBuffer),
+                    MAKELPARAM((WORD)port->commPortNumber, (WORD)bytesRead)
+            );
+    }	/// ç„¡é™ãƒ«ãƒ¼ãƒ—ã®çµ‚ã‚ã‚Š
 }
 
 
 /**
- *	‘—M‚É—p‚¢‚éƒXƒŒƒbƒhŠÖ”
+ *	é€ä¿¡ã«ç”¨ã„ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰é–¢æ•°
  */
-UINT SerialPort::writeEventListenThread(LPVOID pParam)//§ŒäŠÖ”
+UINT SerialPort::writeEventListenThread(LPVOID pParam)//åˆ¶å¾¡é–¢æ•°
 {
-	/// ˆø”‚ÌVOIDƒ|ƒCƒ“ƒ^‚ğSerialPortƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^‚ÖƒLƒƒƒXƒg
-	SerialPort* port = (SerialPort*) pParam;
-	
-	/// ƒXƒŒƒbƒh‚ª‘–‚Á‚Ä‚¢‚é‚±‚Æ‚ğ’Ê’m‚·‚é‚½‚ßCó‘Ô•Ï”‚ğTRUE‚É‚·‚é
-	port->isWriteThreadAlive = TRUE;
+    /// å¼•æ•°ã®VOIDãƒã‚¤ãƒ³ã‚¿ã‚’SerialPortã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ã¸ã‚­ãƒ£ã‚¹ãƒˆ
+    SerialPort* port = (SerialPort*)pParam;
 
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-//	DWORD		eventMask = 0;
-//	DWORD		writeEventMask = 0;
-	DWORD		writeThreadEvents = 0;
-//	DWORD		writeEvents = 0;
-//	DWORD		commErrors = 0;
-//	BOOL		isEventOccurred = TRUE;
-	COMSTAT		comStat;
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ãŒèµ°ã£ã¦ã„ã‚‹ã“ã¨ã‚’é€šçŸ¥ã™ã‚‹ãŸã‚ï¼ŒçŠ¶æ…‹å¤‰æ•°ã‚’TRUEã«ã™ã‚‹
+    port->isWriteThreadAlive = TRUE;
 
-	/// ƒ|[ƒg‚ªŠJ‚©‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN‚µ‚ÄC‹N“®‚É’ÊMƒoƒbƒtƒ@‚ğƒNƒŠƒA
-	if (port->commHandle)
-		PurgeComm(port->commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+  //	DWORD		eventMask = 0;
+  //	DWORD		writeEventMask = 0;
+    DWORD		writeThreadEvents = 0;
+    //	DWORD		writeEvents = 0;
+    //	DWORD		commErrors = 0;
+    //	BOOL		isEventOccurred = TRUE;
+    COMSTAT		comStat;
 
-	/**
-	 *	 –³ŒÀƒ‹[ƒv
-	 *	‚±‚Ìƒ‹[ƒv‚ÍƒXƒŒƒbƒh‚ª‘–‚Á‚Ä‚¢‚éŒÀ‚èŒp‘±
-	 */
-	while (1) 
-	{
-		/// WaitForMultipleObjects()‚ÅƒCƒxƒ“ƒg‘Ò‚¿
-		writeThreadEvents = WaitForMultipleObjects(2, port->writeEventHandles, FALSE, INFINITE);
+    /// ãƒãƒ¼ãƒˆãŒé–‹ã‹ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã—ã¦ï¼Œèµ·å‹•æ™‚ã«é€šä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢
+    if (port->commHandle)
+        PurgeComm(port->commHandle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
 
-		switch (writeThreadEvents)
-		{
-			case WAIT_OBJECT_0:	/// ƒXƒŒƒbƒhƒVƒƒƒbƒgƒ_ƒEƒ“ƒCƒxƒ“ƒg
-			{
-				/// ‚±‚ÌƒCƒxƒ“ƒg‚ÍÅ—Dæ‚Å‚ ‚èÅ‰‚É’ñ‹Ÿ‚³‚ê‚é
-			 	port->isWriteThreadAlive = FALSE;
+    /**
+     *	 ç„¡é™ãƒ«ãƒ¼ãƒ—
+     *	ã“ã®ãƒ«ãƒ¼ãƒ—ã¯ã‚¹ãƒ¬ãƒƒãƒ‰ãŒèµ°ã£ã¦ã„ã‚‹é™ã‚Šç¶™ç¶š
+     */
+    while (1)
+    {
+        /// WaitForMultipleObjects()ã§ã‚¤ãƒ™ãƒ³ãƒˆå¾…ã¡
+        writeThreadEvents = WaitForMultipleObjects(2, port->writeEventHandles, FALSE, INFINITE);
 
-				/// ƒXƒŒƒbƒh”jŠü
-				AfxEndThread(200);
-				break;
-			}
-			case WAIT_OBJECT_0 + 1:	/// ‘‚«‚İƒCƒxƒ“ƒg
-			{
-				/// ƒ|[ƒg‚Öƒf[ƒ^‘‚«‚İ
-				writeData(port, comStat);
+        switch (writeThreadEvents)
+        {
+            case WAIT_OBJECT_0:	/// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆ
+            {
+                /// ã“ã®ã‚¤ãƒ™ãƒ³ãƒˆã¯æœ€å„ªå…ˆã§ã‚ã‚Šæœ€åˆã«æä¾›ã•ã‚Œã‚‹
+                port->isWriteThreadAlive = FALSE;
 
-				break;
-			}
-			default:
-				break;
-		}	/// end of switch (writeThreadEvents)
+                /// ã‚¹ãƒ¬ãƒƒãƒ‰ç ´æ£„
+                AfxEndThread(200);
+                break;
+            }
+            case WAIT_OBJECT_0 + 1:	/// æ›¸ãè¾¼ã¿ã‚¤ãƒ™ãƒ³ãƒˆ
+            {
+                /// ãƒãƒ¼ãƒˆã¸ãƒ‡ãƒ¼ã‚¿æ›¸ãè¾¼ã¿
+                writeData(port, comStat);
 
-	}	/// –³ŒÀƒ‹[ƒv
+                break;
+            }
+            default:
+                break;
+        }	/// end of switch (writeThreadEvents)
 
-	return 0;
+    }	/// ç„¡é™ãƒ«ãƒ¼ãƒ—
+
+    return 0;
 }
 
 /**
- *	‘—MƒXƒŒƒbƒh‚Å—p‚¢‚é‘—Mƒoƒbƒtƒ@‚Ö‚Ì‘‚«‚İŠÖ”
+ *	é€ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰ã§ç”¨ã„ã‚‹é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã¸ã®æ›¸ãè¾¼ã¿é–¢æ•°
  */
 void SerialPort::writeData(SerialPort* port, COMSTAT& comStat)
 {
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-	BOOL	isWritingToTry		= TRUE;		/// ‘‚«‚İ‚ğs‚¤‚©‚Ç‚¤‚©
-	BOOL	isWritingCompleted	= TRUE;		/// ‘‚«‚İ‚ªŠ®—¹‚µ‚½‚©‚Ç‚¤‚©
-	BOOL	isWritingSucceeded	= TRUE;		/// ‘‚«‚İ‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©
-	DWORD	errorCode			= 0;		/// ƒGƒ‰[ƒR[ƒh
-	DWORD	bytesWritten		= 0;
-	char	ErrMassage[32]		= {0};		///ƒGƒ‰[ƒR[ƒh•\¦—p
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+    BOOL	isWritingToTry = TRUE;		/// æ›¸ãè¾¼ã¿ã‚’è¡Œã†ã‹ã©ã†ã‹
+    BOOL	isWritingCompleted = TRUE;		/// æ›¸ãè¾¼ã¿ãŒå®Œäº†ã—ãŸã‹ã©ã†ã‹
+    BOOL	isWritingSucceeded = TRUE;		/// æ›¸ãè¾¼ã¿ãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹
+    DWORD	errorCode = 0;		/// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
+    DWORD	bytesWritten = 0;
+    char	ErrMassage[32] = { 0 };		///ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰è¡¨ç¤ºç”¨
 
-	///ƒ\ƒPƒbƒgì¬
-	port->sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
-	//assert(port->sockHandle =! -1);
-	assert(port->WSAHandle =! 0);
+    ///ã‚½ã‚±ãƒƒãƒˆä½œæˆ
+    port->sockHandle = socket(AF_INET, SOCK_DGRAM, 0);
+    //assert(port->sockHandle =! -1);
+    assert(port->WSAHandle = !0);
 
-	//TEST_BUFFER
-	char Txbuffer[8]={0};
-		///ƒQ[ƒgƒEƒFƒCID
-		Txbuffer[0]	= (char)(0x00);
-		Txbuffer[1]	= (char)(0x0A);
-	int length2		= sizeof(Txbuffer);
+    //TEST_BUFFER
+    char Txbuffer[8] = { 0 };
+    ///ã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤ID
+    Txbuffer[0] = (char)(0x00);
+    Txbuffer[1] = (char)(0x0A);
+    int length2 = sizeof(Txbuffer);
 
-	/// ‘Ò‹@ƒCƒxƒ“ƒg‚ğƒŠƒZƒbƒg
-	ResetEvent(port->writeOverLappedStruct.hEvent);
+    /// å¾…æ©Ÿã‚¤ãƒ™ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
+    ResetEvent(port->writeOverLappedStruct.hEvent);
 
-	port->criticalSection.lock();
+    port->criticalSection.lock();
 
-	/**
-	 *	ClearCommError()‚É‚æ‚èCOMSTAT\‘¢‘Ì‚ğXV‚µ‘¼‚ÌƒGƒ‰[‚ğÁ‹
-	 */
-	isWritingSucceeded = ClearCommError(port->commHandle, &errorCode, &comStat);
+    /**
+     *	ClearCommError()ã«ã‚ˆã‚ŠCOMSTATæ§‹é€ ä½“ã‚’æ›´æ–°ã—ä»–ã®ã‚¨ãƒ©ãƒ¼ã‚’æ¶ˆå»
+     */
+    isWritingSucceeded = ClearCommError(port->commHandle, &errorCode, &comStat);
 
-	//SOCKET sock2;
-	//struct sockaddr_in addr2;
-	//sock2 = socket(AF_INET, SOCK_DGRAM, 0);	//ƒ\ƒPƒbƒgì¬
-/*	
-	if(sock2 == INVALID_SOCKET){
-		sprintf(ErrMassage,"error : %d\n", WSAGetLastError());
-		port->outputProcessErrorMessage( ErrMassage );
-		assert(sock2 =! INVALID_SOCKET);
-	}
-	addr2.sin_family = AF_INET;
-	addr2.sin_port = htons(10003);	//‘—Mæƒ|[ƒg”Ô†
-	addr2.sin_addr.S_un.S_addr = inet_addr("192.168.0.169");	//‘—MæIPƒAƒhƒŒƒX
-*/
-	//isWritingSucceeded =sendto(sock2, Txbuffer, length2, 0, (struct sockaddr *)&addr2, sizeof(addr2));
-	
-	
-	//closesocket(sock2);
+    //SOCKET sock2;
+    //struct sockaddr_in addr2;
+    //sock2 = socket(AF_INET, SOCK_DGRAM, 0);	//ã‚½ã‚±ãƒƒãƒˆä½œæˆ
+  /*
+    if(sock2 == INVALID_SOCKET){
+      sprintf(ErrMassage,"error : %d\n", WSAGetLastError());
+      port->outputProcessErrorMessage( ErrMassage );
+      assert(sock2 =! INVALID_SOCKET);
+    }
+    addr2.sin_family = AF_INET;
+    addr2.sin_port = htons(10003);	//é€ä¿¡å…ˆãƒãƒ¼ãƒˆç•ªå·
+    addr2.sin_addr.S_un.S_addr = inet_addr("192.168.0.169");	//é€ä¿¡å…ˆIPã‚¢ãƒ‰ãƒ¬ã‚¹
+  */
+  //isWritingSucceeded =sendto(sock2, Txbuffer, length2, 0, (struct sockaddr *)&addr2, sizeof(addr2));
 
-	/// ‘‚«‚Ş‚×‚«ƒf[ƒ^‚ ‚é‚©‚Ç‚¤‚©Šm”F‚µA‚È‚¢ê‡‚¾‚¯‘‚«‚Ş <--ƒVƒŠƒAƒ‹—p?
+
+  //closesocket(sock2);
+
+  /// æ›¸ãè¾¼ã‚€ã¹ããƒ‡ãƒ¼ã‚¿ã‚ã‚‹ã‹ã©ã†ã‹ç¢ºèªã—ã€ãªã„å ´åˆã ã‘æ›¸ãè¾¼ã‚€ <--ã‚·ãƒªã‚¢ãƒ«ç”¨?
 /*	if (comStat.cbOutQue > 0)
-	{
-		port->criticalSection.unlock();
-		return;
-	}
-*/		///‘—Mæ‚Ìƒlƒbƒgƒ[ƒNî•ñ‚ğ€”õ
-		///ƒ|[ƒgIPƒAƒhƒŒƒX”Ô†,IPƒAƒhƒŒƒX‚Ì•¶šƒXƒgƒŠƒ“ƒO‚ğƒlƒbƒgƒ[ƒNƒoƒCƒgƒI[ƒ_[‚É•ÏŠ·
-		port->addr.sin_family	= AF_INET;									///ƒAƒhƒŒƒXƒtƒ@ƒ~ƒŠ
-		port->addr.sin_port		= htons(port->remort_portNo);//htons(10003);//					///‘Šè‚Ìƒ|[ƒg”Ô†
-		port->addr.sin_addr.S_un.S_addr = inet_addr(port->remort_IPAdress);//inet_addr("192.168.0.169");//	///‘Šè‚ÌIPƒAƒhƒŒƒX
+  {
+    port->criticalSection.unlock();
+    return;
+  }
+*/		///é€ä¿¡å…ˆã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æƒ…å ±ã‚’æº–å‚™
+///ãƒãƒ¼ãƒˆIPã‚¢ãƒ‰ãƒ¬ã‚¹ç•ªå·,IPã‚¢ãƒ‰ãƒ¬ã‚¹ã®æ–‡å­—ã‚¹ãƒˆãƒªãƒ³ã‚°ã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã«å¤‰æ›
+    port->addr.sin_family = AF_INET;									///ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ•ã‚¡ãƒŸãƒª
+    port->addr.sin_port = htons(port->remort_portNo);//htons(10003);//					///ç›¸æ‰‹ã®ãƒãƒ¼ãƒˆç•ªå·
+    port->addr.sin_addr.S_un.S_addr = inet_addr(port->remort_IPAdress);//inet_addr("192.168.0.169");//	///ç›¸æ‰‹ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
 
-		
 
-		///ƒ\ƒPƒbƒg‚Ìƒf[ƒ^‚ğ‘—M
-		isWritingSucceeded =sendto( port->sockHandle, 
-									port->writeBuffer,//Txbuffer,
-									port->bytesToWrite,//length2,
-									0, 
-									(struct sockaddr *)&port->addr, 
-									sizeof(port->addr));
-/*
-		isWritingSucceeded = sendto(port->sockHandle,							///ƒ\ƒPƒbƒg‹Lqq
-									port->writeBuffer,					///‘—M‚·‚éƒƒbƒZ[ƒW‚ª“ü‚Á‚Ä‚¢‚éƒoƒbƒtƒ@[‚Ö‚Ìƒ|ƒCƒ“ƒ^[
-									port->bytesToWrite,					///ƒoƒbƒtƒ@[“à‚ÌƒƒbƒZ[ƒW‚Ì’·‚³
-									0,									///ƒtƒ‰ƒO‚Ìİ’è
-									(struct sockaddr *)&port->addr,		///ƒAƒhƒŒƒXˆê®
-									sizeof(port->addr));						///ƒAƒhƒŒƒX‚ÌƒTƒCƒY
-*/	
-	
-/*
-	if (isWritingToTry)
-	{
 
-		/// •Ï”‚Ì‰Šú‰»
-		port->writeOverLappedStruct.Offset = 0;
-		port->writeOverLappedStruct.OffsetHigh = 0;
+    ///ã‚½ã‚±ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’é€ä¿¡
+    isWritingSucceeded = sendto(port->sockHandle,
+                  port->writeBuffer,//Txbuffer,
+                  port->bytesToWrite,//length2,
+                  0,
+                  (struct sockaddr*)&port->addr,
+                  sizeof(port->addr));
+    /*
+        isWritingSucceeded = sendto(port->sockHandle,							///ã‚½ã‚±ãƒƒãƒˆè¨˜è¿°å­
+                      port->writeBuffer,					///é€ä¿¡ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå…¥ã£ã¦ã„ã‚‹ãƒãƒƒãƒ•ã‚¡ãƒ¼ã¸ã®ãƒã‚¤ãƒ³ã‚¿ãƒ¼
+                      port->bytesToWrite,					///ãƒãƒƒãƒ•ã‚¡ãƒ¼å†…ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é•·ã•
+                      0,									///ãƒ•ãƒ©ã‚°ã®è¨­å®š
+                      (struct sockaddr *)&port->addr,		///ã‚¢ãƒ‰ãƒ¬ã‚¹ä¸€å¼
+                      sizeof(port->addr));						///ã‚¢ãƒ‰ãƒ¬ã‚¹ã®ã‚µã‚¤ã‚º
+    */
 
-		isWritingSucceeded = WriteFile(
-										port->commHandle,				/// COMƒ|[ƒg‚Ö‚Ìƒnƒ“ƒhƒ‹
-										port->writeBuffer,				/// ‘‚«‚İƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
-										port->bytesToWrite,				/// ‘‚«‚Şƒf[ƒ^’·‚³
-										&bytesWritten,					/// ÀÛ‚É‘‚«‚ñ‚¾ƒoƒCƒg”‚ğ‹L˜^‚·‚éƒ|ƒCƒ“ƒ^
-										&port->writeOverLappedStruct	/// ‘‚«‚İ—p‚ÌOVERLAPPED\‘¢‘Ì
-										);
-		
-		/// ƒGƒ‰[‚Ìˆ—
-		assert(isWritingSucceeded =! -1);	
-	
-		if (isWritingSucceeded == -1)  
-		{
-			/// ƒGƒ‰[ƒR[ƒhæ“¾
+    /*
+      if (isWritingToTry)
+      {
 
-			errorCode = errno ;///GetLastError();
-			
-			switch (errorCode)
-			{	
-				case ERROR_IO_PENDING:
-				{
-						/// WriteFile()‚ª’¼‚®‚ÉI—¹‚µ‚È‚©‚Á‚½ê‡‚Ì’Êí‚Ì•Ô‚è’l‚È‚Ì‚ÅGetOverlappedResults()‚ÖˆÚs
-						bytesWritten = 0;
+        /// å¤‰æ•°ã®åˆæœŸåŒ–
+        port->writeOverLappedStruct.Offset = 0;
+        port->writeOverLappedStruct.OffsetHigh = 0;
 
-						/// ‘‚«‚İI—¹ƒtƒ‰ƒO‚ÍOFF
-						isWritingCompleted = FALSE;
-						break;
-				}				
-	
-				default:
-				{
-						/// ‘¼‚Ì‘S‚Ä‚ÌƒGƒ‰[
-						sprintf(ErrMassage,"sendto Err code:%4d",errorCode);
-						port->outputProcessErrorMessage( ErrMassage );
-						port->criticalSection.unlock();
-				}
-			}	/// end of switch
-		}
-		/// •Ï”‚Ì‰Šú‰»
-		port->writeOverLappedStruct.Offset = 0;
-		port->writeOverLappedStruct.OffsetHigh = 0;
+        isWritingSucceeded = WriteFile(
+                        port->commHandle,				/// COMãƒãƒ¼ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ«
+                        port->writeBuffer,				/// æ›¸ãè¾¼ã¿ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+                        port->bytesToWrite,				/// æ›¸ãè¾¼ã‚€ãƒ‡ãƒ¼ã‚¿é•·ã•
+                        &bytesWritten,					/// å®Ÿéš›ã«æ›¸ãè¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°ã‚’è¨˜éŒ²ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿
+                        &port->writeOverLappedStruct	/// æ›¸ãè¾¼ã¿ç”¨ã®OVERLAPPEDæ§‹é€ ä½“
+                        );
 
-		///‘—MŠÖ”
-		isWritingSucceeded = WriteFile(
-										port->commHandle,				/// COMƒ|[ƒg‚Ö‚Ìƒnƒ“ƒhƒ‹
-										port->writeBuffer,				/// ‘‚«‚İƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^
-										port->bytesToWrite,				/// ‘‚«‚Şƒf[ƒ^’·‚³
-										&bytesWritten,					/// ÀÛ‚É‘‚«‚ñ‚¾ƒoƒCƒg”‚ğ‹L˜^‚·‚éƒ|ƒCƒ“ƒ^
-										&port->writeOverLappedStruct	/// ‘‚«‚İ—p‚ÌOVERLAPPED\‘¢‘Ì
-										);
+        /// ã‚¨ãƒ©ãƒ¼æ™‚ã®å‡¦ç†
+        assert(isWritingSucceeded =! -1);
 
-		/// ƒGƒ‰[‚Ìˆ—
-		if (!isWritingSucceeded)  
-		{
-			/// ƒGƒ‰[ƒR[ƒhæ“¾
-			errorCode = GetLastError();
-			
-			switch (errorCode)
-			{
-				case ERROR_IO_PENDING:
-				{
-						/// WriteFile()‚ª’¼‚®‚ÉI—¹‚µ‚È‚©‚Á‚½ê‡‚Ì’Êí‚Ì•Ô‚è’l‚È‚Ì‚ÅGetOverlappedResults()‚ÖˆÚs
-						bytesWritten = 0;
+        if (isWritingSucceeded == -1)
+        {
+          /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å–å¾—
 
-						/// ‘‚«‚İI—¹ƒtƒ‰ƒO‚ÍOFF
-						isWritingCompleted = FALSE;
-						break;
-				}
-				default:
-				{
-						/// ‘¼‚Ì‘S‚Ä‚ÌƒGƒ‰[
-						port->outputProcessErrorMessage( "WriteFile()" );
-						port->criticalSection.unlock();
-				}
-			}	/// end of switch
-		} 
-		else
-		{
-			port->criticalSection.unlock();
-		}	/// end of if (!isWritingSuccessed)
-		
-	} // end of if( isWritingToTry )
-*/
-/*
-	/// ‘‚«‚İ‚ªˆê’èŠÔ‚ÅI—¹‚µ‚È‚©‚Á‚½‚ç
-	if (!isWritingCompleted)
-	{
-		
-		 //	GetOverlappedResult
-		 //		‘æ‚Pˆø”Fƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹
-		 //		‘æ‚Qˆø”FOVERLAPPED\‘¢‘Ì‚ÌƒAƒhƒŒƒX
-		 //		‘æ‚Rˆø”Fˆ—Ï‚İ‚ÌƒoƒCƒg”‚ğó‚¯æ‚é•Ï”‚ÌƒAƒhƒŒƒX
-		 //		‘æ‚Sˆø”Fƒtƒ‰ƒO
-		 //
-		 //	”ñ“¯ŠúI/O‚ª‚Ü‚¾Š®—¹‚µ‚Ä‚¢‚È‚©‚Á‚½ê‡C‘æ4ˆø”‚Ìƒtƒ‰ƒO‚ª
-		 //	TRUE‚¾‚ÆŠ®—¹‚·‚é‚Ü‚ÅŠÖ”‚Ì“à•”‚Å‘Ò‹@‚µCFALSE‚¾‚Æ‘Ò‚½‚¸‚ÉŠÖ”‚©‚ç–ß‚éD
-		
-		isWritingSucceeded = GetOverlappedResult(
-													port->commHandle,				/// COMƒ|[ƒg‚Ö‚Ìƒnƒ“ƒhƒ‹ 
-													&port->writeOverLappedStruct,	/// OVERLAPPED\‘¢‘Ì
-													&bytesWritten,					/// ‘‚«‚ñ‚¾ƒoƒCƒg”
-													TRUE							/// ‘Ò‹@ƒtƒ‰ƒOi‘‚«‚İI—¹‚Ü‚Å‘Ò‹@‚·‚éj
-												);
+          errorCode = errno ;///GetLastError();
 
-		port->criticalSection.unlock();
+          switch (errorCode)
+          {
+            case ERROR_IO_PENDING:
+            {
+                /// WriteFile()ãŒç›´ãã«çµ‚äº†ã—ãªã‹ã£ãŸå ´åˆã®é€šå¸¸ã®è¿”ã‚Šå€¤ãªã®ã§GetOverlappedResults()ã¸ç§»è¡Œ
+                bytesWritten = 0;
 
-		/// GetOverlappedResult()‚É‚æ‚è‘‚«‚İI—¹
-		isWritingCompleted = TRUE;
-		
-		/// ƒGƒ‰[ƒR[ƒhˆ—
-		if (!isWritingSucceeded)  
-		{
-			port->outputProcessErrorMessage( "GetOverlappedResults() in WriteFile()" );
-		}
+                /// æ›¸ãè¾¼ã¿çµ‚äº†ãƒ•ãƒ©ã‚°ã¯OFF
+                isWritingCompleted = FALSE;
+                break;
+            }
 
-	} // end if ( !isWritingCompleted )
+            default:
+            {
+                /// ä»–ã®å…¨ã¦ã®ã‚¨ãƒ©ãƒ¼
+                sprintf(ErrMassage,"sendto Err code:%4d",errorCode);
+                port->outputProcessErrorMessage( ErrMassage );
+                port->criticalSection.unlock();
+            }
+          }	/// end of switch
+        }
+        /// å¤‰æ•°ã®åˆæœŸåŒ–
+        port->writeOverLappedStruct.Offset = 0;
+        port->writeOverLappedStruct.OffsetHigh = 0;
 
-	/// ‘‚«‚Ş—\’è‚¾‚Á‚½ƒoƒCƒg”‚ÆÀÛ‚É‘‚«‚ñ‚¾ƒoƒCƒg”‚Ìƒ`ƒFƒbƒN
-	if (bytesWritten != port->bytesToWrite)
-	{
-		DEBUG_TRACE(
-					TEXT("WARNING: WriteFile() error.. Bytes Written: %d; Message Length: %d\n"), 
-					bytesWritten, 
-					port->bytesToWrite
-					);
-	}*/
+        ///é€ä¿¡é–¢æ•°
+        isWritingSucceeded = WriteFile(
+                        port->commHandle,				/// COMãƒãƒ¼ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ«
+                        port->writeBuffer,				/// æ›¸ãè¾¼ã¿ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+                        port->bytesToWrite,				/// æ›¸ãè¾¼ã‚€ãƒ‡ãƒ¼ã‚¿é•·ã•
+                        &bytesWritten,					/// å®Ÿéš›ã«æ›¸ãè¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°ã‚’è¨˜éŒ²ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿
+                        &port->writeOverLappedStruct	/// æ›¸ãè¾¼ã¿ç”¨ã®OVERLAPPEDæ§‹é€ ä½“
+                        );
+
+        /// ã‚¨ãƒ©ãƒ¼æ™‚ã®å‡¦ç†
+        if (!isWritingSucceeded)
+        {
+          /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å–å¾—
+          errorCode = GetLastError();
+
+          switch (errorCode)
+          {
+            case ERROR_IO_PENDING:
+            {
+                /// WriteFile()ãŒç›´ãã«çµ‚äº†ã—ãªã‹ã£ãŸå ´åˆã®é€šå¸¸ã®è¿”ã‚Šå€¤ãªã®ã§GetOverlappedResults()ã¸ç§»è¡Œ
+                bytesWritten = 0;
+
+                /// æ›¸ãè¾¼ã¿çµ‚äº†ãƒ•ãƒ©ã‚°ã¯OFF
+                isWritingCompleted = FALSE;
+                break;
+            }
+            default:
+            {
+                /// ä»–ã®å…¨ã¦ã®ã‚¨ãƒ©ãƒ¼
+                port->outputProcessErrorMessage( "WriteFile()" );
+                port->criticalSection.unlock();
+            }
+          }	/// end of switch
+        }
+        else
+        {
+          port->criticalSection.unlock();
+        }	/// end of if (!isWritingSuccessed)
+
+      } // end of if( isWritingToTry )
+    */
+    /*
+      /// æ›¸ãè¾¼ã¿ãŒä¸€å®šæ™‚é–“ã§çµ‚äº†ã—ãªã‹ã£ãŸã‚‰
+      if (!isWritingCompleted)
+      {
+
+         //	GetOverlappedResult
+         //		ç¬¬ï¼‘å¼•æ•°ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+         //		ç¬¬ï¼’å¼•æ•°ï¼šOVERLAPPEDæ§‹é€ ä½“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+         //		ç¬¬ï¼“å¼•æ•°ï¼šå‡¦ç†æ¸ˆã¿ã®ãƒã‚¤ãƒˆæ•°ã‚’å—ã‘å–ã‚‹å¤‰æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+         //		ç¬¬ï¼”å¼•æ•°ï¼šãƒ•ãƒ©ã‚°
+         //
+         //	éåŒæœŸI/OãŒã¾ã å®Œäº†ã—ã¦ã„ãªã‹ã£ãŸå ´åˆï¼Œç¬¬4å¼•æ•°ã®ãƒ•ãƒ©ã‚°ãŒ
+         //	TRUEã ã¨å®Œäº†ã™ã‚‹ã¾ã§é–¢æ•°ã®å†…éƒ¨ã§å¾…æ©Ÿã—ï¼ŒFALSEã ã¨å¾…ãŸãšã«é–¢æ•°ã‹ã‚‰æˆ»ã‚‹ï¼
+
+        isWritingSucceeded = GetOverlappedResult(
+                              port->commHandle,				/// COMãƒãƒ¼ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ«
+                              &port->writeOverLappedStruct,	/// OVERLAPPEDæ§‹é€ ä½“
+                              &bytesWritten,					/// æ›¸ãè¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°
+                              TRUE							/// å¾…æ©Ÿãƒ•ãƒ©ã‚°ï¼ˆæ›¸ãè¾¼ã¿çµ‚äº†ã¾ã§å¾…æ©Ÿã™ã‚‹ï¼‰
+                            );
+
+        port->criticalSection.unlock();
+
+        /// GetOverlappedResult()ã«ã‚ˆã‚Šæ›¸ãè¾¼ã¿çµ‚äº†
+        isWritingCompleted = TRUE;
+
+        /// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å‡¦ç†
+        if (!isWritingSucceeded)
+        {
+          port->outputProcessErrorMessage( "GetOverlappedResults() in WriteFile()" );
+        }
+
+      } // end if ( !isWritingCompleted )
+
+      /// æ›¸ãè¾¼ã‚€äºˆå®šã ã£ãŸãƒã‚¤ãƒˆæ•°ã¨å®Ÿéš›ã«æ›¸ãè¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°ã®ãƒã‚§ãƒƒã‚¯
+      if (bytesWritten != port->bytesToWrite)
+      {
+        DEBUG_TRACE(
+              TEXT("WARNING: WriteFile() error.. Bytes Written: %d; Message Length: %d\n"),
+              bytesWritten,
+              port->bytesToWrite
+              );
+      }*/
 }
 
 }	/// end of namespace Comm
