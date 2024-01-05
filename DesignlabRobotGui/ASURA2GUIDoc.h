@@ -7,8 +7,8 @@
 #pragma once
 
 
-#include "System\Thread\MotionPlanThread.h"  //20200821
-#include "UDP\AsuraUDPThread.h"
+#include "System/Thread/MotionPlanThread.h"
+#include "UDP/asura_udp_thread.h"
 
 class CASURA2GUIDoc : public CDocument
 {
@@ -61,12 +61,12 @@ public:
     /**
      *	歩容計画を行うためのスレッド
      */
-    MotionPlanThread* pMotionPlanThread;
+    designlab_robot_gui::system::MotionPlanThread* pMotionPlanThread;
     /**
      *	UDP通信を行うためのスレッド
      */
 
-    AsuraUDPThread* pUDPThread;
+    designlab_robot_gui::udp::AsuraUdpThread* pUDPThread;
 
 
     //private:

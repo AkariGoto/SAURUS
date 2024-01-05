@@ -4,9 +4,9 @@
 
 #include <iostream>
 
+#include "Kinematics/asura_parameter.h"
 #include "Math/MathConstant.h"
 #include "Math/MathLibrary.h"
-#include "Kinematics/asura_parameter.h"
 
 
 namespace designlab_robot_gui::plan

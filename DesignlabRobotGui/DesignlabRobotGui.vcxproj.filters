@@ -5,14 +5,11 @@
     <ClCompile Include="ASURA2GUIDoc.cpp" />
     <ClCompile Include="ASURA2GUIView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="UDP\Udp.cpp">
+    <ClCompile Include="UDP\udp.cpp">
       <Filter>UDP</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="UDP\stdafx.cpp">
-      <Filter>UDP</Filter>
-    </ClCompile>
-    <ClCompile Include="UDP\AsuraUDPThread.cpp">
+    <ClCompile Include="UDP\asura_udp_thread.cpp">
       <Filter>UDP</Filter>
     </ClCompile>
     <ClCompile Include="Comm\SciRingBuffer.cpp">
@@ -102,6 +99,9 @@
     <ClCompile Include="System\Console.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="UDP\udp_ring_buffer.cpp">
+      <Filter>UDP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ASURA2GUI.h" />
@@ -111,17 +111,14 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="UDP\UDPPacket.h">
+    <ClInclude Include="UDP\udp_packet.h">
       <Filter>UDP</Filter>
     </ClInclude>
-    <ClInclude Include="UDP\Udp.h">
+    <ClInclude Include="UDP\udp.h">
       <Filter>UDP</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="UDP\stdafx.h">
-      <Filter>UDP</Filter>
-    </ClInclude>
-    <ClInclude Include="UDP\AsuraUDPThread.h">
+    <ClInclude Include="UDP\asura_udp_thread.h">
       <Filter>UDP</Filter>
     </ClInclude>
     <ClInclude Include="Comm\SciPacket.h">
@@ -255,6 +252,12 @@
     </ClInclude>
     <ClInclude Include="System\Console.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\CriticalSection.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="UDP\udp_ring_buffer.h">
+      <Filter>UDP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

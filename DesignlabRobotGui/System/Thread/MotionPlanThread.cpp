@@ -1,62 +1,26 @@
-﻿/**
- *  ファイル名
- *		MotionPlanThread.cpp
- *  説明
- *		歩容計画を行うスレッド生成クラスの宣言クラス
- *		 UIスレッドとして作成するためCWinThreadから派生
- *  日付
- *		作成日: 2007/05/12(SAT)		更新日: 2007/05/26(SAT)
- */
+﻿
+#include "../../pch.h"
 
- // MotionPlanThread.cpp : 実装ファイル
+#include "System/Thread/MotionPlanThread.h"
 
-#include "..\..\pch.h"
-
-#include "..\..\ASURA2GUI.h"
-#include "MotionPlanThread.h"
-
+#include "ASURA2GUI.h"
 #include "Utility/EngConstant.h"
 
 
-using namespace std;
-using namespace Math;
-using namespace Const;
-using namespace designlab_robot_gui::asura;
-using namespace designlab_robot_gui::plan;
-using namespace System;
+namespace designlab_robot_gui::system
+{
+asura::AsuraX MotionPlanThread::asuraX;
 
-// MotionPlanThread
+data::AsuraData MotionPlanThread::asuraXData;
+data::PlanData MotionPlanThread::planData;
+data::DataHandler MotionPlanThread::dataHandler(&asuraX, &asuraXData,
+                                                &tripodGait, &planData);
 
-/**
- *	----------------------------------------------------------------------
- *		MotionPlanThreadクラス
- *	----------------------------------------------------------------------
- */
+plan::TimeManager MotionPlanThread::timeManager;
 
- /**
-  *	------------------------------------------------------------
-  *		MotionPlanThreadクラスのstatic変数の初期化
-  *	------------------------------------------------------------
-  */
-AsuraX MotionPlanThread::asuraX;
-
-designlab_robot_gui::data::AsuraData MotionPlanThread::asuraXData;
-designlab_robot_gui::data::PlanData MotionPlanThread::planData;
-designlab_robot_gui::data::DataHandler MotionPlanThread::dataHandler(&asuraX, &asuraXData, &tripodGait, &planData);  //20200820
-
-TimeManager MotionPlanThread::timeManager;
-
-PlannerManager MotionPlanThread::plannerManager;
-//AxisControlPlanner MotionPlanThread::axisControl(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
-
-//CrawlGaitPlanner MotionPlanThread::crawlGait(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
-TripodGaitPlanner MotionPlanThread::tripodGait(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);  //  20200820
-//TrackDrivePlanner MotionPlanThread::trackDrive(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
-//ModeChangePlanner MotionPlanThread::modeChange(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
-//HybridMotionPlanner MotionPlanThread::hybridMotion(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);
-//URGMotionPlanner MotionPlanThread::URGMotion(&MotionPlanThread::asuraX, &MotionPlanThread::timeManager);		//追加
-
-//double MotionPlanThread::axisCtrlData[AC_DLG_AXIS_NUM] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};  20200820
+plan::PlannerManager MotionPlanThread::plannerManager;
+plan::TripodGaitPlanner MotionPlanThread::tripodGait(&MotionPlanThread::asuraX,
+                                                     &MotionPlanThread::timeManager);
 
 
 /**
@@ -115,31 +79,9 @@ BEGIN_MESSAGE_MAP(MotionPlanThread, CWinThread)
     ON_THREAD_MESSAGE(WM_PLAN_COMM_START, OnStartDataSending)				/// データ送信開始
     ON_THREAD_MESSAGE(WM_PLAN_COMM_STOP, OnStopDataSending)				/// データ送信停止
 
-    //ON_THREAD_MESSAGE(WM_PLAN_AC_LEG_NO,			OnAxisCtrlDlgLegNo)				/// 脚番号選択
-    //ON_THREAD_MESSAGE(WM_PLAN_AC_CTRL_MODE,			OnAxisCtrlDlgCtrlMode)			/// 制御モード選択
-    //ON_THREAD_MESSAGE(WM_PLAN_AC_SENDING_SLDR_DATA,	OnAxisCtrlDlgRecieveSldrData)	/// データ受信
-    //ON_THREAD_MESSAGE(WM_PLAN_AC_REQUEST_DATA,		OnAxisCtrlDlgSendData)			/// データ送信
-
-    //ON_THREAD_MESSAGE(WM_PLAN_URGTHREAD_SET,		OnURGThreadSet)					/// URGThreadアドレスセット
-
 END_MESSAGE_MAP()
 
-// MotionPlanThread メッセージ ハンドラ
-/**
- *	------------------------------------------------------------
- *		生成された、メッセージ割り当て関数
- *		MotionPlanThread メッセージハンドラ 関数
- *	------------------------------------------------------------
- */
- /**
-  *	----------------------------------------
-  *	Doc，Viewクラス関連
-  *	----------------------------------------
-  */
-  /**
-   *	説明
-   *		スレッドの終了処理
-   */
+
 void MotionPlanThread::OnEndThread(WPARAM wParam, LPARAM lParam)
 {
     /// スレッド終了処理
@@ -149,34 +91,26 @@ void MotionPlanThread::OnEndThread(WPARAM wParam, LPARAM lParam)
     PostQuitMessage(0);
 }
 
-/**
- *	説明
- *		メインスレッドへのデータ送信
- */
 void MotionPlanThread::OnSendViewData(WPARAM wParam, LPARAM lParam)
 {
-    /// ViewへAsuraXの表示データを送信
+    // ViewへAsuraXの表示データを送信
     ::PostMessage((HWND)wParam, WM_PLAN_SENDING_VIEW_DATA, (WPARAM)&asuraXData, (LPARAM)&planData);
 }
 
-/**
- *	説明
- *		歩容セットアップ
- */
 void MotionPlanThread::OnSetupMotion(WPARAM wParam, LPARAM lParam)
 {
-    Strategy strategy = (Strategy)lParam;
+    plan::Strategy strategy = (plan::Strategy)lParam;
 
     switch (strategy)
     {
-        case Strategy::TRIPOD:
+        case plan::Strategy::TRIPOD:
         {
-            plannerManager.switchPlan(&tripodGait, Strategy::TRIPOD);
+            plannerManager.switchPlan(&tripodGait, plan::Strategy::TRIPOD);
             break;
         }
-        case Strategy::TRIPOD_1_CYCLE:
+        case plan::Strategy::TRIPOD_1_CYCLE:
         {
-            plannerManager.switchPlan(&tripodGait, Strategy::TRIPOD_1_CYCLE);
+            plannerManager.switchPlan(&tripodGait, plan::Strategy::TRIPOD_1_CYCLE);
             break;
         }
         default:
@@ -186,29 +120,16 @@ void MotionPlanThread::OnSetupMotion(WPARAM wParam, LPARAM lParam)
     plannerManager.setup();
 }
 
-/**
- *	説明
- *		歩容開始
- */
 void MotionPlanThread::OnStartMotion(WPARAM wParam, LPARAM lParam)
 {
     plannerManager.startMotion();
 }
 
-/**
- *	説明
- *		歩容停止
- */
 void MotionPlanThread::OnStopMotion(WPARAM wParam, LPARAM lParam)
 {
     plannerManager.stopMotion();
 }
 
-/**
- *	説明
- *		歩容生成
- *		タイマによって呼ばれる中身
- */
 void MotionPlanThread::OnGenerateMotion(WPARAM wParam, LPARAM lParam)
 {
     /// 精確な現在時刻を取得
@@ -262,7 +183,7 @@ void MotionPlanThread::initializeMotionPlanThread(void)
      *		タイマコールバック作成
      */
      /// オブジェクト作成
-    pTimedMotionProcedure = new TimedMotionProcedure();
+    pTimedMotionProcedure = new System::TimedMotionProcedure();
     /// タイマコールバックに本スレッドのIDを登録
     pTimedMotionProcedure->setThreadID(m_nThreadID);	//// m_nThreadは基底クラスのCWinThreadのメンバ
 
@@ -270,7 +191,7 @@ void MotionPlanThread::initializeMotionPlanThread(void)
     /**
      *	タイマ本体作成
      */
-    pMultiMediaTimer = new MultiMediaTimer(*pTimedMotionProcedure);
+    pMultiMediaTimer = new System::MultiMediaTimer(*pTimedMotionProcedure);
     pMultiMediaTimer->setTimer(20, 5);
 
     /// スレッドをアクティブに
@@ -307,8 +228,10 @@ void MotionPlanThread::finalizeMotionPlanThread(void)
 }
 
 //UDP通信ダイアログへのポインタをセット
-void MotionPlanThread::acquireAsuraUDPThread(AsuraUDPThread* pDlg)
+void MotionPlanThread::acquireAsuraUDPThread(designlab_robot_gui::udp::AsuraUdpThread* pDlg)
 {
     pUDPThread = pDlg;
     return;
+}
+
 }

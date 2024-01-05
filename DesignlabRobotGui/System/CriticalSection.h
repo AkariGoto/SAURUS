@@ -1,20 +1,20 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		CriticalSection.h
- *  à–¾
- *		ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ğg‚Á‚½“¯Šúˆ—(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2007/05/19(SAT)
+ *  èª¬æ˜
+ *		ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½¿ã£ãŸåŒæœŸå‡¦ç†(Windowså°‚ç”¨)
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/05/12(SAT)		æ›´æ–°æ—¥: 2007/05/19(SAT)
  */
 
 #ifndef __CriticalSection_h__
 #define __CriticalSection_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include <cassert>
 #include <iostream>
 #include "LockObject.h"
@@ -24,144 +24,144 @@ namespace System
 
 /**
  *	----------------------------------------------------------------------
- *		CriticalSectionƒNƒ‰ƒX
- *		iWindows Critical Section‚ÌwrapperƒNƒ‰ƒXj
+ *		CriticalSectionã‚¯ãƒ©ã‚¹
+ *		ï¼ˆWindows Critical Sectionã® wrapper ã‚¯ãƒ©ã‚¹ï¼‰
  *	----------------------------------------------------------------------
  */
 class CriticalSection : public LockObject
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 protected:
-/**
- *	ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“\‘¢‘Ì
- */
-	CRITICAL_SECTION criticalSection;
+    /**
+     *	ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³æ§‹é€ ä½“
+     */
+    CRITICAL_SECTION criticalSection;
 
-/**
- *	ƒƒbƒN‚ğ‰½‰ñs‚Á‚½‚©‚ÌƒJƒEƒ“ƒ^
- */
-	int lockCount;
+    /**
+     *	ãƒ­ãƒƒã‚¯ã‚’ä½•å›è¡Œã£ãŸã‹ã®ã‚«ã‚¦ãƒ³ã‚¿
+     */
+    int lockCount;
 
-/**
- *	ƒƒbƒN‚·‚éƒXƒŒƒbƒhID
- */
-	unsigned int threadID;
+    /**
+     *	ãƒ­ãƒƒã‚¯ã™ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰ID
+     */
+    unsigned int threadID;
 
-/**
- *		–³Œø‚ÈƒXƒŒƒbƒhID‚Ì‹K’è’l
- */
-	static const unsigned int invalidThreadID = 0xffffffff;
+    /**
+     *		ç„¡åŠ¹ãªã‚¹ãƒ¬ãƒƒãƒ‰IDã®è¦å®šå€¤
+     */
+    static const unsigned int invalidThreadID = 0xffffffff;
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	CriticalSection() : lockCount(0), threadID(invalidThreadID)
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    CriticalSection() : lockCount(0), threadID(invalidThreadID)
     {
-		/// ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»
-		::InitializeCriticalSection( &criticalSection );
-	}
+        /// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–
+        ::InitializeCriticalSection(&criticalSection);
+    }
 
-    ~CriticalSection()    
+    ~CriticalSection()
     {
-		assert(threadID == invalidThreadID);
-		assert(lockCount == 0);
-		/// ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚Ì•úŠü(Œãˆ—)
-		::DeleteCriticalSection( &criticalSection );
-	}
+        assert(threadID == invalidThreadID);
+        assert(lockCount == 0);
+        /// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ”¾æ£„(å¾Œå‡¦ç†)
+        ::DeleteCriticalSection(&criticalSection);
+    }
 
-/**
- *	à–¾
- *		ƒƒbƒN
- */
-	virtual void lock(void)
-	{
-		::EnterCriticalSection(&criticalSection);
-		lockCount++;
-		threadID = ::GetCurrentThreadId();
-	}
+    /**
+     *	èª¬æ˜
+     *		ãƒ­ãƒƒã‚¯
+     */
+    virtual void lock(void)
+    {
+        ::EnterCriticalSection(&criticalSection);
+        lockCount++;
+        threadID = ::GetCurrentThreadId();
+    }
 
-/**
- *	à–¾
- *		ƒAƒ“ƒƒbƒN
- */
-	virtual void unlock(void)
-	{
-		assert(lockCount > 0);
-		lockCount--;
-		
-		if ( lockCount == 0 )
-			threadID = invalidThreadID;
+    /**
+     *	èª¬æ˜
+     *		ã‚¢ãƒ³ãƒ­ãƒƒã‚¯
+     */
+    virtual void unlock(void)
+    {
+        assert(lockCount > 0);
+        lockCount--;
 
-		::LeaveCriticalSection(&criticalSection);
-	}
+        if (lockCount == 0)
+            threadID = invalidThreadID;
 
-/**
- *	à–¾
- *		Œ»sƒXƒŒƒbƒh‚É‚æ‚èƒƒbƒN‚³‚ê‚Ä‚¢‚é‚©
- *	à–¾
- *		true: ƒƒbƒN‚³‚ê‚Ä‚¢‚é
- */
-	virtual bool isLockedByCurrentThread() const
-	{
-		return ::GetCurrentThreadId() == threadID;
-	}
+        ::LeaveCriticalSection(&criticalSection);
+    }
+
+    /**
+     *	èª¬æ˜
+     *		ç¾è¡Œã‚¹ãƒ¬ãƒƒãƒ‰ã«ã‚ˆã‚Šãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹ã‹
+     *	èª¬æ˜
+     *		true: ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹
+     */
+    virtual bool isLockedByCurrentThread() const
+    {
+        return ::GetCurrentThreadId() == threadID;
+    }
 
 };	/// end of class CriticalSection
 
 /**
  *	----------------------------------------------------------------------
- *		CriticalSectionLockƒNƒ‰ƒX
+ *		CriticalSectionLockã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class CriticalSectionLock
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
-/**
- *	CriticalSectionƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg
- */
-    CriticalSection&		criticalSection;
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
+     /**
+      *	CriticalSectionã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+      */
+    CriticalSection& criticalSection;
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-	/**
-	 *	ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 *	¶¬‚ÉƒuƒƒbƒN‚·‚é
-	 */
-	CriticalSectionLock(CriticalSection& cs)
-	: criticalSection( cs )
-	{
-		criticalSection.lock();
-	}
+    /**
+     *	ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	ç”Ÿæˆæ™‚ã«ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹
+     */
+    CriticalSectionLock(CriticalSection& cs)
+        : criticalSection(cs)
+    {
+        criticalSection.lock();
+    }
 
-	/**
-	 *	ƒfƒXƒgƒ‰ƒNƒ^
-	 *	ƒuƒƒbƒN‰ğœ
-	 */
+    /**
+     *	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	ãƒ–ãƒ­ãƒƒã‚¯è§£é™¤
+     */
     ~CriticalSectionLock()
-	{
-		criticalSection.unlock();
-	}
+    {
+        criticalSection.unlock();
+    }
 };	/// end of class CriticalSectionLock
 
 }	/// end of namespace System;

@@ -11,53 +11,44 @@
 #include "Plan/plan_parameter.h"
 #include "Plan/planner_manager.h"
 #include "Plan/tripod_gait_planner.h"
+#include "System/Thread/TimedMotionProcedure.h"
+#include "System/Timer/MultiMediaTimer.h"
+#include "System/WinUserMessage.h"
+#include "UDP/asura_udp_thread.h"
 
 
-#include "..\Timer\MultiMediaTimer.h"
-#include "TimedMotionProcedure.h"
-#include "..\WinUserMessage.h"
-#include "..\..\UDP/AsuraUDPThread.h"
-
-
-
-class AsuraUDPThread;
-
+namespace designlab_robot_gui::system
+{
 
 class MotionPlanThread : public CWinThread
 {
-    using AsuraData = designlab_robot_gui::data::AsuraData;
-    using PlanData = designlab_robot_gui::data::PlanData;
-    using DataHandler = designlab_robot_gui::data::DataHandler;
-
     DECLARE_DYNCREATE(MotionPlanThread)
 
     /**
      *		Asuraのキネマティクスオブジェクト
      */
-    static designlab_robot_gui::asura::AsuraX asuraX;
+    static asura::AsuraX asuraX;
 
     /**
      *		データオブジェクト
      */
      /// キネマティクスデータ
-    static AsuraData asuraXData;
+    static data::AsuraData asuraXData;
     /// プランデータ
-    static PlanData planData;
+    static data::PlanData planData;
     /// データハンドラオブジェクト
-    static DataHandler dataHandler;
+    static data::DataHandler dataHandler;
 
-    /**
-     *		動作計画オブジェクト
-     */
-    static designlab_robot_gui::plan::PlannerManager		plannerManager;
+    //! 動作計画オブジェクト
+    static plan::PlannerManager		plannerManager;
 
-    static designlab_robot_gui::plan::TripodGaitPlanner	tripodGait;  //20200820
+    static plan::TripodGaitPlanner	tripodGait;
 
     System::TimedMotionProcedure* pTimedMotionProcedure;
     System::MultiMediaTimer* pMultiMediaTimer;
-    static designlab_robot_gui::plan::TimeManager		timeManager;
+    static plan::TimeManager		timeManager;
 
-    AsuraUDPThread* pUDPThread;
+    udp::AsuraUdpThread* pUDPThread;
 
     /// スレッドが有効かどうか
     BOOL isAlive;
@@ -66,8 +57,6 @@ class MotionPlanThread : public CWinThread
     bool isCommAlive;
 
 protected:
-
-
     /// デフォルトコンストラクタ
     MotionPlanThread();           // 動的生成で使用される protected コンストラクタ
     /// デストラクタ
@@ -96,7 +85,7 @@ public:
      */
     BOOL isRunning() const { return isAlive; }
 
-    void MotionPlanThread::acquireAsuraUDPThread(AsuraUDPThread* pDlg);
+    void acquireAsuraUDPThread(udp::AsuraUdpThread* pDlg);
 
     DECLARE_MESSAGE_MAP()
 
@@ -118,14 +107,17 @@ protected:
     /// 歩容生成
     afx_msg void OnGenerateMotion(WPARAM wParam, LPARAM lParam);
 
-    /// 通信関係
-    /// データ送信開始
+    // 通信関係
+
+    //! データ送信開始
     afx_msg void OnStartDataSending(WPARAM wParam, LPARAM lParam);
-    /// データ送信停止
+    //! データ送信停止
     afx_msg void OnStopDataSending(WPARAM wParam, LPARAM lParam);
 
 
 };
+
+} // namespace designlab_robot_gui::system
 
 
 #endif //DESIGNLABROBOTGUI_MOTION_PLAN_THREAD_H_

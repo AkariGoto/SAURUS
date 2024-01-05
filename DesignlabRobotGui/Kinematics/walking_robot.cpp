@@ -198,18 +198,12 @@ Kinematics WalkingRobot::placeBodyPosition(Math::Vector& nextBodyPosition)
 /// 胴体の位置を決定する
 Kinematics WalkingRobot::placeBodyPosture(Math::Matrix& nextBodyPosture)
 {
-    /// 運動学結果
-    Kinematics kine;
-
     return NO_KINE_ERROR;
 }
 
 /// 胴体の位置姿勢を同時に決定する
 Kinematics WalkingRobot::placeBodyFrame(Math::Matrix& nextBodyFrame)
 {
-    /// 運動学結果
-    Kinematics kine;
-
     return NO_KINE_ERROR;
 }
 

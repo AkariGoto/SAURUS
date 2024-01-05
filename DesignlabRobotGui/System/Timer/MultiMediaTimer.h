@@ -1,276 +1,269 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		MultiMediaTimer.h
- *  à–¾
- *		ƒ}ƒ‹ƒ`ƒƒfƒBƒAƒ^ƒCƒ}‚ğg—p‚µ‚½ƒ^ƒCƒ}(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/05/12(SAT)		XV“ú: 2007/05/19(SAT)
- */
-
+ï»¿
 #ifndef __MultiMediaTimer_h__
 #define __MultiMediaTimer_h__
 
 /**
  *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
+ *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
  *	----------------------------------------------------------------------
  */
 #include <Windows.h>
 #include <MMSystem.h>
+
 #include <iostream>
 
 #include "..\CriticalSection.h"
 
-/**
- *		winmm.lib‚ğg—p
- *		ƒŠƒ“ƒJ‚Ö’Ê’m
- */
+ /**
+  *		winmm.libã‚’ä½¿ç”¨
+  *		ãƒªãƒ³ã‚«ã¸é€šçŸ¥
+  */
 #pragma comment (lib, "winmm.lib")
 
 namespace System
 {
 /**
  *	----------------------------------------------------------------------
- *		’è”Aƒ}ƒNƒéŒ¾
+ *		å®šæ•°ã€ãƒã‚¯ãƒ­å®£è¨€
  *	----------------------------------------------------------------------
  */
 
-/**
- *		ŒÄ‚Ño‚·ƒIƒuƒWƒFƒNƒg‚ª—LŒø‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚éƒ}[ƒJ
- *		0xF5F5F5F5‚Íillegal‚ÈƒAƒhƒŒƒX‚Ì’l
- *		ç’·ƒ`ƒFƒbƒN—p
- */
+ /**
+  *		å‘¼ã³å‡ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæœ‰åŠ¹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ãƒãƒ¼ã‚«
+  *		0xF5F5F5F5ã¯ illegal ãªã‚¢ãƒ‰ãƒ¬ã‚¹ã®å€¤
+  *		å†—é•·ãƒã‚§ãƒƒã‚¯ç”¨
+  */
 const   DWORD   checkMMTimerMarker = 0xF5F5F5F5;
 
 
 /**
  *	----------------------------------------------------------------------
- *		MultiMediaTimerCallbackƒNƒ‰ƒX
- *			ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX
- *			ŒJ‚è•Ô‚µˆ—‚ğTimerƒNƒ‰ƒX‚©‚ç—£‚µ‚Ä
- *			run()‚©‚ç‚ÌŒÄ‚Ño‚µ‚ªƒ}ƒ‹ƒ`ƒƒfƒBƒ^ƒCƒ}
- *			ƒNƒ‰ƒX‚ÌŠÖ”‚Ì“Ë”­“I‚ÈŒÄ‚Ño‚µ‚ğ–h‚®
+ *		MultiMediaTimerCallbackã‚¯ãƒ©ã‚¹
+ *			ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+ *			ç¹°ã‚Šè¿”ã—å‡¦ç†ã‚’Timerã‚¯ãƒ©ã‚¹ã‹ã‚‰é›¢ã—ã¦
+ *			run()ã‹ã‚‰ã®å‘¼ã³å‡ºã—ãŒãƒãƒ«ãƒãƒ¡ãƒ‡ã‚£ã‚¿ã‚¤ãƒ
+ *			ã‚¯ãƒ©ã‚¹ã®é–¢æ•°ã®çªç™ºçš„ãªå‘¼ã³å‡ºã—ã‚’é˜²ã
  *	----------------------------------------------------------------------
  */
-/**
- *		ƒ^ƒCƒ}[‚ğƒZƒbƒg‚·‚é‚Æˆê’è‚ÌŠÔŠu‚Å
- *		‚±‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚ªÀs‚³‚ê‚é.
- *
- *		‚Â‚Ü‚è1‰ñ‘O‚ÌƒR[ƒ‹ƒoƒbƒN‚ªI—¹‚È‚­‚Ä‚à
- *		Ÿ‚ÌƒR[ƒ‹‚ªŒÄ‚Ño‚³‚ê‚é‚Ì‚Å’ˆÓ
- */
+ /**
+  *		ã‚¿ã‚¤ãƒãƒ¼ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã¨ä¸€å®šã®é–“éš”ã§
+  *		ã“ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ãŒå®Ÿè¡Œã•ã‚Œã‚‹.
+  *
+  *		ã¤ã¾ã‚Š1å›å‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãŒçµ‚äº†ãªãã¦ã‚‚
+  *		æ¬¡ã®ã‚³ãƒ¼ãƒ«ãŒå‘¼ã³å‡ºã•ã‚Œã‚‹ã®ã§æ³¨æ„
+  */
 class MultiMediaTimerCallback
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+     /**
+      *	------------------------------------------------------------
+      *		ãƒ¡ãƒ³ãƒé–¢æ•°
+      *	------------------------------------------------------------
+      */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	MultiMediaTimerCallback(){}
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~MultiMediaTimerCallback(){}
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    MultiMediaTimerCallback() {}
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~MultiMediaTimerCallback() {}
 
-/**
- *	----------------------------------------
- *	ƒ^ƒCƒ}‚ÅÀÛ‚Éˆ—‚³‚ê‚é
- *	----------------------------------------
- */
-	/// ƒ‹[ƒ`ƒ“ŠJn‚ÉŒÄ‚Ño‚·ˆ—
-	virtual void	onStart(void){}
-	/// ƒ‹[ƒ`ƒ“I—¹‚ÉŒÄ‚Ño‚·ˆ—
-	virtual void	onStop(void){}
-	/**
-	 *		ƒI[ƒo[ƒ‰ƒCƒh•K{‚Ìƒ^ƒCƒ}ƒ‹[ƒ`ƒ“
-	 *		I—¹‚É‚Ífalse‚ğ•Ô‚·
-	 */
-	virtual bool	onMultiMediaTimer(void)=0;//false;
+    /**
+     *	----------------------------------------
+     *	ã‚¿ã‚¤ãƒã§å®Ÿéš›ã«å‡¦ç†ã•ã‚Œã‚‹
+     *	----------------------------------------
+     */
+     /// ãƒ«ãƒ¼ãƒãƒ³é–‹å§‹æ™‚ã«å‘¼ã³å‡ºã™å‡¦ç†
+    virtual void	onStart(void) {}
+    /// ãƒ«ãƒ¼ãƒãƒ³çµ‚äº†æ™‚ã«å‘¼ã³å‡ºã™å‡¦ç†
+    virtual void	onStop(void) {}
+    /**
+     *		ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰å¿…é ˆã®ã‚¿ã‚¤ãƒãƒ«ãƒ¼ãƒãƒ³
+     *		çµ‚äº†æ™‚ã«ã¯ false ã‚’è¿”ã™
+     */
+    virtual bool	onMultiMediaTimer(void) = 0;//false;
 
 };	/// end of class MultiMediaTimerCallback
 
 /**
  *		//////////////////////////////////////////////////
- *				MultiMediaTimerƒNƒ‰ƒX
+ *				MultiMediaTimerã‚¯ãƒ©ã‚¹
  *		//////////////////////////////////////////////////
  */
-/**
- *	----------------------------------------------------------------------
- *		MultiMediaTimerƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-/**
- *		g‚¢•û
- *			MultiMediaTimerCallbackƒNƒ‰ƒX‚ğ”h¶‚³‚¹‚Ä, 
- *			onMultiMediaTimer()‚ğƒI[ƒo[ƒ‰ƒCƒh‚·‚é
- *
- *			setTimer()‚ªŒÄ‚Ño‚µ‚ª¬Œ÷‚·‚ê‚Î, period–ˆ‚É
- *			MultiMediaTimerCallbackƒNƒ‰ƒX‚Ì	onMultiMediaTimer‚ªŒÄ‚Î‚ê‚é
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		MultiMediaTimerã‚¯ãƒ©ã‚¹
+  *	----------------------------------------------------------------------
+  */
+  /**
+   *		ä½¿ã„æ–¹
+   *			MultiMediaTimerCallbackã‚¯ãƒ©ã‚¹ã‚’æ´¾ç”Ÿã•ã›ã¦,
+   *			onMultiMediaTimer()ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã™ã‚‹
+   *
+   *			setTimer()ãŒå‘¼ã³å‡ºã—ãŒæˆåŠŸã™ã‚Œã°, periodæ¯ã«
+   *			MultiMediaTimerCallbackã‚¯ãƒ©ã‚¹ã®	onMultiMediaTimerãŒå‘¼ã°ã‚Œã‚‹
+   */
 class MultiMediaTimer
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 private:
 
-/**
- *	----------------------------------------
- *	ƒ^ƒCƒ}‚Ì‚½‚ß‚ÌŠeí•Ï”
- *	----------------------------------------
- */
-/**
- *	ƒIƒuƒWƒFƒNƒg•Ï”
- *		timerCallback				: ƒR[ƒ‹ƒoƒbƒNŠÖ”“à‚Åˆ—‚³‚ê‚éŠÖ”
- *		criticalSection				: ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg
- */
-	MultiMediaTimerCallback&		timerCallback;
-	CriticalSection						criticalSection;
+    /**
+     *	----------------------------------------
+     *	ã‚¿ã‚¤ãƒã®ãŸã‚ã®å„ç¨®å¤‰æ•°
+     *	----------------------------------------
+     */
+     /**
+      *	ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå¤‰æ•°
+      *		timerCallback				: ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°å†…ã§å‡¦ç†ã•ã‚Œã‚‹é–¢æ•°
+      *		criticalSection				: ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+      */
+    MultiMediaTimerCallback& timerCallback;
+    CriticalSection						criticalSection;
 
-/**
- *	ƒ^ƒCƒ}‚Ì«”\‚ÉŠÖŒW‚·‚é•Ï”
- *		period						: ƒ^ƒCƒ}ƒCƒxƒ“ƒgüŠú[msec]
- *		resolution					: ƒ^ƒCƒ}ƒCƒxƒ“ƒg‚Ì•ª‰ğ”\[msec]
- *		timerID						: ƒ^ƒCƒ}ƒCƒxƒ“ƒg‚Ì¯•Êq
- *		frequency					: performanceFrequency‚Ì’PˆÊ•ÏŠ·’l[sec]
- *		performanceFrequency	: ƒVƒXƒeƒ€‹N“®‚©‚ç‚ÌŒo‰ßŠÔ[msec]
- */
-	UINT			timerPeriod;
-	UINT			timerResolution;
-	MMRESULT		timerID;
-	double			timerFrequency;
-	LARGE_INTEGER	performanceFrequency;
+    /**
+     *	ã‚¿ã‚¤ãƒã®æ€§èƒ½ã«é–¢ä¿‚ã™ã‚‹å¤‰æ•°
+     *		period						: ã‚¿ã‚¤ãƒã‚¤ãƒ™ãƒ³ãƒˆå‘¨æœŸ[msec]
+     *		resolution					: ã‚¿ã‚¤ãƒã‚¤ãƒ™ãƒ³ãƒˆã®åˆ†è§£èƒ½[msec]
+     *		timerID						: ã‚¿ã‚¤ãƒã‚¤ãƒ™ãƒ³ãƒˆã®è­˜åˆ¥å­
+     *		frequency					: performanceFrequencyã®å˜ä½å¤‰æ›å€¤[sec]
+     *		performanceFrequency	: ã‚·ã‚¹ãƒ†ãƒ èµ·å‹•ã‹ã‚‰ã®çµŒéæ™‚é–“[msec]
+     */
+    UINT			timerPeriod;
+    UINT			timerResolution;
+    MMRESULT		timerID;
+    double			timerFrequency;
+    LARGE_INTEGER	performanceFrequency;
 
 
-/**
- *	ƒtƒ‰ƒO•Ï”
- *		isTimerEnded				: ƒ^ƒCƒ}‚ªI‚í‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
- *		isTimerWarned				: Œx‚ğó‚¯‚½‚©‚Ç‚¤‚©
- */
-	bool	isTimerEnded;
-	bool	isTimerWarned;
+    /**
+     *	ãƒ•ãƒ©ã‚°å¤‰æ•°
+     *		isTimerEnded				: ã‚¿ã‚¤ãƒãŒçµ‚ã‚ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+     *		isTimerWarned				: è­¦å‘Šã‚’å—ã‘ãŸã‹ã©ã†ã‹
+     */
+    bool	isTimerEnded;
+    bool	isTimerWarned;
 
-/**
- *	ƒ}ƒ‹ƒ`ƒƒfƒBƒAƒ^ƒCƒ}‚ÌŠJnŠÔ
- */
-	double startTime;
+    /**
+     *	ãƒãƒ«ãƒãƒ¡ãƒ‡ã‚£ã‚¢ã‚¿ã‚¤ãƒã®é–‹å§‹æ™‚é–“
+     */
+    double startTime;
 
-/**
- *	ŒŸ¸—p‚Ìƒ}[ƒJ
- */
-	DWORD	marker;
+    /**
+     *	æ¤œæŸ»ç”¨ã®ãƒãƒ¼ã‚«
+     */
+    DWORD	marker;
 
 protected:
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	MultiMediaTimer(MultiMediaTimerCallback& timerCallback_);
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~MultiMediaTimer();
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    MultiMediaTimer(MultiMediaTimerCallback& timerCallback_);
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~MultiMediaTimer();
 
-/**
- *	à–¾
- *		ƒAƒNƒZƒXŠÖ”
- */
-	UINT	getPeriod(void)	 const{ return timerPeriod; }
-	UINT	getResolution(void) const{ return timerResolution; }
-	double	getStartTime(void) const{ return startTime; }
+    /**
+     *	èª¬æ˜
+     *		ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     */
+    UINT	getPeriod(void)	 const { return timerPeriod; }
+    UINT	getResolution(void) const { return timerResolution; }
+    double	getStartTime(void) const { return startTime; }
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}[‚ª“®‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
- */
-	bool isActive(void) const{ return (timerID != 0); }
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒãƒ¼ãŒå‹•ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹
+     */
+    bool isActive(void) const { return (timerID != 0); }
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒNƒIƒuƒWƒFƒNƒg‚ÌƒZƒbƒg
- *		ƒ^ƒCƒ}‚ğŠJn‚·‚é‘O‚É•K‚¸s‚¤
- *	ˆø”
- *		ƒR[ƒ‹ƒoƒbƒNŠÖ”‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
-	bool setMultiMediaTimerCallback(MultiMediaTimerCallback& timerCallback_);
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚»ãƒƒãƒˆ
+     *		ã‚¿ã‚¤ãƒã‚’é–‹å§‹ã™ã‚‹å‰ã«å¿…ãšè¡Œã†
+     *	å¼•æ•°
+     *		ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     */
+    bool setMultiMediaTimerCallback(MultiMediaTimerCallback& timerCallback_);
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}‚ÌƒZƒbƒg
- *	ˆø”
- *		period: üŠú
- *		resolution: ƒ^ƒCƒ}‚Ì•ª‰ğ”\
- */
-	bool setTimer(UINT period, UINT resolution = 1);
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã®ã‚»ãƒƒãƒˆ
+     *	å¼•æ•°
+     *		period: å‘¨æœŸ
+     *		resolution: ã‚¿ã‚¤ãƒã®åˆ†è§£èƒ½
+     */
+    bool setTimer(UINT period, UINT resolution = 1);
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}‚Ì”jŠü
- */
-	bool killTimer(void);
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã®ç ´æ£„
+     */
+    bool killTimer(void);
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}‚ÌüŠú‚Æ•ª‰ğ”\‚ÌƒŠƒZƒbƒg
- */
-	void resetPeriodAndResolution(void);
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã®å‘¨æœŸã¨åˆ†è§£èƒ½ã®ãƒªã‚»ãƒƒãƒˆ
+     */
+    void resetPeriodAndResolution(void);
 
-/**
- *	à–¾
- *		Œ»İ‚ÌCPU‚Ìæ“¾
- */
-	double getPresentTime(void);
+    /**
+     *	èª¬æ˜
+     *		ç¾åœ¨ã®CPUæ™‚åˆ»ã®å–å¾—
+     */
+    double getPresentTime(void);
 
 private:
-/**
- *	ˆø”
- *		ƒ^ƒCƒ}ƒvƒƒV[ƒWƒƒ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”(static‚È‚Ì‚ÍƒR[ƒ‹ƒoƒbƒNŠÖ”‚Ì‚½‚ß)
- *	à–¾
- *		uID			: ƒ^ƒCƒ}ID
- *		uMsg		: •sg—p
- *		dwUser		: ƒ†[ƒU’è‹`(‘å’ïthisƒ|ƒCƒ“ƒ^‚ğ“ü‚ê‚é)
- *		dw1			: •sg—p
- *		dw2			: •sg—p
- */
-	static void CALLBACK multiMediaTimerProcedure(
-									UINT uID, 
-									UINT uMsg,
-									DWORD_PTR dwUser, 
-									DWORD_PTR dw1, 
-									DWORD_PTR dw2
-									);
+    /**
+     *	å¼•æ•°
+     *		ã‚¿ã‚¤ãƒãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°(staticãªã®ã¯ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®ãŸã‚)
+     *	èª¬æ˜
+     *		uID			: ã‚¿ã‚¤ãƒID
+     *		uMsg		: ä¸ä½¿ç”¨
+     *		dwUser		: ãƒ¦ãƒ¼ã‚¶å®šç¾©(å¤§æŠµ this ãƒã‚¤ãƒ³ã‚¿ã‚’å…¥ã‚Œã‚‹)
+     *		dw1			: ä¸ä½¿ç”¨
+     *		dw2			: ä¸ä½¿ç”¨
+     */
+    static void CALLBACK multiMediaTimerProcedure(
+                    UINT uID,
+                    UINT uMsg,
+                    DWORD_PTR dwUser,
+                    DWORD_PTR dw1,
+                    DWORD_PTR dw2
+    );
 
-/**
- *	à–¾
- *		ƒ^ƒCƒ}‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÅŒÄ‚Ño‚·ˆ—
- */
-	void	run(void);
+    /**
+     *	èª¬æ˜
+     *		ã‚¿ã‚¤ãƒã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã§å‘¼ã³å‡ºã™å‡¦ç†
+     */
+    void	run(void);
 
-/**
- *	à–¾
- *		ç’·ŒŸ¸—p
- */
-	bool	checkMarker(void) const{return ( marker == checkMMTimerMarker );}
+    /**
+     *	èª¬æ˜
+     *		å†—é•·æ¤œæŸ»ç”¨
+     */
+    bool	checkMarker(void) const { return (marker == checkMMTimerMarker); }
 
 protected:
 };	/// end of class MultiMediaTimer

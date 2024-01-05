@@ -150,9 +150,9 @@ void CASURA2GUIDoc::initializeCASURA2GUIDoc()
     // currentStrategy = designlab_robot_gui::plan::TRIPOD;
 
     /// スレッドの作成 MotionPlanThread
-    pMotionPlanThread = (MotionPlanThread*)AfxBeginThread
+    pMotionPlanThread = (designlab_robot_gui::system::MotionPlanThread*)AfxBeginThread
     (
-      RUNTIME_CLASS(MotionPlanThread),		/// CWinThread から派生されたオブジェクトの RUNTIME_CLASS。
+      RUNTIME_CLASS(designlab_robot_gui::system::MotionPlanThread),		/// CWinThread から派生されたオブジェクトの RUNTIME_CLASS。
       THREAD_PRIORITY_NORMAL,				/// スレッドの優先度
       0,											/// 新しいスレッドのスタックサイズをバイト数で指定．0 のときはスレッドを作成したプロセスのスタックサイズと同じ
       CREATE_SUSPENDED,							/// スレッドの作成を制御するフラグ CREATE_SUSPENDED or 0
@@ -171,10 +171,10 @@ void CASURA2GUIDoc::initializeCASURA2GUIDoc()
     theApp.motionPlanThreadID = pMotionPlanThread->m_nThreadID;
 
 
-    /// スレッドの作成 AsuraUDPThread
-    pUDPThread = (AsuraUDPThread*)AfxBeginThread
+    /// スレッドの作成 AsuraUdpThread
+    pUDPThread = (designlab_robot_gui::udp::AsuraUdpThread*)AfxBeginThread
     (
-      RUNTIME_CLASS(AsuraUDPThread),		/// CWinThread から派生されたオブジェクトの RUNTIME_CLASS。
+      RUNTIME_CLASS(designlab_robot_gui::udp::AsuraUdpThread),		/// CWinThread から派生されたオブジェクトの RUNTIME_CLASS。
       THREAD_PRIORITY_NORMAL,				/// スレッドの優先度
       0,											/// 新しいスレッドのスタックサイズをバイト数で指定．0 のときはスレッドを作成したプロセスのスタックサイズと同じ
       CREATE_SUSPENDED,						/// スレッドの作成を制御するフラグ CREATE_SUSPENDED or 0

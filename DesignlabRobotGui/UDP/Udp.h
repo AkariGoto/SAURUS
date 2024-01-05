@@ -1,20 +1,6 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		Udp.h
- *  à–¾
- *		UDP’ÊM‚ÉŠÖ‚·‚éƒNƒ‰ƒX http://pukulab.blog.fc2.com/blog-entry-6.html
- *  “ú•t
- *		ì¬“ú: 2020/02/20		XV“ú:
- */
-
-
-
-
-
-#ifndef __HEADER_UDP_LIB__
-#define __HEADER_UDP_LIB__
-#include <stdio.h>
-#include <stdlib.h>
+ï»¿
+#ifndef DESIGNLABROBOTGUI_UDP_UDP_H_
+#define DESIGNLABROBOTGUI_UDP_UDP_H_
 
 // Win32API
 #include <windows.h>
@@ -22,27 +8,28 @@
 // WinSock
 #include <winsock.h>
 #pragma comment(lib, "wsock32.lib")
- 
-// UDPƒNƒ‰ƒX
-class UDPSocket {
+
+
+namespace designlab_robot_gui::udp
+{
+
+class UDPSocket final
+{
+public:
+    UDPSocket();                            //!< ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    ~UDPSocket() = default;                 //!< ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    int  open(const char* addr, int port);  // åˆæœŸåŒ–           ï¼ˆå¤±æ•—:0 æˆåŠŸ:1ï¼‰
+    int  send2(void* data, int size);       // é€ä¿¡             ï¼ˆå¤±æ•—:0 æˆåŠŸ:é€ä¿¡ãƒã‚¤ãƒˆæ•°ï¼‰
+    int  sendf(char* str, ...);             // æ›¸å¼ä»˜ãã§é€ä¿¡   ï¼ˆå¤±æ•—:0 æˆåŠŸ:é€ä¿¡ãƒã‚¤ãƒˆæ•°ï¼‰
+    int  receive(void* data, int size);     // å—ä¿¡             ï¼ˆå¤±æ•—:0 æˆåŠŸ:å—ä¿¡ãƒã‚¤ãƒˆæ•°ï¼‰
+    void close(void);                       // é–‰ã˜ã‚‹
 
 private:
-    SOCKET sock;                            // ƒ\ƒPƒbƒg
-    sockaddr_in server_addr, client_addr;   // ‘—óMƒAƒhƒŒƒX
-
-public:
-    UDPSocket();                            // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-    ~UDPSocket();                           // ƒfƒXƒgƒ‰ƒNƒ^
-    int  open(const char *addr, int port);  // ‰Šú‰»           i¸”s:0 ¬Œ÷:1j
-    int  send2(void *data, int size);       // ‘—M             i¸”s:0 ¬Œ÷:‘—MƒoƒCƒg”j
-    int  sendf(char *str, ...);             // ‘®•t‚«‚Å‘—M   i¸”s:0 ¬Œ÷:‘—MƒoƒCƒg”j
-    int  receive(void *data, int size);     // óM             i¸”s:0 ¬Œ÷:óMƒoƒCƒg”j
-    void close(void);                       // •Â‚¶‚é
-
-  
-	
+    SOCKET sock;                            //!< ã‚½ã‚±ãƒƒãƒˆ
+    sockaddr_in server_addr, client_addr;   //!< é€å—ä¿¡ã‚¢ãƒ‰ãƒ¬ã‚¹
 };
 
+}  // namespace designlab_robot_gui::udp
 
 
-#endif
+#endif  // DESIGNLABROBOTGUI_UDP_UDP_H_
