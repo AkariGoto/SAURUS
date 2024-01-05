@@ -1,12 +1,12 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		SerialPort.h
- *  à–¾
- *		ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğƒ`ƒFƒbƒN‚µƒf[ƒ^‚ğ‘—óM‚·‚é
- *		ƒ|[ƒg‚É•Ï‰»‚ª‹N‚±‚Á‚½‚çƒ†[ƒU‚É’Ê’m‚·‚é
- *		‘—óM—p‚ÌƒXƒŒƒbƒh‚à•Ê“rì¬‚·‚é
- *  “ú•t
- *		ì¬“ú: 2007/04/01(Sat)		XV“ú: 2007/11/03(Sat)
+ *  èª¬æ˜
+ *		ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’ãƒã‚§ãƒƒã‚¯ã—ãƒ‡ãƒ¼ã‚¿ã‚’é€å—ä¿¡ã™ã‚‹
+ *		ãƒãƒ¼ãƒˆã«å¤‰åŒ–ãŒèµ·ã“ã£ãŸã‚‰ãƒ¦ãƒ¼ã‚¶ã«é€šçŸ¥ã™ã‚‹
+ *		é€å—ä¿¡ç”¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‚‚åˆ¥é€”ä½œæˆã™ã‚‹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/04/01(Sat)		æ›´æ–°æ—¥: 2007/11/03(Sat)
  */
 
 #ifndef DESIGNLAB_ROBOT_GUI_COMM_SERIAL_PORT_H_
@@ -17,8 +17,9 @@
 #include <afxwin.h>
 
 #include "SciRingBuffer.h"
-#include "..\System\WinUserMessage.h"
-#include "..\System\CriticalSection.h"
+#include "System/critical_section.h"
+#include "System/win_user_message.h"
+
 
 namespace Comm
 {
@@ -28,248 +29,248 @@ class SerialPort
 {
     /**
      *	------------------------------------------------------------
-     *		ƒƒ“ƒo•Ï”
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
      *	------------------------------------------------------------
      */
-    protected:
+protected:
     /*
-    *	ƒlƒbƒgƒ[ƒNİ’è
-    */	//yoshida‚³‚ñ‚ª‰Á‚¦‚½‚Æ‚±
+    *	ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯è¨­å®š
+    */	//yoshidaã•ã‚“ãŒåŠ ãˆãŸã¨ã“
     /*
-    *	ƒ|[ƒg”Ô†
+    *	ãƒãƒ¼ãƒˆç•ªå·
     */
-    u_short local_portNo;			/// ©•ª‚Ìƒ|[ƒg”Ô†
-    u_short remort_portNo;				/// ‘Šè‚Ìƒ|[ƒg”Ô†
+    u_short local_portNo;			/// è‡ªåˆ†ã®ãƒãƒ¼ãƒˆç•ªå·
+    u_short remort_portNo;				/// ç›¸æ‰‹ã®ãƒãƒ¼ãƒˆç•ªå·
     /*
-    *	IPƒAƒhƒŒƒX
+    *	IPã‚¢ãƒ‰ãƒ¬ã‚¹
     */
-    char local_IPAdress[13];			/// ©•ª‚ÌIPƒAƒhƒŒƒX
-    char remort_IPAdress[13];			/// ‘—MæIPƒAƒhƒŒƒX
+    char local_IPAdress[13];			/// è‡ªåˆ†ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹
+    char remort_IPAdress[13];			/// é€ä¿¡å…ˆIPã‚¢ãƒ‰ãƒ¬ã‚¹
     /**
-     *	winsockŠÖ˜A
+     *	winsocké–¢é€£
      */
-    WSAData				wsaData; ///	WSAStartup‚Ìó‘ÔŠm”F‚Ì\‘¢‘Ì
+    WSAData				wsaData; ///	WSAStartupã®çŠ¶æ…‹ç¢ºèªã®æ§‹é€ ä½“
     int					WSAHandle;
     SOCKET				sockHandle;
-    struct sockaddr_in	addr; /// sendtoŠÖ”(winsock‚Ì‘—MŠÖ”)‚Ö“n‚·ƒ|[ƒg,IPƒAƒhƒŒƒX‚Ì\‘¢‘Ì
+    struct sockaddr_in	addr; /// sendtoé–¢æ•°(winsockã®é€ä¿¡é–¢æ•°)ã¸æ¸¡ã™ãƒãƒ¼ãƒˆ,IPã‚¢ãƒ‰ãƒ¬ã‚¹ã®æ§‹é€ ä½“
 
-    /****************‚±‚±‚©‚ç‰º‚ª‚à‚Æ‚©‚ç‚Ì‹Lq************************/
+    /****************ã“ã“ã‹ã‚‰ä¸‹ãŒã‚‚ã¨ã‹ã‚‰ã®è¨˜è¿°************************/
     /**
-     *	COMƒ|[ƒgŠÖ˜A
+     *	COMãƒãƒ¼ãƒˆé–¢é€£
      */
-     /// COMƒ|[ƒg‚ÌeƒEƒBƒ“ƒhƒE‚Ö‚Ìƒnƒ“ƒhƒ‹
+     /// COMãƒãƒ¼ãƒˆã®è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒãƒ³ãƒ‰ãƒ«
     HWND				commOwnerWindowHandle;
-    /// COMƒ|[ƒgƒnƒ“ƒhƒ‹
+    /// COMãƒãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ«
     HANDLE				commHandle;
-    /// ’ÊMƒCƒxƒ“ƒg
+    /// é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆ
     DWORD				commEvent;
-    /// ƒ|[ƒg”Ô†
+    /// ãƒãƒ¼ãƒˆç•ªå·
     UINT				commPortNumber;
-    /// ’ÊM‚Ìƒ^ƒCƒ€ƒAƒEƒgİ’è‚ğˆµ‚¤\‘¢‘Ì
+    /// é€šä¿¡ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆè¨­å®šã‚’æ‰±ã†æ§‹é€ ä½“
     COMMTIMEOUTS	commTimeoutsStruct;
-    /// Device-Control Block\‘¢‘Ìi’ÊMğŒ‚Ìİ’èj
+    /// Device-Control Blockæ§‹é€ ä½“ï¼ˆé€šä¿¡æ¡ä»¶ã®è¨­å®šï¼‰
     DCB					commDCBStruct;
 
     /**
-     *	\‘¢‘Ì
+     *	æ§‹é€ ä½“
      */
-     /// overlapped\‘¢‘Ì
+     /// overlappedæ§‹é€ ä½“
     OVERLAPPED		readOverLappedStruct;
     OVERLAPPED		writeOverLappedStruct;
 
     /**
-     *	‘—óM—pƒXƒŒƒbƒhŠÖ˜A
+     *	é€å—ä¿¡ç”¨ã‚¹ãƒ¬ãƒƒãƒ‰é–¢é€£
      */
-     /// ƒXƒŒƒbƒhƒ|ƒCƒ“ƒ^
+     /// ã‚¹ãƒ¬ãƒƒãƒ‰ãƒã‚¤ãƒ³ã‚¿
     CWinThread* readThreadPointer;
     CWinThread* writeThreadPointer;
 
-    /// ƒXƒŒƒbƒh¶‘¶”»’è‚Ìƒtƒ‰ƒO
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰ç”Ÿå­˜åˆ¤å®šã®ãƒ•ãƒ©ã‚°
     BOOL isReadThreadAlive;
     BOOL isWriteThreadAlive;
 
-    /// “¯ŠúƒIƒuƒWƒFƒNƒg
-    System::CriticalSection	criticalSection;
+    /// åŒæœŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    designlab_robot_gui::system::CriticalSection criticalSection;
 
-    /// ƒXƒŒƒbƒhI—¹ƒnƒ“ƒhƒ‹
+    /// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ãƒãƒ³ãƒ‰ãƒ«
     HANDLE		readThreadTerminateHandle;
     HANDLE		writeThreadTerminateHandle;
 
     /**
-     *	ƒCƒxƒ“ƒg”z—ñ
+     *	ã‚¤ãƒ™ãƒ³ãƒˆé…åˆ—
      */
-     /// ŠeƒCƒxƒ“ƒg–ˆ‚É—pˆÓ‚µ‚½ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹
-     /// WaitForMultipleObjectsŠÖ”‚Ì‚½‚ß‚É€”õ
+     /// å„ã‚¤ãƒ™ãƒ³ãƒˆæ¯ã«ç”¨æ„ã—ãŸã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+     /// WaitForMultipleObjectsé–¢æ•°ã®ãŸã‚ã«æº–å‚™
     HANDLE		readEventHandles[2];
     HANDLE		writeEventHandles[2];
 
     /**
-     *	ƒoƒbƒtƒ@
+     *	ãƒãƒƒãƒ•ã‚¡
      */
-     /// ƒoƒbƒtƒ@ƒTƒCƒY
+     /// ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
     static const int MAX_BUFFER_SIZE = 1024;
 
     /**
-     *	ˆêƒoƒbƒtƒ@
+     *	ä¸€æ™‚ãƒãƒƒãƒ•ã‚¡
      */
-     /// óMƒoƒbƒtƒ@
-    unsigned char* readBuffer;   //’ù³‘OFunsigned char* readBuffer
-    /// ‘—Mƒoƒbƒtƒ@
+     /// å—ä¿¡ãƒãƒƒãƒ•ã‚¡
+    unsigned char* readBuffer;   //è¨‚æ­£å‰ï¼šunsigned char* readBuffer
+    /// é€ä¿¡ãƒãƒƒãƒ•ã‚¡
     char* writeBuffer;
     //unsigned char* writeBuffer;
 
-    /// óM‹L˜^ƒoƒbƒtƒ@
+    /// å—ä¿¡è¨˜éŒ²ãƒãƒƒãƒ•ã‚¡
     SciRingBuffer receiveBuffer;
 
-    /// ‘—óMƒTƒCƒY
+    /// é€å—ä¿¡ã‚µã‚¤ã‚º
     DWORD bytesToRead;
     DWORD bytesToWrite;
 
-    /// óMƒoƒbƒtƒ@ƒTƒCƒY
+    /// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
     DWORD		readBufferSize;
-    /// ‘—Mƒoƒbƒtƒ@ƒTƒCƒY
+    /// é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
     DWORD		writeBufferSize;
 
     /**
-     *		ƒtƒ‰ƒO
+     *		ãƒ•ãƒ©ã‚°
      */
     bool isListeningStopped;
     bool isCommOpen;
 
-    private:
+private:
 
     /**
      *	------------------------------------------------------------
-     *		ƒƒ“ƒoŠÖ”
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
      *	------------------------------------------------------------
      */
-    public:
+public:
     /**
      *	----------------------------------------
-     *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      *	----------------------------------------
      */
-     /// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     explicit SerialPort();
-    /// ƒfƒXƒgƒ‰ƒNƒ^
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     virtual ~SerialPort();
 
     /**
-     *	à–¾
-     *		ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğŠJ‚­
-     *	ˆø”
-     *		hOwnerWnd: COMƒ|[ƒg‚ÌeƒEƒBƒ“ƒhƒE
-     *		portNum: COMƒ|[ƒg”Ô†
-     *		baudRate: ƒ{[ƒŒ[ƒg
-     *		parity: ƒpƒŠƒeƒB
-     *		dataBits: ƒf[ƒ^ƒrƒbƒg
-     *		stopBits: ƒXƒgƒbƒvƒrƒbƒg
-     *		commEvents: ƒ†[ƒU‚ªİ’è‚·‚é’ÊMƒCƒxƒ“ƒg
-     *		readBufferSize_: óMƒoƒbƒtƒ@‚ÌƒTƒCƒY
-     *		writeBufferSize_: ‘—Mƒoƒbƒtƒ@‚ÌƒTƒCƒY
+     *	èª¬æ˜
+     *		ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‹ã
+     *	å¼•æ•°
+     *		hOwnerWnd: COMãƒãƒ¼ãƒˆã®è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+     *		portNum: COMãƒãƒ¼ãƒˆç•ªå·
+     *		baudRate: ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆ
+     *		parity: ãƒ‘ãƒªãƒ†ã‚£
+     *		dataBits: ãƒ‡ãƒ¼ã‚¿ãƒ“ãƒƒãƒˆ
+     *		stopBits: ã‚¹ãƒˆãƒƒãƒ—ãƒ“ãƒƒãƒˆ
+     *		commEvents: ãƒ¦ãƒ¼ã‚¶ãŒè¨­å®šã™ã‚‹é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆ
+     *		readBufferSize_: å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+     *		writeBufferSize_: é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
      */
-    BOOL openSerialPort(HWND hOwnerWnd,								/// COMƒ|[ƒg‚ÌeƒEƒBƒ“ƒhƒE
-                        UINT portNum = 1,							/// COMƒ|[ƒg”Ô†
-                        UINT baudRate = 115200,						/// ƒ{[ƒŒ[ƒg
-                        char parity = 'N',							/// ƒpƒŠƒeƒB
-                        UINT dataBits = 8,							/// ƒf[ƒ^ƒrƒbƒg 
-                        UINT stopBits = 1,							/// ƒXƒgƒbƒvƒrƒbƒg
-                        DWORD commEvents = EV_RXCHAR | EV_CTS,		/// ƒ†[ƒU‚ªİ’è‚·‚é’ÊMƒCƒxƒ“ƒg
-                        UINT readBufferSize_ = MAX_BUFFER_SIZE,		/// óMƒoƒbƒtƒ@‚ÌƒTƒCƒY
-                        UINT writeBufferSize_ = MAX_BUFFER_SIZE		/// ‘—Mƒoƒbƒtƒ@‚ÌƒTƒCƒY
+    BOOL openSerialPort(HWND hOwnerWnd,								/// COMãƒãƒ¼ãƒˆã®è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+                        UINT portNum = 1,							/// COMãƒãƒ¼ãƒˆç•ªå·
+                        UINT baudRate = 115200,						/// ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆ
+                        char parity = 'N',							/// ãƒ‘ãƒªãƒ†ã‚£
+                        UINT dataBits = 8,							/// ãƒ‡ãƒ¼ã‚¿ãƒ“ãƒƒãƒˆ 
+                        UINT stopBits = 1,							/// ã‚¹ãƒˆãƒƒãƒ—ãƒ“ãƒƒãƒˆ
+                        DWORD commEvents = EV_RXCHAR | EV_CTS,		/// ãƒ¦ãƒ¼ã‚¶ãŒè¨­å®šã™ã‚‹é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆ
+                        UINT readBufferSize_ = MAX_BUFFER_SIZE,		/// å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+                        UINT writeBufferSize_ = MAX_BUFFER_SIZE		/// é€ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
     );
 
     /**
-     *	à–¾
-     *		ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğ•Â‚¶‚é
+     *	èª¬æ˜
+     *		ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‰ã˜ã‚‹
      */
     void closeSerialPort(void);
 
     /**
-     *	à–¾
-     *		DCB‚Ìİ’èiƒf[ƒ^§ŒäƒuƒƒbƒNj
-     *	ˆø”
-     *		deviceCtrlStr: ƒfƒoƒCƒX§Œäî•ñ‚ğ•\‚·•¶š—ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+     *	èª¬æ˜
+     *		DCBã®è¨­å®šï¼ˆãƒ‡ãƒ¼ã‚¿åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ï¼‰
+     *	å¼•æ•°
+     *		deviceCtrlStr: ãƒ‡ãƒã‚¤ã‚¹åˆ¶å¾¡æƒ…å ±ã‚’è¡¨ã™æ–‡å­—åˆ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿
      */
     BOOL initializeCommDCB(LPTSTR deviceCtrlStr);
 
     /**
-     *	à–¾
-     *		COMMTIMEOUTS‚Ìİ’è
+     *	èª¬æ˜
+     *		COMMTIMEOUTSã®è¨­å®š
      */
     BOOL initializeCommTimeouts(void);
 
     /**
      *	----------------------------------------
-     *	ƒAƒNƒZƒXŠÖ”
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
      *	----------------------------------------
      */
-     /// COMƒ|[ƒgƒnƒ“ƒhƒ‹
+     /// COMãƒãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ«
     HANDLE getCommPortHandle(void) const { return commHandle; }
-    /// ’ÊMƒCƒxƒ“ƒg
+    /// é€šä¿¡ã‚¤ãƒ™ãƒ³ãƒˆ
     DWORD getCommPortEvent(void) const { return commEvent; }
-    /// ƒ|[ƒg”Ô†
+    /// ãƒãƒ¼ãƒˆç•ªå·
     UINT getCommPortNumber(void) const { return commPortNumber; }
-    /// ’ÊM‚Ìƒ^ƒCƒ€ƒAƒEƒgİ’è‚ğˆµ‚¤\‘¢‘Ì
+    /// é€šä¿¡ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆè¨­å®šã‚’æ‰±ã†æ§‹é€ ä½“
     COMMTIMEOUTS getCommTimeoutsStruct(void) const { return commTimeoutsStruct; }
-    /// Device-Control Block\‘¢‘Ìi’ÊMğŒ‚Ìİ’èj
+    /// Device-Control Blockæ§‹é€ ä½“ï¼ˆé€šä¿¡æ¡ä»¶ã®è¨­å®šï¼‰
     DCB getCommDCBStruct(void) const { return commDCBStruct; }
 
-    /// ‘—M/óMƒoƒbƒtƒ@ƒTƒCƒY
+    /// é€ä¿¡/å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
     DWORD getReadBufferSize(void) const { return readBufferSize; }
     DWORD getWriteBufferSize(void) const { return writeBufferSize; }
 
-    /// ƒŠƒ“ƒOƒoƒbƒtƒ@–{‘Ì
+    /// ãƒªãƒ³ã‚°ãƒãƒƒãƒ•ã‚¡æœ¬ä½“
     SciRingBuffer& getReceiveBuffer(void) { return receiveBuffer; }
 
     /**
-     *	COMƒ|[ƒg‚ÌŠÄ‹ŠÖ”iƒXƒŒƒbƒhŠJnE’â~EI—¹j
+     *	COMãƒãƒ¼ãƒˆã®ç›£è¦–é–¢æ•°ï¼ˆã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ãƒ»åœæ­¢ãƒ»çµ‚äº†ï¼‰
      */
-     /// ŠÄ‹ŠJn
-    BOOL startListening(void); //‚±‚±‚©‚çƒXƒŒƒbƒhŠJn‚µ‚Ä‚é
-    /// ŠÄ‹ÄŠJ
+     /// ç›£è¦–é–‹å§‹
+    BOOL startListening(void); //ã“ã“ã‹ã‚‰ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ã—ã¦ã‚‹
+    /// ç›£è¦–å†é–‹
     BOOL restartListening(void);
-    /// ŠÄ‹’â~
+    /// ç›£è¦–åœæ­¢
     BOOL stopListening(void);
 
     /**
-     *	à–¾
-     *		COMƒ|[ƒg‚Öƒf[ƒ^‚ğ‘—M
-     *	ˆø”
-     *		sendData: ‘‚«‚İƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
-     *		bytesToSend: ‘‚«‚İƒTƒCƒY
+     *	èª¬æ˜
+     *		COMãƒãƒ¼ãƒˆã¸ãƒ‡ãƒ¼ã‚¿ã‚’é€ä¿¡
+     *	å¼•æ•°
+     *		sendData: æ›¸ãè¾¼ã¿ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     *		bytesToSend: æ›¸ãè¾¼ã¿ã‚µã‚¤ã‚º
      */
     void	sendData(char* sendData, DWORD bytesToSend);//unsigned
 
-    protected:
+protected:
     /**
-     *	à–¾
-     *		’ÊMƒGƒ‰[‚Ìæ“¾
-     *	ˆø”
-     *		‘‚«‚İæ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+     *	èª¬æ˜
+     *		é€šä¿¡ã‚¨ãƒ©ãƒ¼ã®å–å¾—
+     *	å¼•æ•°
+     *		æ›¸ãè¾¼ã¿å…ˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
      */
     void outputProcessErrorMessage(char* errorText);
 
     /**
      *	----------------------------------------
-     *	‘—óM‚É—p‚¢‚éƒXƒŒƒbƒhŠÖ”
+     *	é€å—ä¿¡ã«ç”¨ã„ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰é–¢æ•°
      *	----------------------------------------
      */
-     /// óMƒXƒŒƒbƒh–{‘Ì
+     /// å—ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰æœ¬ä½“
     static UINT readEventListenThread(LPVOID pParam);//
-    /// ‘—MƒXƒŒƒbƒh–{‘Ì
+    /// é€ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰æœ¬ä½“
     static UINT writeEventListenThread(LPVOID pParam);//
 
-    /// ƒf[ƒ^óMŠÖ”
+    /// ãƒ‡ãƒ¼ã‚¿å—ä¿¡é–¢æ•°
     static void	readData(SerialPort* port, COMSTAT& comStat);//
-    /// ƒf[ƒ^‘—MŠÖ”
+    /// ãƒ‡ãƒ¼ã‚¿é€ä¿¡é–¢æ•°
     static void	writeData(SerialPort* port, COMSTAT& comStat);//
 
-    private:
-    /// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^–³Œø
+private:
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç„¡åŠ¹
     SerialPort(const SerialPort& serial);
 
-    /// ‘ã“ü‰‰Zq–³Œø
+    /// ä»£å…¥æ¼”ç®—å­ç„¡åŠ¹
     SerialPort& operator=(const SerialPort& serial) = delete;
 };	/// end of class SerialPort
 

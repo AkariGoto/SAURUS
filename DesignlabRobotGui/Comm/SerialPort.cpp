@@ -299,7 +299,7 @@ BOOL SerialPort::openSerialPort(HWND hOwnerWnd,				/// 受信ポートの親ウ�
     /**
      *	排他処理開始
      */
-    criticalSection.lock();
+    criticalSection.Lock();
 
     /// ソケットが既に開いていたら，閉じる
     if (commHandle != NULL)
@@ -434,7 +434,7 @@ BOOL SerialPort::openSerialPort(HWND hOwnerWnd,				/// 受信ポートの親ウ�
  /**
   *	排他処理終了
   */
-    criticalSection.unlock();
+    criticalSection.Unlock();
 
     /// フラグの初期化
     isListeningStopped = false;
@@ -1041,7 +1041,7 @@ void SerialPort::readData(SerialPort* port, COMSTAT& comStat)
          *	排他処理開始
          *	COMポートの所有権を取得する
          */
-        port->criticalSection.lock();
+        port->criticalSection.Lock();
 
         /**
          *	ClearCommError()によりCOMSTAT構造体を更新し他のエラーを消去
@@ -1050,7 +1050,7 @@ void SerialPort::readData(SerialPort* port, COMSTAT& comStat)
         port->bytesToRead = comStat.cbInQue;
 
         /// 排他処理終了
-        port->criticalSection.unlock();
+        port->criticalSection.Unlock();
 
         /// 読み込むべきデータあるかどうか確認し，なかったらループから抜ける
         if (port->bytesToRead == 0)
@@ -1070,7 +1070,7 @@ void SerialPort::readData(SerialPort* port, COMSTAT& comStat)
          *	排他処理開始
          *	読み込む前にCOMポートの所有権を取得する
          */
-        port->criticalSection.lock();
+        port->criticalSection.Lock();
 
         /// データ読み込みを行う場合
         if (isReadingToTry)
@@ -1157,7 +1157,7 @@ void SerialPort::readData(SerialPort* port, COMSTAT& comStat)
          *	排他処理終了
          *	読み込む終わったのでCOMポートの所有権を放棄
          */
-        port->criticalSection.unlock();
+        port->criticalSection.Unlock();
 
         /**
          *	所有権を持ってる親ウィンドウへ受信を通知
@@ -1265,7 +1265,7 @@ void SerialPort::writeData(SerialPort* port, COMSTAT& comStat)
     /// 待機イベントをリセット
     ResetEvent(port->writeOverLappedStruct.hEvent);
 
-    port->criticalSection.lock();
+    port->criticalSection.Lock();
 
     /**
      *	ClearCommError()によりCOMSTAT構造体を更新し他のエラーを消去
@@ -1293,7 +1293,7 @@ void SerialPort::writeData(SerialPort* port, COMSTAT& comStat)
   /// 書き込むべきデータあるかどうか確認し、ない場合だけ書き込む <--シリアル用?
 /*	if (comStat.cbOutQue > 0)
   {
-    port->criticalSection.unlock();
+    port->criticalSection.Unlock();
     return;
   }
 */		///送信先のネットワーク情報を準備
@@ -1362,7 +1362,7 @@ void SerialPort::writeData(SerialPort* port, COMSTAT& comStat)
                 /// 他の全てのエラー
                 sprintf(ErrMassage,"sendto Err code:%4d",errorCode);
                 port->outputProcessErrorMessage( ErrMassage );
-                port->criticalSection.unlock();
+                port->criticalSection.Unlock();
             }
           }	/// end of switch
         }
@@ -1400,13 +1400,13 @@ void SerialPort::writeData(SerialPort* port, COMSTAT& comStat)
             {
                 /// 他の全てのエラー
                 port->outputProcessErrorMessage( "WriteFile()" );
-                port->criticalSection.unlock();
+                port->criticalSection.Unlock();
             }
           }	/// end of switch
         }
         else
         {
-          port->criticalSection.unlock();
+          port->criticalSection.Unlock();
         }	/// end of if (!isWritingSuccessed)
 
       } // end of if( isWritingToTry )
@@ -1432,7 +1432,7 @@ void SerialPort::writeData(SerialPort* port, COMSTAT& comStat)
                               TRUE							/// 待機フラグ（書き込み終了まで待機する）
                             );
 
-        port->criticalSection.unlock();
+        port->criticalSection.Unlock();
 
         /// GetOverlappedResult()により書き込み終了
         isWritingCompleted = TRUE;

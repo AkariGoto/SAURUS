@@ -35,8 +35,8 @@ BEGIN_MESSAGE_MAP(CASURA2GUIView, CFormView)
 END_MESSAGE_MAP()
 
 
-CASURA2GUIView::CASURA2GUIView()  noexcept
-    : CFormView(IDD_ASURA2GUI_FORM)
+CASURA2GUIView::CASURA2GUIView() noexcept :
+    CFormView(IDD_ASURA2GUI_FORM)
 {
     // TODO: 構築コードをここに追加します。
 
@@ -283,7 +283,8 @@ void CASURA2GUIView::updateFormView(void)
 
 
     /// 時間を更新
-    data.Format(TEXT("%5.3lf"), viewPlanData.elapsed_time); SetDlgItemText(IDC_ELAPSED_TIME, data);
+    data.Format(TEXT("%5.3lf"), viewPlanData.elapsed_time_);
+    SetDlgItemText(IDC_ELAPSED_TIME, data);
 
     //ログ取得
     if (isDriving)

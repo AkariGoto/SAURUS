@@ -1,64 +1,64 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		DebugOutput.h
- *  à–¾
- *		Windows‚Å‚ÌƒfƒoƒbƒO—pƒc[ƒ‹
- *  “ú•t
- *		ì¬“ú: 2007/05/19(SAT)		XV“ú: 2007/05/26(SAT)
+ *  èª¬æ˜
+ *		Windowsã§ã®ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ„ãƒ¼ãƒ«
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/05/19(SAT)		æ›´æ–°æ—¥: 2007/05/26(SAT)
  */
 
 #ifndef __DebugOutput_h__
 #define __DebugOutput_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include <windows.h>
 #include <winnt.h>
 #include <tchar.h>
 #include <stdarg.h>
 
 
-/**
- *	----------------------------------------------------------------------
- *		’è”Aƒ}ƒNƒéŒ¾
- *	----------------------------------------------------------------------
- */
-/// Visual Studio ‚ÌƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚Ì‰¡•‚É‘Î‰‚·‚é•¶š”(ƒoƒCƒg”‚Å‚Í‚È‚¢)
+  /**
+   *	----------------------------------------------------------------------
+   *		å®šæ•°ã€ãƒã‚¯ãƒ­å®£è¨€
+   *	----------------------------------------------------------------------
+   */
+   /// Visual Studio ã®ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ¨ªå¹…ã«å¯¾å¿œã™ã‚‹æ–‡å­—æ•°(ãƒã‚¤ãƒˆæ•°ã§ã¯ãªã„)
 const int DEBUG_MESSAGE_LENGTH = 256;
 
 #ifdef _DEBUG
 
 /**
- *	ƒfƒoƒbƒOƒ‚[ƒh‚Ì‚Ì‚İo—Í‚·‚éiMFC‚ÌTRACEƒ}ƒNƒ‚Æ“¯—lj
+ *	ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰ã®æ™‚ã®ã¿å‡ºåŠ›ã™ã‚‹ï¼ˆMFCã®TRACEãƒã‚¯ãƒ­ã¨åŒæ§˜ï¼‰
  */
 inline void debugPrint(const _TCHAR* fmt, ...)
 {
-	/// ƒ[ƒJƒ‹•Ï”
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     va_list ap;
     TCHAR buffer[DEBUG_MESSAGE_LENGTH];
 
-	/// ‰Â•Ï’·•¶š—ñƒRƒs[
+    /// å¯å¤‰é•·æ–‡å­—åˆ—ã‚³ãƒ”ãƒ¼
     va_start(ap, fmt);
-		_vsntprintf(buffer, DEBUG_MESSAGE_LENGTH, fmt, ap);
-	va_end(ap);
-    
-	/// ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚Éo—Í
-	::OutputDebugString(buffer);
+    _vsntprintf(buffer, DEBUG_MESSAGE_LENGTH, fmt, ap);
+    va_end(ap);
+
+    /// ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«å‡ºåŠ›
+    ::OutputDebugString(buffer);
 }
 
 #define DEBUG_TRACE ::debugPrint
 #define DEBUG_TRACE_EX ::debugPrint("%s (%d):", __FILE__, __LINE__), ::debugPrint
 #define DEBUG_ASSERT(x) \
-			if ( !(x) )	{\
-				debugPrint(TEXT("Assertion failed! in %s (%d)\n"), __FILE__, __LINE__);\
-				DebugBreak();\
-			}
+      if ( !(x) )	{\
+        debugPrint(TEXT("Assertion failed! in %s (%d)\n"), __FILE__, __LINE__);\
+        DebugBreak();\
+      }
 #else
-	#define DEBUG_TRACE		__noop
-	#define DEBUG_ASSERT	__noop
+#define DEBUG_TRACE		__noop
+#define DEBUG_ASSERT	__noop
 #endif	/// _DEBUG
 
 #endif	/// __DebugOutput_h__

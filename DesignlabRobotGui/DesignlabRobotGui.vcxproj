@@ -246,15 +246,15 @@
     <ClInclude Include="Plan\Trajectory\trajectory.h" />
     <ClInclude Include="Plan\tripod_gait_planner.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="System\ComLib.h" />
     <ClInclude Include="System\Console.h" />
-    <ClInclude Include="System\CriticalSection.h" />
+    <ClInclude Include="System\critical_section.h" />
     <ClInclude Include="System\DebugOutput.h" />
-    <ClInclude Include="System\LockObject.h" />
+    <ClInclude Include="System\lock_object.h" />
+    <ClInclude Include="System\object_locker.h" />
     <ClInclude Include="System\Thread\MotionPlanThread.h" />
-    <ClInclude Include="System\Thread\TimedMotionProcedure.h" />
-    <ClInclude Include="System\Timer\MultiMediaTimer.h" />
-    <ClInclude Include="System\WinUserMessage.h" />
+    <ClInclude Include="System\Thread\timed_motion_procedure.h" />
+    <ClInclude Include="System\Timer\multi_media_timer.h" />
+    <ClInclude Include="System\win_user_message.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UDP\asura_udp_thread.h" />
     <ClInclude Include="UDP\udp.h" />
@@ -365,23 +365,22 @@
     <ClCompile Include="Plan\tripod_gait_planner.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="System\ComLib.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="System\Console.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="System\critical_section.cpp" />
+    <ClCompile Include="System\object_locker.cpp" />
     <ClCompile Include="System\Thread\MotionPlanThread.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="System\Thread\TimedMotionProcedure.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="System\Timer\MultiMediaTimer.cpp">
+    <ClCompile Include="System\Thread\timed_motion_procedure.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="System\Timer\multi_media_timer.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UDP\asura_udp_thread.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>

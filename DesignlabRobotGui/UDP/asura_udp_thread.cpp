@@ -43,14 +43,14 @@ AsuraUdpThread::AsuraUdpThread() :
     isCommAlive(),
     addr(),
     client_addr(),
-    client_IPAdress(),
+    client_ip_address(),
     longPacket(),
-    onelegPacket(),
-    pMultiMediaTimer(),
-    pTimedUDPProcedure(),
+    one_leg_packet(),
+    multi_media_timer_ptr(),
+    timed_udp_procedure_ptr(),
     port(),
     sciPacketType(),
-    server_IPAdress(),
+    server_ip_address(),
     server_addr(),
     shortPacket()
 {
@@ -107,31 +107,25 @@ void AsuraUdpThread::OnStartPortListening(WPARAM wParam, LPARAM lParam)
     //ローカル変数
     int n = 1;
 
-    /*
-      sock open
-    */
-    // initalize winsock2
+    // sock open
+    // initialize winsock2
+
     WSADATA wsaData;
-    n = WSAStartup(MAKEWORD(2, 0), &wsaData); ///成功したら戻り値0
+    n = WSAStartup(MAKEWORD(2, 0), &wsaData);  // 成功したら戻り値 0．
 
 
     if (n == 0)
     {
-
-
         //socket opening
         sock = socket(AF_INET, SOCK_DGRAM, 0);
 
-
-
-        //server configulation
+        //server configuration
 
         memset(&server_addr, 0, sizeof server_addr);
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(c_portNo);
         inet_pton(AF_INET, "192.168.0.169", &server_addr.sin_addr.S_un.S_addr);
-        //inet_pton(AF_INET, client_IPAdress, &server_addr.sin_addr.S_un.S_addr);
-
+        //inet_pton(AF_INET, client_ip_address, &server_addr.sin_addr.S_un.S_addr);
 
         isCommAlive = true;
     }
@@ -176,9 +170,6 @@ void AsuraUdpThread::OnSendCommandData(WPARAM wParam, LPARAM lParam)
 
     //送信バッファへの書き込み
 
-    /**
-     *		ローカル変数
-     */
     int i;
     sciPacketType = SciPacketType::LONG;
 
@@ -246,15 +237,15 @@ void AsuraUdpThread::initializeAsuraUDPThread()
      *		タイマコールバック作成
      */
      /// オブジェクト作成
-    pTimedUDPProcedure = new System::TimedMotionProcedure();
+    timed_udp_procedure_ptr = new system::TimedMotionProcedure();
     /// タイマコールバックに本スレッドのIDを登録
-    pTimedUDPProcedure->setThreadID(m_nThreadID);	//// m_nThreadは基底クラスのCWinThreadのメンバ
+    timed_udp_procedure_ptr->SetThreadID(m_nThreadID);	//// m_nThreadは基底クラスのCWinThreadのメンバ
 
     /**
      *	タイマ本体作成
      */
-    pMultiMediaTimer = new System::MultiMediaTimer(*pTimedUDPProcedure);
-    pMultiMediaTimer->setTimer(20, 5);
+    multi_media_timer_ptr = new system::MultiMediaTimer(*timed_udp_procedure_ptr);
+    multi_media_timer_ptr->setTimer(20, 5);
 
     isAlive = TRUE;
 }
@@ -267,20 +258,20 @@ void AsuraUdpThread::finalizeAsuraUDPThread(void)
      *	タイマ終了処理
      */
      /// タイマが停止していなかったら
-    if (pMultiMediaTimer != NULL)
+    if (multi_media_timer_ptr != NULL)
     {
-        pMultiMediaTimer->killTimer();
+        multi_media_timer_ptr->killTimer();
 
         /// タイマオブジェクト破棄
-        delete pMultiMediaTimer;
-        pMultiMediaTimer = NULL;
+        delete multi_media_timer_ptr;
+        multi_media_timer_ptr = NULL;
     }
 
-    if (pTimedUDPProcedure != NULL)
+    if (timed_udp_procedure_ptr != NULL)
     {
         /// タイマコールバック破棄
-        delete pTimedUDPProcedure;
-        pTimedUDPProcedure = NULL;
+        delete timed_udp_procedure_ptr;
+        timed_udp_procedure_ptr = NULL;
     }
 
     return;

@@ -21,10 +21,10 @@
 #include "UDP/udp_packet.h"
 #include "UDP/udp_ring_buffer.h"
 #include "Utility/RingBuffer.h"
-#include "System/CriticalSection.h"
-#include "System/WinUserMessage.h"
-#include "System/Timer/MultiMediaTimer.h"
-#include "System/Thread/TimedMotionProcedure.h"
+#include "System/critical_section.h"
+#include "System/win_user_message.h"
+#include "System/Timer/multi_media_timer.h"
+#include "System/Thread/timed_motion_procedure.h"
 
 
 namespace designlab_robot_gui::udp
@@ -37,12 +37,9 @@ class AsuraUdpThread : public CWinThread
     using AsuraData = data::AsuraData;
     using PlanData = data::PlanData;
 
-    DECLARE_DYNCREATE(AsuraUdpThread)
-
-
-    System::TimedMotionProcedure* pTimedUDPProcedure;
-    System::MultiMediaTimer* pMultiMediaTimer;
-    static plan::TimeManager		 timeManager;
+    system::TimedMotionProcedure* timed_udp_procedure_ptr;
+    system::MultiMediaTimer* multi_media_timer_ptr;
+    static plan::TimeManager timeManager;
 
     /**
      *		フラグ
@@ -53,9 +50,9 @@ class AsuraUdpThread : public CWinThread
     /// 通信が有効かどうか
     bool isCommAlive;
 
-    //bool isListeningStopped;
 
 
+    DECLARE_DYNCREATE(AsuraUdpThread)
 
 protected:
     AsuraUdpThread();           // 動的生成で使用される protected コンストラクター
@@ -70,13 +67,13 @@ public:
      *	説明
      *		開始処理
      */
-    void initializeAsuraUDPThread(void);
+    void initializeAsuraUDPThread();
 
     /**
      *	説明
      *		終了処理
      */
-    void finalizeAsuraUDPThread(void);
+    void finalizeAsuraUDPThread();
 
     /*
     *
@@ -90,7 +87,7 @@ public:
      *	説明
      *		スレッドが有効かどうか
      */
-    BOOL isRunning(void) const { return isAlive; }
+    BOOL isRunning() const { return isAlive; }
 
     DECLARE_MESSAGE_MAP()
 
@@ -116,9 +113,9 @@ protected:
     /*
     *	IPアドレス
     */
-    //char server_IPAdress[14]="192.168.0.154";			/// 自分のIPアドレス
-    const char server_IPAdress[14] = "192.168.0.157";			/// 自分のIPアドレス
-    const char client_IPAdress[14] = "192.168.0.169";			/// 送信先IPアドレス
+
+    const char server_ip_address[14] = "192.168.0.157";  //!< 自分のIPアドレス．
+    const char client_ip_address[14] = "192.168.0.169";  //!< 送信先IPアドレス．
 
 
     SOCKET sock;
@@ -166,7 +163,7 @@ private:
     char longPacket[32];
     unsigned char shortPacket[SCI_MAX_JOINT_NUM][SCI_PACKET_SIZE_SHORT];
 
-    char onelegPacket[SCI_PACKET_SIZE_ONELEG];
+    char one_leg_packet[SCI_PACKET_SIZE_ONELEG];
 };
 
 } // namespace designlab_robot_gui::udp

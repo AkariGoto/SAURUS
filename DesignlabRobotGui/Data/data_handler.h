@@ -132,7 +132,7 @@ public:
      */
     const PlanData& getPlanData() const { return planData; }
 
-    const double getElapsedTime() const { return planData.elapsed_time; }
+    const double getElapsedTime() const { return planData.elapsed_time_; }
 
 private:
 

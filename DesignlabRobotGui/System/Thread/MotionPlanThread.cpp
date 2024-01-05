@@ -1,9 +1,8 @@
 ﻿
-#include "../../pch.h"
-
-#include "System/Thread/MotionPlanThread.h"
+#include "pch.h"
 
 #include "ASURA2GUI.h"
+#include "System/Thread/MotionPlanThread.h"
 #include "Utility/EngConstant.h"
 
 
@@ -35,7 +34,7 @@ IMPLEMENT_DYNCREATE(MotionPlanThread, CWinThread)
  *	コンストラクタとデストラクタ
  *	----------------------------------------
  */
-    MotionPlanThread::MotionPlanThread() :pMultiMediaTimer(), pTimedMotionProcedure(), pUDPThread()
+    MotionPlanThread::MotionPlanThread() :multi_media_timer_ptr(), pTimedMotionProcedure(), pUDPThread()
 {
     /// 生存フラグの初期化
     isAlive = FALSE;
@@ -114,7 +113,9 @@ void MotionPlanThread::OnSetupMotion(WPARAM wParam, LPARAM lParam)
             break;
         }
         default:
+        {
             break;
+        }
     }
 
     plannerManager.setup();
@@ -132,12 +133,12 @@ void MotionPlanThread::OnStopMotion(WPARAM wParam, LPARAM lParam)
 
 void MotionPlanThread::OnGenerateMotion(WPARAM wParam, LPARAM lParam)
 {
-    /// 精確な現在時刻を取得
-    timeManager.setRealTime(pMultiMediaTimer->getPresentTime());
+    // 精確な現在時刻を取得．
+    timeManager.setRealTime(multi_media_timer_ptr->getPresentTime());
 
     if (plannerManager.isActive())
     {
-        /// 基準歩容のスナップショットデータ作成
+        // 基準歩容のスナップショットデータ作成．
         plannerManager.createSnapshot();
     }
 
@@ -183,16 +184,16 @@ void MotionPlanThread::initializeMotionPlanThread(void)
      *		タイマコールバック作成
      */
      /// オブジェクト作成
-    pTimedMotionProcedure = new System::TimedMotionProcedure();
+    pTimedMotionProcedure = new system::TimedMotionProcedure();
     /// タイマコールバックに本スレッドのIDを登録
-    pTimedMotionProcedure->setThreadID(m_nThreadID);	//// m_nThreadは基底クラスのCWinThreadのメンバ
+    pTimedMotionProcedure->SetThreadID(m_nThreadID);	//// m_nThreadは基底クラスのCWinThreadのメンバ
 
 
     /**
      *	タイマ本体作成
      */
-    pMultiMediaTimer = new System::MultiMediaTimer(*pTimedMotionProcedure);
-    pMultiMediaTimer->setTimer(20, 5);
+    multi_media_timer_ptr = new system::MultiMediaTimer(*pTimedMotionProcedure);
+    multi_media_timer_ptr->setTimer(20, 5);
 
     /// スレッドをアクティブに
     isAlive = TRUE;
@@ -208,13 +209,13 @@ void MotionPlanThread::finalizeMotionPlanThread(void)
      *	タイマ終了処理
      */
      /// タイマが停止していなかったら
-    if (pMultiMediaTimer != NULL)
+    if (multi_media_timer_ptr != NULL)
     {
-        pMultiMediaTimer->killTimer();
+        multi_media_timer_ptr->killTimer();
 
         /// タイマオブジェクト破棄
-        delete pMultiMediaTimer;
-        pMultiMediaTimer = NULL;
+        delete multi_media_timer_ptr;
+        multi_media_timer_ptr = NULL;
     }
 
     if (pTimedMotionProcedure != NULL)
@@ -228,7 +229,7 @@ void MotionPlanThread::finalizeMotionPlanThread(void)
 }
 
 //UDP通信ダイアログへのポインタをセット
-void MotionPlanThread::acquireAsuraUDPThread(designlab_robot_gui::udp::AsuraUdpThread* pDlg)
+void MotionPlanThread::acquireAsuraUDPThread(udp::AsuraUdpThread* pDlg)
 {
     pUDPThread = pDlg;
     return;

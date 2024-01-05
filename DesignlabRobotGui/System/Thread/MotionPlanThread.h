@@ -11,9 +11,9 @@
 #include "Plan/plan_parameter.h"
 #include "Plan/planner_manager.h"
 #include "Plan/tripod_gait_planner.h"
-#include "System/Thread/TimedMotionProcedure.h"
-#include "System/Timer/MultiMediaTimer.h"
-#include "System/WinUserMessage.h"
+#include "System/Thread/timed_motion_procedure.h"
+#include "System/Timer/multi_media_timer.h"
+#include "System/win_user_message.h"
 #include "UDP/asura_udp_thread.h"
 
 
@@ -22,17 +22,9 @@ namespace designlab_robot_gui::system
 
 class MotionPlanThread : public CWinThread
 {
-    DECLARE_DYNCREATE(MotionPlanThread)
-
-    /**
-     *		Asuraのキネマティクスオブジェクト
-     */
     static asura::AsuraX asuraX;
 
-    /**
-     *		データオブジェクト
-     */
-     /// キネマティクスデータ
+    /// キネマティクスデータ
     static data::AsuraData asuraXData;
     /// プランデータ
     static data::PlanData planData;
@@ -44,8 +36,8 @@ class MotionPlanThread : public CWinThread
 
     static plan::TripodGaitPlanner	tripodGait;
 
-    System::TimedMotionProcedure* pTimedMotionProcedure;
-    System::MultiMediaTimer* pMultiMediaTimer;
+    TimedMotionProcedure* pTimedMotionProcedure;
+    MultiMediaTimer* multi_media_timer_ptr;
     static plan::TimeManager		timeManager;
 
     udp::AsuraUdpThread* pUDPThread;
@@ -55,6 +47,8 @@ class MotionPlanThread : public CWinThread
 
     /// 通信が有効かどうか
     bool isCommAlive;
+
+    DECLARE_DYNCREATE(MotionPlanThread)
 
 protected:
     /// デフォルトコンストラクタ

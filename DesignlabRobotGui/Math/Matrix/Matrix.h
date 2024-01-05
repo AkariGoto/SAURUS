@@ -1,44 +1,44 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		Matrix.h
- *  à–¾
- *		‰‰Zq‚âƒƒ\ƒbƒh‚È‚Çs—ñ‚Ìå‚È‰‰Z‚Ì’è‹`
- *  “ú•t
- *		ì¬“ú: 2007/01/15(MON)		XV“ú: 2007/03/06(TUE)
+ *  èª¬æ˜
+ *		æ¼”ç®—å­ã‚„ãƒ¡ã‚½ãƒƒãƒ‰ãªã©è¡Œåˆ—ã®ä¸»ãªæ¼”ç®—ã®å®šç¾©
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/01/15(MON)		æ›´æ–°æ—¥: 2007/03/06(TUE)
  */
 
 
-#ifndef __Matrix_h__	/// 2dƒCƒ“ƒNƒ‹[ƒh‰ñ”ğ
-#define __Matrix_h__	/// 2dƒCƒ“ƒNƒ‹[ƒh‹Ö~
+#ifndef __Matrix_h__	/// 2é‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰å›é¿
+#define __Matrix_h__	/// 2é‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ç¦æ­¢
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
 
-/**
- *	----------------------------------------------------------------------
- *		’è”Aƒ}ƒNƒéŒ¾
- *	----------------------------------------------------------------------
- */
-/// ƒ[ƒ‚Æ‚İ‚È‚·”
+  /**
+   *	----------------------------------------------------------------------
+   *		å®šæ•°ã€ãƒã‚¯ãƒ­å®£è¨€
+   *	----------------------------------------------------------------------
+   */
+   /// ã‚¼ãƒ­ã¨ã¿ãªã™æ•°
 const double NEAR_ZERO = 1.0E-16;
-/// ƒ[ƒ‚Æ‚Ì‘Š‘ÎŒë·
+/// ã‚¼ãƒ­ã¨ã®ç›¸å¯¾èª¤å·®
 const double ZERO_ERROR_MARGIN = 1.0E-8;
-/// ƒ}ƒVƒ“Œë·
+/// ãƒã‚·ãƒ³èª¤å·®
 const double MATRIX_TINY = 1.0E-20;
 
 namespace Math
 {
 /**
  *	----------------------------------------------------------------------
- *		ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
+ *		ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
  *	----------------------------------------------------------------------
  */
 class Matrix;
@@ -46,778 +46,778 @@ class Vector;
 
 /**
  *	----------------------------------------------------------------------
- *		ˆê”Ê“I‚ÈZp‰‰Zq
+ *		ä¸€èˆ¬çš„ãªç®—è¡“æ¼”ç®—å­
  *	----------------------------------------------------------------------
  */
-	/// ƒxƒNƒgƒ‹‚Ì˜a
-	const Vector operator+(const Vector& left, const Vector& right);
-	/// ƒxƒNƒgƒ‹‚Ì·
-	const Vector operator-(const Vector& left, const Vector& right);
-	/// ƒxƒNƒgƒ‹‚ÌƒXƒJƒ‰”{
-	const Vector operator*(double schalor, const Vector& right);
-	/// ƒxƒNƒgƒ‹‚ÌƒXƒJƒ‰”{
-	const Vector operator*(const Vector& left, double schalor);
-	/// ƒxƒNƒgƒ‹‚ğÀ”‚ÅŠ„‚èZ
-	const Vector operator/(const Vector& left, double schalor);
+ /// ãƒ™ã‚¯ãƒˆãƒ«ã®å’Œ
+const Vector operator+(const Vector& left, const Vector& right);
+/// ãƒ™ã‚¯ãƒˆãƒ«ã®å·®
+const Vector operator-(const Vector& left, const Vector& right);
+/// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚¹ã‚«ãƒ©å€
+const Vector operator*(double schalor, const Vector& right);
+/// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚¹ã‚«ãƒ©å€
+const Vector operator*(const Vector& left, double schalor);
+/// ãƒ™ã‚¯ãƒˆãƒ«ã‚’å®Ÿæ•°ã§å‰²ã‚Šç®—
+const Vector operator/(const Vector& left, double schalor);
 
-	/// s—ñ‚Ì˜a
-	const Matrix operator+(const Matrix& left, const Matrix& right);
-	/// s—ñ‚Ì·
-	const Matrix operator-(const Matrix& left, const Matrix& right);
+/// è¡Œåˆ—ã®å’Œ
+const Matrix operator+(const Matrix& left, const Matrix& right);
+/// è¡Œåˆ—ã®å·®
+const Matrix operator-(const Matrix& left, const Matrix& right);
 
 /**
  *	----------------------------------------------------------------------
- *		MatrixƒNƒ‰ƒX
+ *		Matrixã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class Matrix
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 private:
-	/// s—v‘f”
-	int rows;
-	/// —ñ—v‘f”
-	int columns;
+    /// è¡Œè¦ç´ æ•°
+    int rows;
+    /// åˆ—è¦ç´ æ•°
+    int columns;
 
-	/// sƒxƒNƒgƒ‹‚Ö‚Ìƒ|ƒCƒ“ƒ^i”z—ñj
-	Vector* elements;
+    /// è¡Œãƒ™ã‚¯ãƒˆãƒ«ã¸ã®ãƒã‚¤ãƒ³ã‚¿ï¼ˆé…åˆ—ï¼‰
+    Vector* elements;
 
-/**
- *	------------------------------------------------------------
- *		ƒtƒŒƒ“ƒhŠÖ”
- *	------------------------------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		ƒNƒ‰ƒXMatrix‚Ì‘½d’è‹`‚³‚ê‚½ƒXƒgƒŠ[ƒ€‘}“ü‰‰Zq
-	 *		s—ñ‚Ì‘S—v‘f‚Ì’l‚ğo—Í‚·‚é
-	 *	ˆø”
-	 *		output: o—ÍæƒXƒgƒŠ[ƒ€
-	 *		matrix: –Ú“I‚Ìs—ñ
-	 */
-	friend std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
-	/**
-	 *	à–¾
-	 *		ƒNƒ‰ƒXMatrix‚Ì‘½d’è‹`‚³‚ê‚½ƒXƒgƒŠ[ƒ€‘}“ü‰‰Zq
-	 *		s—ñ‚Ì‘S—v‘f‚Ì’l‚ğ“ü—Í‚·‚é
-	 *	ˆø”
-	 *		output: “ü—ÍæƒXƒgƒŠ[ƒ€
-	 *		matrix: –Ú“I‚Ìs—ñ
-	*/
-	friend std::istream& operator>>(std::istream& input, Matrix& matrix);
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ•ãƒ¬ãƒ³ãƒ‰é–¢æ•°
+     *	------------------------------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ã‚¯ãƒ©ã‚¹Matrixã®å¤šé‡å®šç¾©ã•ã‚ŒãŸã‚¹ãƒˆãƒªãƒ¼ãƒ æŒ¿å…¥æ¼”ç®—å­
+      *		è¡Œåˆ—ã®å…¨è¦ç´ ã®å€¤ã‚’å‡ºåŠ›ã™ã‚‹
+      *	å¼•æ•°
+      *		output: å‡ºåŠ›å…ˆã‚¹ãƒˆãƒªãƒ¼ãƒ 
+      *		matrix: ç›®çš„ã®è¡Œåˆ—
+      */
+    friend std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
+    /**
+     *	èª¬æ˜
+     *		ã‚¯ãƒ©ã‚¹Matrixã®å¤šé‡å®šç¾©ã•ã‚ŒãŸã‚¹ãƒˆãƒªãƒ¼ãƒ æŒ¿å…¥æ¼”ç®—å­
+     *		è¡Œåˆ—ã®å…¨è¦ç´ ã®å€¤ã‚’å…¥åŠ›ã™ã‚‹
+     *	å¼•æ•°
+     *		output: å…¥åŠ›å…ˆã‚¹ãƒˆãƒªãƒ¼ãƒ 
+     *		matrix: ç›®çš„ã®è¡Œåˆ—
+    */
+    friend std::istream& operator>>(std::istream& input, Matrix& matrix);
 
-	/**
-	 *	à–¾
-	 *		2‚Â‚Ìs—ñ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
-	 *	ˆø”
-	 *		true: “™‚µ‚¢
-	 *		false: “™‚µ‚­‚È‚¢
-	 */
-	friend bool operator==(const Matrix& left, const Matrix& right);
-    
-	/**
-	 *	à–¾
-	 *		2‚Â‚Ìs—ñ‚ªˆÙ‚È‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
-	 *	ˆø”
-	 *		true: ˆÙ‚È‚Á‚Ä‚¢‚é
-	 *		false: “™‚µ‚¢
-	 */
-	friend bool operator!=(const Matrix& left, const Matrix& right);
+    /**
+     *	èª¬æ˜
+     *		2ã¤ã®è¡Œåˆ—ãŒç­‰ã—ã„ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+     *	å¼•æ•°
+     *		true: ç­‰ã—ã„
+     *		false: ç­‰ã—ããªã„
+     */
+    friend bool operator==(const Matrix& left, const Matrix& right);
 
-	/**
-	 *		ˆê”Ê“I‚ÈZp‰‰Zq
-	 */
-	/// s—ñ–s—ñ
-	friend const Matrix operator*(const Matrix& left, const Matrix& right);
-    
-	/// s—ñ–ƒxƒNƒgƒ‹
-	friend const Vector operator*(const Matrix& matrix, const Vector& vector);
-    
-	/// ƒxƒNƒgƒ‹–s—ñ
-	friend const Vector operator*(const Vector& vector, const Matrix& matrix);
+    /**
+     *	èª¬æ˜
+     *		2ã¤ã®è¡Œåˆ—ãŒç•°ãªã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+     *	å¼•æ•°
+     *		true: ç•°ãªã£ã¦ã„ã‚‹
+     *		false: ç­‰ã—ã„
+     */
+    friend bool operator!=(const Matrix& left, const Matrix& right);
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *		ä¸€èˆ¬çš„ãªç®—è¡“æ¼”ç®—å­
+     */
+     /// è¡Œåˆ—ï¼Šè¡Œåˆ—
+    friend const Matrix operator*(const Matrix& left, const Matrix& right);
+
+    /// è¡Œåˆ—ï¼Šãƒ™ã‚¯ãƒˆãƒ«
+    friend const Vector operator*(const Matrix& matrix, const Vector& vector);
+
+    /// ãƒ™ã‚¯ãƒˆãƒ«ï¼Šè¡Œåˆ—
+    friend const Vector operator*(const Vector& vector, const Matrix& matrix);
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		—v‘f‚ğw’è‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 *	ˆø”
-	 *		row: s”
-	 *		col:  —ñ”
-	 */
-	explicit Matrix(int row = 0, int col = 0);
-	
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Matrix(const Matrix& matrix);
-	
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~Matrix();
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		è¦ç´ ã‚’æŒ‡å®šã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+      *	å¼•æ•°
+      *		row: è¡Œæ•°
+      *		col:  åˆ—æ•°
+      */
+    explicit Matrix(int row = 0, int col = 0);
 
-/**
- *	----------------------------------------
- *	s—ñ‚Ì—v‘f‚ğŒˆ’è‚Ü‚½‚Í’²‚×‚éŠÖ”ŒQ
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		s—ñ‚ÌŒ^‚ğİ’è‚·‚é
-	 *	ˆø”
-	 *		row: s”
-	 *		col:  —ñ”
-	 */
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    Matrix(const Matrix& matrix);
+
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~Matrix();
+
+    /**
+     *	----------------------------------------
+     *	è¡Œåˆ—ã®è¦ç´ ã‚’æ±ºå®šã¾ãŸã¯èª¿ã¹ã‚‹é–¢æ•°ç¾¤
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		è¡Œåˆ—ã®å‹ã‚’è¨­å®šã™ã‚‹
+      *	å¼•æ•°
+      *		row: è¡Œæ•°
+      *		col:  åˆ—æ•°
+      */
     void setSize(int row, int col);
 
-	/**
-	 *	à–¾
-	 *		s—ñ‚Ì—v‘f‚ğ’²‚×‚é
-	 *		getRow: s—ñ‚Ìs”
-	 *		getCol:  s—ñ‚Ì—ñ”
-	 */
-	int getRow(void) const { return rows;}
-	int getRow(void) { return rows;}
-	int getColumn(void) const { return columns;}
-	int getColumn(void) { return columns;}
-	
-	/**
-	 *	à–¾
-	 *		s—ñ‚ª³•ûs—ñ‚Å‚ ‚é‚©‚Ç‚¤‚©
-	 *	ˆø”
-	 *		”ñ0: ³•ûs—ñ 
-	 *		0: ³•ûs—ñ‚Å‚È‚¢
-	 */
-	int isSquare(void) const {return ( rows == columns );}
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ã®è¦ç´ ã‚’èª¿ã¹ã‚‹
+     *		getRow: è¡Œåˆ—ã®è¡Œæ•°
+     *		getCol:  è¡Œåˆ—ã®åˆ—æ•°
+     */
+    int getRow(void) const { return rows; }
+    int getRow(void) { return rows; }
+    int getColumn(void) const { return columns; }
+    int getColumn(void) { return columns; }
 
-	/**
-	 *	à–¾
-	 *		s—ñ‚ªƒxƒNƒgƒ‹‚Å‚ ‚é‚©‚Ç‚¤‚©
-	 *	ˆø”
-	 *		”ñ0: ³•ûs—ñ 
-	 *		0: ³•ûs—ñ‚Å‚È‚¢
-	 */
-	int isOneColumn(void) const {return ( columns == 1 );}
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ãŒæ­£æ–¹è¡Œåˆ—ã§ã‚ã‚‹ã‹ã©ã†ã‹
+     *	å¼•æ•°
+     *		é0: æ­£æ–¹è¡Œåˆ—
+     *		0: æ­£æ–¹è¡Œåˆ—ã§ãªã„
+     */
+    int isSquare(void) const { return (rows == columns); }
 
-	/**
-	 *	à–¾
-	 *		”÷¬—v‘f‚ÌÁ‹
-	 */
-	void cleanUp(void);
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ãŒãƒ™ã‚¯ãƒˆãƒ«ã§ã‚ã‚‹ã‹ã©ã†ã‹
+     *	å¼•æ•°
+     *		é0: æ­£æ–¹è¡Œåˆ—
+     *		0: æ­£æ–¹è¡Œåˆ—ã§ãªã„
+     */
+    int isOneColumn(void) const { return (columns == 1); }
 
-/**
- *	----------------------------------------
- *	s—ñ‰‰Z‚Ì‚½‚ß‚Ì‰‰Zq
- *	----------------------------------------
- */
-	/// ‘ã“ü‰‰Zq
-	virtual Matrix& operator=(const Matrix& right);
+    /**
+     *	èª¬æ˜
+     *		å¾®å°è¦ç´ ã®æ¶ˆå»
+     */
+    void cleanUp(void);
 
-	/**
-	 *	à–¾
-	 *		“Y‚¦š‰‰Zq
-	 *	ˆø”
-	 *		row: s—ñ‚Ìs”Ô†
-	 *		col:  s—ñ‚Ì—ñ”Ô†
-	 */
-	/// ƒ†[ƒU—piˆø”ƒ`ƒFƒbƒN—Lj
-	double& operator()(int row=1, int col=1);
-	/// ŒvZ—p[sƒxƒNƒgƒ‹‚ğæ‚èo‚·]iˆø”ƒ`ƒFƒbƒN–³C‚‘¬ŒvZ—pj
-	Vector& operator[] (int index);
+    /**
+     *	----------------------------------------
+     *	è¡Œåˆ—æ¼”ç®—ã®ãŸã‚ã®æ¼”ç®—å­
+     *	----------------------------------------
+     */
+     /// ä»£å…¥æ¼”ç®—å­
+    virtual Matrix& operator=(const Matrix& right);
 
-	/**
-	 *	à–¾
-	 *		constƒIƒuƒWƒFƒNƒg‚É‘Î‚·‚é“Y‚¦š‰‰Zq
-	 *	ˆø”
-	 *		row: s—ñ‚Ìs”Ô†
-	 *		col:  s—ñ‚Ì—ñ”Ô†
-	 */
-	/// ƒ†[ƒU—piˆø”ƒ`ƒFƒbƒN—Lj
-	const double& operator()(int row=1, int col=1) const;
-	/// ŒvZ—p[sƒxƒNƒgƒ‹‚ğæ‚èo‚·]iˆø”ƒ`ƒFƒbƒN–³C‚‘¬ŒvZ—pj
-	const Vector& operator[] (int index) const;
+    /**
+     *	èª¬æ˜
+     *		æ·»ãˆå­—æ¼”ç®—å­
+     *	å¼•æ•°
+     *		row: è¡Œåˆ—ã®è¡Œç•ªå·
+     *		col:  è¡Œåˆ—ã®åˆ—ç•ªå·
+     */
+     /// ãƒ¦ãƒ¼ã‚¶ç”¨ï¼ˆå¼•æ•°ãƒã‚§ãƒƒã‚¯æœ‰ï¼‰
+    double& operator()(int row = 1, int col = 1);
+    /// è¨ˆç®—ç”¨[è¡Œãƒ™ã‚¯ãƒˆãƒ«ã‚’å–ã‚Šå‡ºã™]ï¼ˆå¼•æ•°ãƒã‚§ãƒƒã‚¯ç„¡ï¼Œé«˜é€Ÿè¨ˆç®—ç”¨ï¼‰
+    Vector& operator[] (int index);
+
+    /**
+     *	èª¬æ˜
+     *		constã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹æ·»ãˆå­—æ¼”ç®—å­
+     *	å¼•æ•°
+     *		row: è¡Œåˆ—ã®è¡Œç•ªå·
+     *		col:  è¡Œåˆ—ã®åˆ—ç•ªå·
+     */
+     /// ãƒ¦ãƒ¼ã‚¶ç”¨ï¼ˆå¼•æ•°ãƒã‚§ãƒƒã‚¯æœ‰ï¼‰
+    const double& operator()(int row = 1, int col = 1) const;
+    /// è¨ˆç®—ç”¨[è¡Œãƒ™ã‚¯ãƒˆãƒ«ã‚’å–ã‚Šå‡ºã™]ï¼ˆå¼•æ•°ãƒã‚§ãƒƒã‚¯ç„¡ï¼Œé«˜é€Ÿè¨ˆç®—ç”¨ï¼‰
+    const Vector& operator[] (int index) const;
 
 
-	/**
-	 *	‘ã•\“I‚È‘g‚İ‡‚í‚¹‰‰Zq
-	 */
+    /**
+     *	ä»£è¡¨çš„ãªçµ„ã¿åˆã‚ã›æ¼”ç®—å­
+     */
     Matrix& operator+=(const Matrix& right);
     Matrix& operator-=(const Matrix& right);
     Matrix& operator*=(const Matrix& right);
 
-	
-/**
- *	----------------------------------------
- *	s—ñ‚Ì•”•ªƒRƒs[
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		“Ç‚İ‚ñ‚¾s—ñ‚ğƒRƒs[æ‚ÌŠJn“_CƒRƒs[Œ³‚Ìn“_‚ÆI“_‚ğw’è‚µ‚ÄƒRƒs[‚·‚é
-	 *	ˆø”
-	 *		startRow, startCol: ƒRƒs[æ‚Ìs—ñ‚ÌƒRƒs[ŠJn“_
-	 *		source: ƒRƒs[Œ³‚Ìs—ñ
-	 *		firstRow, firstCol: ƒRƒs[Œ³‚Ìs—ñ‚Ìn“_
-	 *		lastRow, lastCol: ƒRƒs[Œ³‚Ìs—ñ‚ÌI“_
-	 */
-	virtual Matrix& loadMatrix(int startRow, int startCol, const Matrix& source, int firstRow, int firstCol, int lastRow, int lastCol);
-	/**
-	 *	à–¾
-	 *		“Ç‚İ‚ñ‚¾s—ñ‚ğƒRƒs[Œ³‚Ìn“_‚ÆI“_‚ğw’è‚µ‚ÄƒRƒs[‚·‚é
-	 *		ƒRƒs[æ‚Ìs—ñ‚É1s1—ñ–Ú‚©‚çƒRƒs[‚·‚é
-	 *	ˆø”
-	 *		source: ƒRƒs[Œ³‚Ìs—ñ
-	 *		firstRow, firstCol: ƒRƒs[Œ³‚Ìs—ñ‚Ìn“_
-	 *		lastRow, lastCol: ƒRƒs[Œ³‚Ìs—ñ‚ÌI“_
-	 */
-	virtual Matrix& loadMatrix(const Matrix& source, int firstRow, int firstCol, int lastRow, int lastCol);
-	/**
-	 *	à–¾
-	 *		“Ç‚İ‚ñ‚¾s—ñ‚ğƒRƒs[æ‚Ìn“_‚ÆI“_‚ğw’è‚µ‚ÄƒRƒs[‚·‚é
-	 *		ƒRƒs[Œ³‚Ìs—ñ‚Ì1s1—ñ–Ú‚©‚çƒRƒs[‚·‚é
-	 *	ˆø”
-	 *		startRow, startCol: ƒRƒs[æ‚Ìs—ñ‚ÌƒRƒs[ŠJn“_
-	 *		source: ƒRƒs[Œ³‚Ìs—ñ
-	 */
-	virtual Matrix& loadMatrix(int startRow, int startCol, const Matrix& source);
-	/**
-	 *	à–¾
-	 *		“Ç‚İ‚ñ‚¾s—ñ‚ğƒRƒs[Œ³‚Ìn“_‚ğw’è‚µ‚ÄƒRƒs[‚·‚é
-	 *		ƒRƒs[æ‚Ìs—ñ‚É1s1—ñ–Ú‚©‚çƒRƒs[‚·‚é 
-	 *	ˆø”
-	 *		source: ƒRƒs[Œ³‚Ìs—ñ
-	 *		firstRow, firstCol: ƒRƒs[Œ³‚Ìs—ñ‚Ìn“_
-	 */	
-	virtual Matrix& loadMatrix(const Matrix& source, int firstRow, int firstCol);
-	/**
-	 *	à–¾
-	 *		“Ç‚İ‚ñ‚¾s—ñ‚ğƒRƒs[‚·‚é
-	 *		ƒRƒs[æ‚Ìs—ñ‚É1s1—ñ–Ú‚©‚çƒRƒs[‚·‚é 
-	 *		ƒRƒs[Œ³‚Ìs—ñ‚Ì1s1—ñ–Ú‚©‚çƒRƒs[‚·‚é
-	 *	ˆø”
-	 *		source: ƒRƒs[Œ³‚Ìs—ñ
-	 */
-	virtual Matrix& loadMatrix(const Matrix& source);
 
-/**
- *	----------------------------------------
- *	s—ñ‚ğ“Á•Ê‚Ès—ñ‚É‚·‚é
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		—ës—ñ‚ğ“Ç‚İ‚Ş
-	 */
-	virtual Matrix& loadZero(void);
-	/**
-	 *	à–¾
-	 *		’PˆÊs—ñ‚ğ“Ç‚İ‚Ş
-	 */
-	virtual Matrix& loadIdentity(void);
+    /**
+     *	----------------------------------------
+     *	è¡Œåˆ—ã®éƒ¨åˆ†ã‚³ãƒ”ãƒ¼
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		èª­ã¿è¾¼ã‚“ã è¡Œåˆ—ã‚’ã‚³ãƒ”ãƒ¼å…ˆã®é–‹å§‹ç‚¹ï¼Œã‚³ãƒ”ãƒ¼å…ƒã®å§‹ç‚¹ã¨çµ‚ç‚¹ã‚’æŒ‡å®šã—ã¦ã‚³ãƒ”ãƒ¼ã™ã‚‹
+      *	å¼•æ•°
+      *		startRow, startCol: ã‚³ãƒ”ãƒ¼å…ˆã®è¡Œåˆ—ã®ã‚³ãƒ”ãƒ¼é–‹å§‹ç‚¹
+      *		source: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—
+      *		firstRow, firstCol: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®å§‹ç‚¹
+      *		lastRow, lastCol: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®çµ‚ç‚¹
+      */
+    virtual Matrix& loadMatrix(int startRow, int startCol, const Matrix& source, int firstRow, int firstCol, int lastRow, int lastCol);
+    /**
+     *	èª¬æ˜
+     *		èª­ã¿è¾¼ã‚“ã è¡Œåˆ—ã‚’ã‚³ãƒ”ãƒ¼å…ƒã®å§‹ç‚¹ã¨çµ‚ç‚¹ã‚’æŒ‡å®šã—ã¦ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *		ã‚³ãƒ”ãƒ¼å…ˆã®è¡Œåˆ—ã«1è¡Œ1åˆ—ç›®ã‹ã‚‰ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *	å¼•æ•°
+     *		source: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—
+     *		firstRow, firstCol: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®å§‹ç‚¹
+     *		lastRow, lastCol: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®çµ‚ç‚¹
+     */
+    virtual Matrix& loadMatrix(const Matrix& source, int firstRow, int firstCol, int lastRow, int lastCol);
+    /**
+     *	èª¬æ˜
+     *		èª­ã¿è¾¼ã‚“ã è¡Œåˆ—ã‚’ã‚³ãƒ”ãƒ¼å…ˆã®å§‹ç‚¹ã¨çµ‚ç‚¹ã‚’æŒ‡å®šã—ã¦ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *		ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®1è¡Œ1åˆ—ç›®ã‹ã‚‰ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *	å¼•æ•°
+     *		startRow, startCol: ã‚³ãƒ”ãƒ¼å…ˆã®è¡Œåˆ—ã®ã‚³ãƒ”ãƒ¼é–‹å§‹ç‚¹
+     *		source: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—
+     */
+    virtual Matrix& loadMatrix(int startRow, int startCol, const Matrix& source);
+    /**
+     *	èª¬æ˜
+     *		èª­ã¿è¾¼ã‚“ã è¡Œåˆ—ã‚’ã‚³ãƒ”ãƒ¼å…ƒã®å§‹ç‚¹ã‚’æŒ‡å®šã—ã¦ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *		ã‚³ãƒ”ãƒ¼å…ˆã®è¡Œåˆ—ã«1è¡Œ1åˆ—ç›®ã‹ã‚‰ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *	å¼•æ•°
+     *		source: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—
+     *		firstRow, firstCol: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®å§‹ç‚¹
+     */
+    virtual Matrix& loadMatrix(const Matrix& source, int firstRow, int firstCol);
+    /**
+     *	èª¬æ˜
+     *		èª­ã¿è¾¼ã‚“ã è¡Œåˆ—ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *		ã‚³ãƒ”ãƒ¼å…ˆã®è¡Œåˆ—ã«1è¡Œ1åˆ—ç›®ã‹ã‚‰ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *		ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—ã®1è¡Œ1åˆ—ç›®ã‹ã‚‰ã‚³ãƒ”ãƒ¼ã™ã‚‹
+     *	å¼•æ•°
+     *		source: ã‚³ãƒ”ãƒ¼å…ƒã®è¡Œåˆ—
+     */
+    virtual Matrix& loadMatrix(const Matrix& source);
 
-/**
- *	----------------------------------------
- *	s—ñ‚Ìå‚È‰‰Z
- *	----------------------------------------
- */
-/**
- *	“]’us—ñ
- */
-	/**
-	 *	à–¾
-	 *		ŒÄoŒ³‚Ìs—ñ‚ğ“]’us—ñ‚É‚·‚é
-	 */
-	Matrix& transpose(void);
+    /**
+     *	----------------------------------------
+     *	è¡Œåˆ—ã‚’ç‰¹åˆ¥ãªè¡Œåˆ—ã«ã™ã‚‹
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		é›¶è¡Œåˆ—ã‚’èª­ã¿è¾¼ã‚€
+      */
+    virtual Matrix& loadZero(void);
+    /**
+     *	èª¬æ˜
+     *		å˜ä½è¡Œåˆ—ã‚’èª­ã¿è¾¼ã‚€
+     */
+    virtual Matrix& loadIdentity(void);
 
-	/**
-	 *	à–¾
-	 *		ŒÄ‚Ño‚µ‚½s—ñ‚Ì“]’us—ñ‚ğ•Ô‚·
-	 */
-	Matrix transposition(void);
-	const Matrix transposition(void) const;
+    /**
+     *	----------------------------------------
+     *	è¡Œåˆ—ã®ä¸»ãªæ¼”ç®—
+     *	----------------------------------------
+     */
+     /**
+      *	è»¢ç½®è¡Œåˆ—
+      */
+      /**
+       *	èª¬æ˜
+       *		å‘¼å‡ºå…ƒã®è¡Œåˆ—ã‚’è»¢ç½®è¡Œåˆ—ã«ã™ã‚‹
+       */
+    Matrix& transpose(void);
 
-/**
- *	‹ts—ñ
- */
-	/**
-	 *	à–¾
-	 *		ŒÄoŒ³‚Ìs—ñ‚ğ‹ts—ñ‚É‚·‚é
-	 */
-	Matrix& inverse(void);
+    /**
+     *	èª¬æ˜
+     *		å‘¼ã³å‡ºã—ãŸè¡Œåˆ—ã®è»¢ç½®è¡Œåˆ—ã‚’è¿”ã™
+     */
+    Matrix transposition(void);
+    const Matrix transposition(void) const;
 
-	/**
-	 *	à–¾
-	 *		ŒÄoŒ³‚Ì‹ts—ñ‚ğ•Ô‚·
-	 */
-	Matrix inversion(void);
-	const Matrix inversion(void) const;
+    /**
+     *	é€†è¡Œåˆ—
+     */
+     /**
+      *	èª¬æ˜
+      *		å‘¼å‡ºå…ƒã®è¡Œåˆ—ã‚’é€†è¡Œåˆ—ã«ã™ã‚‹
+      */
+    Matrix& inverse(void);
 
-	/**
-	 *	à–¾
-	 *		s—ñ®‚ğ•Ô‚·
-	 */
-	double determinant(void);
-	const double determinant(void) const;
-	
-	/**
-	 *	à–¾
-	 *		s—ñ‚Ì—v‘f‚ğƒRƒ“ƒ\[ƒ‹‚É‘‚«o‚·
-	 */
-	/// ‘S‚Ä‚Ì—v‘f‚ğ‘‚«o‚·
-	virtual void show(void) const;
-	/// ‘S‚Ä‚Ì—v‘f‚ğw”Œ`®‚Å‘‚«o‚·
-	virtual void showExp(void) const;
+    /**
+     *	èª¬æ˜
+     *		å‘¼å‡ºå…ƒã®é€†è¡Œåˆ—ã‚’è¿”ã™
+     */
+    Matrix inversion(void);
+    const Matrix inversion(void) const;
 
-	/**
-	 *	à–¾
-	 *		s—ñ‚Ì‘ÌŠi¬•ª‚Ì˜a‚ğ‹‚ß‚é
-	 */
-	double trace(void);
-	const double trace(void) const;
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—å¼ã‚’è¿”ã™
+     */
+    double determinant(void);
+    const double determinant(void) const;
 
-/**
- *	à–¾
- *		s‚ÌŒğŠ·
- *	ˆø”
- *		i: ŒğŠ·‚·‚és
- *		j: ŒğŠ·‚³‚ê‚és
- */
-	void swapRows(int i, int j);
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ã®è¦ç´ ã‚’ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«æ›¸ãå‡ºã™
+     */
+     /// å…¨ã¦ã®è¦ç´ ã‚’æ›¸ãå‡ºã™
+    virtual void show(void) const;
+    /// å…¨ã¦ã®è¦ç´ ã‚’æŒ‡æ•°å½¢å¼ã§æ›¸ãå‡ºã™
+    virtual void showExp(void) const;
+
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ã®ä½“æ ¼æˆåˆ†ã®å’Œã‚’æ±‚ã‚ã‚‹
+     */
+    double trace(void);
+    const double trace(void) const;
+
+    /**
+     *	èª¬æ˜
+     *		è¡Œã®äº¤æ›
+     *	å¼•æ•°
+     *		i: äº¤æ›ã™ã‚‹è¡Œ
+     *		j: äº¤æ›ã•ã‚Œã‚‹è¡Œ
+     */
+    void swapRows(int i, int j);
 
 
-/**
- *	----------------------------------------
- *	“Á•Ê‚Ès—ñ‰‰Z
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		‹[—‹ts—ñ‚ğ‹‚ß‚é
-	 *		threshold‚Ì’l‚É‚Í’ˆÓ‚·‚é‚±‚Æi¬‚³‚·‚¬‚Ä‚à‘å‚«‚·‚¬‚Ä‚àŠëŒ¯j
-	 */
-	/// ŒÄoŒ³‚Ì‹[—‹ts—ñ‚ğ‹‚ß‚é
-	Matrix pseudoInversion(double threshold = 1.0E-6);
-	const Matrix pseudoInversion(double threshold = 1.0E-6) const;
+    /**
+     *	----------------------------------------
+     *	ç‰¹åˆ¥ãªè¡Œåˆ—æ¼”ç®—
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		æ“¬ä¼¼é€†è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
+      *		thresholdã®å€¤ã«ã¯æ³¨æ„ã™ã‚‹ã“ã¨ï¼ˆå°ã•ã™ãã¦ã‚‚å¤§ãã™ãã¦ã‚‚å±é™ºï¼‰
+      */
+      /// å‘¼å‡ºå…ƒã®æ“¬ä¼¼é€†è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
+    Matrix pseudoInversion(double threshold = 1.0E-6);
+    const Matrix pseudoInversion(double threshold = 1.0E-6) const;
 
-	/**
-	 *	à–¾
-	 *		ğŒ”iwj‚Ì‚¤‚¿Å‘å‚ÆÅ¬‚Ì”äj
-	 *		ill-conditionediˆ«ğŒjFğŒ”‚ª‘å‚«‚¢‚±‚Æ
-	 *	•Ô‹p’l
-	 *		ğŒ”
-	 */
-	double conditionNumber(void) const;
+    /**
+     *	èª¬æ˜
+     *		æ¡ä»¶æ•°ï¼ˆwjã®ã†ã¡æœ€å¤§ã¨æœ€å°ã®æ¯”ï¼‰
+     *		ill-conditionedï¼ˆæ‚ªæ¡ä»¶ï¼‰ï¼šæ¡ä»¶æ•°ãŒå¤§ãã„ã“ã¨
+     *	è¿”å´å€¤
+     *		æ¡ä»¶æ•°
+     */
+    double conditionNumber(void) const;
 
 
 private:
-	/**
-	 *	à–¾
-	 *		s—ñƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
-	 */
-	void newMatrix(void);
-	/**
-	 *	à–¾
-	 *		s—ñƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú‚·‚é
-	 */
-	void deleteMatrix(void);
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
+     */
+    void newMatrix(void);
+    /**
+     *	èª¬æ˜
+     *		è¡Œåˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’è§£æ”¾ã™ã‚‹
+     */
+    void deleteMatrix(void);
 
-/**
- *	----------------------------------------
- *	˜A—§•û’ö®‚ğ‹‚ß‚é‚½‚ß‚Ì•â•ŠÖ”
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		LU•ª‰ğ‚ğs‚¤
-	 *	ˆø”
-	 *		Matrix  a	: LU•ª‰ğ‚³‚ê‚és—ñ 
-	 *		Matrix  lu	: LU•ª‰ğŒã‚Ìs—ñ
-	 *		Matrix  indx: •”•ªƒsƒ{ƒbƒg‘I‘ğ‚ÌÛ‚ÌsŒğŠ·‚ğ‹L˜^
-	 *		double* d	: sŒğŠ·‚Ì‰ñ”‚ª‹ô”=1CsŒğŠ·‚Ì‰ñ”‚ªŠï”=-1
-	 *
-	 *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C, 
-	 *					Cambridge University Press, 1988
-	 */
-	int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d) const;
+    /**
+     *	----------------------------------------
+     *	é€£ç«‹æ–¹ç¨‹å¼ã‚’æ±‚ã‚ã‚‹ãŸã‚ã®è£œåŠ©é–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		LUåˆ†è§£ã‚’è¡Œã†
+      *	å¼•æ•°
+      *		Matrix  a	: LUåˆ†è§£ã•ã‚Œã‚‹è¡Œåˆ—
+      *		Matrix  lu	: LUåˆ†è§£å¾Œã®è¡Œåˆ—
+      *		Matrix  indx: éƒ¨åˆ†ãƒ”ãƒœãƒƒãƒˆé¸æŠã®éš›ã®è¡Œäº¤æ›ã‚’è¨˜éŒ²
+      *		double* d	: è¡Œäº¤æ›ã®å›æ•°ãŒå¶æ•°=1ï¼Œè¡Œäº¤æ›ã®å›æ•°ãŒå¥‡æ•°=-1
+      *
+      *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
+      *					Cambridge University Press, 1988
+      */
+    int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d) const;
 
-	/**
-	 *	à–¾
-	 *		Œã‘Ş‘ã“ü‚ğ—p‚¢‚Ä˜A—§1Ÿ•û’ö®‚ğ‰ğ‚­(a*x=b)
-	 *	ˆø”
-	 *		Matrix  a	: LU•ª‰ğ‚Å‹‚ß‚½A‚ÌLU•ª‰ği•s•Ïj
-	 *		Vector  indx: LU•ª‰ğ‚ÌÛ‚Ì•”•ªƒsƒ{ƒbƒg‘I‘ğ‚ÌsŒğŠ·î•ñ
-	 *		Vector  b	: Šù’m‚Ì‰E•ÓƒxƒNƒgƒ‹i‰ğƒxƒNƒgƒ‹x‚Ì’l‚ğã‘‚«j
-	 *
-	 *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C, 
-	 *					Cambridge University Press, 1988
-	 */
-	void luBackSubstitution(const Matrix& a, const Vector& indx, Vector& b) const;
+    /**
+     *	èª¬æ˜
+     *		å¾Œé€€ä»£å…¥ã‚’ç”¨ã„ã¦é€£ç«‹1æ¬¡æ–¹ç¨‹å¼ã‚’è§£ã(a*x=b)
+     *	å¼•æ•°
+     *		Matrix  a	: LUåˆ†è§£ã§æ±‚ã‚ãŸAã®LUåˆ†è§£ï¼ˆä¸å¤‰ï¼‰
+     *		Vector  indx: LUåˆ†è§£ã®éš›ã®éƒ¨åˆ†ãƒ”ãƒœãƒƒãƒˆé¸æŠã®è¡Œäº¤æ›æƒ…å ±
+     *		Vector  b	: æ—¢çŸ¥ã®å³è¾ºãƒ™ã‚¯ãƒˆãƒ«ï¼ˆè§£ãƒ™ã‚¯ãƒˆãƒ«xã®å€¤ã‚’ä¸Šæ›¸ãï¼‰
+     *
+     *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
+     *					Cambridge University Press, 1988
+     */
+    void luBackSubstitution(const Matrix& a, const Vector& indx, Vector& b) const;
 
-/**
- *	----------------------------------------
- *	“ÁˆÙ’l•ª‰ğ‚ğs‚¤‚½‚ß‚ÌŠÖ”ŒQ
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		s—ñ‚Ì“ÁˆÙ’l•ª‰ğiSingular Value Decompositionj
-	 *	ˆø”
-	 *		Matrix  a	: “ÁˆÙ’l•ª‰ğ‚³‚ê‚és—ñ
-	 *		Matrix  u	: ’¼ss—ñ
-	 *		Matrix  v	: “ÁˆÙ’l‚Ì‘ÎŠps—ñ
-	 *		Matrix  w	: ’¼ss—ñ
-	 *		double* d	: sŒğŠ·‚Ì‰ñ”‚ª‹ô”=1CsŒğŠ·‚Ì‰ñ”‚ªŠï”=-1
-	 *
-	 *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C, 
-	 *					Cambridge University Press, 1988
-	 */
-	void singularValueDecomposition(const Matrix& a, Matrix& u, Matrix& w, Matrix& v) const;
+    /**
+     *	----------------------------------------
+     *	ç‰¹ç•°å€¤åˆ†è§£ã‚’è¡Œã†ãŸã‚ã®é–¢æ•°ç¾¤
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		è¡Œåˆ—ã®ç‰¹ç•°å€¤åˆ†è§£ï¼ˆSingular Value Decompositionï¼‰
+      *	å¼•æ•°
+      *		Matrix  a	: ç‰¹ç•°å€¤åˆ†è§£ã•ã‚Œã‚‹è¡Œåˆ—
+      *		Matrix  u	: ç›´è¡Œè¡Œåˆ—
+      *		Matrix  v	: ç‰¹ç•°å€¤ã®å¯¾è§’è¡Œåˆ—
+      *		Matrix  w	: ç›´è¡Œè¡Œåˆ—
+      *		double* d	: è¡Œäº¤æ›ã®å›æ•°ãŒå¶æ•°=1ï¼Œè¡Œäº¤æ›ã®å›æ•°ãŒå¥‡æ•°=-1
+      *
+      *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
+      *					Cambridge University Press, 1988
+      */
+    void singularValueDecomposition(const Matrix& a, Matrix& u, Matrix& w, Matrix& v) const;
 
-	/**
-	 *	à–¾
-	 *		O•½•û‚Ì’è—iƒAƒ“ƒ_[/ƒI[ƒo[ƒtƒ[‚ğ–h‚®j
-	 *	ˆø”
-	 *		idoublej: a, b
-	 *	–ß‚è’l
-	 *		sqrt(a*a + b*b)
-	 *@
-	 *		Reference : William H. Press, et al, NUMERICAL RECIPES in C, 
-	 *					Cambridge University Press, 1988
-	 */
-	double pythagorean(double a, double b) const;
+    /**
+     *	èª¬æ˜
+     *		ä¸‰å¹³æ–¹ã®å®šç†ï¼ˆã‚¢ãƒ³ãƒ€ãƒ¼/ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ã‚’é˜²ãï¼‰
+     *	å¼•æ•°
+     *		ï¼ˆdoubleï¼‰: a, b
+     *	æˆ»ã‚Šå€¤
+     *		sqrt(a*a + b*b)
+     *ã€€
+     *		Reference : William H. Press, et al, NUMERICAL RECIPES in C,
+     *					Cambridge University Press, 1988
+     */
+    double pythagorean(double a, double b) const;
 
-	/**
-	 *	à–¾
-	 *		ƒNƒCƒbƒNƒ\[ƒg
-	 */
-	void quickSort(Matrix& w, Vector& no, int low, int high) const;
+    /**
+     *	èª¬æ˜
+     *		ã‚¯ã‚¤ãƒƒã‚¯ã‚½ãƒ¼ãƒˆ
+     */
+    void quickSort(Matrix& w, Vector& no, int low, int high) const;
 };	/// end of class Matrix
 
 /**
  *	----------------------------------------------------------------------
- *		VectorƒNƒ‰ƒX
+ *		Vectorã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class Vector
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 private:
-	/// ƒxƒNƒgƒ‹‚Ìæ“ª—v‘f‚Ö‚Ìƒ|ƒCƒ“ƒ^
-    double*	elements;
-    /// ƒxƒNƒgƒ‹‚ÌŸŒ³
-	int			dimensions;
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®å…ˆé ­è¦ç´ ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    double* elements;
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®æ¬¡å…ƒ
+    int			dimensions;
 
-/**
- *	------------------------------------------------------------
- *		ƒtƒŒƒ“ƒhŠÖ”
- *	------------------------------------------------------------
- */
-	/// ƒNƒ‰ƒXVector‚Ì‘½d’è‹`‚³‚ê‚½ƒXƒgƒŠ[ƒ€’Šo‰‰Zq
-	/// ƒxƒNƒgƒ‹‚Ì‘S—v‘f‚Ì’l‚ğo—Í‚·‚é
-	friend std::ostream& operator<<(std::ostream& output, const Vector& vector);
-	/// ƒxƒNƒgƒ‹‚Ì‘S—v‘f‚Ì’l‚ğ“ü—Í‚·‚é
-	friend std::istream& operator>>(std::istream& input, Vector& vector);
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ•ãƒ¬ãƒ³ãƒ‰é–¢æ•°
+     *	------------------------------------------------------------
+     */
+     /// ã‚¯ãƒ©ã‚¹Vectorã®å¤šé‡å®šç¾©ã•ã‚ŒãŸã‚¹ãƒˆãƒªãƒ¼ãƒ æŠ½å‡ºæ¼”ç®—å­
+     /// ãƒ™ã‚¯ãƒˆãƒ«ã®å…¨è¦ç´ ã®å€¤ã‚’å‡ºåŠ›ã™ã‚‹
+    friend std::ostream& operator<<(std::ostream& output, const Vector& vector);
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®å…¨è¦ç´ ã®å€¤ã‚’å…¥åŠ›ã™ã‚‹
+    friend std::istream& operator>>(std::istream& input, Vector& vector);
 
-	/// ƒxƒNƒgƒ‹‚ª“™‚µ‚¢‚©‚Ç‚¤‚©
-	friend bool operator==(const Vector& left, const Vector& right);
-    
-	/// ƒxƒNƒgƒ‹‚ªˆÙ‚È‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	friend bool operator!=(const Vector& left, const Vector& right);
+    /// ãƒ™ã‚¯ãƒˆãƒ«ãŒç­‰ã—ã„ã‹ã©ã†ã‹
+    friend bool operator==(const Vector& left, const Vector& right);
 
-	/**
-	 *		ˆê”Ê“I‚ÈZp‰‰Zq
-	 */
-	/// “àÏ
-	friend double operator*(const Vector& left, const Vector& right);
+    /// ãƒ™ã‚¯ãƒˆãƒ«ãŒç•°ãªã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+    friend bool operator!=(const Vector& left, const Vector& right);
 
-	/// s—ñ‚ÆƒxƒNƒgƒ‹‚ÌÏ
-	friend const Vector operator*(const Matrix& matrix, const Vector& vector);
-    
-	/// ƒxƒNƒgƒ‹‚Æs—ñ‚ÌÏ
-	friend const Vector operator*(const Vector& vector, const Matrix& matrix);
-    
-	/// s—ñ“¯m‚ÌÏ
-	friend const Matrix operator*(const Matrix& left, const Matrix& right);
+    /**
+     *		ä¸€èˆ¬çš„ãªç®—è¡“æ¼”ç®—å­
+     */
+     /// å†…ç©
+    friend double operator*(const Vector& left, const Vector& right);
 
-	/**
-	 *		MatrixƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”
-	 */
-	/// ”÷¬—v‘f‚ÌÁ‹
-	friend void Matrix::cleanUp(void);
-	/// s‚ÌŒğŠ·
-	friend void Matrix::swapRows(int i, int j);
-	/// ‘g‚İ‡‚í‚¹‰‰Zq
-	friend Matrix& Matrix::operator*=(const Matrix& right);
+    /// è¡Œåˆ—ã¨ãƒ™ã‚¯ãƒˆãƒ«ã®ç©
+    friend const Vector operator*(const Matrix& matrix, const Vector& vector);
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®ç©
+    friend const Vector operator*(const Vector& vector, const Matrix& matrix);
+
+    /// è¡Œåˆ—åŒå£«ã®ç©
+    friend const Matrix operator*(const Matrix& left, const Matrix& right);
+
+    /**
+     *		Matrixã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°
+     */
+     /// å¾®å°è¦ç´ ã®æ¶ˆå»
+    friend void Matrix::cleanUp(void);
+    /// è¡Œã®äº¤æ›
+    friend void Matrix::swapRows(int i, int j);
+    /// çµ„ã¿åˆã‚ã›æ¼”ç®—å­
+    friend Matrix& Matrix::operator*=(const Matrix& right);
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
     /**
-	 *		dim: ¬•ª”
-	 */
-	explicit Vector(int dim= 0);
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+       /**
+      *		dim: æˆåˆ†æ•°
+      */
+    explicit Vector(int dim = 0);
 
-	///ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Vector(const Vector& vector);
+    ///ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    Vector(const Vector& vector);
 
-	/// ”z—ñ‚Å‰Šú‰»‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    /// é…åˆ—ã§åˆæœŸåŒ–ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+      /**
+     *		ptrArray: åˆæœŸåŒ–ç”¨ã®é…åˆ—
+     *		dim: æˆåˆ†æ•°
+     */
+    explicit Vector(const double* ptrArray, int dim);
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~Vector();
+
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹
+      /**
+     *		dim: æˆåˆ†æ•°
+     */
+    void setSize(int dim);
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
+    int getSize() const { return dimensions; }
+
     /**
-	 *		ptrArray: ‰Šú‰»—p‚Ì”z—ñ
-	 *		dim: ¬•ª”
-	 */
-	explicit Vector(const double* ptrArray, int dim);
-    /// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~Vector();                     
-	
-	/// ƒxƒNƒgƒ‹‚ÌƒTƒCƒY‚ğİ’è‚·‚é
-    /**
-	 *		dim: ¬•ª”
-	 */
-	void setSize(int dim);
-	/// ƒxƒNƒgƒ‹‚ÌƒTƒCƒY‚ğ“¾‚é
-    int getSize() const { return dimensions;}
+     *	----------------------------------------
+     *	æ¼”ç®—å­ã®å¤šé‡å®šç¾©
+     *----------------------------------------
+     */
 
-/**
- *	----------------------------------------
- *	‰‰Zq‚Ì‘½d’è‹`
- *----------------------------------------
- */
-
-	/// ‘ã“ü‰‰Zq
-    /**
-	 *		dim: ¬•ª”
-	 */
+     /// ä»£å…¥æ¼”ç®—å­
+       /**
+      *		dim: æˆåˆ†æ•°
+      */
     Vector& operator= (const Vector& right);
 
-	/// “Y‚¦š‰‰Zq
-    /**
-	 *		index: —v‘f”
-	 */
-	double& operator()(int index);		/// ƒ†[ƒU—p
-    double& operator[](int index);		/// ŒvZ—p
-	/// constƒIƒuƒWƒFƒNƒg‚É‘Î‚·‚é“Y‚¦š‰‰Zq
-    /**
-	 *		index: —v‘f”
-	 */
-	const double& operator()(int index) const;		/// ƒ†[ƒU—piˆø”ƒ`ƒFƒbƒN—Lj
-    const double& operator[](int index) const;		/// ŒvZ—piˆø”ƒ`ƒFƒbƒN–³C‚‘¬ŒvZ—pj
+    /// æ·»ãˆå­—æ¼”ç®—å­
+      /**
+     *		index: è¦ç´ æ•°
+     */
+    double& operator()(int index);		/// ãƒ¦ãƒ¼ã‚¶ç”¨
+    double& operator[](int index);		/// è¨ˆç®—ç”¨
+    /// constã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹æ·»ãˆå­—æ¼”ç®—å­
+      /**
+     *		index: è¦ç´ æ•°
+     */
+    const double& operator()(int index) const;		/// ãƒ¦ãƒ¼ã‚¶ç”¨ï¼ˆå¼•æ•°ãƒã‚§ãƒƒã‚¯æœ‰ï¼‰
+    const double& operator[](int index) const;		/// è¨ˆç®—ç”¨ï¼ˆå¼•æ•°ãƒã‚§ãƒƒã‚¯ç„¡ï¼Œé«˜é€Ÿè¨ˆç®—ç”¨ï¼‰
 
-	/// (-1)ƒxƒNƒgƒ‹iƒxƒNƒgƒ‹‚ÌŒü‚«‚ğ•Ï‚¦‚éj
-    const Vector operator-() const { return -1.0*(*this);}
+    /// (-1)ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã®å‘ãã‚’å¤‰ãˆã‚‹ï¼‰
+    const Vector operator-() const { return -1.0 * (*this); }
 
-	/**
-	 *		‘ã•\“I‚È‘g‚İ‡‚í‚¹‰‰Zq
-	 */
-	Vector& operator*=(double scalar);
+    /**
+     *		ä»£è¡¨çš„ãªçµ„ã¿åˆã‚ã›æ¼”ç®—å­
+     */
+    Vector& operator*=(double scalar);
     Vector& operator/=(double scalar);
     Vector& operator+=(const Vector& vector);
     Vector& operator-=(const Vector& vector);
 
-/**
- *	----------------------------------------
- *	‘ã•\“I‚ÈŠÖ”
- *	----------------------------------------
- */
-	/// ƒmƒ‹ƒ€‚ğ‹‚ß‚é
-	double norm(void) const;
-	/// ƒxƒNƒgƒ‹‚Ì‹KŠi‰»i’PˆÊƒxƒNƒgƒ‹‚É‚·‚éj
+    /**
+     *	----------------------------------------
+     *	ä»£è¡¨çš„ãªé–¢æ•°
+     *	----------------------------------------
+     */
+     /// ãƒãƒ«ãƒ ã‚’æ±‚ã‚ã‚‹
+    double norm(void) const;
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®è¦æ ¼åŒ–ï¼ˆå˜ä½ãƒ™ã‚¯ãƒˆãƒ«ã«ã™ã‚‹ï¼‰
     const Vector& normalize(void);
-	Vector normalization(void);
-	const Vector normalization(void) const;
+    Vector normalization(void);
+    const Vector normalization(void) const;
 
-/**
- *	”÷¬—v‘f‚ÌÁ‹
- */
-	void cleanUp(void);
+    /**
+     *	å¾®å°è¦ç´ ã®æ¶ˆå»
+     */
+    void cleanUp(void);
 
 private:
-    /// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğŠm•Û‚·‚é
-	void newVector(void);
-	/// ƒIƒuƒWƒFƒNƒg‚Ìƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú‚·‚é
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’ç¢ºä¿ã™ã‚‹
+    void newVector(void);
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’è§£æ”¾ã™ã‚‹
     void deleteVector(void);
 
 };	/// end of class Vector
 
 /**
  *	------------------------------------------------------------
- *		inlineŠÖ”
+ *		inlineé–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *		‘½d’è‹`‚³‚ê‚½{‰‰Zq
- *		‚Q‚Â‚ÌƒxƒNƒgƒ‹‚Ì˜a‚ğ‹‚ß’l“n‚µ‚Å•Ô‚·
- */
+ /**
+  *		å¤šé‡å®šç¾©ã•ã‚ŒãŸï¼‹æ¼”ç®—å­
+  *		ï¼’ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å’Œã‚’æ±‚ã‚å€¤æ¸¡ã—ã§è¿”ã™
+  */
 inline const Vector operator+(const Vector& left, const Vector& right)
 {
-	/// ‰‰Zq += ‚ğg‚¤
+    /// æ¼”ç®—å­ += ã‚’ä½¿ã†
     return Vector(left) += right;
 }
 
 /**
- *		‘½d’è‹`‚³‚ê‚½|‰‰Zq
- *		‚Q‚Â‚ÌƒxƒNƒgƒ‹‚Ì·‚ğ‹‚ß’l“n‚µ‚Å•Ô‚·
+ *		å¤šé‡å®šç¾©ã•ã‚ŒãŸï¼æ¼”ç®—å­
+ *		ï¼’ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å·®ã‚’æ±‚ã‚å€¤æ¸¡ã—ã§è¿”ã™
  */
 inline const Vector operator-(const Vector& left, const Vector& right)
 {
-	/// ‰‰Zq -= ‚ğg‚¤
+    /// æ¼”ç®—å­ -= ã‚’ä½¿ã†
     return Vector(left) -= right;
 }
 
 /**
- *		‘½d’è‹`‚³‚ê‚½–‰‰Zq
- *		ƒxƒNƒgƒ‹‚ÌƒXƒJƒ‰[”{ iÀ”~ƒxƒNƒgƒ‹j
+ *		å¤šé‡å®šç¾©ã•ã‚ŒãŸï¼Šæ¼”ç®—å­
+ *		ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚¹ã‚«ãƒ©ãƒ¼å€ ï¼ˆå®Ÿæ•°Ã—ãƒ™ã‚¯ãƒˆãƒ«ï¼‰
  */
 inline const Vector operator*(double schalor, const Vector& right)
 {
-	/// ‰‰Zq *= ‚ğg‚¤
+    /// æ¼”ç®—å­ *= ã‚’ä½¿ã†
     return Vector(right) *= schalor;
 }
 
 /**
- *		‘½d’è‹`‚³‚ê‚½–‰‰Zq
- *		ƒxƒNƒgƒ‹‚ÌƒXƒJƒ‰[”{ iƒxƒNƒgƒ‹~À”j
- *		À”~ƒxƒNƒgƒ‹—p‚ÌŠÖ”‚ğg‚¤
+ *		å¤šé‡å®šç¾©ã•ã‚ŒãŸï¼Šæ¼”ç®—å­
+ *		ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚¹ã‚«ãƒ©ãƒ¼å€ ï¼ˆãƒ™ã‚¯ãƒˆãƒ«Ã—å®Ÿæ•°ï¼‰
+ *		å®Ÿæ•°Ã—ãƒ™ã‚¯ãƒˆãƒ«ç”¨ã®é–¢æ•°ã‚’ä½¿ã†
  */
 inline const Vector operator*(const Vector& left, double schalor)
 {
-	/// ‰‰Zq *= ‚ğg‚¤
+    /// æ¼”ç®—å­ *= ã‚’ä½¿ã†
     return Vector(left) *= schalor;
 }
 
 /**
- *		‘½d’è‹`‚³‚ê‚½/‰‰Zq
- *		ƒxƒNƒgƒ‹‚ğÀ”‚ÅŠ„‚èZ‚·‚é
+ *		å¤šé‡å®šç¾©ã•ã‚ŒãŸ/æ¼”ç®—å­
+ *		ãƒ™ã‚¯ãƒˆãƒ«ã‚’å®Ÿæ•°ã§å‰²ã‚Šç®—ã™ã‚‹
  */
 inline const Vector operator/(const Vector& left, double schalor)
 {
-	/// ‰‰Zq /= ‚ğg‚¤
+    /// æ¼”ç®—å­ /= ã‚’ä½¿ã†
     return Vector(left) /= schalor;
 }
 
 /**
- *		‘½d’è‹`‚³‚ê‚½{‰‰Zq
- *		‚Q‚Â‚Ìs—ñ‚Ì˜a‚ğ‹‚ßC’l“n‚µ‚Å•Ô‚·
+ *		å¤šé‡å®šç¾©ã•ã‚ŒãŸï¼‹æ¼”ç®—å­
+ *		ï¼’ã¤ã®è¡Œåˆ—ã®å’Œã‚’æ±‚ã‚ï¼Œå€¤æ¸¡ã—ã§è¿”ã™
  */
 inline const Matrix operator+(const Matrix& left, const Matrix& right)
 {
-	/// ‰‰Zq += ‚ğg‚¤
+    /// æ¼”ç®—å­ += ã‚’ä½¿ã†
     return Matrix(left) += right;
 }
 
 /**
- *		‘½d’è‹`‚³‚ê‚½|‰‰Zq
- *		‚Q‚Â‚Ìs—ñ‚Ì·‚ğ‹‚ßC’l“n‚µ‚Å•Ô‚·
+ *		å¤šé‡å®šç¾©ã•ã‚ŒãŸï¼æ¼”ç®—å­
+ *		ï¼’ã¤ã®è¡Œåˆ—ã®å·®ã‚’æ±‚ã‚ï¼Œå€¤æ¸¡ã—ã§è¿”ã™
  */
 inline const Matrix operator-(const Matrix& left, const Matrix& right)
 {
-	/// ‰‰Zq -= ‚ğg‚¤
-    return Matrix(left) -= right; 
+    /// æ¼”ç®—å­ -= ã‚’ä½¿ã†
+    return Matrix(left) -= right;
 }
 
 /**
  *	------------------------------------------------------------
- *		Matrixƒƒ“ƒo‚ÌinlineŠÖ”
+ *		Matrixãƒ¡ãƒ³ãƒã®inlineé–¢æ•°
  *	------------------------------------------------------------
  */
-/// ”ñconst MatrixƒIƒuƒWƒFƒNƒg‚Ì“Y‚¦š‰‰Zq
+ /// éconst Matrixã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ·»ãˆå­—æ¼”ç®—å­
 inline Vector& Matrix::operator[](int index)
 {
     return this->elements[index];
 }
-/// const MatrixƒIƒuƒWƒFƒNƒg‚Ì“Y‚¦š‰‰Zq
+/// const Matrixã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ·»ãˆå­—æ¼”ç®—å­
 inline const Vector& Matrix::operator[](int index) const
 {
     return this->elements[index];
 }
 
 /**
- *		“Y‚¦š‰‰Zq
- *		row: s—ñ‚Ìs”Ô†
- *		col:  s—ñ‚Ì—ñ”Ô†
+ *		æ·»ãˆå­—æ¼”ç®—å­
+ *		row: è¡Œåˆ—ã®è¡Œç•ªå·
+ *		col:  è¡Œåˆ—ã®åˆ—ç•ªå·
  */
 inline double& Matrix::operator()(int row, int col)
 {
-	/// “Y‚¦š‚Ìƒ`ƒFƒbƒN
-	assert( (row >= 1  && row <= this->rows) && (col >= 1  && col <= this->columns) );
+    /// æ·»ãˆå­—ã®ãƒã‚§ãƒƒã‚¯
+    assert((row >= 1 && row <= this->rows) && (col >= 1 && col <= this->columns));
 
-	return this->elements[row-1][col-1];
+    return this->elements[row - 1][col - 1];
 }
 
 /**
- *		“Y‚¦š‰‰Zq
- *		row: s—ñ‚Ìs”Ô†
- *		col:  s—ñ‚Ì—ñ”Ô†
+ *		æ·»ãˆå­—æ¼”ç®—å­
+ *		row: è¡Œåˆ—ã®è¡Œç•ªå·
+ *		col:  è¡Œåˆ—ã®åˆ—ç•ªå·
  */
 inline const double& Matrix::operator()(int row, int col) const
 {
-	/// “Y‚¦š‚Ìƒ`ƒFƒbƒN
-	assert( (row >= 1  && row <= this->rows) && (col >= 1  && col <= this->columns) );
+    /// æ·»ãˆå­—ã®ãƒã‚§ãƒƒã‚¯
+    assert((row >= 1 && row <= this->rows) && (col >= 1 && col <= this->columns));
 
-	return this->elements[row-1][col-1];
+    return this->elements[row - 1][col - 1];
 }
 
 /**
  *	------------------------------------------------------------
- *		Vectorƒƒ“ƒo‚ÌinlineŠÖ”
+ *		Vectorãƒ¡ãƒ³ãƒã®inlineé–¢æ•°
  *	------------------------------------------------------------
  */
-/// ”ñconst VectorƒIƒuƒWƒFƒNƒg‚Ì“Y‚¦š‰‰Zq
+ /// éconst Vectorã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ·»ãˆå­—æ¼”ç®—å­
 inline double& Vector::operator[](int index)
 {
     return this->elements[index];
 }
 
-/// const VectorƒIƒuƒWƒFƒNƒg‚Ì“Y‚¦š‰‰Zq
+/// const Vectorã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ·»ãˆå­—æ¼”ç®—å­
 inline const double& Vector::operator[](int index) const
 {
     return this->elements[index];
 }
 
-/// “Y‚¦š‰‰Zq
+/// æ·»ãˆå­—æ¼”ç®—å­
 /**
- *		index: —v‘f”
+ *		index: è¦ç´ æ•°
  */
 inline double& Vector::operator()(int index)
 {
-	/// ˆø”‚Ìƒ`ƒFƒbƒN
-	assert( index >= 1  && index <= dimensions );
+    /// å¼•æ•°ã®ãƒã‚§ãƒƒã‚¯
+    assert(index >= 1 && index <= dimensions);
 
-	return this->elements[index-1];
+    return this->elements[index - 1];
 }
 
-/// constƒIƒuƒWƒFƒNƒg‚É‘Î‚·‚é“Y‚¦š‰‰Zq
+/// constã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹æ·»ãˆå­—æ¼”ç®—å­
 /**
- *		index: —v‘f”
+ *		index: è¦ç´ æ•°
  */
 inline const double& Vector::operator()(int index) const
 {
-	/// ˆø”‚Ìƒ`ƒFƒbƒN
-	assert( index >= 1  && index <= dimensions );
+    /// å¼•æ•°ã®ãƒã‚§ãƒƒã‚¯
+    assert(index >= 1 && index <= dimensions);
 
-	return this->elements[index-1];
+    return this->elements[index - 1];
 }
 
 } /// end of namespace Math

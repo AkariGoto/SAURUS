@@ -133,7 +133,7 @@ void DataHandler::exportPlanData()
 
 void DataHandler::importPlanData()
 {
-    planData.elapsed_time = planDataSourcePointer->getElapsedTime();
+    planData.elapsed_time_ = planDataSourcePointer->getElapsedTime();
 
     return;
 }
@@ -195,7 +195,7 @@ void DataHandler::handlePlanData()
     }
 
 
-    planDataTargetPointer->elapsed_time = planDataSourcePointer->getElapsedTime();
+    planDataTargetPointer->elapsed_time_ = planDataSourcePointer->getElapsedTime();
 
     return;
 }
