@@ -2,7 +2,8 @@
 #ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_
 #define DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_
 
-#include "WalkingRobot.h"
+#include "Kinematics/WalkingRobot.h"
+
 
 namespace Asura
 {

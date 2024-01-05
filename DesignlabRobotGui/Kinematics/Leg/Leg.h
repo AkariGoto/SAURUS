@@ -1,104 +1,78 @@
 ﻿
-#ifndef __Leg_h__
-#define __Leg_h__
+#ifndef DESIGNLABROBOTGUI_KINEMATICS_LEG_LEG_H_
+#define DESIGNLABROBOTGUI_KINEMATICS_LEG_LEG_H_
 
 #include <cassert>
 
 #include "Math/Matrix/Matrix.h"
-#include "Kinematics/AsuraParameter.h"
+#include "Kinematics/asura_parameter.h"
+
 
 namespace Asura
 {
 
-class Leg
+class Leg final
 {
+    using Vector = Math::Vector;
+    using Matrix = Math::Matrix;
+
     class LegData final
     {
     public:
+        inline LegData() { NewLegData(); }
+
+        ~LegData() = default;
+
         // 座標系は全て胴体座標系（ここではグローバル座標）
+        // 同時変換行列
 
-        /// 同時変換行列
-        /// 脚根元: [4x4]
-        Math::Matrix	baseTransformation;
-        /// 関節: [4x4]x3
-        Math::Matrix* jointTransformation;
-        /// 足裏]: [4x4]
-        Math::Matrix	footTransformation;
+        Matrix	base_transformation;  //!< 脚根元: [4x4]
 
-        Math::Vector bodyAngle;
+        Matrix joint_transformation[LEG_JOINT_NUM];  //!< 関節: [4x4]x3
 
-        /**
-         *		位置ベクトル
-         */
-         /// 脚根元: [3]
-        Math::Vector	basePosition;
-        /// 各関節: [3]x3
-        Math::Vector* jointPosition;
-        /// 足裏: [3]
-        Math::Vector	footPosition;
+        Matrix	foot_transformation;  //!< 足裏]: [4x4]
 
-        /**
-         *		関節の状態
-         */
-         /// 関節角度: [3]-->[4]
-        Math::Vector jointAngle;
-        /// 関節速度: [3]
-        Math::Vector jointVelocity;
-        /// 関節トルク: [3]
-        Math::Vector jointTorque;
-        /// 足首関節角度: [1]
-        //Math::Vector  FootjointAngle;//---Add
-        double FootjointAngle;
+        Vector body_angle;
 
-        /**
-         *		アクチュエータの状態
-         */
-         ///アクチュエータ座標: [4]
-        Math::Vector ActPos;
-        /// 変換行列: [4x4]
-        //Math::Matrix	ActTransformation;
 
-        double LegTipAngle;  //20221026
+        // 位置ベクトル
 
-    private:
-        /**
-         *	------------------------------------------------------------
-         *		メンバ関数
-         *	------------------------------------------------------------
-         */
-         /**
-          *	----------------------------------------
-          *	コンストラクタとデストラクタ
-          *	----------------------------------------
-          */
-    public:
-        /// コンストラクタ
-        LegData();
-        /// デストラクタ
-        virtual ~LegData();
+        Vector	base_position;  //!< 脚根元: [3]
+
+        Vector joint_position[LEG_JOINT_NUM];  //!< 各関節: [3]x3
+
+        Vector	foot_position;  //!< 足裏: [3]
+
+
+        // 関節の状態
+
+        Vector joint_angle;  //!< 関節角度: [3]-->[4]
+
+        Vector joint_velocity;  //!< 関節速度: [3]
+
+        Vector joint_torque;  //!< 関節トルク: [3]
+
+        double foot_joint_angle;  //!< 足首関節角度: [1]
+
+
+        // アクチュエータの状態
+
+        Vector act_pos;  //!< アクチュエータ座標: [4]
+
+        double leg_tip_angle;
 
     private:
         /// オブジェクトのメモリ領域を確保する
-        void newLegData(void);
-        /// オブジェクトのメモリ領域を解放する
-        void deleteLegData(void);
+        void NewLegData();
     };
 
-    /**
-     *	------------------------------------------------------------
-     *		内部構造体の宣言
-     *	------------------------------------------------------------
-     */
-     /**
-      *	機構的な制限
-      */
-    struct LegLimit
+    struct LegLimit final
     {
         /// 関節角限界
         double angleMin[LEG_JOINT_NUM];
         double angleMax[LEG_JOINT_NUM];
-        double FootangleMin;
-        double FootangleMax;
+        double foot_angle_min;
+        double foot_angle_max;
 
 
         /// 足先反力限界
@@ -113,94 +87,44 @@ class Leg
         double reachHeightMax;
     };
 
-    /**
-     *	DHパラメータ
-    */
-    struct DHParameter
+    struct DHParameter final
     {
         double	alpha[LEG_JOINT_NUM];
         double	a[LEG_JOINT_NUM];
         double	d[LEG_JOINT_NUM];
     };
 
-
-    /**
-     *	------------------------------------------------------------
-     *		メンバ変数
-     *	------------------------------------------------------------
-     */
-public:
 protected:
-    /**
-     *	脚の情報
-     *	初期化の順番のため先に宣言
-     */
     LegData legData;
 
-    /**
-     *	機構的な制限
-     */
     LegLimit legLimit;
 
-    /**
-     *	DHパラメータ
-     */
     DHParameter dhParam;
 
-    /**
-     *	ヤコビアン
-     */
-     /// ヤコビ行列: [3x3]
-    Math::Matrix jacobian;
-    /// 逆ヤコビ行列: [3x3]
-    Math::Matrix inverseJacobian;
+    // ヤコビアン
 
-    /**
-     *	脚の根元の位置（x y z）・姿勢（θ）: [4]
-     */
-    Math::Vector basePose;
+    Matrix jacobian;  //!< ヤコビ行列: [3x3]
 
-    /**
-     *	脚の姿勢指標（逆運動学時に用いる）0 or 1
-     */
-    int poseIndicator[2];
+    Matrix inverseJacobian;  //!< 逆ヤコビ行列: [3x3]
 
-    /**
-     *	脚番号
-     */
-    int legNo;
+    Vector basePose;  //!< 脚の根元の位置（x y z）・姿勢（θ）: [4]
 
+    int poseIndicator[2];  //!< 脚の姿勢指標（逆運動学時に用いる）0 or 1
 
-    /**
-     *	最後にエラーの原因となった関節番号（1，2，3）
-     *	0は全てOK，エラー無
-     */
-    int legLastErrorJointNo;
+    int legNo;  //!< 脚番号
 
-private:
+    int legLastErrorJointNo;  //!< 最後にエラーの原因となった関節番号（1，2，3）0は全てOK，エラー無
 
-    /**
-     *	------------------------------------------------------------
-     *		メンバ関数
-     *	------------------------------------------------------------
-     */
 public:
-    /**
-     *	----------------------------------------
-     *	コンストラクタとデストラクタ
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		デフォルトコンストラクタ
-      *	引数
-      *		x, y, x: 脚の根元位置
-      *		theta: 脚の旋回軸回りの姿勢
-      */
+    //! @brief デフォルトコンストラクタ
+    //! @param[in] no 脚番号
+    //! @param[in] x 脚の根元位置
+    //! @param[in] y 脚の根元位置
+    //! @param[in] z 脚の根元位置
+    //! @param[in] theta 脚の旋回軸回りの姿勢
     explicit Leg(int no = 1, double x = 0, double y = 0, double z = 0, double theta = 0);
 
-    /// デストラクタ
-    virtual ~Leg();
+    virtual ~Leg();  //!< デストラクタ
 
     /**
      *	----------------------------------------
@@ -212,55 +136,55 @@ public:
       *	同次変換行列
       */
       /// 脚根元
-    const Math::Matrix& getLegBaseTransformation(void) const { return legData.baseTransformation; }
+    const Math::Matrix& getLegBaseTransformation() const { return legData.base_transformation; }
     /// 関節
     const Math::Matrix& getLegJointTransformation(int jointNo) const;
     /// 足裏
-    const Math::Matrix& getLegFootTransformation(void) const { return legData.footTransformation; }
+    const Math::Matrix& getLegFootTransformation() const { return legData.foot_transformation; }
 
     /**
      *	位置ベクトル
      */
      /// 脚根元
-    const Math::Vector& getLegBasePosition(void) const { return legData.basePosition; }
+    const Math::Vector& getLegBasePosition() const { return legData.base_position; }
     /// 関節位置
     const Math::Vector& getLegJointPosition(int jointNo) const;
     /// 足裏位置: [3]
-    const Math::Vector& getLegFootPosition(void) const { return legData.footPosition; }
+    const Math::Vector& getLegFootPosition() const { return legData.foot_position; }
 
     /**
      *	関節の状態
      */
      /// 関節角度: [3]
-    const Math::Vector& getLegJointAngle(void) const { return legData.jointAngle; }
+    const Math::Vector& getLegJointAngle() const { return legData.joint_angle; }
     /// 関節速度: [3]
-    const Math::Vector& getLegJointVelocity(void) const { return legData.jointVelocity; }
+    const Math::Vector& getLegJointVelocity() const { return legData.joint_velocity; }
     /// 関節トルク: [3]
-    const Math::Vector& getLegJointTorque(void) const { return legData.jointTorque; }
+    const Math::Vector& getLegJointTorque() const { return legData.joint_torque; }
     /// 足首関節角度 :[1]
-    const double getFootJointAngle(void) const { return legData.FootjointAngle; }//------Add
+    const double getFootJointAngle() const { return legData.foot_joint_angle; }
 
-    const double getLegTipAngle(void) const { return legData.LegTipAngle; }  //20221026
+    const double getLegTipAngle() const { return legData.leg_tip_angle; }
 
     /**
      *	ヤコビアン
      */
      /// ヤコビ行列: [3x3]
-    const Math::Matrix& getJacobian(void) const { return jacobian; }
+    const Math::Matrix& getJacobian() const { return jacobian; }
     /// 逆ヤコビ行列: [3x3]
-    const Math::Matrix& getInverseJacobian(void) const { return inverseJacobian; }
+    const Math::Matrix& getInverseJacobian() const { return inverseJacobian; }
 
     /// 脚の根元の位置・姿勢: [4]
-    const Math::Vector& getBasePose(void) const { return basePose; }
+    const Math::Vector& getBasePose() const { return basePose; }
 
     /// 脚番号の取得
-    const int getLegNo(void) const { return legNo; }
+    const int getLegNo() const { return legNo; }
 
     /// 関節のエラー番号
-    const int getLegLastErrorJointNo(void) const { return legLastErrorJointNo; }
+    const int getLegLastErrorJointNo() const { return legLastErrorJointNo; }
 
     /// ボールねじ位置: [4]（ワイヤ変位）
-    const Math::Vector& getLegActuatorPosition(void) const { return legData.ActPos; }//------Add
+    const Math::Vector& getLegActuatorPosition() const { return legData.act_pos; }
 
     /**
      *	----------------------------------------
@@ -279,7 +203,7 @@ public:
       *	同次変換行列
       */
       /// 脚根元
-    Math::Matrix legBaseHomogeneousTransformation();
+    Matrix legBaseHomogeneousTransformation();
     /// 関節
     Math::Matrix legJointHomogeneousTransformation(int jointNo);
     /// 足裏
@@ -302,7 +226,7 @@ public:
     Kinematics solveInverseKinematics();
 
     /// 姿勢指標の変更
-    void setLegPoseIndicator(int hip = 1, int knee = 1);
+    void SetLegPoseIndicator(int hip = 1, int knee = 1);
 
     /// 脚の根元設定
     void setLegBasePose(double x, double y, double z, double theta);
@@ -338,7 +262,7 @@ public:
     Kinematics placeLegJointAngles(const Math::Vector& nextJointAngle, const double& nextFootJointAngle);
 
 
-    void setLegTipAngle(const double angle) { legData.LegTipAngle = angle; }
+    void setLegTipAngle(const double angle) { legData.leg_tip_angle = angle; }
 
     /**
      *	----------------------------------------
@@ -404,7 +328,7 @@ inline const Math::Matrix& Leg::getLegJointTransformation(int jointNo) const
     /// 引数チェック
     assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-    return (legData.jointTransformation[jointNo - 1]);
+    return (legData.joint_transformation[jointNo - 1]);
 }
 
 /// 関節位置を返す
@@ -414,7 +338,7 @@ inline const Math::Vector& Leg::getLegJointPosition(int jointNo) const
     /// 引数チェック
     assert(1 <= jointNo && jointNo <= LEG_JOINT_NUM);
 
-    return (legData.jointPosition[jointNo - 1]);
+    return (legData.joint_position[jointNo - 1]);
 }
 
 
@@ -466,23 +390,23 @@ inline Math::Matrix Leg::legJointHomogeneousTransformation(int jointNo)
     /// 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-    A(1, 1) = cos(legData.jointAngle(jointNo));
-    A(2, 1) = sin(legData.jointAngle(jointNo));
+    A(1, 1) = cos(legData.joint_angle(jointNo));
+    A(2, 1) = sin(legData.joint_angle(jointNo));
     A(3, 1) = 0;
     A(4, 1) = 0;
 
-    A(1, 2) = -cos(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
-    A(2, 2) = cos(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(1, 2) = -cos(dhParam.alpha[jointNo - 1]) * sin(legData.joint_angle(jointNo));
+    A(2, 2) = cos(dhParam.alpha[jointNo - 1]) * cos(legData.joint_angle(jointNo));
     A(3, 2) = sin(dhParam.alpha[jointNo - 1]);
     A(4, 2) = 0;
 
-    A(1, 3) = sin(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
-    A(2, 3) = -sin(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(1, 3) = sin(dhParam.alpha[jointNo - 1]) * sin(legData.joint_angle(jointNo));
+    A(2, 3) = -sin(dhParam.alpha[jointNo - 1]) * cos(legData.joint_angle(jointNo));
     A(3, 3) = cos(dhParam.alpha[jointNo - 1]);
     A(4, 3) = 0;
 
-    A(1, 4) = dhParam.a[jointNo - 1] * cos(legData.jointAngle(jointNo));
-    A(2, 4) = dhParam.a[jointNo - 1] * sin(legData.jointAngle(jointNo));
+    A(1, 4) = dhParam.a[jointNo - 1] * cos(legData.joint_angle(jointNo));
+    A(2, 4) = dhParam.a[jointNo - 1] * sin(legData.joint_angle(jointNo));
     A(3, 4) = dhParam.d[jointNo - 1];
     A(4, 4) = 1;
 
@@ -497,7 +421,7 @@ inline Math::Matrix Leg::legFootHomogeneousTransformation(void)
     /// 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-    double angle = legData.FootjointAngle;
+    double angle = legData.foot_joint_angle;
 
     A(1, 1) = cos(angle);
     A(2, 1) = sin(angle);
@@ -569,14 +493,14 @@ inline Math::Matrix Leg::legJointInverseHomogeneousTransformation(const int join
     // 戻り値の行列
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
-    A(1, 1) = cos(legData.jointAngle(jointNo));
-    A(2, 1) = -cos(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
-    A(3, 1) = sin(dhParam.alpha[jointNo - 1]) * sin(legData.jointAngle(jointNo));
+    A(1, 1) = cos(legData.joint_angle(jointNo));
+    A(2, 1) = -cos(dhParam.alpha[jointNo - 1]) * sin(legData.joint_angle(jointNo));
+    A(3, 1) = sin(dhParam.alpha[jointNo - 1]) * sin(legData.joint_angle(jointNo));
     A(4, 1) = 0;
 
-    A(1, 2) = sin(legData.jointAngle(jointNo));
-    A(2, 2) = cos(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
-    A(3, 2) = -sin(dhParam.alpha[jointNo - 1]) * cos(legData.jointAngle(jointNo));
+    A(1, 2) = sin(legData.joint_angle(jointNo));
+    A(2, 2) = cos(dhParam.alpha[jointNo - 1]) * cos(legData.joint_angle(jointNo));
+    A(3, 2) = -sin(dhParam.alpha[jointNo - 1]) * cos(legData.joint_angle(jointNo));
     A(4, 2) = 0;
 
     A(1, 3) = 0;
@@ -599,8 +523,8 @@ inline Math::Matrix Leg::legFootInverseHomogeneousTransformation()
     Math::Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
 
     // 足首関節角度<-----変数で置き換える
-    //double angle = Const::PI/2 - legData.jointAngle(2) - legData.jointAngle(3);
-    const double angle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);
+    //double angle = Const::PI/2 - legData.joint_angle(2) - legData.joint_angle(3);
+    const double angle = legData.leg_tip_angle - legData.joint_angle(2) - legData.joint_angle(3);
 
     A(1, 1) = cos(angle);
     A(2, 1) = -sin(angle);

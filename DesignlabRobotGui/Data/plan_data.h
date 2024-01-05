@@ -4,9 +4,9 @@
 
 #include <algorithm>
 
-#include "Kinematics/AsuraParameter.h"
+#include "Kinematics/asura_parameter.h"
 #include "Math/Matrix/Matrix.h"
-#include "Plan/PlanParameter.h"
+#include "Plan/plan_parameter.h"
 
 
 namespace designlab_robot_gui::data

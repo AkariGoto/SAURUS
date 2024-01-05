@@ -27,7 +27,7 @@
 /**
  *		追加ヘッダ
  */
-#include "Plan\PlanParameter.h"  //20200824
+#include "Plan/plan_parameter.h"  //20200824
 #include "System\Console.h"
 
 
@@ -147,9 +147,9 @@ CASURA2GUIDoc* CASURA2GUIView::GetDocument() const // デバッグ以外のバ�
 void CASURA2GUIView::initializeCASURA2GUIView(void)
 {
     //20201019
-    localFootPosition = new Math::Vector[LEG_NUM];
-    worldFootPosition = new Math::Vector[LEG_NUM];
-    for (int i = 0; i < LEG_NUM; i++)
+    localFootPosition = new Math::Vector[Asura::LEG_NUM];
+    worldFootPosition = new Math::Vector[Asura::LEG_NUM];
+    for (int i = 0; i < Asura::LEG_NUM; i++)
     {
         localFootPosition[i].setSize(DH_DIMENSION);
         worldFootPosition[i].setSize(DH_DIMENSION);
@@ -748,11 +748,11 @@ void CASURA2GUIView::OnClickedButtonSet()
         CButton* chkbox1 = (CButton*)GetDlgItem(IDC_CHECK_1_CYCLE);
         if (chkbox1->GetCheck())
         {
-            myDOC->currentStrategy = Plan::TRIPOD_1_CYCLE;
+            myDOC->currentStrategy = Plan::Strategy::TRIPOD_1_CYCLE;
         }
         else
         {
-            myDOC->currentStrategy = Plan::TRIPOD;
+            myDOC->currentStrategy = Plan::Strategy::TRIPOD;
         }
 
 

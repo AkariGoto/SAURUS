@@ -1,268 +1,248 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		TripodGaitPlanner.h
- *  à–¾
- *		Šî€•à—eŒv‰æƒNƒ‰ƒXiƒgƒƒbƒg•à—e‚Å‚Ì•àsj
- *  “ú•t
- *		ì¬“ú: 2008/12/19(FRI)		XV“ú: 2008/12/19(FRI)
- */
-
- //  20200820  TrotGait‚ğTripodGait‚É’uŠ·
-//  20200929  x‹r‚Ì‚½‚ß‚Ìz²•ûŒü‚ğ’Ç‰Á
-//  20201005  1üŠú‚ÅI—¹
-//  20201016  •àsŠJn‚Ìp¨‚Ö‚ÌƒZƒbƒg
-//  20201017  •àsŠJn‚Ìp¨‚Ö‚ÌƒZƒbƒg
-//  20201020  “®ì’â~Œã‚ÌÄ“®ì
- 
+ï»¿
 #ifndef __TripodGaitPlanner_h__
 #define __TripodGaitPlanner_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
-#include "PlanParameter.h"
-#include "Planner.h"
-#include "..\Kinematics\AsuraX.h"
-#include "..\Math\MathLibrary.h"
+#include "Plan/plan_parameter.h"
+#include "Plan/Planner.h"
+#include "Kinematics/asura_x.h"
+#include "Math/MathLibrary.h"
 
 namespace Plan
 {
 /**
- *				À•WŒn‚Ì’è‹`
+ *				åº§æ¨™ç³»ã®å®šç¾©
  *
- *		 ‰EèŒn					
- *									
- *						 y		
- *		x  1			4ª		
- *	   ©	|-----------|¨	
- *	     «	|	  x		|   x			 
- *	     y	|	  ª	|		
- *			|  ©		|		
- *			|    y		|y		
- *	    x	|			|ª	
- *	   ©	|-----------|¨	
- *	     «2			3   x	
- *	     y				
+ *		 å³æ‰‹ç³»
+ *
+ *						 y
+ *		x  1			4â†‘
+ *	   â†â—	|-----------|â—â†’
+ *	     â†“	|	  x		|   x
+ *	     y	|	  â†‘	|
+ *			|  â†â—		|
+ *			|    y		|y
+ *	    x	|			|â†‘
+ *	   â†â—	|-----------|â—â†’
+ *	     â†“2			3   x
+ *	     y
  */
 
-/**
- *	----------------------------------------------------------------------
- *		TripodGaitPlannerƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-	class TripodGaitPlanner : public Planner
-	{
-		/**
-		 *	------------------------------------------------------------
-		 *		ƒƒ“ƒo•Ï”
-		 *	------------------------------------------------------------
-		 */
-	public:
-
-	private:
-		/**
-		 *	üŠú•à—e‚ÉŠÖŒW‚·‚é‚à‚Ì
-		 */
-
-		 /**
-		  *	•àsüŠú
-		  *		’PˆÊF•b
-		  */
-		double cycleTime;
-
-		/**
-		 *	ƒfƒ…[ƒeƒB”ä
-		 *		1•àsüŠú’†‚É‚¨‚¯‚é‚ ‚é‹r‚Ìx‹rŠúŠÔ‚Ì”ä—¦
-		 */
-		double dutyFactor;
-
-		/**
-		 *	ƒXƒgƒ‰ƒCƒh
-		 *		1üŠú’†‚É“·‘Ì‚ªˆÚ“®‚·‚é‹——£
-		 *		ƒXƒgƒ[ƒN‚Íƒfƒ…[ƒeƒB”ä x ƒXƒgƒ‰ƒCƒh
-		 */
-		double stride;
-
-		/**
-		 *	•às‘¬“x
-		 */
-		double walkingSpeed;
-
-		/**
-		 *	•às‰ñ”‚ÌƒJƒEƒ“ƒ^
-		 */
-		int walkingCounter;
-
-		/**
-		 *	•às•ûŒü‚Ì’PˆÊƒxƒNƒgƒ‹
-		 */
-		Math::Vector unitWalkingDirection;
-
-		//20200929  x‹r‚Ég—p‚·‚éz²•ûŒü‚Ì’PˆÊƒxƒNƒgƒ‹
-		Math::Vector unitUpDirection;
-
-		/**
-		 *	‹rŠî€ˆÊ’u
-		 *		‹r‚Ì—V‹r‰^“®‹OÕ‚Ì’†“_ˆÊ’u
-		 */
-		Math::Vector* footReferencePosition;
-
-
-		/**
-		 *	•às‚ğs‚¤‚½‚ß‚É•K—v‚Èƒpƒ‰ƒ[ƒ^ŒQ
-		 */
-		 /// “·‘Ì‚Ì‰ŠúˆÊ’u
-		Math::Vector initialBodyPosition;
-
-		/// ‘«‚Ì‰ŠúˆÊ’u
-		Math::Vector* initialFootPosition;
-
-		/// —V‹rŠJnˆÊ’u
-		Math::Vector* swingStartPosition;
-		/// —V‹rI—¹ˆÊ’u
-		Math::Vector* swingStopPosition;
-
-		/// —V‹rU‚èã‚°
-		Math::Vector swingUp;
-		/// —V‹rU‚è‰º‚°
-		Math::Vector swingDown;
-
-		/// •àsŠÔi0 < t < üŠúj
-		double walkingTime;
-		/// •àsüŠúŠJnŠÔ
-		double cycleStartTime;
-		/// ³‹K‰»‚µ‚½•àsŠÔi0 < t < 1j
-		double normalizedWalkingTime;
-
-		/// —V‹rŠJnŠÔ
-		double* swingStartTime;
-		double* swingStopTime;
-
-		//20201020  ’â~‚Ì•àsüŠú‚ÌŒo‰ßŠÔ
-		double cycleElapsedTime;
-
-		/**
-		 *	•às‚Ì‚½‚ß‚Ìƒtƒ‰ƒOŒQ
-		 */
-		 /// •às‚Ì€”õ‚ğ‚·‚é•K—v‚ª‚ ‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-		bool isWalkingToGetSet;
-
-		/// ‹r‹O“¹‚ªŒˆ’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-		bool isTrajectoryToGetSet;
-
-		/// •àsŠJn‚Ìƒtƒ‰ƒO
-		bool isWalkingStarted;
-
-		/// •às’â~‘Ò‹@ƒtƒ‰ƒO
-		bool isWaitingToStop;
-
-		//20201016
-		//  p¨ˆÚs‚Ìƒtƒ‰ƒO
-		bool isSetting;
-
-		//20201017
-		//  p¨ˆÚs‚É—p‚¢‚é•Ï”
-		Math::Vector* initialJointAngle;  //ˆÚs‘O‚ÌŠÖßŠp“x
-		Math::Vector* finalJointAngle;  //ˆÚsŒã‚ÌŠÖßŠp“x
-		Math::Vector* settingJointAngle;  //ˆÚs’†‚ÌŠÖßŠp“x
-		//[i][j]‚Å(i+1)”Ô–Ú‚Ì‹r‚Ì‘æ(j+1)ŠÖß‚ÌŠp“x‚ğ¦‚·
-		double* initialFootJointAngle;  //ˆÚs‘O‚ÌŠÖßŠp“x
-		double* finalFootJointAngle;  //ˆÚsŒã‚ÌŠÖßŠp“x
-		double* settingFootJointAngle;  //ˆÚs’†‚ÌŠÖßŠp“x
-
-		Math::Vector* angularVelosity;  //p¨ˆÚs’†‚ÌŠp‘¬“x
-
-		//‚»‚ê‚¼‚ê‚ÌŠÖß‚ğ“®‚©‚µI‚í‚é‚Ü‚Å‚ÌŠ—vŠÔ
-		double* t01;
-		double* t02;
-		double* t03;
-		double* t04;
-		double* t05;
-
-		double settingStartTime;  //p¨ˆÚsŠJnŠÔ
-		double settingTime;  //p¨ˆÚsŠJn‚©‚ç‚ÌŒo‰ßŠÔ
-
-/**
- *	•às‚É‹@”\’Ç‰Á‚·‚é‚½‚ß‚Ì•Ï”
- */
-	/// •às’â~’¼‘O‚Ì—V‹r
-	int swingLegWaitingToStop;
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		TripodGaitPlannerã‚¯ãƒ©ã‚¹
+  *	----------------------------------------------------------------------
+  */
+class TripodGaitPlanner : public Planner
+{
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit TripodGaitPlanner(Asura::AsuraX* asuraPointer_ = NULL, TimeManager* timeManagerPointer_ = NULL);
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~TripodGaitPlanner();
-
-/**
- *	Šî€•à—e‚Ì‰Šú‰»
- */
-	void initializeTripodGaitPlanner(void);
-
-/**
- *	•às€”õ‚ğ‚·‚é‚½‚ß‚ÌŠÖ”ŒQ
- */
-	/// •à—eƒpƒ‰ƒ[ƒ^‚ÌŒvZ
-	void calculateGaitParameters(void);
-
-	/// •às‰Šúp¨‚ÉˆÚs
-	bool shiftToInitialStandingPosture(void);
-
-/**
- *	------------------------------------------------------------
- *	ƒI[ƒo[ƒ‰ƒCƒhŠÖ”
- *		‰^“®‚ğ‹ï‘Ì“I‚É¶¬‚·‚éŠÖ”ŒQ
- *	------------------------------------------------------------
- */
-	/// •àsŠJn‚Ì‚½‚ß‚Ì‰Šú‰»
-	virtual bool setup(void);
-
-	/// •às‚ğŠJn‚·‚é
-	virtual bool startPlan(void);	
-	
-	/// •às‚ğ‘¦À‚É’â~‚·‚é
-	virtual bool stopPlan(void);
-
-	/// •às‚ğ1•àI—¹‚É’â~‚·‚é
-	virtual bool standByForStop(void);
-
-	/// ‹r‰^“®‚ğ¶¬‚·‚é
-	virtual PlanStatus activateRobot(void);
-
-	/// ƒƒ{ƒbƒg‚ÌuŠÔ‚Ìó‘Ô‚ğ¶¬‚·‚é
-	/// w—ß’l¶¬üŠú‚²‚Æ‚ÉŒÄ‚Ño‚·‚±‚Æ‚É‚æ‚èƒƒ{ƒbƒg‚Ì˜A‘±‚È“®ì‚ğŒv‰æ‚·‚é
-	virtual PlanStatus createPlanSnapshot(void);
-
-	//20201016  p¨‚ÌˆÚs
-	virtual bool settingPlan(void);
-
-/**
- *	•às‚ğŠJn‚µ‚½‚©‚Ç‚¤‚©
- */
-	bool isWalking(void) const{return isWalkingStarted;}
 
 private:
-	/// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^–³Œø
-	TripodGaitPlanner(const TripodGaitPlanner& tripodtGaitPlanner);
-	/// ‘ã“ü‰‰Zq–³Œø
-	TripodGaitPlanner& operator=(const TripodGaitPlanner& tripodGaitPlanner);
+    /**
+     *	å‘¨æœŸæ­©å®¹ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
 
-	/// •às‚Ì‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg¶¬
-	void newTripodGaitItems(void);
-	/// •às‚Ì‚½‚ß‚ÌƒIƒuƒWƒFƒNƒgÁ‹
-	void deleteTripodGaitItems(void);
+     /**
+      *	æ­©è¡Œå‘¨æœŸ
+      *		å˜ä½ï¼šç§’
+      */
+    double cycleTime;
+
+    /**
+     *	ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£æ¯”
+     *		1æ­©è¡Œå‘¨æœŸä¸­ã«ãŠã‘ã‚‹ã‚ã‚‹è„šã®æ”¯æŒè„šæœŸé–“ã®æ¯”ç‡
+     */
+    double dutyFactor;
+
+    /**
+     *	ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰
+     *		1å‘¨æœŸä¸­ã«èƒ´ä½“ãŒç§»å‹•ã™ã‚‹è·é›¢
+     *		ã‚¹ãƒˆãƒ­ãƒ¼ã‚¯ã¯ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£æ¯” x ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰
+     */
+    double stride;
+
+    /**
+     *	æ­©è¡Œé€Ÿåº¦
+     */
+    double walkingSpeed;
+
+    /**
+     *	æ­©è¡Œå›æ•°ã®ã‚«ã‚¦ãƒ³ã‚¿
+     */
+    int walkingCounter;
+
+    /**
+     *	æ­©è¡Œæ–¹å‘ã®å˜ä½ãƒ™ã‚¯ãƒˆãƒ«
+     */
+    Math::Vector unitWalkingDirection;
+
+    //20200929  æ”¯æŒè„šæ™‚ã«ä½¿ç”¨ã™ã‚‹zè»¸æ–¹å‘ã®å˜ä½ãƒ™ã‚¯ãƒˆãƒ«
+    Math::Vector unitUpDirection;
+
+    /**
+     *	è„šåŸºæº–ä½ç½®
+     *		è„šã®éŠè„šé‹å‹•è»Œè·¡ã®ä¸­ç‚¹ä½ç½®
+     */
+    Math::Vector* footReferencePosition;
+
+
+    /**
+     *	æ­©è¡Œã‚’è¡Œã†ãŸã‚ã«å¿…è¦ãªãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç¾¤
+     */
+     /// èƒ´ä½“ã®åˆæœŸä½ç½®
+    Math::Vector initialBodyPosition;
+
+    /// è¶³ã®åˆæœŸä½ç½®
+    Math::Vector* initialFootPosition;
+
+    /// éŠè„šé–‹å§‹ä½ç½®
+    Math::Vector* swingStartPosition;
+    /// éŠè„šçµ‚äº†ä½ç½®
+    Math::Vector* swingStopPosition;
+
+    /// éŠè„šæŒ¯ã‚Šä¸Šã’
+    Math::Vector swingUp;
+    /// éŠè„šæŒ¯ã‚Šä¸‹ã’
+    Math::Vector swingDown;
+
+    /// æ­©è¡Œæ™‚é–“ï¼ˆ0 < t < å‘¨æœŸï¼‰
+    double walkingTime;
+    /// æ­©è¡Œå‘¨æœŸé–‹å§‹æ™‚é–“
+    double cycleStartTime;
+    /// æ­£è¦åŒ–ã—ãŸæ­©è¡Œæ™‚é–“ï¼ˆ0 < t < 1ï¼‰
+    double normalizedWalkingTime;
+
+    /// éŠè„šé–‹å§‹æ™‚é–“
+    double* swingStartTime;
+    double* swingStopTime;
+
+    //20201020  åœæ­¢æ™‚ã®æ­©è¡Œå‘¨æœŸã®çµŒéæ™‚é–“
+    double cycleElapsedTime;
+
+    /**
+     *	æ­©è¡Œã®ãŸã‚ã®ãƒ•ãƒ©ã‚°ç¾¤
+     */
+     /// æ­©è¡Œã®æº–å‚™ã‚’ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+    bool isWalkingToGetSet;
+
+    /// è„šè»Œé“ãŒæ±ºå®šã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+    bool isTrajectoryToGetSet;
+
+    /// æ­©è¡Œé–‹å§‹ã®ãƒ•ãƒ©ã‚°
+    bool isWalkingStarted;
+
+    /// æ­©è¡Œåœæ­¢å¾…æ©Ÿãƒ•ãƒ©ã‚°
+    bool isWaitingToStop;
+
+    //20201016
+    //  å§¿å‹¢ç§»è¡Œã®ãƒ•ãƒ©ã‚°
+    bool isSetting;
+
+    //20201017
+    //  å§¿å‹¢ç§»è¡Œã«ç”¨ã„ã‚‹å¤‰æ•°
+    Math::Vector* initialJointAngle;  //ç§»è¡Œå‰ã®é–¢ç¯€è§’åº¦
+    Math::Vector* finalJointAngle;  //ç§»è¡Œå¾Œã®é–¢ç¯€è§’åº¦
+    Math::Vector* settingJointAngle;  //ç§»è¡Œä¸­ã®é–¢ç¯€è§’åº¦
+    //[i][j]ã§(i+1)ç•ªç›®ã®è„šã®ç¬¬(j+1)é–¢ç¯€ã®è§’åº¦ã‚’ç¤ºã™
+    double* initialFootJointAngle;  //ç§»è¡Œå‰ã®é–¢ç¯€è§’åº¦
+    double* finalFootJointAngle;  //ç§»è¡Œå¾Œã®é–¢ç¯€è§’åº¦
+    double* settingFootJointAngle;  //ç§»è¡Œä¸­ã®é–¢ç¯€è§’åº¦
+
+    Math::Vector* angularVelosity;  //å§¿å‹¢ç§»è¡Œä¸­ã®è§’é€Ÿåº¦
+
+    //ãã‚Œãã‚Œã®é–¢ç¯€ã‚’å‹•ã‹ã—çµ‚ã‚ã‚‹ã¾ã§ã®æ‰€è¦æ™‚é–“
+    double* t01;
+    double* t02;
+    double* t03;
+    double* t04;
+    double* t05;
+
+    double settingStartTime;  //å§¿å‹¢ç§»è¡Œé–‹å§‹æ™‚é–“
+    double settingTime;  //å§¿å‹¢ç§»è¡Œé–‹å§‹ã‹ã‚‰ã®çµŒéæ™‚é–“
+
+    /**
+     *	æ­©è¡Œã«æ©Ÿèƒ½è¿½åŠ ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+     */
+     /// æ­©è¡Œåœæ­¢ç›´å‰ã®éŠè„š
+    int swingLegWaitingToStop;
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
+public:
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    explicit TripodGaitPlanner(Asura::AsuraX* asuraPointer_ = NULL, TimeManager* timeManagerPointer_ = NULL);
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~TripodGaitPlanner();
+
+    /**
+     *	åŸºæº–æ­©å®¹ã®åˆæœŸåŒ–
+     */
+    void initializeTripodGaitPlanner(void);
+
+    /**
+     *	æ­©è¡Œæº–å‚™ã‚’ã™ã‚‹ãŸã‚ã®é–¢æ•°ç¾¤
+     */
+     /// æ­©å®¹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨ˆç®—
+    void calculateGaitParameters(void);
+
+    /// æ­©è¡ŒåˆæœŸå§¿å‹¢ã«ç§»è¡Œ
+    bool shiftToInitialStandingPosture(void);
+
+    /**
+     *	------------------------------------------------------------
+     *	ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰é–¢æ•°
+     *		é‹å‹•ã‚’å…·ä½“çš„ã«ç”Ÿæˆã™ã‚‹é–¢æ•°ç¾¤
+     *	------------------------------------------------------------
+     */
+     /// æ­©è¡Œé–‹å§‹ã®ãŸã‚ã®åˆæœŸåŒ–
+    virtual bool setup(void);
+
+    /// æ­©è¡Œã‚’é–‹å§‹ã™ã‚‹
+    virtual bool startPlan(void);
+
+    /// æ­©è¡Œã‚’å³åº§ã«åœæ­¢ã™ã‚‹
+    virtual bool stopPlan(void);
+
+    /// æ­©è¡Œã‚’1æ­©çµ‚äº†æ™‚ã«åœæ­¢ã™ã‚‹
+    virtual bool standByForStop(void);
+
+    /// è„šé‹å‹•ã‚’ç”Ÿæˆã™ã‚‹
+    virtual PlanStatus activateRobot(void);
+
+    /// ãƒ­ãƒœãƒƒãƒˆã®ç¬é–“ã®çŠ¶æ…‹ã‚’ç”Ÿæˆã™ã‚‹
+    /// æŒ‡ä»¤å€¤ç”Ÿæˆå‘¨æœŸã”ã¨ã«å‘¼ã³å‡ºã™ã“ã¨ã«ã‚ˆã‚Šãƒ­ãƒœãƒƒãƒˆã®é€£ç¶šãªå‹•ä½œã‚’è¨ˆç”»ã™ã‚‹
+    virtual PlanStatus createPlanSnapshot(void);
+
+    //20201016  å§¿å‹¢ã®ç§»è¡Œ
+    virtual bool settingPlan(void);
+
+    /**
+     *	æ­©è¡Œã‚’é–‹å§‹ã—ãŸã‹ã©ã†ã‹
+     */
+    bool isWalking(void) const { return isWalkingStarted; }
+
+private:
+    /// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç„¡åŠ¹
+    TripodGaitPlanner(const TripodGaitPlanner& tripodtGaitPlanner);
+    /// ä»£å…¥æ¼”ç®—å­ç„¡åŠ¹
+    TripodGaitPlanner& operator=(const TripodGaitPlanner& tripodGaitPlanner);
+
+    /// æ­©è¡Œã®ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
+    void newTripodGaitItems(void);
+    /// æ­©è¡Œã®ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ¶ˆå»
+    void deleteTripodGaitItems(void);
 };
 
 }

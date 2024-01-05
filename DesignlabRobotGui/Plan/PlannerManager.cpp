@@ -1,13 +1,4 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		PlannerManager.cpp
- *  à–¾
- *		“®ìŒv‰æ‚ğŠÇ—‚·‚éƒNƒ‰ƒX‚ÌéŒ¾•”
- *  “ú•t
- *		ì¬“ú: 2007/09/01(SAT)		XV“ú: 2008/10/04(SAT)
- */
-
-
+ï»¿
 #include "PlannerManager.h"
 #include "iostream"
 
@@ -16,130 +7,112 @@ using namespace std;
 namespace Plan
 {
 
-/**
- *	----------------------------------------------------------------------
- *		PlannerManagerƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-
-/**
- *	------------------------------------------------------------
- *		PlannerManagerƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
 PlannerManager::PlannerManager() : plannerPointer(NULL)
 {
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 PlannerManager::~PlannerManager()
 {
-	plannerPointer = NULL;
+    plannerPointer = NULL;
 }
 
 /**
- *	–Ú“I‚Ì“®ì‚ğØ‘Ö
+ *	ç›®çš„ã®å‹•ä½œã‚’åˆ‡æ›¿
  */
 bool PlannerManager::switchPlan(Planner* planner, Plan::Strategy strategy)
 {
-	if ( strategy == Plan::NO_STRATEGY )
-	{
-		/// Œv‰æ‚ğ‚È‚­‚·
-		plannerPointer = NULL;
+    if (strategy == Plan::Strategy::NO_STRATEGY)
+    {
+        /// è¨ˆç”»ã‚’ãªãã™
+        plannerPointer = NULL;
 
-		/// Œv‰æ‚Ì‹L˜^
-		lastStrategy = currentStrategy;
-		currentStrategy = strategy;
-		
-		return true;
-	}
+        /// è¨ˆç”»ã®è¨˜éŒ²
+        lastStrategy = currentStrategy;
+        currentStrategy = strategy;
 
-	/// ˆø”‚Ìƒ`ƒFƒbƒN
-	if ( planner == NULL )
-	{
-		cerr << "Error: [PlannerManager::switchPlan] Invalid argument" << endl;
-		return false;
-	}
+        return true;
+    }
 
-	/// Œv‰æ‚ÌØ‘Ö‚¦
-	plannerPointer = planner;
+    /// å¼•æ•°ã®ãƒã‚§ãƒƒã‚¯
+    if (planner == NULL)
+    {
+        cerr << "Error: [PlannerManager::switchPlan] Invalid argument" << endl;
+        return false;
+    }
 
-	/// Œv‰æ‚Ì‹L˜^
-	lastStrategy = currentStrategy;
-	currentStrategy = strategy;
+    /// è¨ˆç”»ã®åˆ‡æ›¿ãˆ
+    plannerPointer = planner;
 
-	return true;
+    /// è¨ˆç”»ã®è¨˜éŒ²
+    lastStrategy = currentStrategy;
+    currentStrategy = strategy;
+
+    return true;
 }
 
 /*
- *	Às’†‚©‚Ç‚¤‚©‚Ì”»’è
+ *	å®Ÿè¡Œä¸­ã‹ã©ã†ã‹ã®åˆ¤å®š
  */
 bool PlannerManager::isActive(void)
 {
-	if ( plannerPointer == NULL ) return false;
+    if (plannerPointer == NULL) return false;
 
-	return plannerPointer->isActive();
+    return plannerPointer->isActive();
 }
 
 /**
- *	‰^“®‚ğ‹ï‘Ì“I‚É¶¬‚·‚éŠÖ”ŒQ
+ *	é‹å‹•ã‚’å…·ä½“çš„ã«ç”Ÿæˆã™ã‚‹é–¢æ•°ç¾¤
  */
-/// Œv‰æŠJn‚Ì‚½‚ß‚Ì‰Šú‰»
+ /// è¨ˆç”»é–‹å§‹ã®ãŸã‚ã®åˆæœŸåŒ–
 bool PlannerManager::setup(void)
 {
-	if ( plannerPointer == NULL ) return false;
-	if (currentStrategy == TRIPOD_1_CYCLE)  //20201005
-	{
-		plannerPointer->standByForStop();
-	}
-	return plannerPointer->setup();
+    if (plannerPointer == NULL) return false;
+    if (currentStrategy == Strategy::TRIPOD_1_CYCLE)  //20201005
+    {
+        plannerPointer->standByForStop();
+    }
+    return plannerPointer->setup();
 }
 
-/// Œv‰æ‚ğŠJn‚·‚é
+/// è¨ˆç”»ã‚’é–‹å§‹ã™ã‚‹
 bool PlannerManager::startMotion(void)
 {
-	if ( plannerPointer == NULL ) return false;
+    if (plannerPointer == NULL) return false;
 
-	return plannerPointer->startPlan();
+    return plannerPointer->startPlan();
 }
-	
-/// Œv‰æ‚ğ’â~‚·‚é
+
+/// è¨ˆç”»ã‚’åœæ­¢ã™ã‚‹
 bool PlannerManager::stopMotion(void)
 {
-	if ( plannerPointer == NULL ) return false;
+    if (plannerPointer == NULL) return false;
 
-	return plannerPointer->stopPlan();
+    return plannerPointer->stopPlan();
 }
 
-/// ’â~‚Ì‘Ò‹@ó‘Ô‚É‚·‚é
-bool PlannerManager::standByForStop(void)
+/// åœæ­¢ã®å¾…æ©ŸçŠ¶æ…‹ã«ã™ã‚‹
+bool PlannerManager::standByForStop()
 {
-	if ( plannerPointer == NULL ) return false;
+    if (plannerPointer == NULL) return false;
 
-	return plannerPointer->standByForStop();
+    return plannerPointer->standByForStop();
 }
 
-/// ‰^“®‚ğ¶¬‚·‚é
-PlanStatus PlannerManager::activateRobot(void)
+/// é‹å‹•ã‚’ç”Ÿæˆã™ã‚‹
+PlanStatus PlannerManager::activateRobot()
 {
-	if ( plannerPointer == NULL ) return Plan::INVALID;
+    if (plannerPointer == NULL) return Plan::PlanStatus::INVALID;
 
-	return plannerPointer->activateRobot();
+    return plannerPointer->activateRobot();
 }
 
-/// ƒƒ{ƒbƒg‚ÌuŠÔ‚Ìó‘Ô‚ğ¶¬‚·‚é
-PlanStatus PlannerManager::createSnapshot(void)
+/// ãƒ­ãƒœãƒƒãƒˆã®ç¬é–“ã®çŠ¶æ…‹ã‚’ç”Ÿæˆã™ã‚‹
+PlanStatus PlannerManager::createSnapshot()
 {
-	if ( plannerPointer == NULL ) return Plan::INVALID;
+    if (plannerPointer == NULL) return Plan::PlanStatus::INVALID;
 
-	return plannerPointer->createPlanSnapshot();
+    return plannerPointer->createPlanSnapshot();
 }
 
 

@@ -1,47 +1,24 @@
-﻿/**
- *  ファイル名
- *		Planner.h
- *  説明
- *		対象とするWalkingRobotオブジェクトの基本動作を生成するクラス
- *  日付
- *		作成日: 2007/03/06(TUE)		更新日: 2007/03/12(MON)
- */
-
- //  20200819  安定余裕関連コメントアウト
- //  20201020  動作停止後の再動作
-
+﻿
 #ifndef __Planner_h__
 #define __Planner_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ヘッダファイルインクルード
- *	----------------------------------------------------------------------
- */
 #include<stdio.h>
-#include "..\Math\Matrix\Matrix.h"
-#include "..\Kinematics\AsuraX.h"
 
-#include "PlanParameter.h"
+#include "Math/Matrix/Matrix.h"
+#include "Kinematics/asura_x.h"
+
+#include "Plan/plan_parameter.h"
 #include "TimeManager.h"
 
-#include "Trajectory\LegTrajectory.h"
-#include "Trajectory\BodyTrajectory.h"
+#include "Trajectory/LegTrajectory.h"
+#include "Trajectory/BodyTrajectory.h"
+
 
 namespace Plan
 {
-/**
- *	----------------------------------------------------------------------
- *		Plannerクラス
- *	----------------------------------------------------------------------
- */
+
 class Planner
 {
-    /**
-     *	------------------------------------------------------------
-     *		メンバ変数
-     *	------------------------------------------------------------
-     */
 protected:
     /**
      *		制御するロボットオブジェクトへのポインタ

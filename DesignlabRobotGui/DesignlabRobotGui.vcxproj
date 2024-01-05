@@ -221,8 +221,8 @@
     <ClInclude Include="Graphic\OpenGL\OpenGLObject.h" />
     <ClInclude Include="Graphic\OpenGL\OpenGLParameter.h" />
     <ClInclude Include="Graphic\OpenGL\OpenGLText.h" />
-    <ClInclude Include="Kinematics\AsuraParameter.h" />
-    <ClInclude Include="Kinematics\AsuraX.h" />
+    <ClInclude Include="Kinematics\asura_parameter.h" />
+    <ClInclude Include="Kinematics\asura_x.h" />
     <ClInclude Include="Kinematics\Leg\Leg.h" />
     <ClInclude Include="Kinematics\WalkingRobot.h" />
     <ClInclude Include="MainFrm.h" />
@@ -234,7 +234,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Plan\Planner.h" />
     <ClInclude Include="Plan\PlannerManager.h" />
-    <ClInclude Include="Plan\PlanParameter.h" />
+    <ClInclude Include="Plan\plan_parameter.h" />
     <ClInclude Include="Plan\TimeManager.h" />
     <ClInclude Include="Plan\Trajectory\BodyTrajectory.h" />
     <ClInclude Include="Plan\Trajectory\LegTrajectory.h" />

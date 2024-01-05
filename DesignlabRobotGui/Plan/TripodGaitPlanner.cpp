@@ -106,7 +106,6 @@ void TripodGaitPlanner::initializeTripodGaitPlanner(void)
 
     /// ストライドのセット
     stride = TRIPODGAIT_STRIDE;
-    //changeflag=0x00;
 
     /// 歩行方向のセット
     unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, THREE_DIMENSION);//<----
@@ -518,7 +517,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
      *		正規化した歩行時間により脚の運動を決定する
      */
      /// 動作状態
-    PlanStatus plan = Plan::WAIT;
+    PlanStatus plan = Plan::PlanStatus::WAIT;
     /// 逆運動学を解いた結果
     Kinematics kine = NO_KINE_ERROR;
     /// カウンタ
@@ -526,13 +525,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
 
     double swingTime = (1 + TRIPODGAIT_SWING_DOWN[2] / TRIPODGAIT_SWING_UP[2]) / 2;
 
-    /*a[3] no using*/
-    /*
-    double a[3];
-    a[0]= TRIPODGAIT_SWING_UP[0] + TRIPODGAIT_SWING_DOWN[0];
-    a[1]= TRIPODGAIT_SWING_UP[1] + TRIPODGAIT_SWING_DOWN[1];
-    a[2]= TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2];
-    */
+
 
     ///1,3,5遊脚　2,4,6支持
     if (0.00 <= normalizedWalkingTime && normalizedWalkingTime < TRIPODGAIT_DUTY_FACTOR)
@@ -572,7 +565,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                         Planner::printPlanErrorMessage();
 
                         suspendPlan();
-                        return SUSPEND;
+                        return PlanStatus::SUSPEND;
                     }
                 }
                 break;
@@ -587,12 +580,12 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                     asuraPointer->setLegPhase(i + 1, LegPhase::SWING);
 
                     //if (plan == INVALID)
-                    if (plan == INVALID && i == 1)  //脚2についてのみ可動域など確認
+                    if (plan == PlanStatus::INVALID && i == 1)  //脚2についてのみ可動域など確認
                     {
                         Planner::printPlanErrorMessage();
 
                         suspendPlan();
-                        return SUSPEND;
+                        return PlanStatus::SUSPEND;
                     }
 
                     break;
@@ -614,12 +607,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                 case 0:
                 case 2:
                 case 4:
-                {//swingStopPosition[j] = footReferencePosition[j] + (stride)/2*unitWalkingDirection+Vector(a, THREE_DIMENSION);
-                  /*kine = asuraPointer->placeLegFootPosition(
-                        i+1,
-                       swingStopPosition[i]- (normalizedWalkingTime - swingStopTime[i])*cycleTime*walkingSpeed*unitWalkingDirection
-                        );*/
-
+                {
                     if (TRIPODGAIT_SWING_UP[2] == -TRIPODGAIT_SWING_DOWN[2])  //20200929  平面時の支持脚運動
                     {
                         kine = asuraPointer->placeLegFootPosition(
@@ -647,7 +635,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                         Planner::printPlanErrorMessage();
 
                         suspendPlan();
-                        return SUSPEND;
+                        return PlanStatus::SUSPEND;
                     }
                 }
                 break;
@@ -661,39 +649,24 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                     asuraPointer->setLegPhase(i + 1, LegPhase::SWING);
 
                     //if (plan == INVALID)
-                    if (plan == INVALID && i == 1)  //脚2についてのみ可動域など確認
+                    if (plan == PlanStatus::INVALID && i == 1)  //脚2についてのみ可動域など確認
                     {
                         Planner::printPlanErrorMessage();
 
                         suspendPlan();
-                        return SUSPEND;
+                        return PlanStatus::SUSPEND;
                     }
                 }
                 //isWaitingToStop=true;
                 break;
 
-                default: break;
+                default:
+                    break;
             }	/// end of switch (i)
         }	/// end of for (i) loop
         asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection * normalizedWalkingTime * (stride));
     }/// end of if ( normalizedWalkingTime )
 
-    /*else if ( 1.0<normalizedWalkingTime&&normalizedWalkingTime <= 1.5 )
-    {
-      for ( i = 0; i < LEG_NUM; i++)
-      {
-      kine = asuraPointer->placeLegFootPosition(
-                  i+1,
-                 swingStopPosition[i]- (1.0 - swingStopTime[i])*cycleTime*walkingSpeed*unitWalkingDirection -Vector(a, THREE_DIMENSION)*2*(normalizedWalkingTime-1.0 )
-                  );
-
-            /// 支持脚相にセット
-            asuraPointer->setLegPhase( i+1, SUPPORT );
-      asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*(stride) + Vector(a, THREE_DIMENSION)*2*(normalizedWalkingTime-1.0 ));//<------!(stride-100)
-      //printf("aa\n");
-      }
-
-    }*/
     /// ロボットの胴体位置を更新	old position + direction * Time + Stride
     //asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection*normalizedWalkingTime*(stride) + Vector(a, THREE_DIMENSION) );//<------!(stride-100)
 
@@ -704,17 +677,17 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
     //asuraPointer->initializeBodyPosition(initialBodyPosition + unitWalkingDirection * normalizedWalkingTime * (stride * 2) + Vector(a, THREE_DIMENSION));//<------!(stride-100)
 
 
-    return RUN;
+    return PlanStatus::RUN;
 }
 
 /**
  *	ロボットの瞬間の状態を生成する
  *		指令値生成周期ごとに呼び出すことによりロボットの連続な動作を計画する
  */
-PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
+PlanStatus TripodGaitPlanner::createPlanSnapshot()
 {
     /// ローカル変数の宣言
-    PlanStatus plan = RUN;
+    PlanStatus plan = PlanStatus::RUN;
 
     /// 歩行が開始されてなかったら終了
     if (!isWalkingStarted)
@@ -722,7 +695,7 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
         /// 動作を中断している時は歩行も中断
         if (isSuspended)
         {
-            return SUSPEND;
+            return PlanStatus::SUSPEND;
         }
 
         //20201016
@@ -731,7 +704,7 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
             settingPlan();
         }
 
-        return WAIT;
+        return PlanStatus::WAIT;
 
     }
 
@@ -744,42 +717,6 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
     /// 正規化歩行時間を計算
     normalizedWalkingTime = walkingTime / cycleTime;
 
-    /// 途中停止するとき（歩行停止フラグがたっていたら）
-    /*  20201005
-    if ( isWaitingToStop )
-    {
-      /// 歩行停止直前の遊脚で場合分け
-      switch ( swingLegWaitingToStop )
-      {
-        case 1:
-          if ( swingStopTime[1] < normalizedWalkingTime )
-            stopPlan();
-          break;
-
-        case 2:
-          if ( swingStopTime[0] < normalizedWalkingTime )
-            stopPlan();
-          break;
-
-        case 3:
-          if ( swingStopTime[2] < normalizedWalkingTime )
-            stopPlan();
-
-          break;
-
-        case 4:
-          if ( swingStopTime[3] < normalizedWalkingTime )
-            stopPlan();
-
-          break;
-
-        default:
-          break;
-      }
-
-      isWaitingToStop = false;
-      swingLegWaitingToStop = 0;
-    }*/
 
     /// 1周期終了時の時間計算
     if (normalizedWalkingTime > 1.0)
@@ -812,7 +749,7 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
     /// ロボットの歩行周期に合わせた脚運動を生成する
     plan = activateRobot();
 
-    if (plan == SUSPEND)
+    if (plan == PlanStatus::SUSPEND)
     {
         stopPlan();
     }
@@ -824,7 +761,7 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot(void)
 }
 
 //20201016
-bool TripodGaitPlanner::settingPlan(void)
+bool TripodGaitPlanner::settingPlan()
 {
     //20201017
     //経過時間を得る
@@ -967,7 +904,7 @@ bool TripodGaitPlanner::settingPlan(void)
 
 /**
  *	------------------------------------------------------------
- *		TripodGaitPlannerクラスのprivateなメンバ関数
+ *		TripodGaitPlannerクラスの privateなメンバ関数
  *	------------------------------------------------------------
  */
  /// 歩行のためのオブジェクト生成

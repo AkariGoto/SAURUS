@@ -4,10 +4,10 @@
 
 #include "Data/asura_data.h"
 #include "Data/plan_data.h"
-#include "Kinematics/AsuraParameter.h"
-#include "Kinematics/AsuraX.h"
+#include "Kinematics/asura_parameter.h"
+#include "Kinematics/asura_x.h"
 #include "Plan/Planner.h"
-#include "Plan/PlanParameter.h"
+#include "Plan/plan_parameter.h"
 
 
 namespace designlab_robot_gui::data
@@ -122,7 +122,7 @@ public:
     const Vector& getLegJointTorque(int legNo) const;
 
     /// 脚の運動相
-    const LegPhase getLegPhase(int legNo) const;
+    const Asura::LegPhase getLegPhase(int legNo) const;
 
 
 

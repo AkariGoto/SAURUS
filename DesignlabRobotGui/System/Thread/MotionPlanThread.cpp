@@ -181,44 +181,16 @@ void MotionPlanThread::OnSetupMotion(WPARAM wParam, LPARAM lParam)
 
     switch (strategy)
     {
-        /*case CRAWL:
-
-          plannerManager.switchPlan(&crawlGait, Plan::CRAWL);
-          break;*/
-
-          /*case TROT:
-            plannerManager.switchPlan(&tripodGait, Plan::TROT);  //  20200820
-            break;*/
-
-        case TRIPOD:
-            plannerManager.switchPlan(&tripodGait, Plan::TRIPOD);  //  20200820
+        case Strategy::TRIPOD:
+        {
+            plannerManager.switchPlan(&tripodGait, Plan::Strategy::TRIPOD);
             break;
-
-            //20201005
-        case TRIPOD_1_CYCLE:
-            plannerManager.switchPlan(&tripodGait, Plan::TRIPOD_1_CYCLE);  //  20200820
+        }
+        case Strategy::TRIPOD_1_CYCLE:
+        {
+            plannerManager.switchPlan(&tripodGait, Plan::Strategy::TRIPOD_1_CYCLE);
             break;
-
-            /*case TRACK_DRIVE:
-              plannerManager.switchPlan(&trackDrive, Plan::TRACK_DRIVE);
-              break;*/
-
-              /*case MODE_CHANGE:
-                plannerManager.switchPlan(&modeChange, Plan::MODE_CHANGE);
-                break;*/
-
-                /*case AXIS_CONTROL:
-                  plannerManager.switchPlan(&axisControl, Plan::AXIS_CONTROL);
-                  break;*/
-
-                  /*	case HYBRID_MOTION:
-                      plannerManager.switchPlan(&hybridMotion, Plan::HYBRID_MOTION);
-                      break;*/
-
-                      /*case URG_MOTION:
-                        plannerManager.switchPlan(&URGMotion, Plan::URG_MOTION);		//追加
-                        break;*/
-
+        }
         default:
             break;
     }
@@ -290,178 +262,10 @@ void MotionPlanThread::OnStopDataSending(WPARAM wParam, LPARAM lParam)
     isCommAlive = false;
 }
 
-///**
-// *	----------------------------------------
-// *	CAxisControlDialog関連
-// *	----------------------------------------
-// */
-///// 脚番号設定
-//void MotionPlanThread::OnAxisCtrlDlgLegNo(WPARAM wParam, LPARAM lParam)
-//{
-//	/// 脚番号を設定
-//	int legNo = (int)wParam;
-//	axisControl.setCtrlTargetLegNo( legNo );
-//
-//	/// 現在値をPlannerに保持
-//	axisControl.setJointAngle(legNo, asuraXData.getLegJointAngle( legNo ) );
-//	axisControl.setFootPosition(legNo, asuraXData.getLegFootPosition( legNo ) );
-//
-//	return;
-//}
-//
-///// 制御モード設定
-//void MotionPlanThread::OnAxisCtrlDlgCtrlMode(WPARAM wParam, LPARAM lParam)
-//{
-//	/// ダイアログの制御モード番号により制御モードを決定
-//	switch ( (int)wParam )
-//	{
-//		case 0:
-//			axisControl.setControlMode( AxisControlPlanner::CONTROL_OFF );
-//			break;
-//
-//		case 1:
-//			axisControl.setControlMode( AxisControlPlanner::POSITION );
-//			break;
-//
-//		case 2:
-//			axisControl.setControlMode( AxisControlPlanner::VELOCITY );
-//			break;
-//
-//		default:
-//			break;
-//	}
-//}
-//
-///// スライダー値受信
-//void MotionPlanThread::OnAxisCtrlDlgRecieveSldrData(WPARAM wParam, LPARAM lParam)
-//{
-//	/// 制御モードの取得
-//	AxisControlPlanner::ControlMode mode = axisControl.getControlMode();
-//	/// 制御脚の番号取得 
-//	int no = axisControl.getCtrlTargetLegNo();
-//	/// 指令値を取得
-//	double data = (double)lParam;
-//
-//	/// 制御オブジェクトの現在値を取得
-//	Vector joint(LEG_JOINT_NUM);
-//	Vector foot(THREE_DIMENSION);
-//
-//	if ( mode == AxisControlPlanner::POSITION )
-//	{
-//		joint = asuraXData.getLegJointAngle(no);
-//		foot = asuraXData.getLegFootPosition(no);
-//
-//		/// スライダー番号により挙動と値を決定
-//		switch ( (int)wParam )
-//		{
-//			case 1:
-//				axisControl.setKinematicBehavior( AxisControlPlanner::DIRECT );
-//				joint(1) = data*DEG2RAD;
-//				axisControl.setJointAngle(no, joint);
-//				break;
-//			case 2:
-//				axisControl.setKinematicBehavior( AxisControlPlanner::DIRECT );
-//				joint(2) = data*DEG2RAD;
-//				axisControl.setJointAngle(no, joint);
-//				break;
-//			case 3:
-//				axisControl.setKinematicBehavior( AxisControlPlanner::DIRECT );
-//				joint(3) = data*DEG2RAD;
-//				axisControl.setJointAngle(no, joint);
-//				break;
-//			case 4:
-//				axisControl.setKinematicBehavior( AxisControlPlanner::INVERSE );
-//				foot(1) = data;
-//				axisControl.setFootPosition(no, foot);
-//				break;
-//			case 5:
-//				axisControl.setKinematicBehavior( AxisControlPlanner::INVERSE );
-//				foot(2) = data;
-//				axisControl.setFootPosition(no, foot);
-//				break;
-//			case 6:
-//				axisControl.setKinematicBehavior( AxisControlPlanner::INVERSE );
-//				foot(3) = data;
-//				axisControl.setFootPosition(no, foot);
-//				break;
-//			default:
-//				break;
-//		}
-//	}
-//	else if ( mode == AxisControlPlanner::VELOCITY )
-//	{
-//		/// スライダー番号により挙動と値を決定
-//		switch ( (int)wParam )
-//		{
-//			case 1:
-//				joint(1) = data;
-//				axisControl.setJointAngle(no, joint);
-//				break;
-//			case 2:
-//				joint(2) = data;
-//				axisControl.setJointAngle(no, joint);
-//				break;
-//			case 3:
-//				joint(3) = data;
-//				axisControl.setJointAngle(no, joint);
-//				break;
-//			case 4:
-//				foot(1) = data;
-//				axisControl.setFootPosition(no, joint);
-//				break;
-//			case 5:
-//				foot(2) = data;
-//				axisControl.setFootPosition(no, joint);
-//				break;
-//			case 6:
-//				foot(3) = data;
-//				axisControl.setFootPosition(no, joint);
-//				break;
-//			default:
-//				break;
-//		}
-//	}
-//
-//	return;
-//
-//}
-//
-///// AsuraXのデータをACダイアログに送信
-//void MotionPlanThread::OnAxisCtrlDlgSendData(WPARAM wParam, LPARAM lParam)
-//{
-//	PostMessage( (HWND)wParam, WM_PLAN_SENDING_AC_DATA, (WPARAM)&asuraXData, NULL);
-//	
-//
-//	/// AxisControlPlannerの指令値も更新
-//	int legNo = axisControl.getCtrlTargetLegNo();
-//	if ( legNo != 0 )
-//	{
-//		axisControl.setJointAngle( legNo, asuraXData.getLegJointAngle(legNo) );
-//		axisControl.setFootPosition( legNo, asuraXData.getLegFootPosition(legNo) );
-//	}
-//
-//	return;
-//}
-//
-////URGThreadアドレスセット
-//void MotionPlanThread::OnURGThreadSet(WPARAM wParam, LPARAM lParam)
-//{
-//	URGThreadID=(DWORD)wParam;
-//
-//	pTimedMotionProcedure->URGsetThreadID(URGThreadID);	//// m_nThreadは基底クラスのCWinThreadのメンバ		URG用
-//
-//	return;
-//}
-
 /**
- *	------------------------------------------------------------
- *		自作関数
- *	------------------------------------------------------------
+ *	説明
+ *		初期化
  */
- /**
-  *	説明
-  *		初期化
-  */
 void MotionPlanThread::initializeMotionPlanThread(void)
 {
 
@@ -513,24 +317,6 @@ void MotionPlanThread::finalizeMotionPlanThread(void)
 
     return;
 }
-
-///**
-// *	説明
-// *		操作するダイアログへのポインタをセット
-// */
-///// 軸制御ダイアログ
-//void MotionPlanThread::acquireAxisControlDialog(CAxisControlDialog* pDlg)
-//{
-//	pAxisControlDialog = pDlg;
-//	return;
-//}
-//
-///// シリアル通信ダイアログ
-//void MotionPlanThread::acquireSerialPortDialog(CSerialPortDialog* pDlg)
-//{
-//	pSerialPortDialog = pDlg;
-//	return;
-//}
 
 //UDP通信ダイアログへのポインタをセット
 void MotionPlanThread::acquireAsuraUDPThread(AsuraUDPThread* pDlg)

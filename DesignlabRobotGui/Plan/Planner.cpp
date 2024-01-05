@@ -192,7 +192,7 @@ PlanStatus Planner::swingLeg(int legNo, double splitTime)
     /// 動作停止中だったら遊脚しない
     if (isSuspended)
     {
-        return (SUSPEND);
+        return PlanStatus::SUSPEND;
     }
 
     /// 遊脚時間内かどうかのチェック
@@ -206,7 +206,7 @@ PlanStatus Planner::swingLeg(int legNo, double splitTime)
         if (kine != NO_KINE_ERROR)
         {
             printPlanErrorMessage();
-            return INVALID;
+            return PlanStatus::INVALID;
         }
 
         /// 脚の状態を遊脚にセット
@@ -222,18 +222,18 @@ PlanStatus Planner::swingLeg(int legNo, double splitTime)
         if (kine != NO_KINE_ERROR)
         {
             printPlanErrorMessage();
-            return INVALID;
+            return PlanStatus::INVALID;
         }
 
         /// 脚の状態を支持脚にセット
         asuraPointer->setLegPhase(legNo, LegPhase::SUPPORT);
 
         /// 動作終了
-        return END;
+        return PlanStatus::END;
     }
 
     /// 動作実行中
-    return RUN;
+    return PlanStatus::RUN;
 }
 
 /**
@@ -245,7 +245,7 @@ PlanStatus Planner::moveBody(double splitTime)
     /// 動作停止中だったら遊脚しない
     if (isSuspended)
     {
-        return (SUSPEND);
+        return PlanStatus::SUSPEND;
     }
 
     /**
@@ -271,16 +271,16 @@ PlanStatus Planner::moveBody(double splitTime)
     {
         Planner::printPlanErrorMessage();
 
-        return INVALID;
+        return PlanStatus::INVALID;
     }
 
     /// 胴体推進時間内にあるかどうかチェック
     if (!(bodyTrajectory->getStartTime() < splitTime) || !(splitTime < bodyTrajectory->getGoalTime()))
     {
-        return END;
+        return PlanStatus::END;
     }
 
-    return RUN;
+    return PlanStatus::RUN;
 
 
 }

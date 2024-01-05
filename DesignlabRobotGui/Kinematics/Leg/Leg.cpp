@@ -26,13 +26,13 @@ Leg::Leg(int no, double x, double y, double z, double theta)
     legLimit.angleMin[0] = LEG_ANGLE1_MIN;
     legLimit.angleMin[1] = LEG_ANGLE2_MIN;
     legLimit.angleMin[2] = LEG_ANGLE3_MIN;
-    legLimit.FootangleMin = LEG_ANGLE4_MIN;
+    legLimit.foot_angle_min = LEG_ANGLE4_MIN;
 
     /// 関節角上限	
     legLimit.angleMax[0] = LEG_ANGLE1_MAX;
     legLimit.angleMax[1] = LEG_ANGLE2_MAX;
     legLimit.angleMax[2] = LEG_ANGLE3_MAX;
-    legLimit.FootangleMax = LEG_ANGLE4_MAX;
+    legLimit.foot_angle_max = LEG_ANGLE4_MAX;
 
     /// 足先反力限界
     legLimit.footReaction[0] = FOOT_REACTION_X;
@@ -88,10 +88,10 @@ Leg::Leg(int no, double x, double y, double z, double theta)
     }
 
     //20201014
-    legData.FootjointAngle = 0;
+    legData.foot_joint_angle = 0;
 
     //20221026
-    legData.LegTipAngle = 0;
+    legData.leg_tip_angle = 0;
 
     /**
      *	行列のサイズ決定
@@ -102,7 +102,7 @@ Leg::Leg(int no, double x, double y, double z, double theta)
     inverseJacobian.setSize(THREE_DIMENSION, THREE_DIMENSION);
 
     /// 脚の姿勢指標（逆運動学時に用いる）0 or 1
-    this->setLegPoseIndicator();
+    this->SetLegPoseIndicator();
 
     /// 脚の根元決定
     basePose.setSize(4);
@@ -152,7 +152,7 @@ void Leg::setLegNo(int no)
   *		同次変換行列を用いて解く
   *
   */
-Kinematics Leg::solveDirectKinematics(void)
+Kinematics Leg::solveDirectKinematics()
 {
     /// 戻り値用
     Kinematics kine;
@@ -171,33 +171,33 @@ Kinematics Leg::solveDirectKinematics(void)
     }
 
     /// 脚根元までの座標変換
-    legData.baseTransformation = legBaseHomogeneousTransformation();
+    legData.base_transformation = legBaseHomogeneousTransformation();
     /// 脚根元位置ベクトルを代入
     for (i = 1; i <= THREE_DIMENSION; i++)
-        legData.basePosition(i) = legData.baseTransformation(i, 4);
+        legData.base_position(i) = legData.base_transformation(i, 4);
 
     /// 脚根元から第1関節までの座標変換
-    legData.jointTransformation[0] = legData.baseTransformation * legJointHomogeneousTransformation(1);
+    legData.joint_transformation[0] = legData.base_transformation * legJointHomogeneousTransformation(1);
     /// 第1関節位置ベクトルを代入
     for (i = 1; i <= THREE_DIMENSION; i++)
-        legData.jointPosition[0](i) = legData.jointTransformation[0](i, 4);
+        legData.joint_position[0](i) = legData.joint_transformation[0](i, 4);
 
     /// 関節の同時変換を逐次行う
     for (i = 1; i < LEG_JOINT_NUM; i++)
     {
         /// 同次変換行列を計算
-        legData.jointTransformation[i] = legData.jointTransformation[i - 1] * legJointHomogeneousTransformation(i + 1);
+        legData.joint_transformation[i] = legData.joint_transformation[i - 1] * legJointHomogeneousTransformation(i + 1);
 
         /// 位置ベクトルを取得
         for (j = 1; j <= THREE_DIMENSION; j++)
-            legData.jointPosition[i](j) = legData.jointTransformation[i](j, 4);
+            legData.joint_position[i](j) = legData.joint_transformation[i](j, 4);
     }
 
     /// 足先の同次変換行列更新
-    legData.footTransformation = legData.jointTransformation[2] * legFootHomogeneousTransformation();
+    legData.foot_transformation = legData.joint_transformation[2] * legFootHomogeneousTransformation();
     /// 足位置位置ベクトルを代入
     for (i = 1; i <= THREE_DIMENSION; i++)
-        legData.footPosition(i) = legData.footTransformation(i, 4);
+        legData.foot_position(i) = legData.foot_transformation(i, 4);
 
     /// 順運動学を解いた後に足先が可動範囲内にあるかどうか
     kine = checkLegFootReachRange();
@@ -212,7 +212,7 @@ Kinematics Leg::solveDirectKinematics(void)
  *		逆運動学を解く
  *		機構が単純なため幾何学的に解く
  */
-Kinematics Leg::solveInverseKinematics(void)
+Kinematics Leg::solveInverseKinematics()
 {
     /**
      *	ローカル変数
@@ -233,8 +233,8 @@ Kinematics Leg::solveInverseKinematics(void)
     /// 一時保存用
     double formerJoint1;
     ///脚先接地角度
-    //double LegTipAngle = Const::PI/2 ;  //+ Const::PI/4;
-    //legData.LegTipAngle = 90 / 180 * Const::PI;  //+ Const::PI/4;
+    //double leg_tip_angle = Const::PI/2 ;  //+ Const::PI/4;
+    //legData.leg_tip_angle = 90 / 180 * Const::PI;  //+ Const::PI/4;
 
 
     /// 脚の可動範囲をチェック
@@ -247,7 +247,7 @@ Kinematics Leg::solveInverseKinematics(void)
     }
 
     /// グローバル座標系から脚座標系への変換
-    footTransform = legBaseInverseHomogeneousTransformation() * legData.footTransformation; //legBaseInverseHomogeneousTransformationとfootTransformationを確認してLegTipAngleがあるか確認
+    footTransform = legBaseInverseHomogeneousTransformation() * legData.foot_transformation; //legBaseInverseHomogeneousTransformationとfootTransformationを確認してLegTipAngleがあるか確認
 
     /// 位置を代入
     x = footTransform(1, 4);
@@ -255,15 +255,15 @@ Kinematics Leg::solveInverseKinematics(void)
     z = footTransform(3, 4);//+ FOOT;	/// 足首高さだけオフセット（常にz方向にオフセットと仮定）
 
     //20221026
-    legData.LegTipAngle = (-0.1 * sqrt(x * x + y * y) + 0.02 * z + 151) / 180 * Const::PI;
+    legData.leg_tip_angle = (-0.1 * sqrt(x * x + y * y) + 0.02 * z + 151) / 180 * Const::PI;
     /*
-    if (legData.LegTipAngle < 67)
+    if (legData.leg_tip_angle < 67)
     {
-      legData.LegTipAngle = 67;
+      legData.leg_tip_angle = 67;
     }
-    else if (legData.LegTipAngle > 113)
+    else if (legData.leg_tip_angle > 113)
     {
-      legData.LegTipAngle = 113;
+      legData.leg_tip_angle = 113;
     }
     //*/
 
@@ -283,10 +283,10 @@ Kinematics Leg::solveInverseKinematics(void)
         return KINE_ERROR_SINGULAR;
     }
     /// 関節3の解析のため関節1の値を一時保存
-    formerJoint1 = legData.jointAngle(1);
+    formerJoint1 = legData.joint_angle(1);
 
     /// 関節1の値を計算
-    legData.jointAngle(1) = atan2(y, x) - poseIndicator[0] * atan2(q1, r1);
+    legData.joint_angle(1) = atan2(y, x) - poseIndicator[0] * atan2(q1, r1);
 
     /*
 
@@ -299,7 +299,7 @@ Kinematics Leg::solveInverseKinematics(void)
       if ( fabs(cos3) > 1.0 )
       {
         /// 逆運動学不可なので関節1の値を戻す
-        legData.jointAngle(1) = formerJoint1;
+        legData.joint_angle(1) = formerJoint1;
 
         /// エラー関節番号を記録
         legLastErrorJointNo = 3;
@@ -320,7 +320,7 @@ Kinematics Leg::solveInverseKinematics(void)
 
 
       /// 関節3の値を代入
-      legData.jointAngle(3) = atan2(sin3, cos3);
+      legData.joint_angle(3) = atan2(sin3, cos3);
 
 
       /// 関節2の補助角の余弦を計算
@@ -328,28 +328,28 @@ Kinematics Leg::solveInverseKinematics(void)
       sinA = sqrt( 1.00 - cosA*cosA);
 
       /// 関節2の値を代入
-      legData.jointAngle(2) = -atan2(q2, poseIndicator[0]*r1) - poseIndicator[0]*poseIndicator[1]*atan2(sinA, cosA);
+      legData.joint_angle(2) = -atan2(q2, poseIndicator[0]*r1) - poseIndicator[0]*poseIndicator[1]*atan2(sinA, cosA);
 
 
     */
-    //q1 = sqrt(x*x +	y*y) - LINK1 - FOOT * cos(LegTipAngle );
-    //q2 = z + FOOT * sin(LegTipAngle );
+    //q1 = sqrt(x*x +	y*y) - LINK1 - FOOT * cos(leg_tip_angle );
+    //q2 = z + FOOT * sin(leg_tip_angle );
     //20221026
-    q1 = sqrt(x * x + y * y) - LINK1 - FOOT * cos(legData.LegTipAngle);
-    q2 = z + FOOT * sin(legData.LegTipAngle);
+    q1 = sqrt(x * x + y * y) - LINK1 - FOOT * cos(legData.leg_tip_angle);
+    q2 = z + FOOT * sin(legData.leg_tip_angle);
 
     r1 = (q1 * q1 + q2 * q2 + LINK2 * LINK2 - LINK3 * LINK3) / (2 * LINK2);
     r2 = (q1 * q1 + q2 * q2 - LINK2 * LINK2 + LINK3 * LINK3) / (2 * LINK3);
 
     /// 第2関節計算
-    legData.jointAngle(2) = -atan2(q2, q1) - atan2(sqrt(q1 * q1 + q2 * q2 - r1 * r1), r1);
+    legData.joint_angle(2) = -atan2(q2, q1) - atan2(sqrt(q1 * q1 + q2 * q2 - r1 * r1), r1);
 
     ///第3関節計算
-    legData.jointAngle(3) = atan2(sqrt(q1 * q1 + q2 * q2 - r2 * r2), r2) + atan2(sqrt(q1 * q1 + q2 * q2 - r1 * r1), r1);
+    legData.joint_angle(3) = atan2(sqrt(q1 * q1 + q2 * q2 - r2 * r2), r2) + atan2(sqrt(q1 * q1 + q2 * q2 - r1 * r1), r1);
 
     ///足首関節
-    //legData.FootjointAngle = LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);
-    legData.FootjointAngle = legData.LegTipAngle - legData.jointAngle(2) - legData.jointAngle(3);  //20221026
+    //legData.foot_joint_angle = leg_tip_angle - legData.joint_angle(2) - legData.joint_angle(3);
+    legData.foot_joint_angle = legData.leg_tip_angle - legData.joint_angle(2) - legData.joint_angle(3);  //20221026
 
     /// 最後に各関節の可動範囲を確認
     kine = checkLegJointMotionRange();
@@ -376,7 +376,7 @@ Kinematics Leg::solveInverseKinematics(void)
  *		脚の姿勢を決定する
  *		順に腰，腿，膝から決める．指標は1 or -1
  */
-void Leg::setLegPoseIndicator(int hip, int knee)
+void Leg::SetLegPoseIndicator(int hip, int knee)
 {
     if (abs(hip) != 1 || abs(knee) != 1)
     {
@@ -406,24 +406,19 @@ void Leg::setLegBasePose(double x, double y, double z, double theta)
     return;
 }
 
-/**
- *	----------------------------------------
- *	脚の機構制限をチェック
- *	----------------------------------------
- */
- /// 関節の可動範囲を調査
-Kinematics Leg::checkLegJointMotionRange(void)
+
+Kinematics Leg::checkLegJointMotionRange()
 {
     for (int i = 1; i <= LEG_JOINT_NUM; i++)
     {
-        if (legData.jointAngle(i) < legLimit.angleMin[i - 1])
+        if (legData.joint_angle(i) < legLimit.angleMin[i - 1])
         {
             /// 可動範囲の下限以下
             legLastErrorJointNo = i;
 
             return KINE_ERROR_JOINT_UNDER_LIMIT;
         }
-        else if (legData.jointAngle(i) > legLimit.angleMax[i - 1])
+        else if (legData.joint_angle(i) > legLimit.angleMax[i - 1])
         {
             /// 可動範囲の上限以上
             legLastErrorJointNo = i;
@@ -433,14 +428,14 @@ Kinematics Leg::checkLegJointMotionRange(void)
 
     }
 
-    if (legData.FootjointAngle < legLimit.FootangleMin)
+    if (legData.foot_joint_angle < legLimit.foot_angle_min)
     {
         /// 可動範囲の下限以下
         legLastErrorJointNo = 4;
 
         return KINE_ERROR_JOINT_UNDER_LIMIT;
     }
-    else if (legData.FootjointAngle > legLimit.FootangleMax)
+    else if (legData.foot_joint_angle > legLimit.foot_angle_max)
     {
         /// 可動範囲の上限以上
         legLastErrorJointNo = 4;
@@ -454,8 +449,7 @@ Kinematics Leg::checkLegJointMotionRange(void)
     return NO_KINE_ERROR;
 }
 
-/// 脚のリーチを調査
-Kinematics Leg::checkLegFootReachRange(void)
+Kinematics Leg::checkLegFootReachRange()
 {
     /// 脚座標系での脚先の同次変換行列
     Matrix transform(DH_DIMENSION, DH_DIMENSION);
@@ -463,12 +457,12 @@ Kinematics Leg::checkLegFootReachRange(void)
     double x, y, z;
 
     /// グローバル座標系から脚座標系への変換
-    transform = legBaseInverseHomogeneousTransformation() * legData.footTransformation;
+    transform = legBaseInverseHomogeneousTransformation() * legData.foot_transformation;
     /// 計算用の変数に代入
     x = transform(1, 4);
     y = transform(2, 4);
     //z = transform(3, 4) + FOOT;
-    z = transform(3, 4) + FOOT * sin(legData.LegTipAngle);  //20221026
+    z = transform(3, 4) + FOOT * sin(legData.leg_tip_angle);  //20221026
 
     /// 半径方向の可動範囲	//可動範囲内だとここ、範囲内はNO_KINE_ERROR
     if (sqrt(x * x + y * y) < legLimit.reachRadiusMin)
@@ -494,18 +488,6 @@ Kinematics Leg::checkLegFootReachRange(void)
     return NO_KINE_ERROR;
 }
 
-/**
- *	----------------------------------------
- *	脚のPTP制御用
- *	----------------------------------------
- */
- /**
-  *	説明
-  *		足の位置をセット（足裏は常に重力方向と仮定）
-  *		順運動学と逆運動学が一致しているかを確認する
-  *		途中の関節位置を計算する
-  *		（歩行時に呼ばれる）20201015
-  */
 Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
 {
     Matrix lastFootTransform(DH_DIMENSION, DH_DIMENSION);
@@ -519,10 +501,10 @@ Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
     }
 
     /// 足先の同次変換行列を一時保存
-    lastFootTransform = legData.footTransformation;
+    lastFootTransform = legData.foot_transformation;
     /// 目標足先位置を代入	
     for (int i = 1; i <= THREE_DIMENSION; i++)
-        legData.footTransformation(i, 4) = nextFootPosition(i);
+        legData.foot_transformation(i, 4) = nextFootPosition(i);
 
     /// 逆運動学を解く
     Kinematics kine = this->solveInverseKinematics();
@@ -538,19 +520,19 @@ Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
 
         case KINE_ERROR_UNREACHABLE:
             /// 足先位置を元に戻す
-            legData.footTransformation = lastFootTransform;
+            legData.foot_transformation = lastFootTransform;
             cerr << "Error1" << endl;
             break;
 
         case KINE_ERROR_SINGULAR:
             /// 足先位置を元に戻す
-            legData.footTransformation = lastFootTransform;
+            legData.foot_transformation = lastFootTransform;
             //cerr << "Error2" << endl;
             break;
 
         case KINE_ERROR_ELSE:
             /// 足先位置を元に戻す
-            legData.footTransformation = lastFootTransform;
+            legData.foot_transformation = lastFootTransform;
             cerr << "Error3" << endl;
             break;
 
@@ -562,12 +544,6 @@ Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
     return kine;
 }
 
-/**
- *	説明
- *		関節角をセット
- *		セットした関節角で順運動学を解く
- *		（WalkingRobotのコンストラクタで呼ばれる）20201015
- */
 Kinematics Leg::placeLegJointAngles(const Vector& nextJointAngle, const double& nextFootJointAngle)
 {
     /// 一時保存用
@@ -582,10 +558,10 @@ Kinematics Leg::placeLegJointAngles(const Vector& nextJointAngle, const double& 
     }
 
     /// 現在の関節角を一時保存
-    lastJointAngle = legData.jointAngle;
-    legData.jointAngle = nextJointAngle;  //20201018
-    lastFootJointAngle = legData.FootjointAngle;
-    legData.FootjointAngle = nextFootJointAngle;  //20201018
+    lastJointAngle = legData.joint_angle;
+    legData.joint_angle = nextJointAngle;  //20201018
+    lastFootJointAngle = legData.foot_joint_angle;
+    legData.foot_joint_angle = nextFootJointAngle;  //20201018
 
     /// 順運動学を解く
     Kinematics kine = solveDirectKinematics();
@@ -595,15 +571,15 @@ Kinematics Leg::placeLegJointAngles(const Vector& nextJointAngle, const double& 
             break;
 
         case KINE_ERROR_UNREACHABLE:
-            legData.jointAngle = lastJointAngle;
+            legData.joint_angle = lastJointAngle;
             break;
 
         case KINE_ERROR_SINGULAR:
-            legData.jointAngle = lastJointAngle;
+            legData.joint_angle = lastJointAngle;
             break;
 
         case KINE_ERROR_ELSE:
-            legData.jointAngle = lastJointAngle;
+            legData.joint_angle = lastJointAngle;
             break;
     }
 
@@ -613,155 +589,96 @@ Kinematics Leg::placeLegJointAngles(const Vector& nextJointAngle, const double& 
 
 }
 
-/**
- *	----------------------------------------
- *	ヤコビアンを使っての状態計算
- *	----------------------------------------
- */
- /**
-  *	説明
-  *		関節速度: [3]
-  *		脚先速度から計算
-  */
+
 void Leg::calculateLegJointVelocity(const Vector& footVelocity)
 {
     return;
 }
 
-/**
- *	説明
- *		関節トルク: [3]
- *		脚先端に加わった荷重から計算
- */
 void Leg::calculateLegJointTorque(const Vector& footReaction)
 {
     return;
 }
 
-/**
- *	ヤコビアン自身の計算
- */
- /// ヤコビ行列: [3x3]
-void Leg::calculateJacobian(void)
+void Leg::calculateJacobian()
 {
     return;
 }
 
-/// 逆ヤコビ行列: [3x3]
-void Leg::calculateInverseJacobian(void)
+
+void Leg::calculateInverseJacobian()
 {
     return;
 }
-/**
- *	説明
- *		ボールねじ座標計算（ワイヤ変位）
- */
-void Leg::calculationActatorPosition(void)
+
+void Leg::calculationActatorPosition()
 {
     /*
-    legData.ActPos(1)	= Pulley_Radius *legData.jointAngle(1)		+ Pulley_Radius *legData.jointAngle(2);//123;//
-    legData.ActPos(2)	= Pulley_Radius *legData.jointAngle(2)		- Pulley_Radius *legData.jointAngle(1);//456;//
-    legData.ActPos(3)	= Pulley_Radius *legData.jointAngle(2)		+ Pulley_Radius *legData.jointAngle(3);//789;//
-    legData.ActPos(4)	= Pulley_Radius *legData.jointAngle(3)		+ Pulley_Radius *legData.FootjointAngle;//1011;//+ Pulley_Radius *legData.jointAngle(4);
+    legData.act_pos(1)	= Pulley_Radius *legData.joint_angle(1)		+ Pulley_Radius *legData.joint_angle(2);//123;//
+    legData.act_pos(2)	= Pulley_Radius *legData.joint_angle(2)		- Pulley_Radius *legData.joint_angle(1);//456;//
+    legData.act_pos(3)	= Pulley_Radius *legData.joint_angle(2)		+ Pulley_Radius *legData.joint_angle(3);//789;//
+    legData.act_pos(4)	= Pulley_Radius *legData.joint_angle(3)		+ Pulley_Radius *legData.foot_joint_angle;//1011;//+ Pulley_Radius *legData.joint_angle(4);
     */
 
     /*
-    legData.ActPos(1) = (-Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2));//123;//
-    legData.ActPos(2) = -(Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2));//456;//
-    legData.ActPos(3) = (Pulley_Radius * legData.jointAngle(2) + Pulley_Radius * legData.jointAngle(3));//789;//
-    legData.ActPos(4) = (Pulley_Radius * legData.jointAngle(3) + Pulley_Radius * legData.FootjointAngle);//1011
+    legData.act_pos(1) = (-Pulley_Radius * legData.joint_angle(1) + 2 * Pulley_Radius * legData.joint_angle(2));//123;//
+    legData.act_pos(2) = -(Pulley_Radius * legData.joint_angle(1) + 2 * Pulley_Radius * legData.joint_angle(2));//456;//
+    legData.act_pos(3) = (Pulley_Radius * legData.joint_angle(2) + Pulley_Radius * legData.joint_angle(3));//789;//
+    legData.act_pos(4) = (Pulley_Radius * legData.joint_angle(3) + Pulley_Radius * legData.foot_joint_angle);//1011
     //*/
 
     //*  なぜか値が合わないので調整
-    legData.ActPos(1) = (-Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2)) * 0.983818;//123;//
-    legData.ActPos(2) = -(Pulley_Radius * legData.jointAngle(1) + 2 * Pulley_Radius * legData.jointAngle(2)) * 0.980921;//456;//
-    legData.ActPos(3) = (Pulley_Radius * legData.jointAngle(2) + Pulley_Radius * legData.jointAngle(3)) * 0.982403;//789;//
-    legData.ActPos(4) = (Pulley_Radius * legData.jointAngle(3) + Pulley_Radius * legData.FootjointAngle) * 0.983152;//1011
+    legData.act_pos(1) = (-Pulley_Radius * legData.joint_angle(1) + 2 * Pulley_Radius * legData.joint_angle(2)) * 0.983818;//123;//
+    legData.act_pos(2) = -(Pulley_Radius * legData.joint_angle(1) + 2 * Pulley_Radius * legData.joint_angle(2)) * 0.980921;//456;//
+    legData.act_pos(3) = (Pulley_Radius * legData.joint_angle(2) + Pulley_Radius * legData.joint_angle(3)) * 0.982403;//789;//
+    legData.act_pos(4) = (Pulley_Radius * legData.joint_angle(3) + Pulley_Radius * legData.foot_joint_angle) * 0.983152;//1011
     //*/
 
     return;
 }
 
-/**
- *	----------------------------------------------------------------------
- *		Legの内部クラス　LegDataクラス
- *	----------------------------------------------------------------------
- */
- /**
-  *	----------------------------------------
-  *	コンストラクタとデストラクタ
-  *	----------------------------------------
-  */
-  /// デフォルトコンストラクタ
-Leg::LegData::LegData()
+
+void Leg::LegData::NewLegData()
 {
-    newLegData();
-
-}
-
-/// デストラクタ
-Leg::LegData::~LegData()
-{
-    deleteLegData();
-}
-
-/**
- *	------------------------------------------------------------
- *		TrackDataクラスのprivateなメンバ関数
- *	------------------------------------------------------------
- */
- /// オブジェクトのメモリ領域を確保する
-void Leg::LegData::newLegData(void)
-{
-    /// メンバのメモリ領域確保
-    jointTransformation = new Matrix[LEG_JOINT_NUM];
-    jointPosition = new Vector[LEG_JOINT_NUM];
-
-    /// 行列のサイズ決定
-    /// 同時変換行列
-    baseTransformation.setSize(DH_DIMENSION, DH_DIMENSION);
-    baseTransformation.loadIdentity();
+    // 行列のサイズ決定
+    // 同時変換行列
+    base_transformation.setSize(DH_DIMENSION, DH_DIMENSION);
+    base_transformation.loadIdentity();
 
     for (int i = 0; i < LEG_JOINT_NUM; i++)
     {
-        jointTransformation[i].setSize(DH_DIMENSION, DH_DIMENSION);
-        jointTransformation[i].loadIdentity();
+        joint_transformation[i].setSize(DH_DIMENSION, DH_DIMENSION);
+        joint_transformation[i].loadIdentity();
     }
 
-    footTransformation.setSize(DH_DIMENSION, DH_DIMENSION);
-    footTransformation.loadIdentity();
+    foot_transformation.setSize(DH_DIMENSION, DH_DIMENSION);
+    foot_transformation.loadIdentity();
 
-    /// 位置ベクトル
-    basePosition.setSize(THREE_DIMENSION);
+    // 位置ベクトル
+    base_position.setSize(THREE_DIMENSION);
 
     for (int j = 0; j < LEG_JOINT_NUM; j++)
-        jointPosition[j].setSize(THREE_DIMENSION);
+    {
+        joint_position[j].setSize(THREE_DIMENSION);
+    }
 
-    footPosition.setSize(THREE_DIMENSION);
+    foot_position.setSize(THREE_DIMENSION);
 
-    /// 関節角度
-    jointAngle.setSize(LEG_JOINT_NUM);
-    /// 関節速度
-    jointVelocity.setSize(LEG_JOINT_NUM);
-    /// 関節トルク
-    jointTorque.setSize(LEG_JOINT_NUM);
-    /// 足首関節角度
-    //FootjointAngle.setSize(1);
-    FootjointAngle;
+    // 関節角度
+    joint_angle.setSize(LEG_JOINT_NUM);
 
-    ///アクチュエータ座標
-    //ActPos		=	new Vector[LEG_ACT_NUM];
-    ActPos.setSize(LEG_ACT_NUM);
-    //変換行列
-    //ActTransformation.setSize(LEG_ACT_NUM,4);
-    return;
-}
+    // 関節速度
+    joint_velocity.setSize(LEG_JOINT_NUM);
 
-/// オブジェクトのメモリ領域を解放する
-void Leg::LegData::deleteLegData(void)
-{
-    delete[] jointTransformation;
-    delete[] jointPosition;
+    // 関節トルク
+    joint_torque.setSize(LEG_JOINT_NUM);
+
+    // 足首関節角度
+    foot_joint_angle;
+
+    // アクチュエータ座標
+    // act_pos = new Vector[LEG_ACT_NUM];
+    act_pos.setSize(LEG_ACT_NUM);
 
     return;
 }

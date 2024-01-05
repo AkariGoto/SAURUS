@@ -4,10 +4,10 @@
 
 #include <cassert>
 
-#include "Kinematics/AsuraParameter.h"
+#include "Kinematics/asura_parameter.h"
 #include "Kinematics/Leg/Leg.h" 
 #include "Math/Matrix/Matrix.h"
-#include "Plan/PlanParameter.h"
+#include "Plan/plan_parameter.h"
 
 
 namespace Asura
@@ -21,6 +21,12 @@ class WalkingRobot
     class BodyData final
     {
     public:
+        //! コンストラクタ
+        inline BodyData() { InitBodyData(); }
+
+        //! デストラクタ
+        ~BodyData() = default;
+
         //! 同時変換行列: [4x4]
         Matrix transformation;
 
@@ -30,15 +36,9 @@ class WalkingRobot
         //! 胴体速度：[3]
         Vector velocity;
 
-        //! コンストラクタ
-        BodyData();
-
-        //! デストラクタ
-        virtual ~BodyData();
-
     private:
         //! オブジェクトのメモリ領域を確保する
-        void initBodyData();
+        void InitBodyData();
     };
 
 public:
@@ -140,13 +140,13 @@ public:
     // 運動学
 
     //! @brief 順運動学
-    Kinematics solveLegDirectKinematics(int legNo);
+    Kinematics SolveLegDirectKinematics(int legNo);
 
     //! @brief 逆運動学
-    Kinematics solveLegInverseKinematics(int legNo);
+    Kinematics SolveLegInverseKinematics(int legNo);
 
     //! @brief 姿勢指標の変更
-    void setLegPoseIndicator(int legNo, int hip = -1, int knee = -1);
+    void SetLegPoseIndicator(int legNo, int hip = -1, int knee = -1);
 
     //! @brief 脚の根元設定
     void setLegBasePose(int legNo, double x, double y, double z, double theta);

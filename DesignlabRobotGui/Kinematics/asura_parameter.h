@@ -1,6 +1,6 @@
 ﻿
-#ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURAPARAMETER_H_
-#define DESIGNLABROBOTGUI_KINEMATICS_ASURAPARAMETER_H_
+#ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURA_PARAMETER_H_
+#define DESIGNLABROBOTGUI_KINEMATICS_ASURA_PARAMETER_H_
 
 #include "Math/MathLibrary.h"
 #include "Math/MathConstant.h"
@@ -18,10 +18,10 @@ const double STEP = 200;  //!< 段差高さ．
 constexpr int LEG_JOINT_NUM = 3;  // 関節数．第4関節は受動関節で足首扱い．
 // constexpr int LEG_JOINT_NUM = 4;
 
-/// 関節No
-const int		FIRST_JOINT = 1;
-const int		SECOND_JOINT = 2;
-const int		THIRD_JOINT = 3;
+
+const int FIRST_JOINT = 1;  //!< 関節No
+const int SECOND_JOINT = 2;  //!< 関節No
+const int THIRD_JOINT = 3;  //!< 関節No
 
 
 constexpr int LEG_ACT_NUM = 4;  //!< 1脚のアクチュエータ数．
@@ -78,14 +78,14 @@ const double	REACH_HEIGHT_MAX = 2000.0;
 const double	FOOT_REACTION_X = 10.0;
 const double	FOOT_REACTION_Y = 10.0;
 const double	FOOT_REACTION_Z = 10.0;
-/*ASURA
-const double	FOOT_REACTION_X		= 30.0;
-const double	FOOT_REACTION_Y		= 30.0;
-const double	FOOT_REACTION_Z		= 30.0;
-*/
 
-/// 関節数
-const int		TRACK_JOINT_NUM = 3;		//修正
+// ASURA
+// const double	FOOT_REACTION_X		= 30.0;
+// const double	FOOT_REACTION_Y		= 30.0;
+// const double	FOOT_REACTION_Z		= 30.0;
+
+
+const int		TRACK_JOINT_NUM = 3;  //!< 関節数
 
 /// 各関節の可動範囲 (単位 : degree)
 const double	TRACK_ANGLE1_MIN = -180.0;
@@ -193,4 +193,4 @@ enum class LocomotionStyle : int
 }
 
 
-#endif  // DESIGNLABROBOTGUI_KINEMATICS_ASURAPARAMETER_H_
+#endif  // DESIGNLABROBOTGUI_KINEMATICS_ASURA_PARAMETER_H_

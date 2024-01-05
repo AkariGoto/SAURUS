@@ -166,10 +166,10 @@
     <ClInclude Include="Graphic\OpenGL\OpenGLText.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="Kinematics\AsuraParameter.h">
+    <ClInclude Include="Kinematics\asura_parameter.h">
       <Filter>Kinematics</Filter>
     </ClInclude>
-    <ClInclude Include="Kinematics\AsuraX.h">
+    <ClInclude Include="Kinematics\asura_x.h">
       <Filter>Kinematics</Filter>
     </ClInclude>
     <ClInclude Include="Kinematics\WalkingRobot.h">
@@ -196,7 +196,7 @@
     <ClInclude Include="Plan\PlannerManager.h">
       <Filter>Plan</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\PlanParameter.h">
+    <ClInclude Include="Plan\plan_parameter.h">
       <Filter>Plan</Filter>
     </ClInclude>
     <ClInclude Include="Plan\TimeManager.h">

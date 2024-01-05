@@ -2,7 +2,7 @@
 #ifndef DESIGNLABROBOTGUI_DATA_ASURA_DATA_H_
 #define DESIGNLABROBOTGUI_DATA_ASURA_DATA_H_
 
-#include "Kinematics/AsuraParameter.h"
+#include "Kinematics/asura_parameter.h"
 #include "Math/Matrix/Matrix.h"
 
 

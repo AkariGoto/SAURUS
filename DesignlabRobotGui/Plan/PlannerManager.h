@@ -1,108 +1,97 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		PlannerManager.h
- *  à–¾
- *		“®ìŒv‰æ‚ğŠÇ—‚·‚éƒNƒ‰ƒX‚ÌéŒ¾•”
- *  “ú•t
- *		ì¬“ú: 2007/09/01(SAT)		XV“ú: 2008/10/04(SAT)
- */
-
+ï»¿
 #ifndef __PlannerManager_h__
 #define __PlannerManager_h__
 
-#include "PlanParameter.h"
-#include "Planner.h"
+#include "Plan/plan_parameter.h"
+#include "Plan/Planner.h"
 
-/**
- *	StateƒfƒUƒCƒ“ƒpƒ^[ƒ“‚Å\¬
- */
 
 namespace Plan
 {
 
 /**
  *	----------------------------------------------------------------------
- *		PlannerManagerƒNƒ‰ƒX
+ *		PlannerManagerã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class PlannerManager
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 public:
 
 private:
-/**
- *		–Ú“I‚Ì“®ìŒv‰æ‚Ö‚Ìƒ|ƒCƒ“ƒ^
- */
-	Planner*	plannerPointer;
+    /**
+     *		ç›®çš„ã®å‹•ä½œè¨ˆç”»ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+     */
+    Planner* plannerPointer;
 
-/**
- *		“®ìŒv‰æ
- */
-	/// ‘O‰ñ‚ÌŒv‰æ
-	Plan::Strategy lastStrategy;
+    /**
+     *		å‹•ä½œè¨ˆç”»
+     */
+     /// å‰å›ã®è¨ˆç”»
+    Plan::Strategy lastStrategy;
 
-	/// ‘I‘ğ‚µ‚½Œv‰æ
-	Plan::Strategy currentStrategy;
+    /// é¸æŠã—ãŸè¨ˆç”»
+    Plan::Strategy currentStrategy;
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit PlannerManager();
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~PlannerManager();
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    explicit PlannerManager();
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~PlannerManager();
 
-/**
- *	–Ú“I‚Ì“®ì‚ğØ‘Ö
- */
-	bool switchPlan(Planner* planner, Plan::Strategy strategy);
+    /**
+     *	ç›®çš„ã®å‹•ä½œã‚’åˆ‡æ›¿
+     */
+    bool switchPlan(Planner* planner, Plan::Strategy strategy);
 
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-	Plan::Strategy getCurrentStrategy(void) const{return currentStrategy;}
-	Plan::Strategy getLastStrategy(void) const{return lastStrategy;}
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	----------------------------------------
+     */
+    Plan::Strategy getCurrentStrategy(void) const { return currentStrategy; }
+    Plan::Strategy getLastStrategy(void) const { return lastStrategy; }
 
-/**
- *	Às’†‚©‚Ç‚¤‚©
- */
-	bool isActive(void);
+    /**
+     *	å®Ÿè¡Œä¸­ã‹ã©ã†ã‹
+     */
+    bool isActive(void);
 
-/**
- *	‰^“®‚ğ‹ï‘Ì“I‚É¶¬‚·‚éŠÖ”ŒQ
- */
-	/// Œv‰æŠJn‚Ì‚½‚ß‚Ì‰Šú‰»
-	bool setup(void);
+    /**
+     *	é‹å‹•ã‚’å…·ä½“çš„ã«ç”Ÿæˆã™ã‚‹é–¢æ•°ç¾¤
+     */
+     /// è¨ˆç”»é–‹å§‹ã®ãŸã‚ã®åˆæœŸåŒ–
+    bool setup(void);
 
-	/// Œv‰æ‚ğŠJn‚·‚é
-	bool startMotion(void);
-	
-	/// Œv‰æ‚ğ’â~‚·‚é
-	bool stopMotion(void);
+    /// è¨ˆç”»ã‚’é–‹å§‹ã™ã‚‹
+    bool startMotion(void);
 
-	/// ’â~‚Ì‘Ò‹@ó‘Ô‚É‚·‚é
-	bool standByForStop(void);
+    /// è¨ˆç”»ã‚’åœæ­¢ã™ã‚‹
+    bool stopMotion(void);
 
-	/// ‰^“®‚ğ¶¬‚·‚é
-	PlanStatus activateRobot(void);
+    /// åœæ­¢ã®å¾…æ©ŸçŠ¶æ…‹ã«ã™ã‚‹
+    bool standByForStop(void);
 
-	/// ƒƒ{ƒbƒg‚ÌuŠÔ‚Ìó‘Ô‚ğ¶¬‚·‚é
-	PlanStatus createSnapshot(void);
+    /// é‹å‹•ã‚’ç”Ÿæˆã™ã‚‹
+    PlanStatus activateRobot(void);
+
+    /// ãƒ­ãƒœãƒƒãƒˆã®ç¬é–“ã®çŠ¶æ…‹ã‚’ç”Ÿæˆã™ã‚‹
+    PlanStatus createSnapshot(void);
 };
 
 }

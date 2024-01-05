@@ -7,8 +7,8 @@
 #include "Data/asura_data.h"
 #include "Data/plan_data.h"
 #include "Data/data_handler.h"
-#include "Kinematics/AsuraX.h"
-#include "Plan/PlanParameter.h"
+#include "Kinematics/asura_x.h"
+#include "Plan/plan_parameter.h"
 #include "Plan/PlannerManager.h"
 #include "Plan/TripodGaitPlanner.h"
 

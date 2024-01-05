@@ -48,7 +48,7 @@ WalkingRobot::~WalkingRobot()
 }
 
 /// 初期化関数
-void WalkingRobot::initializeWalkingRobot(void)
+void WalkingRobot::initializeWalkingRobot()
 {
     /// 胴体位置の初期化
     initializeBodyPosition(0.0, 0.0, Plan::TRIPODGAIT_INITIAL_BODY_POSITION[2]);
@@ -339,7 +339,7 @@ void WalkingRobot::setLegNo(int legNo, int no)
     return;
 }
 /// 順運動学
-Kinematics WalkingRobot::solveLegDirectKinematics(int legNo)
+Kinematics WalkingRobot::SolveLegDirectKinematics(int legNo)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -347,7 +347,7 @@ Kinematics WalkingRobot::solveLegDirectKinematics(int legNo)
     return kine;
 }
 /// 逆運動学
-Kinematics WalkingRobot::solveLegInverseKinematics(int legNo)
+Kinematics WalkingRobot::SolveLegInverseKinematics(int legNo)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -356,11 +356,11 @@ Kinematics WalkingRobot::solveLegInverseKinematics(int legNo)
     return kine;
 }
 /// 姿勢指標の変更
-void WalkingRobot::setLegPoseIndicator(int legNo, int hip, int knee)
+void WalkingRobot::SetLegPoseIndicator(int legNo, int hip, int knee)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
-    track_legs[legNo - 1]->setLegPoseIndicator(hip, knee);
+    track_legs[legNo - 1]->SetLegPoseIndicator(hip, knee);
     return;
 }
 // 脚の根元設定
@@ -490,19 +490,8 @@ void WalkingRobot::DeleteTrackLegs(void)
     return;
 }
 
-/// デフォルトコンストラクタ
-WalkingRobot::BodyData::BodyData()
-{
-    initBodyData();
-}
-
-/// デストラクタ
-WalkingRobot::BodyData::~BodyData()
-{
-}
-
 /// オブジェクトのメモリ領域を確保する
-void WalkingRobot::BodyData::initBodyData(void)
+void WalkingRobot::BodyData::InitBodyData()
 {
     /// 行列のサイズ決定
     transformation.setSize(DH_DIMENSION, DH_DIMENSION);
