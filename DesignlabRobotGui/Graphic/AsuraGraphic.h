@@ -17,7 +17,7 @@ namespace Graphic
  *		定数宣言
  *	----------------------------------------------------------------------
  */
-const int LEG_DISP_LIST_NUM = Asura::LEG_JOINT_NUM + 2;
+const int LEG_DISP_LIST_NUM = designlab_robot_gui::asura::LEG_JOINT_NUM + 2;
 
 /*  20200819
 const int TRACK_DISP_LIST_NUM = Asura::TRACK_JOINT_NUM+2;
@@ -31,6 +31,8 @@ const int TRACK_DISP_LIST_NUM = Asura::TRACK_JOINT_NUM+2;
 class AsuraGraphic : public OpenGLObject
 {
     using AsuraData = designlab_robot_gui::data::AsuraData;
+    using Vector = Math::Vector;
+    using Matrix = Math::Matrix;
 
 private:
     /**

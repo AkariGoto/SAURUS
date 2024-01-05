@@ -2,10 +2,10 @@
 #ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_
 #define DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_
 
-#include "Kinematics/WalkingRobot.h"
+#include "Kinematics/walking_robot.h"
 
 
-namespace Asura
+namespace designlab_robot_gui::asura
 {
 
 class AsuraX final : public WalkingRobot
@@ -18,7 +18,7 @@ public:
     ~AsuraX() = default;
 };
 
-}  // namespace Asura
+}  // namespace designlab_robot_gui::asura
 
 
 #endif  // DESIGNLABROBOTGUI_KINEMATICS_ASURAX_H_

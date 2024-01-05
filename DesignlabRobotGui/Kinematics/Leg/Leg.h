@@ -8,7 +8,7 @@
 #include "Kinematics/asura_parameter.h"
 
 
-namespace Asura
+namespace designlab_robot_gui::asura
 {
 
 class Leg final
@@ -126,16 +126,11 @@ public:
 
     virtual ~Leg();  //!< デストラクタ
 
-    /**
-     *	----------------------------------------
-     *	アクセス関数
-     *	脚のデータを得る
-     *	----------------------------------------
-     */
-     /**
-      *	同次変換行列
-      */
-      /// 脚根元
+
+
+    // 同次変換行列
+
+    /// 脚根元
     const Math::Matrix& getLegBaseTransformation() const { return legData.base_transformation; }
     /// 関節
     const Math::Matrix& getLegJointTransformation(int jointNo) const;
@@ -550,7 +545,7 @@ inline Math::Matrix Leg::legFootInverseHomogeneousTransformation()
 }
 
 
-}	/// end of namespace Asura
+}  // namespace designlab_robot_gui::asura
 
 
 #endif  // DESIGNLABROBOTGUI_KINEMATICS_LEG_LEG_H_

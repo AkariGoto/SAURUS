@@ -10,7 +10,7 @@
 #include "Plan/plan_parameter.h"
 
 
-namespace Asura
+namespace designlab_robot_gui::asura
 {
 
 class WalkingRobot

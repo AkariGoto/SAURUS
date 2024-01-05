@@ -1,125 +1,75 @@
-﻿/**
- *  File: Trajectory.h
- *
- *  Description: 軌道情報を扱うクラスの宣言部
- *
- *  Created: 2007/03/06(Tue)
- *  Updated: 2007/03/06(Tue)
- *
- *  Copyright (C) Tokyo Institute of Technology Hirose Lab.
- */
+﻿
+#ifndef DESIGNLABROBOTGUI_PLAN_TRAJECTORY_TRAJECTORY_H_
+#define DESIGNLABROBOTGUI_PLAN_TRAJECTORY_TRAJECTORY_H_
 
-#ifndef __Trajectory_h__
-#define __Trajectory_h__
-
-#include "..\..\Math\Matrix\Matrix.h"
+#include "Math/Matrix/Matrix.h"
 
 
-namespace Plan
+namespace designlab_robot_gui::plan
 {
 
 class Trajectory
 {
+    using Vector = Math::Vector;
+    using Matrix = Math::Matrix;
 
-protected:
-    /**
-     *		距離に関係するもの
-     */
-     /// スタート位置
-    Math::Vector startPosition;
-    /// ゴール位置
-    Math::Vector goalPosition;
-
-    /**
-     *		時間に関係するもの
-     */
-     /// スタート時間
-    double startTime;
-    /// ゴール時間
-    double goalTime;
-
-private:
-
-    /**
-     *		//////////////////////////////////////////////////
-     *				メンバ関数
-     *		//////////////////////////////////////////////////
-     */
 public:
-    /**
-     *		コンストラクタとデストラクタ
-     */
-     /// デフォルトコンストラクタ
-    Trajectory();
-    /// コピーコンストラクタ
+    inline Trajectory() { initializeTrajectory(); }
     Trajectory(const Trajectory& trajectory);
-    /// デストラクタ
-    virtual ~Trajectory();
 
-    /**
-     *		演算子
-     */
-     /// 代入演算子
+    virtual ~Trajectory() = default;
+
     virtual Trajectory& operator=(const Trajectory& trajectory);
-    /// 等価演算子
     bool operator==(const Trajectory& trajectory) const;
-    bool operator!=(const Trajectory& trajectory) const;
+    inline bool operator!=(const Trajectory& trajectory) const
+    {
+        return !(*this == trajectory);
+    }
 
-    /**
-     *		アクセス関数
-     */
-     /// 距離に関係するもの
-    const Math::Vector& getStartPosition(void) const { return startPosition; }
-    Math::Vector& getStartPosition(void) { return startPosition; }
-    const Math::Vector& getGoalPosition(void) const { return goalPosition; }
-    Math::Vector& getGoalPosition(void) { return goalPosition; }
 
-    /// 移動距離
-    const Math::Vector getDistance(void) const { return (goalPosition - startPosition); }
-    Math::Vector getDistance(void) { return (goalPosition - startPosition); }
+    // 距離に関係するもの
+    const Vector& getStartPosition() const { return startPosition; }
+    Vector& getStartPosition() { return startPosition; }
+    const Vector& getGoalPosition() const { return goalPosition; }
+    Vector& getGoalPosition() { return goalPosition; }
 
-    /// 時間に関係するもの
-    const double getStartTime(void) const { return startTime; }
-    double getStartTime(void) { return startTime; }
-    const double getGoalTime(void) const { return goalTime; }
-    double getGoalTime(void) { return goalTime; }
+    // 移動距離
+    const Vector getDistance() const { return (goalPosition - startPosition); }
+    Vector getDistance() { return (goalPosition - startPosition); }
+
+    // 時間に関係するもの
+    const double getStartTime() const { return startTime; }
+    double getStartTime() { return startTime; }
+    const double getGoalTime() const { return goalTime; }
+    double getGoalTime() { return goalTime; }
 
     /// 総軌道時間
-    double getTime(void) const { return (goalTime - startTime); }
+    double getTime() const { return (goalTime - startTime); }
 
-    /**
-     *		セット関数
-     */
-     /**
-      *		軌道パラメータの設定
-      */
-    void setDistance(const Math::Vector& start, const Math::Vector& goal);
+    void setDistance(const Vector& start, const Vector& goal);
     void setTime(double start, double goal);
 
+    void initializeTrajectory();
 
-    /**
-     *		初期化
-     */
-    void initializeTrajectory(void);
-
-    /**
-     *		軌道パラメータの移行（スタートをずらす）
-     */
-    void shiftStartPosition(const Math::Vector& start);
+    void shiftStartPosition(const Vector& start);
     void shiftStartTime(double start);
+    virtual Vector getPosition(double splitTime);
+
+protected:
+    Vector startPosition;  //!< スタート位置
+    Vector goalPosition;  //!< ゴール位置
 
 
-    /**
-     *		軌道を得る
-     */
-    virtual Math::Vector getPosition(double splitTime);
+    double startTime{ 0.0 };  //!< スタート時間
+    double goalTime{ 0.0 };  //!< ゴール時間
 
 private:
     /// コピーコンストラクタと代入演算子のためのヘルプ関数
     void copy(const Trajectory& trajectory);
 
-};	/// end of class Trajectory
+};
 
-}	/// end of namespace Plan
+}  // namespace designlab_robot_gui::plan
 
-#endif	/// __Trajectory_h__
+
+#endif  // DESIGNLABROBOTGUI_PLAN_TRAJECTORY_TRAJECTORY_H_

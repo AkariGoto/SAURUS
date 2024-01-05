@@ -45,7 +45,7 @@
     <ClCompile Include="Graphic\OpenGL\OpenGLText.cpp">
       <Filter>Graphic\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="Kinematics\WalkingRobot.cpp">
+    <ClCompile Include="Kinematics\walking_robot.cpp">
       <Filter>Kinematics</Filter>
     </ClCompile>
     <ClCompile Include="Math\MathGeometry.cpp">
@@ -57,25 +57,25 @@
     <ClCompile Include="Math\Matrix\MatrixLibrary.cpp">
       <Filter>Math\Matrix</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\Planner.cpp">
+    <ClCompile Include="Plan\planner.cpp">
       <Filter>Plan</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\PlannerManager.cpp">
+    <ClCompile Include="Plan\planner_manager.cpp">
       <Filter>Plan</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\TimeManager.cpp">
+    <ClCompile Include="Plan\time_manager.cpp">
       <Filter>Plan</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\TripodGaitPlanner.cpp">
+    <ClCompile Include="Plan\tripod_gait_planner.cpp">
       <Filter>Plan</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\Trajectory\BodyTrajectory.cpp">
+    <ClCompile Include="Plan\Trajectory\body_trajectory.cpp">
       <Filter>Plan\Trajectory</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\Trajectory\LegTrajectory.cpp">
+    <ClCompile Include="Plan\Trajectory\leg_trajectory.cpp">
       <Filter>Plan\Trajectory</Filter>
     </ClCompile>
-    <ClCompile Include="Plan\Trajectory\Trajectory.cpp">
+    <ClCompile Include="Plan\Trajectory\trajectory.cpp">
       <Filter>Plan\Trajectory</Filter>
     </ClCompile>
     <ClCompile Include="System\ComLib.cpp">
@@ -96,7 +96,7 @@
     <ClCompile Include="Utility\RingBuffer.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Kinematics\Leg\Leg.cpp">
+    <ClCompile Include="Kinematics\Leg\leg.cpp">
       <Filter>Kinematics\Leg</Filter>
     </ClCompile>
     <ClCompile Include="System\Console.cpp">
@@ -172,7 +172,7 @@
     <ClInclude Include="Kinematics\asura_x.h">
       <Filter>Kinematics</Filter>
     </ClInclude>
-    <ClInclude Include="Kinematics\WalkingRobot.h">
+    <ClInclude Include="Kinematics\walking_robot.h">
       <Filter>Kinematics</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathConstant.h">
@@ -190,28 +190,28 @@
     <ClInclude Include="Math\Matrix\MatrixLibrary.h">
       <Filter>Math\Matrix</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\Planner.h">
+    <ClInclude Include="Plan\planner.h">
       <Filter>Plan</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\PlannerManager.h">
+    <ClInclude Include="Plan\planner_manager.h">
       <Filter>Plan</Filter>
     </ClInclude>
     <ClInclude Include="Plan\plan_parameter.h">
       <Filter>Plan</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\TimeManager.h">
+    <ClInclude Include="Plan\time_manager.h">
       <Filter>Plan</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\TripodGaitPlanner.h">
+    <ClInclude Include="Plan\tripod_gait_planner.h">
       <Filter>Plan</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\Trajectory\BodyTrajectory.h">
+    <ClInclude Include="Plan\Trajectory\body_trajectory.h">
       <Filter>Plan\Trajectory</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\Trajectory\LegTrajectory.h">
+    <ClInclude Include="Plan\Trajectory\leg_trajectory.h">
       <Filter>Plan\Trajectory</Filter>
     </ClInclude>
-    <ClInclude Include="Plan\Trajectory\Trajectory.h">
+    <ClInclude Include="Plan\Trajectory\trajectory.h">
       <Filter>Plan\Trajectory</Filter>
     </ClInclude>
     <ClInclude Include="System\ComLib.h">
@@ -250,7 +250,7 @@
     <ClInclude Include="Utility\SafeOperation.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Kinematics\Leg\Leg.h">
+    <ClInclude Include="Kinematics\Leg\leg.h">
       <Filter>Kinematics\Leg</Filter>
     </ClInclude>
     <ClInclude Include="System\Console.h">

@@ -138,31 +138,16 @@ void CASURA2GUIDoc::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CASURA2GUIDoc コマンド
-
-
-/**
- *	------------------------------------------------------------
- *		追加メンバ関数
- *	------------------------------------------------------------
- */
-
- /**
-  *	初期化処理
-  */
-  //20200821
-void CASURA2GUIDoc::initializeCASURA2GUIDoc(void)
+void CASURA2GUIDoc::initializeCASURA2GUIDoc()
 {
     /// ドキュメントのポインタを取得
     theApp.pASURA2GUIDoc = this;
 
     /// 動作計画の初期化
-    lastStrategy = Plan::Strategy::NO_STRATEGY;
-    currentStrategy = Plan::Strategy::NO_STRATEGY;
-    //lastStrategy = Plan::TRIPOD;
-    //currentStrategy = Plan::TRIPOD;
-    //20200821
-
+    lastStrategy = designlab_robot_gui::plan::Strategy::NO_STRATEGY;
+    currentStrategy = designlab_robot_gui::plan::Strategy::NO_STRATEGY;
+    // lastStrategy = designlab_robot_gui::plan::TRIPOD;
+    // currentStrategy = designlab_robot_gui::plan::TRIPOD;
 
     /// スレッドの作成 MotionPlanThread
     pMotionPlanThread = (MotionPlanThread*)AfxBeginThread

@@ -4,12 +4,12 @@
 
 #include <iostream>
 
+#include "Math/MathConstant.h"
 #include "Math/MathLibrary.h"
 #include "Kinematics/asura_parameter.h"
-#include "Math/MathConstant.h"
 
 
-namespace Plan
+namespace designlab_robot_gui::plan
 {
 
 //! @enum PlanStatus
@@ -63,14 +63,15 @@ const double TRIPODGAIT_INITIAL_BODY_POSITION[] = { 0, 0, 400.0 };
 
 
 const double TRIPODGAIT_FOOT_REF_POSITION_1[] = { 500.0,	500.0, -TRIPODGAIT_INITIAL_BODY_POSITION[2] };	/// [mm]  20200930 +100消去
-const double TRIPODGAIT_FOOT_REF_POSITION_2[] = { 0.00,	700.0 + Asura::BODY_WIDTH / 2 , -TRIPODGAIT_INITIAL_BODY_POSITION[2] };  //歩行模擬実験に使用
+const double TRIPODGAIT_FOOT_REF_POSITION_2[] = { 0.00,	700.0 + asura::BODY_WIDTH / 2 , -TRIPODGAIT_INITIAL_BODY_POSITION[2] };  //歩行模擬実験に使用
 const double TRIPODGAIT_FOOT_REF_POSITION_3[] = { -500.0,	500.0,	-TRIPODGAIT_INITIAL_BODY_POSITION[2] };
 const double TRIPODGAIT_FOOT_REF_POSITION_4[] = { -500.0,	-500.0, -TRIPODGAIT_INITIAL_BODY_POSITION[2] };
 const double TRIPODGAIT_FOOT_REF_POSITION_5[] = { 0.00,	-700.0, -TRIPODGAIT_INITIAL_BODY_POSITION[2] };
 const double TRIPODGAIT_FOOT_REF_POSITION_6[] = { 500.0,	-500.0, -TRIPODGAIT_INITIAL_BODY_POSITION[2] };
 
 const double ANGULAR_VELOCITY = 0.02 * Const::PI;  // [rad/s]  角速度の仮の値
-}
+
+}  // namespace designlab_robot_gui::plan
 
 extern unsigned char changeflag;
 

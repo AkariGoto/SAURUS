@@ -48,7 +48,7 @@ class AsuraUDPThread : public CWinThread
 
     System::TimedMotionProcedure* pTimedUDPProcedure;
     System::MultiMediaTimer* pMultiMediaTimer;
-    static Plan::TimeManager		 timeManager;
+    static designlab_robot_gui::plan::TimeManager		 timeManager;
 
     /**
      *		フラグ

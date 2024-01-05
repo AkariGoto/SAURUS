@@ -15,8 +15,9 @@ namespace designlab_robot_gui::data
 
 class DataHandler final
 {
-    using AsuraX = Asura::AsuraX;
-    using Planner = Plan::Planner;
+    using AsuraX = asura::AsuraX;
+    using LegPhase = asura::LegPhase;
+    using Planner = plan::Planner;
     using Matrix = Math::Matrix;
     using Vector = Math::Vector;
 
@@ -122,7 +123,7 @@ public:
     const Vector& getLegJointTorque(int legNo) const;
 
     /// 脚の運動相
-    const Asura::LegPhase getLegPhase(int legNo) const;
+    const LegPhase getLegPhase(int legNo) const;
 
 
 

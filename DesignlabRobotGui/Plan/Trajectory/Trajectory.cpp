@@ -1,52 +1,21 @@
-﻿/**
- *  File: Trajectory.cpp
- *
- *  Description: 軌道情報を扱うクラスの定義部
- *
- *  Created: 2007/03/06(Tue)
- *  Updated: 2007/03/06(Tue)
- *
- *  Copyright (C) Tokyo Institute of Technology Hirose Lab.
- */
+﻿
+#include "Plan/Trajectory/trajectory.h"
 
-#include "Trajectory.h"
+#include "Utility/EngConstant.h"
 
-#include "Utility//EngConstant.h"
 
-using namespace std;
-using namespace Math;
-using namespace Const;
-
-namespace Plan
+namespace designlab_robot_gui::plan
 {
-/**
- *		コンストラクタとデストラクタ
- */
- /// デフォルトコンストラクタ
-Trajectory::Trajectory()
-{
-    initializeTrajectory();
-}
 
-/// コピーコンストラクタ
 Trajectory::Trajectory(const Trajectory& trajectory)
 {
     initializeTrajectory();
     copy(trajectory);
 }
 
-/// デストラクタ
-Trajectory::~Trajectory()
-{
-}
-
-/**
- *		演算子
- */
- /// 代入演算子
 Trajectory& Trajectory::operator=(const Trajectory& trajectory)
 {
-    /// 自己代入を防ぐ
+    // 自己代入を防ぐ
     if (&trajectory != this)
     {
         copy(trajectory);
@@ -55,7 +24,6 @@ Trajectory& Trajectory::operator=(const Trajectory& trajectory)
     return *this;
 }
 
-/// 等価演算子
 bool Trajectory::operator ==(const Trajectory& trajectory) const
 {
     if (startPosition != trajectory.startPosition) { return false; }
@@ -66,35 +34,14 @@ bool Trajectory::operator ==(const Trajectory& trajectory) const
     return true;
 }
 
-
-/// 非等価演算子
-bool Trajectory::operator!=(const Trajectory& trajectory) const
+void Trajectory::initializeTrajectory()
 {
-    if (*this == trajectory)
-        return false;
-    else
-        return true;
+    // スタート地点
+    startPosition.setSize(Const::THREE_DIMENSION);
+    // ゴール地点
+    goalPosition.setSize(Const::THREE_DIMENSION);
 }
 
-/**
- *		初期化
- */
-void Trajectory::initializeTrajectory(void)
-{
-    /// スタート地点
-    startPosition.setSize(THREE_DIMENSION);
-    /// ゴール地点
-    goalPosition.setSize(THREE_DIMENSION);
-
-    /// スタート時間
-    startTime = 0.0;
-    /// ゴール時間
-    goalTime = 0.0;
-}
-
-/**
- *		軌道パラメータの設定
- */
 void Trajectory::setDistance(const Vector& start, const Vector& goal)
 {
     startPosition = start;
@@ -107,35 +54,27 @@ void Trajectory::setTime(double start, double goal)
     goalTime = goal;
 }
 
-/**
- *		軌道パラメータの移行（スタートをずらす）
- */
-void Trajectory::shiftStartPosition(const Math::Vector& start)
+void Trajectory::shiftStartPosition(const Vector& start)
 {
-    Vector shift(THREE_DIMENSION);
+    Vector shift(Const::THREE_DIMENSION);
     shift = goalPosition - startPosition;
 
     startPosition = start;
     goalPosition = start + shift;
 }
 
-void Trajectory::shiftStartTime(double start)
+void Trajectory::shiftStartTime(const double start)
 {
-    double shift;
-    shift = goalTime - startTime;
+    const double shift = goalTime - startTime;
 
     startTime = start;
     goalTime = start + shift;
-
 }
 
-/**
- *		軌道を得る
- */
-Vector Trajectory::getPosition(double splitTime)
+Math::Vector Trajectory::getPosition(const double splitTime)
 {
-    /// 取り出す脚先軌道
-    Vector trajectory(THREE_DIMENSION);
+    // 取り出す脚先軌道
+    Vector trajectory(Const::THREE_DIMENSION);
 
     if (splitTime <= startTime)
     {
@@ -143,7 +82,8 @@ Vector Trajectory::getPosition(double splitTime)
     }
     else if (startTime < splitTime && splitTime <= goalTime)
     {
-        trajectory = (goalPosition - startPosition) * ((splitTime - startTime) / (goalTime - startTime));
+        trajectory = (goalPosition - startPosition) * ((splitTime - startTime) /
+                                                       (goalTime - startTime));
     }
     else if (goalTime < splitTime)
     {
@@ -153,9 +93,6 @@ Vector Trajectory::getPosition(double splitTime)
     return trajectory;
 }
 
-/**
- *		Trajectoryクラスのprivateなメンバ関数
- */
 void Trajectory::copy(const Trajectory& trajectory)
 {
     startPosition = trajectory.startPosition;
@@ -166,4 +103,4 @@ void Trajectory::copy(const Trajectory& trajectory)
 }
 
 
-}	/// end of namespace Plan
+}  // namespace designlab_robot_gui::plan

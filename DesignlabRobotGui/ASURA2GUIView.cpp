@@ -1,18 +1,4 @@
 ﻿
-// ASURA2GUIView.cpp : CASURA2GUIView クラスの実装
-//
-
-//  20200819  OpenGL関連追加
-//  20200820  ViewSetting.hを使用しない
-//  20200821  スレッド関連
-//  20200824
-//  20200928
-//  20201005  1周期で終了
-//  20201013  第4関節
-//  20201019  脚先のワールド座標と脚座標の切り替え
-//  20221026  ログ追加
-
-
 #include "pch.h"
 #include "framework.h"
 // SHARED_HANDLERS は、プレビュー、縮小版、および検索フィルター ハンドラーを実装している ATL プロジェクトで定義でき、
@@ -23,32 +9,13 @@
 
 #include "ASURA2GUIDoc.h"
 #include "ASURA2GUIView.h"
-
-/**
- *		追加ヘッダ
- */
-#include "Plan/plan_parameter.h"  //20200824
+#include "Plan/plan_parameter.h"
 #include "System\Console.h"
-
-
-using namespace Const;  //20200819
-using namespace Graphic;  //  20200819
-using namespace Plan;  //20200824
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-/**
- *	------------------------------------------------------------
- *		ASURA2GUIViewクラスの変数の初期化
- *	------------------------------------------------------------
- */
-
-
-
-
- // CASURA2GUIView
 
 IMPLEMENT_DYNCREATE(CASURA2GUIView, CFormView)
 
@@ -67,7 +34,6 @@ BEGIN_MESSAGE_MAP(CASURA2GUIView, CFormView)
     ON_BN_CLICKED(IDC_BUTTON_SET, &CASURA2GUIView::OnClickedButtonSet)
 END_MESSAGE_MAP()
 
-// CASURA2GUIView コンストラクション/デストラクション
 
 CASURA2GUIView::CASURA2GUIView()  noexcept
     : CFormView(IDD_ASURA2GUI_FORM)
@@ -147,12 +113,12 @@ CASURA2GUIDoc* CASURA2GUIView::GetDocument() const // デバッグ以外のバ�
 void CASURA2GUIView::initializeCASURA2GUIView(void)
 {
     //20201019
-    localFootPosition = new Math::Vector[Asura::LEG_NUM];
-    worldFootPosition = new Math::Vector[Asura::LEG_NUM];
-    for (int i = 0; i < Asura::LEG_NUM; i++)
+    localFootPosition = new Math::Vector[designlab_robot_gui::asura::LEG_NUM];
+    worldFootPosition = new Math::Vector[designlab_robot_gui::asura::LEG_NUM];
+    for (int i = 0; i < designlab_robot_gui::asura::LEG_NUM; i++)
     {
-        localFootPosition[i].setSize(DH_DIMENSION);
-        worldFootPosition[i].setSize(DH_DIMENSION);
+        localFootPosition[i].setSize(Const::DH_DIMENSION);
+        worldFootPosition[i].setSize(Const::DH_DIMENSION);
     }
 
     /// フラグ類の初期化
@@ -208,54 +174,21 @@ void CASURA2GUIView::finalizeCASURA2GUIView(void)
     Console::destroyConsole();
 }
 
-/**
- *	グラフィックの初期化
- */
-void CASURA2GUIView::initializeGraphics(void)
+void CASURA2GUIView::initializeGraphics()
 {
-    /**
-     *		ピクチャコントロール（スクリーン）の設定
-     */
-     //CWnd* pictWnd[SCREEN_NUMBER];
     CWnd* pictWnd;  //20200820
     /// メインスクリーン
     //pictWnd[0] = (CWnd*)GetDlgItem(IDC_MAIN_SCREEN);
     pictWnd = (CWnd*)GetDlgItem(IDC_MAIN_SCREEN);  //20200820
     //pictWndHandle[0] = pictWnd[0]->GetSafeHwnd();
     pictWndHandle = pictWnd->GetSafeHwnd();  //20200820
-    /*  20200820
-    if (::IsWindow(pictWndHandle[0]))
-    {
-      /// メインスクリーン作成
-      asuraXGraphic[0] = new AsuraGraphic(pictWndHandle[0], &viewAsuraXData, PERSPECTIVE);
-      asuraXGraphic[0]->startRecording();
-    }
-    */
+
     if (::IsWindow(pictWndHandle))
     {
         /// メインスクリーン作成
-        asuraXGraphic = new AsuraGraphic(pictWndHandle, &viewAsuraXData, PERSPECTIVE);
+        asuraXGraphic = new Graphic::AsuraGraphic(pictWndHandle, &viewAsuraXData, Graphic::PERSPECTIVE);
         asuraXGraphic->startRecording();
     }
-    //20200820
-
-    /**
-     *	ピクチャコントロールのサブクラス化
-     */
-     /**
-      *	メイン
-      */
-      /*  20200820
-      orgWndProcedure[0] = (WNDPROC)(UINT_PTR)GetWindowLongPtr(pictWndHandle[0], GWLP_WNDPROC);
-      /// ウィンドウハンドルとCAsuraWareViewを結びつける
-      SetWindowLongPtr(pictWndHandle[0], GWLP_USERDATA, (LONG)(LONG_PTR)this);
-      /// Windowプロシージャの置き換え
-      SetWindowLongPtr(
-        pictWndHandle[0],						/// 指定するWindowハンドル
-        GWLP_WNDPROC,							/// 変更する属性を表す定数
-        (LONG)(LONG_PTR)drawMainScrWndProc		/// 新しく設定する値
-      );
-      */
 
     orgWndProcedure = (WNDPROC)(UINT_PTR)GetWindowLongPtr(pictWndHandle, GWLP_WNDPROC);
     /// ウィンドウハンドルとCAsuraWareViewを結びつける
@@ -329,19 +262,23 @@ void CASURA2GUIView::updateFormView(void)
 
     //パラメータを表示
     //重心ストライド
-    data.Format(TEXT("%5.1lf"), TRIPODGAIT_STRIDE);
+    data.Format(TEXT("%5.1lf"), designlab_robot_gui::plan::TRIPODGAIT_STRIDE);
     SetDlgItemText(IDC_EDIT_STRIDE, data);
     //歩行速度
-    data.Format(TEXT("%5.1lf"), TRIPODGAIT_WALKING_SPEED);
+    data.Format(TEXT("%5.1lf"), designlab_robot_gui::plan::TRIPODGAIT_WALKING_SPEED);
     SetDlgItemText(IDC_EDIT_WALKING_SPEED, data);
     //振り上げ
-    data.Format(TEXT("%5.1lf"), TRIPODGAIT_SWING_UP[2]);
+    data.Format(TEXT("%5.1lf"), designlab_robot_gui::plan::TRIPODGAIT_SWING_UP[2]);
     SetDlgItemText(IDC_EDIT_SWING_UP, data);
     //振り下げ  20200928
-    data.Format(TEXT("%5.1lf"), TRIPODGAIT_SWING_DOWN[2]);
+    data.Format(TEXT("%5.1lf"), designlab_robot_gui::plan::TRIPODGAIT_SWING_DOWN[2]);
     SetDlgItemText(IDC_EDIT_SWING_DOWN, data);
     //歩行周期
-    data.Format(TEXT("%5.3lf"), TRIPODGAIT_STRIDE / TRIPODGAIT_WALKING_SPEED / TRIPODGAIT_DUTY_FACTOR);
+    data.Format(TEXT("%5.3lf"),
+                designlab_robot_gui::plan::TRIPODGAIT_STRIDE /
+                designlab_robot_gui::plan::TRIPODGAIT_WALKING_SPEED /
+                designlab_robot_gui::plan::TRIPODGAIT_DUTY_FACTOR);
+
     SetDlgItemText(IDC_EDIT_CYCLE_TIME, data);
 
 
@@ -357,7 +294,7 @@ void CASURA2GUIView::updateFormView(void)
 
     //関節の表示
     double joint4 = 0;
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](1) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](1) * Const::RAD2DEG);
     SetDlgItemText(IDC_JOINT1, data);
 
     //ログ取得
@@ -367,7 +304,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](2) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](2) * Const::RAD2DEG);
     SetDlgItemText(IDC_JOINT2, data);
 
     //ログ取得
@@ -377,7 +314,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](3) * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](3) * Const::RAD2DEG);
     SetDlgItemText(IDC_JOINT3, data);
 
     //ログ取得
@@ -387,10 +324,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    //joint4 = Const::PI / 2 - viewAsuraXData.getLegJointAngle(2)(2) - viewAsuraXData.getLegJointAngle(2)(3);
-    //data.Format(TEXT("%5.1lf"), joint4 * RAD2DEG);
-    //SetDlgItemText(IDC_JOINT4, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.foot_joint_angle[1] * RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.foot_joint_angle[1] * Const::RAD2DEG);
     SetDlgItemText(IDC_JOINT4, data);
 
     //ログ取得
@@ -405,7 +339,6 @@ void CASURA2GUIView::updateFormView(void)
     double shaft_diameter = 11.5;
 
     data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](1) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
-    //data.Format(TEXT("%5.1lf"), viewAsuraXData.getLegActuatorPosition(2)(1));
     SetDlgItemText(IDC_ACT1, data);
     data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](2) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT2, data);
@@ -658,7 +591,7 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
                 //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::SPIN, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(CameraView::SPIN, x, y);  //20200820
+                pView->asuraXGraphic->beginCameraViewControl(Graphic::CameraView::SPIN, x, y);  //20200820
                 break;
 
             case WM_LBUTTONUP:
@@ -670,7 +603,7 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
                 //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::PAN, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(CameraView::PAN, x, y);  //20200820
+                pView->asuraXGraphic->beginCameraViewControl(Graphic::CameraView::PAN, x, y);  //20200820
                 break;
 
             case WM_MBUTTONUP:
@@ -682,7 +615,7 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
                 //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::ZOOM, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(CameraView::ZOOM, x, y);  //20200820
+                pView->asuraXGraphic->beginCameraViewControl(Graphic::CameraView::ZOOM, x, y);  //20200820
 
                 zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
                 xDelta = x - zDelta / 10;
@@ -748,11 +681,11 @@ void CASURA2GUIView::OnClickedButtonSet()
         CButton* chkbox1 = (CButton*)GetDlgItem(IDC_CHECK_1_CYCLE);
         if (chkbox1->GetCheck())
         {
-            myDOC->currentStrategy = Plan::Strategy::TRIPOD_1_CYCLE;
+            myDOC->currentStrategy = designlab_robot_gui::plan::Strategy::TRIPOD_1_CYCLE;
         }
         else
         {
-            myDOC->currentStrategy = Plan::Strategy::TRIPOD;
+            myDOC->currentStrategy = designlab_robot_gui::plan::Strategy::TRIPOD;
         }
 
 

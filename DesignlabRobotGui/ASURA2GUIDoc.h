@@ -75,13 +75,13 @@ public:
      *	動作計画
      */
      /// 前回の計画
-    Plan::Strategy lastStrategy;
+    designlab_robot_gui::plan::Strategy lastStrategy;
 
     /// 選択した計画
-    Plan::Strategy currentStrategy;
+    designlab_robot_gui::plan::Strategy currentStrategy;
 
     ///MODE_CHANGE後
-    Plan::Strategy nextStrategy;
+    designlab_robot_gui::plan::Strategy nextStrategy;
 
 
 

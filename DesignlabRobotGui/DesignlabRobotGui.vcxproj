@@ -223,8 +223,8 @@
     <ClInclude Include="Graphic\OpenGL\OpenGLText.h" />
     <ClInclude Include="Kinematics\asura_parameter.h" />
     <ClInclude Include="Kinematics\asura_x.h" />
-    <ClInclude Include="Kinematics\Leg\Leg.h" />
-    <ClInclude Include="Kinematics\WalkingRobot.h" />
+    <ClInclude Include="Kinematics\Leg\leg.h" />
+    <ClInclude Include="Kinematics\walking_robot.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Math\MathConstant.h" />
     <ClInclude Include="Math\MathGeometry.h" />
@@ -232,14 +232,14 @@
     <ClInclude Include="Math\Matrix\Matrix.h" />
     <ClInclude Include="Math\Matrix\MatrixLibrary.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Plan\Planner.h" />
-    <ClInclude Include="Plan\PlannerManager.h" />
+    <ClInclude Include="Plan\planner.h" />
+    <ClInclude Include="Plan\planner_manager.h" />
     <ClInclude Include="Plan\plan_parameter.h" />
-    <ClInclude Include="Plan\TimeManager.h" />
-    <ClInclude Include="Plan\Trajectory\BodyTrajectory.h" />
-    <ClInclude Include="Plan\Trajectory\LegTrajectory.h" />
-    <ClInclude Include="Plan\Trajectory\Trajectory.h" />
-    <ClInclude Include="Plan\TripodGaitPlanner.h" />
+    <ClInclude Include="Plan\time_manager.h" />
+    <ClInclude Include="Plan\Trajectory\body_trajectory.h" />
+    <ClInclude Include="Plan\Trajectory\leg_trajectory.h" />
+    <ClInclude Include="Plan\Trajectory\trajectory.h" />
+    <ClInclude Include="Plan\tripod_gait_planner.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="System\ComLib.h" />
     <ClInclude Include="System\Console.h" />
@@ -306,11 +306,11 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Kinematics\Leg\Leg.cpp">
+    <ClCompile Include="Kinematics\Leg\leg.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Kinematics\WalkingRobot.cpp">
+    <ClCompile Include="Kinematics\walking_robot.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
@@ -332,28 +332,28 @@
       </ForcedIncludeFiles>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\Planner.cpp">
+    <ClCompile Include="Plan\planner.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\PlannerManager.cpp">
+    <ClCompile Include="Plan\planner_manager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\TimeManager.cpp">
+    <ClCompile Include="Plan\time_manager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\Trajectory\BodyTrajectory.cpp">
+    <ClCompile Include="Plan\Trajectory\body_trajectory.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\Trajectory\LegTrajectory.cpp">
+    <ClCompile Include="Plan\Trajectory\leg_trajectory.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\Trajectory\Trajectory.cpp">
+    <ClCompile Include="Plan\Trajectory\trajectory.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plan\TripodGaitPlanner.cpp">
+    <ClCompile Include="Plan\tripod_gait_planner.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="System\ComLib.cpp">

@@ -9,8 +9,8 @@
 #include "Data/data_handler.h"
 #include "Kinematics/asura_x.h"
 #include "Plan/plan_parameter.h"
-#include "Plan/PlannerManager.h"
-#include "Plan/TripodGaitPlanner.h"
+#include "Plan/planner_manager.h"
+#include "Plan/tripod_gait_planner.h"
 
 
 #include "..\Timer\MultiMediaTimer.h"
@@ -34,7 +34,7 @@ class MotionPlanThread : public CWinThread
     /**
      *		Asuraのキネマティクスオブジェクト
      */
-    static Asura::AsuraX asuraX;
+    static designlab_robot_gui::asura::AsuraX asuraX;
 
     /**
      *		データオブジェクト
@@ -49,29 +49,21 @@ class MotionPlanThread : public CWinThread
     /**
      *		動作計画オブジェクト
      */
-    static Plan::PlannerManager		plannerManager;
+    static designlab_robot_gui::plan::PlannerManager		plannerManager;
 
-    static Plan::TripodGaitPlanner	tripodGait;  //20200820
-
+    static designlab_robot_gui::plan::TripodGaitPlanner	tripodGait;  //20200820
 
     System::TimedMotionProcedure* pTimedMotionProcedure;
     System::MultiMediaTimer* pMultiMediaTimer;
-    static Plan::TimeManager		timeManager;
-
+    static designlab_robot_gui::plan::TimeManager		timeManager;
 
     AsuraUDPThread* pUDPThread;
-
-
 
     /// スレッドが有効かどうか
     BOOL isAlive;
 
     /// 通信が有効かどうか
     bool isCommAlive;
-
-    //DWORD URGThreadID;  20200820
-
-
 
 protected:
 

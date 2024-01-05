@@ -6,7 +6,7 @@ using namespace std;
 using namespace Math;
 using namespace Const;
 
-namespace Asura
+namespace designlab_robot_gui::asura
 {
 
 Leg::Leg(int no, double x, double y, double z, double theta)
@@ -288,50 +288,6 @@ Kinematics Leg::solveInverseKinematics()
     /// 関節1の値を計算
     legData.joint_angle(1) = atan2(y, x) - poseIndicator[0] * atan2(q1, r1);
 
-    /*
-
-      /// 関節3の正弦，余弦を計算
-      cos3 = ( r2*r2 - dhParam.a[1]*dhParam.a[1] - dhParam.a[2]*dhParam.a[2] )/( 2.0*dhParam.a[1]*dhParam.a[2] );
-
-
-      /// 関節3の余弦が計算可能かどうか
-
-      if ( fabs(cos3) > 1.0 )
-      {
-        /// 逆運動学不可なので関節1の値を戻す
-        legData.joint_angle(1) = formerJoint1;
-
-        /// エラー関節番号を記録
-        legLastErrorJointNo = 3;
-
-        return KINE_ERROR_UNREACHABLE;
-      }
-      else if ( fabs(cos3) > 0.99 )
-      {
-        /// 特異点
-        /// エラー関節番号を記録
-        legLastErrorJointNo = 3;
-
-        return KINE_ERROR_SINGULAR;
-      }
-
-      /// 関節3の正弦を計算
-      sin3 = poseIndicator[1]*sqrt( 1.00 - cos3*cos3);
-
-
-      /// 関節3の値を代入
-      legData.joint_angle(3) = atan2(sin3, cos3);
-
-
-      /// 関節2の補助角の余弦を計算
-      cosA = ( r2*r2 + dhParam.a[1]*dhParam.a[1] - dhParam.a[2]*dhParam.a[2] )/(2.00*r2*dhParam.a[1]);
-      sinA = sqrt( 1.00 - cosA*cosA);
-
-      /// 関節2の値を代入
-      legData.joint_angle(2) = -atan2(q2, poseIndicator[0]*r1) - poseIndicator[0]*poseIndicator[1]*atan2(sinA, cosA);
-
-
-    */
     //q1 = sqrt(x*x +	y*y) - LINK1 - FOOT * cos(leg_tip_angle );
     //q2 = z + FOOT * sin(leg_tip_angle );
     //20221026
@@ -683,4 +639,4 @@ void Leg::LegData::NewLegData()
     return;
 }
 
-} /// end of namespace Asura
+}  // namespace designlab_robot_gui::asura

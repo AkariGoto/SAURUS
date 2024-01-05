@@ -18,8 +18,8 @@ struct AsuraData final
 private:
     // usingすることで，名前空間を省略できるようになる．
 
-    using LocomotionStyle = Asura::LocomotionStyle;
-    using LegPhase = Asura::LegPhase;
+    using LocomotionStyle = asura::LocomotionStyle;
+    using LegPhase = asura::LegPhase;
     using Matrix = Math::Matrix;
     using Vector = Math::Vector;
 
@@ -46,40 +46,40 @@ public:
     // 脚
 
     //! 脚根元の同次変換行列．4x4の行列の配列．
-    Matrix leg_base_transformation[Asura::LEG_NUM];
+    Matrix leg_base_transformation[asura::LEG_NUM];
 
     //! 脚関節ごとの同次変換行列．4x4の行列の2次元配列．
-    Matrix leg_joint_transformation[Asura::LEG_NUM][Asura::LEG_JOINT_NUM];
+    Matrix leg_joint_transformation[asura::LEG_NUM][asura::LEG_JOINT_NUM];
 
     //! 足位置の同次変換行列．4x4の行列の配列．
-    Matrix leg_foot_transformation[Asura::LEG_NUM];
+    Matrix leg_foot_transformation[asura::LEG_NUM];
 
     //! 脚根元の関節位置．3次元ベクトルの配列．
-    Vector leg_base_position[Asura::LEG_NUM];
+    Vector leg_base_position[asura::LEG_NUM];
 
     //! 脚の関節位置．3次元ベクトルの2次元配列．
-    Vector leg_joint_position[Asura::LEG_NUM][Asura::LEG_JOINT_NUM];
+    Vector leg_joint_position[asura::LEG_NUM][asura::LEG_JOINT_NUM];
 
     //! 足位置．3次元ベクトルの配列．
-    Vector leg_foot_position[Asura::LEG_NUM];
+    Vector leg_foot_position[asura::LEG_NUM];
 
     /// 脚の関節角度
-    Vector leg_joint_angle[Asura::LEG_NUM];
+    Vector leg_joint_angle[asura::LEG_NUM];
 
     /// 脚の関節速度
-    Vector leg_joint_velocity[Asura::LEG_NUM];
+    Vector leg_joint_velocity[asura::LEG_NUM];
 
     /// 脚の関節トルク
-    Vector leg_joint_torque[Asura::LEG_NUM];
+    Vector leg_joint_torque[asura::LEG_NUM];
 
     /// 脚の運動相
-    LegPhase leg_phase[Asura::LEG_NUM];
+    LegPhase leg_phase[asura::LEG_NUM];
 
     /// 足首関節角度: [6]
-    double foot_joint_angle[Asura::LEG_NUM];
+    double foot_joint_angle[asura::LEG_NUM];
 
     /// 脚のボールねじ位置（ワイヤ変位）
-    Vector leg_actuator_position[Asura::LEG_NUM];
+    Vector leg_actuator_position[asura::LEG_NUM];
 
 private:
     //! オブジェクトのメモリ領域を確保する

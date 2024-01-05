@@ -1,56 +1,10 @@
-﻿/**
- *  ファイル名
- *		TripodGaitPlanner.cpp
- *  説明
- *		基準歩容計画クラス（トロット歩容での歩行）
- *  日付
- *		作成日: 2008/12/19(FRI)		更新日: 2018/12/19(FRI)
- */
+﻿
+#include "Plan/tripod_gait_planner.h"
 
- //  20200819  安定余裕関連コメントアウト
- //  20200820  TROTGAITをTRIPODGAITに置換・TrotGaitをTripodGaitに置換
- //  20200821  根本の位置を固定
- //  20200929  支持脚時のz軸方向を追加
- //  20200930  遊脚時の開始位置
- //  20201005
- //  20201016  歩行開始時の姿勢へのセット
- //  20201017  歩行開始時の姿勢へのセット
- //  20201018  歩行開始時の姿勢へのセット
- //  20201020  動作停止後の再動作
- //  20220713  関節の可動域チェック
 
- /**
-  *	----------------------------------------------------------------------
-  *		ヘッダファイルインクルード
-  *	----------------------------------------------------------------------
-  */
-#include "TripodGaitPlanner.h"
-  //#include <winsock2.h>
-using namespace std;
-using namespace Math;
-using namespace Asura;
-using namespace Const;
-
-namespace Plan
+namespace designlab_robot_gui::plan
 {
-/**
- *	----------------------------------------------------------------------
- *		TripodGaitPlannerクラス
- *	----------------------------------------------------------------------
- */
 
- /**
-  *	------------------------------------------------------------
-  *		TripodGaitPlannerクラスのメンバ関数定義
-  *	------------------------------------------------------------
-  */
-
-  /**
-   *	----------------------------------------
-   *	コンストラクタとデストラクタ
-   *	----------------------------------------
-   */
-   /// デフォルトコンストラクタ
 TripodGaitPlanner::TripodGaitPlanner(AsuraX* asuraPointer_, TimeManager* timeManagerPointer_)
     : Planner(asuraPointer_, timeManagerPointer_)
 {
@@ -62,7 +16,6 @@ TripodGaitPlanner::TripodGaitPlanner(AsuraX* asuraPointer_, TimeManager* timeMan
 
 }
 
-/// デストラクタ
 TripodGaitPlanner::~TripodGaitPlanner()
 {
     /// オブジェクトの破棄
@@ -70,9 +23,6 @@ TripodGaitPlanner::~TripodGaitPlanner()
 
 }
 
-/**
- *	基準歩容の初期化
- */
 void TripodGaitPlanner::initializeTripodGaitPlanner(void)
 {
     /// メンバ変数の初期化
@@ -108,21 +58,21 @@ void TripodGaitPlanner::initializeTripodGaitPlanner(void)
     stride = TRIPODGAIT_STRIDE;
 
     /// 歩行方向のセット
-    unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, THREE_DIMENSION);//<----
+    unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, Const::THREE_DIMENSION);
 
     //20200929  支持脚時に使用するz軸方向のセット
-    unitUpDirection = Vector(UP_DIRECTION, THREE_DIMENSION);
+    unitUpDirection = Vector(UP_DIRECTION, Const::THREE_DIMENSION);
 
     /// 位置ベクトルの初期化
-    footReferencePosition[0] = Vector(TRIPODGAIT_FOOT_REF_POSITION_1, THREE_DIMENSION);
-    footReferencePosition[1] = Vector(TRIPODGAIT_FOOT_REF_POSITION_2, THREE_DIMENSION);
-    footReferencePosition[2] = Vector(TRIPODGAIT_FOOT_REF_POSITION_3, THREE_DIMENSION);
-    footReferencePosition[3] = Vector(TRIPODGAIT_FOOT_REF_POSITION_4, THREE_DIMENSION);
-    footReferencePosition[4] = Vector(TRIPODGAIT_FOOT_REF_POSITION_5, THREE_DIMENSION);
-    footReferencePosition[5] = Vector(TRIPODGAIT_FOOT_REF_POSITION_6, THREE_DIMENSION);
+    footReferencePosition[0] = Vector(TRIPODGAIT_FOOT_REF_POSITION_1, Const::THREE_DIMENSION);
+    footReferencePosition[1] = Vector(TRIPODGAIT_FOOT_REF_POSITION_2, Const::THREE_DIMENSION);
+    footReferencePosition[2] = Vector(TRIPODGAIT_FOOT_REF_POSITION_3, Const::THREE_DIMENSION);
+    footReferencePosition[3] = Vector(TRIPODGAIT_FOOT_REF_POSITION_4, Const::THREE_DIMENSION);
+    footReferencePosition[4] = Vector(TRIPODGAIT_FOOT_REF_POSITION_5, Const::THREE_DIMENSION);
+    footReferencePosition[5] = Vector(TRIPODGAIT_FOOT_REF_POSITION_6, Const::THREE_DIMENSION);
     /// 遊脚運動
-    swingUp = Vector(TRIPODGAIT_SWING_UP, THREE_DIMENSION);
-    swingDown = Vector(TRIPODGAIT_SWING_DOWN, THREE_DIMENSION);
+    swingUp = Vector(TRIPODGAIT_SWING_UP, Const::THREE_DIMENSION);
+    swingDown = Vector(TRIPODGAIT_SWING_DOWN, Const::THREE_DIMENSION);
 
     /// デフォルト値による歩容パラメータの計算
     calculateGaitParameters();
@@ -157,10 +107,6 @@ void TripodGaitPlanner::calculateGaitParameters(void)
     swingDownTime = swingTime * 1 / 4;
 
     /// 各脚の遊脚開始時間の設定
-    //swingStartTime[0] = dutyFactor - 0.5;
-    //swingStartTime[1] = 2*dutyFactor - 0.5;
-    //swingStartTime[2] = 2*dutyFactor - 1.0;
-    //swingStartTime[3] = dutyFactor;
     swingStartTime[0] = 0;
     swingStartTime[1] = dutyFactor;
     swingStartTime[2] = 0;
@@ -171,7 +117,7 @@ void TripodGaitPlanner::calculateGaitParameters(void)
 
     /// 遊脚時間をセットする
     int i;
-    for (i = 0; i < LEG_NUM; i++)
+    for (i = 0; i < asura::LEG_NUM; i++)
     {
         setLegSwingTime(i + 1, swingStartTime[i], swingUpTime, swingReturnTime, swingDownTime);
         swingStopTime[i] = swingStartTime[i] + 1.0 - dutyFactor;
@@ -184,7 +130,7 @@ void TripodGaitPlanner::calculateGaitParameters(void)
     a[2] = TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2];
 
     int j;
-    for (j = 0; j < LEG_NUM; j++)
+    for (j = 0; j < asura::LEG_NUM; j++)
     {
         swingStartPosition[j] = footReferencePosition[j] - (stride) / 2 * unitWalkingDirection;//<------!(stride-100) 20200930  遊脚開始位置
         //swingStopPosition[j] = footReferencePosition[j] + (stride)/2*unitWalkingDirection+Vector(a, THREE_DIMENSION);//<------!(stride-100)//ここなおす
@@ -204,7 +150,7 @@ void TripodGaitPlanner::calculateGaitParameters(void)
 
     /// 遊脚軌道をセットする
     int k;
-    for (k = 0; k < LEG_NUM; k++)
+    for (k = 0; k < asura::LEG_NUM; k++)
     {
         setLegSwingTrajectory(k + 1,
                     swingStartPosition[k],
@@ -214,24 +160,12 @@ void TripodGaitPlanner::calculateGaitParameters(void)
         );
     }
 
-    /// 初期位置のセット  
-    /*  20200930
-    initialFootPosition[0] = footReferencePosition[0] - (stride)/2*unitWalkingDirection;
-    initialFootPosition[1] = footReferencePosition[1] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
-    initialFootPosition[2] = footReferencePosition[2] - (stride)/2*unitWalkingDirection;
-    initialFootPosition[3] = footReferencePosition[3] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
-    initialFootPosition[4] = footReferencePosition[4] - (stride)/2*unitWalkingDirection;
-    initialFootPosition[5] = footReferencePosition[5] + (stride)/2*unitWalkingDirection;//<------!(stride-100)
-    */
-
     if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] > 0)
     {
         initialFootPosition[0] = footReferencePosition[0] - (stride) / 2 * unitWalkingDirection;
         initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
         initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
         initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-        //initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
-        //initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
     }
     else if (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2] < 0)
     {
@@ -239,8 +173,6 @@ void TripodGaitPlanner::calculateGaitParameters(void)
         initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
         initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
         initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
-        //initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
-        //initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection + (TRIPODGAIT_SWING_UP[2] + TRIPODGAIT_SWING_DOWN[2]) * unitUpDirection;
     }
     else
     {
@@ -248,64 +180,45 @@ void TripodGaitPlanner::calculateGaitParameters(void)
         initialFootPosition[1] = footReferencePosition[1] + (stride) / 2 * unitWalkingDirection;
         initialFootPosition[2] = footReferencePosition[2] - (stride) / 2 * unitWalkingDirection;
         initialFootPosition[3] = footReferencePosition[3] + (stride) / 2 * unitWalkingDirection;
-        //initialFootPosition[4] = footReferencePosition[4] - (stride) / 2 * unitWalkingDirection;
-        //initialFootPosition[5] = footReferencePosition[5] + (stride) / 2 * unitWalkingDirection;
     }
 
 
     /// 胴体の初期位置
-    int l;
-    for (l = 0; l < THREE_DIMENSION; l++)
+    for (int l = 0; l < Const::THREE_DIMENSION; l++)
+    {
         initialBodyPosition(l + 1) = TRIPODGAIT_INITIAL_BODY_POSITION[l];
+    }
+
 
     isTrajectoryToGetSet = false;
-    /*
-      WSAData wsaData;
-      WSAStartup(MAKEWORD(2,0), &wsaData);
-    */
+
     return;
 }
 
-/**
- *	歩行初期姿勢に移行
- */
-bool TripodGaitPlanner::shiftToInitialStandingPosture(void)
+bool TripodGaitPlanner::shiftToInitialStandingPosture()
 {
-    Kinematics kine = NO_KINE_ERROR;
+    asura::Kinematics kine = asura::NO_KINE_ERROR;
 
     /// 重心を初期位置に
     asuraPointer->initializeBodyPosition(initialBodyPosition);
 
     /// 足位置を初期姿勢に
-    /*  20201016
-    int i;
-    for (i=0; i<LEG_NUM; i++)
-    {
-      kine = asuraPointer->placeLegFootPosition(i+1, initialFootPosition[i]);
-
-      if (kine != NO_KINE_ERROR)
-      {
-        cerr << "[TripodGaitPlanner::shiftToInitialStandingPosture] Cannot shift to initial posture" << endl;
-        Planner::printPlanErrorMessage();
-      }
-    }
-    */
     isSetting = true;  //姿勢移行のフラグ
 
     //20201017
     //各関節角度取得
-    for (int i = 0; i < LEG_NUM; i++)
+    for (int i = 0; i < asura::LEG_NUM; i++)
     {
-        for (int j = 0; j < LEG_JOINT_NUM; j++)
+        for (int j = 0; j < asura::LEG_JOINT_NUM; j++)
         {
             initialJointAngle[i][j] = asuraPointer->getLegJointAngle(i + 1)(j + 1);
         }
         initialFootJointAngle[i] = asuraPointer->getFootJointAngle(i + 1);
     }
-    for (int i = 0; i < LEG_NUM; i++)
+    for (int i = 0; i < asura::LEG_NUM; i++)
     {
         kine = asuraPointer->placeLegFootPosition(i + 1, initialFootPosition[i]);
-        for (int j = 0; j < LEG_JOINT_NUM; j++)
+        for (int j = 0; j < asura::LEG_JOINT_NUM; j++)
         {
             finalJointAngle[i][j] = asuraPointer->getLegJointAngle(i + 1)(j + 1);
         }
@@ -313,9 +226,9 @@ bool TripodGaitPlanner::shiftToInitialStandingPosture(void)
     }
 
     //所要時間算出
-    for (int i = 0; i < LEG_NUM; i++)
+    for (int i = 0; i < asura::LEG_NUM; i++)
     {
-        for (int j = 0; j < LEG_JOINT_NUM; j++)
+        for (int j = 0; j < asura::LEG_JOINT_NUM; j++)
         {
             if (finalJointAngle[i][j] >= initialJointAngle[i][j])
             {
@@ -327,11 +240,11 @@ bool TripodGaitPlanner::shiftToInitialStandingPosture(void)
             }
             if (finalFootJointAngle[i] >= initialFootJointAngle[i])
             {
-                angularVelosity[i][LEG_JOINT_NUM] = ANGULAR_VELOCITY;
+                angularVelosity[i][asura::LEG_JOINT_NUM] = ANGULAR_VELOCITY;
             }
             else
             {
-                angularVelosity[i][LEG_JOINT_NUM] = -1 * ANGULAR_VELOCITY;
+                angularVelosity[i][asura::LEG_JOINT_NUM] = -1 * ANGULAR_VELOCITY;
             }
         }
 
@@ -339,20 +252,17 @@ bool TripodGaitPlanner::shiftToInitialStandingPosture(void)
         t02[i] = t01[i] + (finalJointAngle[i][1] - initialJointAngle[i][1]) / angularVelosity[i][1];
         t03[i] = t02[i] + (finalJointAngle[i][2] - initialJointAngle[i][2]) / angularVelosity[i][2];
         t04[i] = t03[i] + (finalFootJointAngle[i] - initialFootJointAngle[i]) / angularVelosity[i][3];
-        /*
-        t01[i] = (finalJointAngle[i][0] - initialJointAngle[i][0]) / angularVelosity[i][0];
-        t02[i] = (finalJointAngle[i][1] - initialJointAngle[i][1]) / angularVelosity[i][1];
-        t03[i] = (finalJointAngle[i][2] - initialJointAngle[i][2]) / angularVelosity[i][2];
-        t04[i] = (finalFootJointAngle[i] - initialFootJointAngle[i]) / angularVelosity[i][3];
-        */
+
         if (t01[i] > t02[i] && t01[i] > t03[i] && t01[i] > t04[i])
         {
             t05[i] = t01[i];
         }
+
         if (t02[i] > t01[i] && t02[i] > t03[i] && t02[i] > t04[i])
         {
             t05[i] = t02[i];
         }
+
         if (t03[i] > t01[i] && t03[i] > t02[i] && t03[i] > t04[i])
         {
             t05[i] = t03[i];
@@ -366,26 +276,15 @@ bool TripodGaitPlanner::shiftToInitialStandingPosture(void)
     //姿勢移行開始時刻取得
     settingStartTime = timeManagerPointer->getRealTime();
 
-
     return true;
 }
-
-/**
- *	------------------------------------------------------------
- *	オーバーライド関数
- *		運動を具体的に生成する関数群
- *	------------------------------------------------------------
- */
- /**
-  *	歩行開始のための初期化
-  */
 
 bool TripodGaitPlanner::setup(void)
 {
     /// ポインタがセットされているかの確認
     if (asuraPointer == NULL || timeManagerPointer == NULL)
     {
-        cerr << "[TripodGaitPlanner::setup] No control object\n" << endl;
+        std::cerr << "[TripodGaitPlanner::setup] No control object\n" << std::endl;
 
         return false;
     }
@@ -393,14 +292,14 @@ bool TripodGaitPlanner::setup(void)
 
     if (isTrajectoryToGetSet)
     {
-        cerr << "[TripodGaitPlanner::setup] No trajectories are ready\n" << endl;
+        std::cerr << "[TripodGaitPlanner::setup] No trajectories are ready\n" << std::endl;
 
         return false;
     }
 
     if (!shiftToInitialStandingPosture())
     {
-        cerr << "[TripodGaitPlanner::setup] Cannot shift to initial posture\n" << endl;
+        std::cerr << "[TripodGaitPlanner::setup] Cannot shift to initial posture\n" << std::endl;
 
         return false;
     }
@@ -408,22 +307,21 @@ bool TripodGaitPlanner::setup(void)
     /// 歩行準備完了
     isWalkingToGetSet = false;
 
-    cycleElapsedTime = 0.0;  //20201020
+    cycleElapsedTime = 0.0;
 
-    //changeflag=0x00;		//追加
 
     return Planner::setup();
 }
 
 
 /// 歩行を開始する
-bool TripodGaitPlanner::startPlan(void)
+bool TripodGaitPlanner::startPlan()
 {
     isRunning = true;  //20201020
 
     if (isWalkingToGetSet || !isRunning)
     {
-        cerr << "[TripodGaitPlanner::startPlan] Not stand-by for walking\n" << endl;
+        std::cerr << "[TripodGaitPlanner::startPlan] Not stand-by for walking\n" << std::endl;
 
         return false;
     }
@@ -453,73 +351,22 @@ bool TripodGaitPlanner::stopPlan(void)
     return Planner::stopPlan();
 }
 
-/**
- *	歩行を1歩終了時に停止する
- */
 bool TripodGaitPlanner::standByForStop(void)
 {
     isWaitingToStop = true;
 
-    //20201005
-    /*
-    if (0 < normalizedWalkingTime && normalizedWalkingTime<= swingStopTime[1])
-    {
-      swingLegWaitingToStop = 1;
-    }
-    else if (swingStopTime[1] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[0])
-    {
-      swingLegWaitingToStop = 2;
-    }
-    else if (swingStopTime[0] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[2])
-    {
-      swingLegWaitingToStop = 3;
-    }
-    else if (swingStopTime[2] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[3])
-    {
-      swingLegWaitingToStop = 4;
-    }*/
-
-
-    /*	if (0 < normalizedWalkingTime && normalizedWalkingTime<= swingStopTime[1])
-      {
-        swingLegWaitingToStop = 1;
-      }
-      else if (swingStopTime[1] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[0])
-      {
-        swingLegWaitingToStop = 2;
-      }
-      else if (swingStopTime[0] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[2])
-      {
-        swingLegWaitingToStop = 3;
-      }
-      else if (swingStopTime[2] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[3])
-      {
-        swingLegWaitingToStop = 4;
-      }
-      else if (swingStopTime[3] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[4])
-      {
-        swingLegWaitingToStop = 5;
-      }
-      else if(swingStopTime[4] < normalizedWalkingTime && normalizedWalkingTime <= swingStopTime[5])
-      {
-        swingLegWaitingToStop = 6;
-      }
-      */
     return isWaitingToStop;
 }
 
-/**
- *	脚運動を生成する
- */
 PlanStatus TripodGaitPlanner::activateRobot(void)
 {
     /**
      *		正規化した歩行時間により脚の運動を決定する
      */
      /// 動作状態
-    PlanStatus plan = Plan::PlanStatus::WAIT;
+    PlanStatus plan = plan::PlanStatus::WAIT;
     /// 逆運動学を解いた結果
-    Kinematics kine = NO_KINE_ERROR;
+    asura::Kinematics kine = asura::NO_KINE_ERROR;
     /// カウンタ
     int i;
 
@@ -530,7 +377,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
     ///1,3,5遊脚　2,4,6支持
     if (0.00 <= normalizedWalkingTime && normalizedWalkingTime < TRIPODGAIT_DUTY_FACTOR)
     {
-        for (i = 0; i < LEG_NUM; i++)
+        for (i = 0; i < asura::LEG_NUM; i++)
         {
             switch (i)
             {
@@ -556,12 +403,12 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                     }
 
                     /// 支持脚相にセット
-                    asuraPointer->setLegPhase(i + 1, LegPhase::SUPPORT);
+                    asuraPointer->setLegPhase(i + 1, asura::LegPhase::SUPPORT);
 
                     //if (kine != NO_KINE_ERROR)
-                    if (kine != NO_KINE_ERROR && i == 1)  //脚2についてのみ可動域など確認
+                    if (kine != asura::NO_KINE_ERROR && i == 1)  //脚2についてのみ可動域など確認
                     {
-                        cerr << "[TripodGaitPlanner::activateRobot]" << endl;
+                        std::cerr << "[TripodGaitPlanner::activateRobot]" << std::endl;
                         Planner::printPlanErrorMessage();
 
                         suspendPlan();
@@ -577,7 +424,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                     /// 前周期からの続きのため遊脚運動だけは時間補正で1.0を加える
                     plan = swingLeg(i + 1, normalizedWalkingTime);
                     /// 遊脚相にセット
-                    asuraPointer->setLegPhase(i + 1, LegPhase::SWING);
+                    asuraPointer->setLegPhase(i + 1, asura::LegPhase::SWING);
 
                     //if (plan == INVALID)
                     if (plan == PlanStatus::INVALID && i == 1)  //脚2についてのみ可動域など確認
@@ -599,7 +446,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
     ///1,3,5支持　2,4,6遊脚
     else if (TRIPODGAIT_DUTY_FACTOR <= normalizedWalkingTime && normalizedWalkingTime < 1.00)//TRIPODGAITDUTY_FACTOR
     {
-        for (i = 0; i < LEG_NUM; i++)
+        for (i = 0; i < asura::LEG_NUM; i++)
         {
             switch (i)
             {
@@ -626,12 +473,12 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
 
 
                     /// 支持脚相にセット
-                    asuraPointer->setLegPhase(i + 1, LegPhase::SUPPORT);
+                    asuraPointer->setLegPhase(i + 1, asura::LegPhase::SUPPORT);
 
                     //if (kine != NO_KINE_ERROR
-                    if (kine != NO_KINE_ERROR && i == 1)  //脚2についてのみ可動域など確認
+                    if (kine != asura::NO_KINE_ERROR && i == 1)  //脚2についてのみ可動域など確認
                     {
-                        cerr << "[TripodGaitPlanner::activateRobot]" << endl;
+                        std::cerr << "[TripodGaitPlanner::activateRobot]" << std::endl;
                         Planner::printPlanErrorMessage();
 
                         suspendPlan();
@@ -646,7 +493,7 @@ PlanStatus TripodGaitPlanner::activateRobot(void)
                 {
                     plan = swingLeg(i + 1, normalizedWalkingTime);
                     /// 遊脚相にセット
-                    asuraPointer->setLegPhase(i + 1, LegPhase::SWING);
+                    asuraPointer->setLegPhase(i + 1, asura::LegPhase::SWING);
 
                     //if (plan == INVALID)
                     if (plan == PlanStatus::INVALID && i == 1)  //脚2についてのみ可動域など確認
@@ -760,17 +607,16 @@ PlanStatus TripodGaitPlanner::createPlanSnapshot()
     return plan;
 }
 
-//20201016
-bool TripodGaitPlanner::settingPlan()
+bool TripodGaitPlanner::settingPlan(void)
 {
     //20201017
     //経過時間を得る
     settingTime = timeManagerPointer->getRealTime() - settingStartTime;
 
-    Kinematics kine = NO_KINE_ERROR;
+    asura::Kinematics kine = asura::NO_KINE_ERROR;
 
     //関節角度を算出する
-    for (int i = 0; i < LEG_NUM; i++)
+    for (int i = 0; i < asura::LEG_NUM; i++)
     {//１関節ごと
         if (settingTime < 0)  //どの関節も動く前
         {
@@ -814,67 +660,7 @@ bool TripodGaitPlanner::settingPlan()
             settingJointAngle[i][2] = finalJointAngle[i][2];
             settingFootJointAngle[i] = finalFootJointAngle[i];
         }
-
-
-        //全部
-        /*
-        if (settingTime < 0)  //どの関節も動く前
-        {
-          settingJointAngle[i][0] = initialJointAngle[i][0];
-          settingJointAngle[i][1] = initialJointAngle[i][1];
-          settingJointAngle[i][2] = initialJointAngle[i][2];
-          settingFootJointAngle[i] = initialFootJointAngle[i];
-        }
-        else if (0 <= settingTime)
-        {
-
-          if (t01[i] <= settingTime)
-          {
-            settingJointAngle[i][0] = finalJointAngle[i][0];
-          }
-          else
-          {
-            settingJointAngle[i][0] = angularVelosity[i][0] * settingTime + initialJointAngle[i][0];
-          }
-
-          if (t02[i] <= settingTime)
-          {
-            settingJointAngle[i][1] = finalJointAngle[i][1];
-          }
-          else
-          {
-            settingJointAngle[i][1] = angularVelosity[i][1] * settingTime + initialJointAngle[i][1];
-          }
-
-          if (t03[i] <= settingTime)
-          {
-            settingJointAngle[i][2] = finalJointAngle[i][2];
-          }
-          else
-          {
-            settingJointAngle[i][2] = angularVelosity[i][2] * settingTime + initialJointAngle[i][2];
-          }
-
-          if (t04[i] <= settingTime)
-          {
-            settingFootJointAngle[i] = finalFootJointAngle[i];
-          }
-          else
-          {
-            settingFootJointAngle[i] = angularVelosity[i][3] * settingTime + initialFootJointAngle[i];
-          }
-        }
-        */
     }
-
-    //すべての関節が移行し終わったらisSettingをfalseにする
-    /*
-    if (t04[0] < settingTime && t04[1] < settingTime && t04[2] < settingTime && t04[3] < settingTime && t04[4] < settingTime && t04[5] < settingTime)
-    {
-      isSetting = false;
-      settingOver();  //20201022
-    }
-    */
 
     if (t05[0] < settingTime && t05[1] < settingTime && t05[2] < settingTime && t05[3] < settingTime && t05[4] < settingTime && t05[5] < settingTime)
     {
@@ -882,19 +668,9 @@ bool TripodGaitPlanner::settingPlan()
         //settingOver();  //20201022
     }
 
-    //関節角度やそこから算出した脚先位置などを記録する
-    //
-    /*
-    for (int i = 0; i < LEG_NUM; i++)
-    {
-      kine = asuraPointer->placeLegJointAngles(i+1, settingJointAngle[i], settingFootJointAngle[i]);
-
-    }
-    */
-
     //脚2のみ
     kine = asuraPointer->placeLegJointAngles(2, settingJointAngle[1], settingFootJointAngle[1]);
-    if (kine != NO_KINE_ERROR)
+    if (kine != asura::NO_KINE_ERROR)
     {
         isSetting = false;
     }
@@ -902,72 +678,66 @@ bool TripodGaitPlanner::settingPlan()
 }
 
 
-/**
- *	------------------------------------------------------------
- *		TripodGaitPlannerクラスの privateなメンバ関数
- *	------------------------------------------------------------
- */
- /// 歩行のためのオブジェクト生成
-void TripodGaitPlanner::newTripodGaitItems(void)
+void TripodGaitPlanner::newTripodGaitItems()
 {
     /// 脚基準位置
-    footReferencePosition = new Vector[LEG_NUM];
+    footReferencePosition = new Vector[asura::LEG_NUM];
 
     /// 足の初期位置
-    initialFootPosition = new Vector[LEG_NUM];
+    initialFootPosition = new Vector[asura::LEG_NUM];
 
     /// 遊脚開始位置
-    swingStartPosition = new Vector[LEG_NUM];
+    swingStartPosition = new Vector[asura::LEG_NUM];
 
     /// 遊脚終了位置
-    swingStopPosition = new Vector[LEG_NUM];
+    swingStopPosition = new Vector[asura::LEG_NUM];
 
     /// ベクトルのサイズ決定
-    initialBodyPosition.setSize(THREE_DIMENSION);
+    initialBodyPosition.setSize(Const::THREE_DIMENSION);
 
-    unitWalkingDirection.setSize(THREE_DIMENSION);
-    unitUpDirection.setSize(THREE_DIMENSION);  //20200929
-    swingUp.setSize(THREE_DIMENSION);
-    swingDown.setSize(THREE_DIMENSION);
+    unitWalkingDirection.setSize(Const::THREE_DIMENSION);
+    unitUpDirection.setSize(Const::THREE_DIMENSION);
+    swingUp.setSize(Const::THREE_DIMENSION);
+    swingDown.setSize(Const::THREE_DIMENSION);
 
     /// 脚位置関係
     int i;
-    for (i = 0; i < LEG_NUM; i++)
+    for (i = 0; i < asura::LEG_NUM; i++)
     {
-        footReferencePosition[i].setSize(THREE_DIMENSION);
-        initialFootPosition[i].setSize(THREE_DIMENSION);
-        swingStartPosition[i].setSize(THREE_DIMENSION);
-        swingStopPosition[i].setSize(THREE_DIMENSION);
+        footReferencePosition[i].setSize(Const::THREE_DIMENSION);
+        initialFootPosition[i].setSize(Const::THREE_DIMENSION);
+        swingStartPosition[i].setSize(Const::THREE_DIMENSION);
+        swingStopPosition[i].setSize(Const::THREE_DIMENSION);
     }
 
     /// 遊脚開始時間
-    swingStartTime = new double[LEG_NUM];
+    swingStartTime = new double[asura::LEG_NUM];
     /// 遊脚終了時間
-    swingStopTime = new double[LEG_NUM];
+    swingStopTime = new double[asura::LEG_NUM];
 
     //20201017  姿勢移行
-    initialJointAngle = new Vector[LEG_NUM];
-    finalJointAngle = new Vector[LEG_NUM];
-    settingJointAngle = new Vector[LEG_NUM];
-    initialFootJointAngle = new double[LEG_NUM];
-    finalFootJointAngle = new double[LEG_NUM];
-    settingFootJointAngle = new double[LEG_NUM];
-    angularVelosity = new Vector[LEG_NUM];
-    t01 = new double[LEG_NUM];
-    t02 = new double[LEG_NUM];
-    t03 = new double[LEG_NUM];
-    t04 = new double[LEG_NUM];
-    t05 = new double[LEG_NUM];
+    initialJointAngle = new Vector[asura::LEG_NUM];
+    finalJointAngle = new Vector[asura::LEG_NUM];
+    settingJointAngle = new Vector[asura::LEG_NUM];
+    initialFootJointAngle = new double[asura::LEG_NUM];
+    finalFootJointAngle = new double[asura::LEG_NUM];
+    settingFootJointAngle = new double[asura::LEG_NUM];
+    angularVelosity = new Vector[asura::LEG_NUM];
+    t01 = new double[asura::LEG_NUM];
+    t02 = new double[asura::LEG_NUM];
+    t03 = new double[asura::LEG_NUM];
+    t04 = new double[asura::LEG_NUM];
+    t05 = new double[asura::LEG_NUM];
 
-    for (int i = 0; i < LEG_NUM; i++)
+    for (int i = 0; i < asura::LEG_NUM; i++)
     {
-        initialJointAngle[i].setSize(LEG_JOINT_NUM);
-        finalJointAngle[i].setSize(LEG_JOINT_NUM);
-        settingJointAngle[i].setSize(LEG_JOINT_NUM);
+        initialJointAngle[i].setSize(asura::LEG_JOINT_NUM);
+        finalJointAngle[i].setSize(asura::LEG_JOINT_NUM);
+        settingJointAngle[i].setSize(asura::LEG_JOINT_NUM);
         initialFootJointAngle[i] = 0;
         finalFootJointAngle[i] = 0;
         settingFootJointAngle[i] = 0;
-        angularVelosity[i].setSize(LEG_JOINT_NUM + 1);
+        angularVelosity[i].setSize(asura::LEG_JOINT_NUM + 1);
         t01[i] = 0;
         t02[i] = 0;
         t03[i] = 0;

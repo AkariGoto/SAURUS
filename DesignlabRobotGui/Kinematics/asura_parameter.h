@@ -10,12 +10,12 @@
 // 実行時に定数( const がついている変数 )を読み込むよりも高速に動作する．
 // また，配列の要素数にも使える．
 
-namespace Asura
+namespace designlab_robot_gui::asura
 {
 
 const double STEP = 200;  //!< 段差高さ．
 
-constexpr int LEG_JOINT_NUM = 3;  // 関節数．第4関節は受動関節で足首扱い．
+constexpr int LEG_JOINT_NUM = 3;  //!< 関節数．第4関節は受動関節で足首扱い．
 // constexpr int LEG_JOINT_NUM = 4;
 
 
@@ -190,7 +190,7 @@ enum class LocomotionStyle : int
     HYBRID,
 };
 
-}
+}  // namespace designlab_robot_gui::asura
 
 
 #endif  // DESIGNLABROBOTGUI_KINEMATICS_ASURA_PARAMETER_H_

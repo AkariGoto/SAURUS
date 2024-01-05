@@ -9,32 +9,20 @@
  */
 
  // MotionPlanThread.cpp : 実装ファイル
- //
 
- //  20200820  trotGaitをtripodGaitに修正・AxisControlダイアログ関連コメントアウト
- //  20201005  1周期で終了
-
- /**
-  *	----------------------------------------------------------------------
-  *		ヘッダファイルインクルード
-  *	----------------------------------------------------------------------
-  */
-  //#include "..\..\stdafx.h"
 #include "..\..\pch.h"
 
 #include "..\..\ASURA2GUI.h"
 #include "MotionPlanThread.h"
 
-//#include "..\..\Dialog\AxisControlDialog.h"
-//#include "..\..\Dialog\SerialPortDialog.h"
 #include "Utility/EngConstant.h"
 
 
 using namespace std;
 using namespace Math;
 using namespace Const;
-using namespace Asura;
-using namespace Plan;
+using namespace designlab_robot_gui::asura;
+using namespace designlab_robot_gui::plan;
 using namespace System;
 
 // MotionPlanThread
@@ -177,18 +165,18 @@ void MotionPlanThread::OnSendViewData(WPARAM wParam, LPARAM lParam)
  */
 void MotionPlanThread::OnSetupMotion(WPARAM wParam, LPARAM lParam)
 {
-    Plan::Strategy strategy = (Plan::Strategy)lParam;
+    Strategy strategy = (Strategy)lParam;
 
     switch (strategy)
     {
         case Strategy::TRIPOD:
         {
-            plannerManager.switchPlan(&tripodGait, Plan::Strategy::TRIPOD);
+            plannerManager.switchPlan(&tripodGait, Strategy::TRIPOD);
             break;
         }
         case Strategy::TRIPOD_1_CYCLE:
         {
-            plannerManager.switchPlan(&tripodGait, Plan::Strategy::TRIPOD_1_CYCLE);
+            plannerManager.switchPlan(&tripodGait, Strategy::TRIPOD_1_CYCLE);
             break;
         }
         default:

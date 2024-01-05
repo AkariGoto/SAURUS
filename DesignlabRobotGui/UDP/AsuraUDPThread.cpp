@@ -13,8 +13,8 @@
 
 using namespace std;
 using namespace Const;
-using namespace Asura;
-using namespace Plan;
+using namespace designlab_robot_gui::asura;
+using namespace designlab_robot_gui::plan;
 using namespace System;
 
 // AsuraUDPTherad
