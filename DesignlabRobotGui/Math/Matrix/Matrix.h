@@ -237,26 +237,26 @@ private:
       *	引数
       *		Matrix  a	: LU分解される行列
       *		Matrix  lu	: LU分解後の行列
-      *		Matrix  indx: 部分ピボット選択の際の行交換を記録
+      *		Matrix  index: 部分ピボット選択の際の行交換を記録
       *		double* d	: 行交換の回数が偶数=1，行交換の回数が奇数=-1
       *
       *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
       *					Cambridge University Press, 1988
       */
-    int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d) const;
+    int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& index, double* d) const;
 
     /**
      *	説明
      *		後退代入を用いて連立1次方程式を解く(a*x=b)
      *	引数
      *		Matrix  a	: LU分解で求めたAのLU分解（不変）
-     *		Vector  indx: LU分解の際の部分ピボット選択の行交換情報
+     *		Vector  index: LU分解の際の部分ピボット選択の行交換情報
      *		Vector  b	: 既知の右辺ベクトル（解ベクトルxの値を上書き）
      *
      *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
      *					Cambridge University Press, 1988
      */
-    void luBackSubstitution(const Matrix& a, const Vector& indx, Vector& b) const;
+    void luBackSubstitution(const Matrix& a, const Vector& index, Vector& b) const;
 
     /**
      *	----------------------------------------
@@ -485,10 +485,10 @@ inline const Vector operator-(const Vector& left, const Vector& right)
  *		多重定義された＊演算子
  *		ベクトルのスカラー倍 （実数×ベクトル）
  */
-inline const Vector operator*(double schalor, const Vector& right)
+inline const Vector operator*(double scalar, const Vector& right)
 {
     /// 演算子 *= を使う
-    return Vector(right) *= schalor;
+    return Vector(right) *= scalar;
 }
 
 /**
@@ -496,20 +496,20 @@ inline const Vector operator*(double schalor, const Vector& right)
  *		ベクトルのスカラー倍 （ベクトル×実数）
  *		実数×ベクトル用の関数を使う
  */
-inline const Vector operator*(const Vector& left, double schalor)
+inline const Vector operator*(const Vector& left, double scalar)
 {
     /// 演算子 *= を使う
-    return Vector(left) *= schalor;
+    return Vector(left) *= scalar;
 }
 
 /**
  *		多重定義された/演算子
  *		ベクトルを実数で割り算する
  */
-inline const Vector operator/(const Vector& left, double schalor)
+inline const Vector operator/(const Vector& left, double scalar)
 {
     /// 演算子 /= を使う
-    return Vector(left) /= schalor;
+    return Vector(left) /= scalar;
 }
 
 /**
@@ -534,10 +534,10 @@ inline const Matrix operator-(const Matrix& left, const Matrix& right)
 
 /**
  *	------------------------------------------------------------
- *		Matrixメンバのinline関数
+ *		Matrixメンバの inline 関数
  *	------------------------------------------------------------
  */
- /// 非const Matrixオブジェクトの添え字演算子
+ /// 非 const Matrixオブジェクトの添え字演算子
 inline Vector& Matrix::operator[](int index)
 {
     return this->elements[index];
@@ -576,10 +576,10 @@ inline const double& Matrix::operator()(int row, int col) const
 
 /**
  *	------------------------------------------------------------
- *		Vectorメンバのinline関数
+ *		Vectorメンバの inline 関数
  *	------------------------------------------------------------
  */
- /// 非const Vectorオブジェクトの添え字演算子
+ /// 非 const Vectorオブジェクトの添え字演算子
 inline double& Vector::operator[](int index)
 {
     return this->elements[index];

@@ -45,9 +45,6 @@
     <ClCompile Include="Kinematics\walking_robot.cpp">
       <Filter>Kinematics</Filter>
     </ClCompile>
-    <ClCompile Include="Math\math_geometry.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Matrix\matrix.cpp">
       <Filter>Math\Matrix</Filter>
     </ClCompile>
@@ -176,9 +173,6 @@
       <Filter>Kinematics</Filter>
     </ClInclude>
     <ClInclude Include="Math\math_constant.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\math_geometry.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Matrix\matrix.h">

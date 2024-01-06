@@ -42,25 +42,6 @@ Vector zeroVector(int dimension)
     return result;
 }
 
-double innerProduct(const Vector& x, const Vector& y)
-{
-    /// 引数チェック
-    if (x.getSize() != y.getSize())
-    {
-        std::cerr << "Error: [innerProduct] Vector type is unmatched\n" << std::endl;
-        abort();
-    }
-
-    /// 返り値
-    double ip = 0;
-
-    int i;
-    for (i = 1; i <= x.getSize(); i++)
-        ip += x(i) * y(i);
-
-    return ip;
-}
-
 Vector outerProduct(const Vector& x, const Vector& y)
 {
     using designlab_robot_gui::math::THREE_DIMENSION;

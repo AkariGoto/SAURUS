@@ -12,15 +12,7 @@ namespace designlab_robot_gui::math
  *	説明
  *		零ベクトルを求める
  */
-extern Vector zeroVector(int dimension);
-
-
-/**
- *	説明
- *		内積を求める
- *		ベクトルのみで計算
- */
-extern double innerProduct(const Vector& x, const Vector& y);
+Vector zeroVector(int dimension);
 
 
 /**
@@ -28,14 +20,14 @@ extern double innerProduct(const Vector& x, const Vector& y);
  *		3次元の外積を求める
  *		ベクトルのみで計算
  */
-extern Vector outerProduct(const Vector& x, const Vector& y);
+Vector outerProduct(const Vector& x, const Vector& y);
 
 /**
  *	説明
  *		3次元の外積を求める
  *		成分のみで計算
  */
-extern void outerProduct(double x1, double y1, double z1,
+void outerProduct(double x1, double y1, double z1,
               double x2, double y2, double z2,
               double* x, double* y, double* z);
 

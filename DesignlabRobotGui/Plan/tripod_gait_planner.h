@@ -130,7 +130,7 @@ private:
     double* finalFootJointAngle;  //!< 移行後の関節角度
     double* settingFootJointAngle;  //!< 移行中の関節角度
 
-    math::Vector* angularVelosity;  //!< 姿勢移行中の角速度
+    math::Vector* angularVelocity;  //!< 姿勢移行中の角速度
 
     //! それぞれの関節を動かし終わるまでの所要時間
     double* t01;

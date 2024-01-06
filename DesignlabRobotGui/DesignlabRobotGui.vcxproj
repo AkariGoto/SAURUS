@@ -232,7 +232,6 @@
     <ClInclude Include="Kinematics\walking_robot.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Math\math_constant.h" />
-    <ClInclude Include="Math\math_geometry.h" />
     <ClInclude Include="Math\Matrix\matrix.h" />
     <ClInclude Include="Math\Matrix\matrix_library.h" />
     <ClInclude Include="Math\matrix_class.h" />
@@ -320,9 +319,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Math\math_geometry.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Math\Matrix\matrix.cpp">
