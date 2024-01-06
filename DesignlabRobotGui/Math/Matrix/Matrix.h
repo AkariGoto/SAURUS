@@ -11,23 +11,14 @@
 #ifndef __Matrix_h__	/// 2重インクルード回避
 #define __Matrix_h__	/// 2重インクルード禁止
 
- /**
-  *	----------------------------------------------------------------------
-  *		ヘッダファイルインクルード
-  *	----------------------------------------------------------------------
-  */
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
 
-  /**
-   *	----------------------------------------------------------------------
-   *		定数、マクロ宣言
-   *	----------------------------------------------------------------------
-   */
-   /// ゼロとみなす数
+
+ /// ゼロとみなす数
 const double NEAR_ZERO = 1.0E-16;
 /// ゼロとの相対誤差
 const double ZERO_ERROR_MARGIN = 1.0E-8;
@@ -36,128 +27,40 @@ const double MATRIX_TINY = 1.0E-20;
 
 namespace Math
 {
-/**
- *	----------------------------------------------------------------------
- *		クラスの前方宣言
- *	----------------------------------------------------------------------
- */
+
 class Matrix;
 class Vector;
 
-/**
- *	----------------------------------------------------------------------
- *		一般的な算術演算子
- *	----------------------------------------------------------------------
- */
- /// ベクトルの和
 const Vector operator+(const Vector& left, const Vector& right);
-/// ベクトルの差
 const Vector operator-(const Vector& left, const Vector& right);
-/// ベクトルのスカラ倍
 const Vector operator*(double schalor, const Vector& right);
-/// ベクトルのスカラ倍
 const Vector operator*(const Vector& left, double schalor);
-/// ベクトルを実数で割り算
 const Vector operator/(const Vector& left, double schalor);
 
-/// 行列の和
 const Matrix operator+(const Matrix& left, const Matrix& right);
-/// 行列の差
 const Matrix operator-(const Matrix& left, const Matrix& right);
 
-/**
- *	----------------------------------------------------------------------
- *		Matrixクラス
- *	----------------------------------------------------------------------
- */
+
 class Matrix
 {
-    /**
-     *	------------------------------------------------------------
-     *		メンバ変数
-     *	------------------------------------------------------------
-     */
 private:
-    /// 行要素数
     int rows;
-    /// 列要素数
     int columns;
 
-    /// 行ベクトルへのポインタ（配列）
     Vector* elements;
 
-    /**
-     *	------------------------------------------------------------
-     *		フレンド関数
-     *	------------------------------------------------------------
-     */
-     /**
-      *	説明
-      *		クラスMatrixの多重定義されたストリーム挿入演算子
-      *		行列の全要素の値を出力する
-      *	引数
-      *		output: 出力先ストリーム
-      *		matrix: 目的の行列
-      */
     friend std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
-    /**
-     *	説明
-     *		クラスMatrixの多重定義されたストリーム挿入演算子
-     *		行列の全要素の値を入力する
-     *	引数
-     *		output: 入力先ストリーム
-     *		matrix: 目的の行列
-    */
     friend std::istream& operator>>(std::istream& input, Matrix& matrix);
 
-    /**
-     *	説明
-     *		2つの行列が等しいかどうかをチェック
-     *	引数
-     *		true: 等しい
-     *		false: 等しくない
-     */
     friend bool operator==(const Matrix& left, const Matrix& right);
-
-    /**
-     *	説明
-     *		2つの行列が異なっているかどうかをチェック
-     *	引数
-     *		true: 異なっている
-     *		false: 等しい
-     */
     friend bool operator!=(const Matrix& left, const Matrix& right);
 
-    /**
-     *		一般的な算術演算子
-     */
-     /// 行列＊行列
     friend const Matrix operator*(const Matrix& left, const Matrix& right);
-
-    /// 行列＊ベクトル
     friend const Vector operator*(const Matrix& matrix, const Vector& vector);
-
-    /// ベクトル＊行列
     friend const Vector operator*(const Vector& vector, const Matrix& matrix);
 
-    /**
-     *	------------------------------------------------------------
-     *		メンバ関数
-     *	------------------------------------------------------------
-     */
+
 public:
-    /**
-     *	----------------------------------------
-     *	コンストラクタとデストラクタ
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		要素を指定するコンストラクタ
-      *	引数
-      *		row: 行数
-      *		col:  列数
-      */
     explicit Matrix(int row = 0, int col = 0);
 
     /// コピーコンストラクタ
@@ -166,54 +69,18 @@ public:
     /// デストラクタ
     virtual ~Matrix();
 
-    /**
-     *	----------------------------------------
-     *	行列の要素を決定または調べる関数群
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		行列の型を設定する
-      *	引数
-      *		row: 行数
-      *		col:  列数
-      */
+
     void setSize(int row, int col);
 
-    /**
-     *	説明
-     *		行列の要素を調べる
-     *		getRow: 行列の行数
-     *		getCol:  行列の列数
-     */
-    int getRow(void) const { return rows; }
-    int getRow(void) { return rows; }
-    int getColumn(void) const { return columns; }
-    int getColumn(void) { return columns; }
+    int getRow() const { return rows; }
+    int getRow() { return rows; }
+    int getColumn() const { return columns; }
+    int getColumn() { return columns; }
 
-    /**
-     *	説明
-     *		行列が正方行列であるかどうか
-     *	引数
-     *		非0: 正方行列
-     *		0: 正方行列でない
-     */
-    int isSquare(void) const { return (rows == columns); }
+    int isSquare() const { return (rows == columns); }
+    int isOneColumn() const { return (columns == 1); }
 
-    /**
-     *	説明
-     *		行列がベクトルであるかどうか
-     *	引数
-     *		非0: 正方行列
-     *		0: 正方行列でない
-     */
-    int isOneColumn(void) const { return (columns == 1); }
-
-    /**
-     *	説明
-     *		微小要素の消去
-     */
-    void cleanUp(void);
+    void cleanUp();
 
     /**
      *	----------------------------------------
@@ -248,9 +115,6 @@ public:
     const Vector& operator[] (int index) const;
 
 
-    /**
-     *	代表的な組み合わせ演算子
-     */
     Matrix& operator+=(const Matrix& right);
     Matrix& operator-=(const Matrix& right);
     Matrix& operator*=(const Matrix& right);
@@ -309,51 +173,15 @@ public:
      */
     virtual Matrix& loadMatrix(const Matrix& source);
 
-    /**
-     *	----------------------------------------
-     *	行列を特別な行列にする
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		零行列を読み込む
-      */
-    virtual Matrix& loadZero(void);
-    /**
-     *	説明
-     *		単位行列を読み込む
-     */
-    virtual Matrix& loadIdentity(void);
 
-    /**
-     *	----------------------------------------
-     *	行列の主な演算
-     *	----------------------------------------
-     */
-     /**
-      *	転置行列
-      */
-      /**
-       *	説明
-       *		呼出元の行列を転置行列にする
-       */
-    Matrix& transpose(void);
+    virtual Matrix& loadZero();
+    virtual Matrix& loadIdentity();
 
-    /**
-     *	説明
-     *		呼び出した行列の転置行列を返す
-     */
-    Matrix transposition(void);
-    const Matrix transposition(void) const;
+    Matrix& transpose();
+    Matrix transposition();
+    const Matrix transposition() const;
 
-    /**
-     *	逆行列
-     */
-     /**
-      *	説明
-      *		呼出元の行列を逆行列にする
-      */
-    Matrix& inverse(void);
+
 
     /**
      *	説明
@@ -362,12 +190,7 @@ public:
     Matrix inversion(void);
     const Matrix inversion(void) const;
 
-    /**
-     *	説明
-     *		行列式を返す
-     */
-    double determinant(void);
-    const double determinant(void) const;
+
 
     /**
      *	説明
@@ -395,28 +218,8 @@ public:
     void swapRows(int i, int j);
 
 
-    /**
-     *	----------------------------------------
-     *	特別な行列演算
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		擬似逆行列を求める
-      *		thresholdの値には注意すること（小さすぎても大きすぎても危険）
-      */
-      /// 呼出元の擬似逆行列を求める
-    Matrix pseudoInversion(double threshold = 1.0E-6);
-    const Matrix pseudoInversion(double threshold = 1.0E-6) const;
 
-    /**
-     *	説明
-     *		条件数（wjのうち最大と最小の比）
-     *		ill-conditioned（悪条件）：条件数が大きいこと
-     *	返却値
-     *		条件数
-     */
-    double conditionNumber(void) const;
+
 
 
 private:
@@ -645,8 +448,8 @@ public:
     double norm(void) const;
     /// ベクトルの規格化（単位ベクトルにする）
     const Vector& normalize(void);
-    Vector normalization(void);
-    const Vector normalization(void) const;
+    Vector GetNormalize(void);
+    const Vector GetNormalize(void) const;
 
     /**
      *	微小要素の消去

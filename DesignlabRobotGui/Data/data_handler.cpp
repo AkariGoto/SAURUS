@@ -1,9 +1,11 @@
 ﻿
 #include "Data/data_handler.h"
-
+#include "Math/matrix_class.h"
 
 namespace designlab_robot_gui::data
 {
+
+math::Matrix3x3 sample;
 
 DataHandler::DataHandler(AsuraX* asuraPtr, AsuraData* asuraDataPtr, Planner* planPtr, PlanData* planDataPtr)
     : asuraDataSourcePointer(NULL),

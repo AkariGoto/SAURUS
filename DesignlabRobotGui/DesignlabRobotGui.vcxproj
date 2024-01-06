@@ -232,10 +232,12 @@
     <ClInclude Include="Kinematics\walking_robot.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Math\MathConstant.h" />
-    <ClInclude Include="Math\MathGeometry.h" />
+    <ClInclude Include="Math\math_geometry.h" />
     <ClInclude Include="Math\MathLibrary.h" />
     <ClInclude Include="Math\Matrix\Matrix.h" />
     <ClInclude Include="Math\Matrix\MatrixLibrary.h" />
+    <ClInclude Include="Math\matrix_class.h" />
+    <ClInclude Include="Math\vector_class.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Plan\planner.h" />
     <ClInclude Include="Plan\planner_manager.h" />
@@ -322,7 +324,7 @@
     <ClCompile Include="MainFrm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Math\MathGeometry.cpp">
+    <ClCompile Include="Math\math_geometry.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Math\Matrix\Matrix.cpp">

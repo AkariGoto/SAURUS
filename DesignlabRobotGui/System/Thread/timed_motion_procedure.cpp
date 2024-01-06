@@ -2,7 +2,6 @@
 #include "pch.h"
 
 #include "System/Thread/timed_motion_procedure.h"
-
 #include "System/win_user_message.h"
 
 

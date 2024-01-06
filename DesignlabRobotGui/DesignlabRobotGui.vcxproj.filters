@@ -45,7 +45,7 @@
     <ClCompile Include="Kinematics\walking_robot.cpp">
       <Filter>Kinematics</Filter>
     </ClCompile>
-    <ClCompile Include="Math\MathGeometry.cpp">
+    <ClCompile Include="Math\math_geometry.cpp">
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Matrix\Matrix.cpp">
@@ -178,7 +178,7 @@
     <ClInclude Include="Math\MathConstant.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\MathGeometry.h">
+    <ClInclude Include="Math\math_geometry.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathLibrary.h">
@@ -261,6 +261,12 @@
     </ClInclude>
     <ClInclude Include="System\object_locker.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\vector_class.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\matrix_class.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

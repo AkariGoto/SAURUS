@@ -1,24 +1,16 @@
-/**
- *  File: MathLibrary.h
- *
- *  Description: ‰‰Zq‚âƒƒ\ƒbƒh‚È‚Çs—ñ‚Ìå‚È‰‰Z‚ª’è‹`‚³‚ê‚Ä‚¢‚é
- *
- *  Created: 2007/01/15(Mon)
- *  Updated: 2007/03/06(Tue)
- *
- *  Copyright (C) Tokyo Institute of Technology Hirose Lab.
- */
-
+ï»¿
 #ifndef __MathLibrary_h__
 #define __MathLibrary_h__
 
 #include "MathConstant.h"
 
 #include "Matrix\MatrixLibrary.h"
-#include "MathGeometry.h"
+#include "Math/math_geometry.h"
 
-	inline double SplineM(double X,double Dx,double a,double b, double c,double d)
-	{
-		return a+b*(-X+Dx)+c*pow(-X+Dx,2)+d*pow(-X+Dx,3);}
+
+inline double SplineM(double X, double Dx, double a, double b, double c, double d)
+{
+    return a + b * (-X + Dx) + c * pow(-X + Dx, 2) + d * pow(-X + Dx, 3);
+}
 
 #endif	/// __MathLibrary_h__
