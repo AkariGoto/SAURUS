@@ -81,21 +81,21 @@ void WalkingRobot::initializeWalkingRobot()
     delete[] initialFootJointAngle;
 }
 
-void WalkingRobot::initializeBodyTransformation(const Math::Matrix& newBodyTransformation)
+void WalkingRobot::initializeBodyTransformation(const Matrix& newBodyTransformation)
 {
     body_data.transformation = newBodyTransformation;
 
-    for (int i = 0; i < Const::THREE_DIMENSION; i++)
+    for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
         body_data.position(i + 1) = body_data.transformation(i + 1, 4);
     }
 }
 
-void WalkingRobot::initializeBodyPosition(const Math::Vector& newBodyPosition)
+void WalkingRobot::initializeBodyPosition(const Vector& newBodyPosition)
 {
     body_data.position = newBodyPosition;
 
-    for (int i = 0; i < Const::THREE_DIMENSION; i++)
+    for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
         body_data.transformation(i + 1, 4) = body_data.position(i + 1);
     }
@@ -106,7 +106,7 @@ void WalkingRobot::initializeBodyPosition(double x, double y, double z)
     body_data.position(2) = y;
     body_data.position(3) = z;
 
-    for (int i = 0; i < Const::THREE_DIMENSION; i++)
+    for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
         body_data.transformation(i + 1, 4) = body_data.position(i + 1);
     }
@@ -125,12 +125,13 @@ void WalkingRobot::setLegPhase(int legNo, LegPhase phase)
     leg_phases[legNo - 1] = phase;
 }
 
-Kinematics WalkingRobot::placeBodyPosition(Math::Vector& nextBodyPosition)
+Kinematics WalkingRobot::placeBodyPosition(Vector& nextBodyPosition)
 {
     /// 運動学結果
     Kinematics kine;
+
     /// 一時保存のための胴体同次変換行列
-    Matrix lastBodyTransform(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix lastBodyTransform(math::DH_DIMENSION, math::DH_DIMENSION);
     Vector presentGlobalFootPosition[LEG_NUM];
     Vector nextLocalFootPosition[LEG_NUM];
 
@@ -144,14 +145,14 @@ Kinematics WalkingRobot::placeBodyPosition(Math::Vector& nextBodyPosition)
     for (i = 0; i < LEG_NUM; i++)
     {
         /// ベクトルサイズ決定
-        presentGlobalFootPosition[i].setSize(Const::THREE_DIMENSION);
+        presentGlobalFootPosition[i].setSize(math::THREE_DIMENSION);
         /// 現在の脚位置を胴体座標系で保存
         presentGlobalFootPosition[i] =
             transformationLocalToGlobal(track_legs[i]->getLegFootPosition());
     }
 
     /// 胴体位置を更新
-    for (i = 1; i <= Const::THREE_DIMENSION; i++)
+    for (i = 1; i <= math::THREE_DIMENSION; i++)
     {
         body_data.transformation(i, 4) = nextBodyPosition(i);
     }
@@ -160,7 +161,7 @@ Kinematics WalkingRobot::placeBodyPosition(Math::Vector& nextBodyPosition)
     for (j = 0; j < LEG_NUM; j++)
     {
         /// ベクトルサイズ決定
-        nextLocalFootPosition[j].setSize(Const::THREE_DIMENSION);
+        nextLocalFootPosition[j].setSize(math::THREE_DIMENSION);
 
         /// 胴体座標系での次の脚位置を計算
         nextLocalFootPosition[j] = transformationGlobalToLocal(presentGlobalFootPosition[j]);
@@ -196,26 +197,26 @@ Kinematics WalkingRobot::placeBodyPosition(Math::Vector& nextBodyPosition)
 }
 
 /// 胴体の位置を決定する
-Kinematics WalkingRobot::placeBodyPosture(Math::Matrix& nextBodyPosture)
+Kinematics WalkingRobot::placeBodyPosture(Matrix& nextBodyPosture)
 {
     return NO_KINE_ERROR;
 }
 
 /// 胴体の位置姿勢を同時に決定する
-Kinematics WalkingRobot::placeBodyFrame(Math::Matrix& nextBodyFrame)
+Kinematics WalkingRobot::placeBodyFrame(Matrix& nextBodyFrame)
 {
     return NO_KINE_ERROR;
 }
 
 /// 脚根元の同次変換行列
-const Math::Matrix& WalkingRobot::getLegBaseTransformation(int legNo) const
+const math::Matrix& WalkingRobot::getLegBaseTransformation(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     return track_legs[legNo - 1]->getLegBaseTransformation();
 }
 /// 関節の同次変換行列
-const Math::Matrix& WalkingRobot::getLegJointTransformation(int legNo, int jointNo) const
+const math::Matrix& WalkingRobot::getLegJointTransformation(int legNo, int jointNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -223,21 +224,21 @@ const Math::Matrix& WalkingRobot::getLegJointTransformation(int legNo, int joint
     return track_legs[legNo - 1]->getLegJointTransformation(jointNo);
 }
 /// 足裏の同次変換行列
-const Math::Matrix& WalkingRobot::getLegFootTransformation(int legNo) const
+const math::Matrix& WalkingRobot::getLegFootTransformation(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     return track_legs[legNo - 1]->getLegFootTransformation();
 }
 /// 脚根元の位置ベクトル
-const Math::Vector& WalkingRobot::getLegBasePosition(int legNo) const
+const math::Vector& WalkingRobot::getLegBasePosition(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     return track_legs[legNo - 1]->getLegBasePosition();
 }
 /// 関節位置の位置ベクトル
-const Math::Vector& WalkingRobot::getLegJointPosition(int legNo, int jointNo) const
+const math::Vector& WalkingRobot::getLegJointPosition(int legNo, int jointNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -245,14 +246,14 @@ const Math::Vector& WalkingRobot::getLegJointPosition(int legNo, int jointNo) co
     return track_legs[legNo - 1]->getLegJointPosition(jointNo);
 }
 /// 足裏位置の位置ベクトル
-const Math::Vector& WalkingRobot::getLegFootPosition(int legNo) const
+const math::Vector& WalkingRobot::getLegFootPosition(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     return track_legs[legNo - 1]->getLegFootPosition();
 }
 /// 関節角度ベクトル
-const Math::Vector& WalkingRobot::getLegJointAngle(int legNo) const
+const math::Vector& WalkingRobot::getLegJointAngle(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -268,21 +269,21 @@ const  double WalkingRobot::getFootJointAngle(int legNo) const//------Add
     //track_legs[legNo-1]->getFootJointAngle();
 }
 // 関節速度ベクトル
-const Math::Vector& WalkingRobot::getLegJointVelocity(int legNo) const
+const math::Vector& WalkingRobot::getLegJointVelocity(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     return track_legs[legNo - 1]->getLegJointVelocity();
 }
 /// 関節トルクベクトル
-const Math::Vector& WalkingRobot::getLegJointTorque(int legNo) const
+const math::Vector& WalkingRobot::getLegJointTorque(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
     return track_legs[legNo - 1]->getLegJointTorque();
 }
 /// 脚の根元の位置・姿勢
-const Math::Vector& WalkingRobot::getBasePose(int legNo) const
+const math::Vector& WalkingRobot::getBasePose(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -303,7 +304,7 @@ const int WalkingRobot::getLegLastErrorJointNo(int legNo) const
     return track_legs[legNo - 1]->getLegLastErrorJointNo();
 }
 /// ボールねじ座標（ワイヤ変位）
-const Math::Vector& WalkingRobot::getLegActuatorPosition(int legNo) const//<----add
+const math::Vector& WalkingRobot::getLegActuatorPosition(int legNo) const//<----add
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -364,7 +365,7 @@ void WalkingRobot::setLegBasePose(int legNo, double x, double y, double z, doubl
   *		順運動学と逆運動学が一致しているかを確認する
   *		途中の関節位置を計算する
   */
-Kinematics WalkingRobot::placeLegFootPosition(int legNo, const Math::Vector& nextFootPosition)
+Kinematics WalkingRobot::placeLegFootPosition(int legNo, const Vector& nextFootPosition)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -384,7 +385,7 @@ Kinematics WalkingRobot::placeLegFootPosition(int legNo, const Math::Vector& nex
  *		関節角をセット
  *		セットした関節角で順運動学を解く
  */
-Kinematics WalkingRobot::placeLegJointAngles(int legNo, const Math::Vector& nextJointAngle, const double& nextFootJointAngle)
+Kinematics WalkingRobot::placeLegJointAngles(int legNo, const Vector& nextJointAngle, const double& nextFootJointAngle)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -410,7 +411,7 @@ Kinematics WalkingRobot::placeLegJointAngles(int legNo, const Math::Vector& next
   *		関節速度: [3]
   *		脚先速度から計算
   */
-void WalkingRobot::calculateLegJointVelocity(int legNo, const Math::Vector& footVelocity)
+void WalkingRobot::calculateLegJointVelocity(int legNo, const Vector& footVelocity)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -422,7 +423,7 @@ void WalkingRobot::calculateLegJointVelocity(int legNo, const Math::Vector& foot
  *		関節トルク: [3]
  *		脚先端に加わった荷重から計算
  */
-void WalkingRobot::calculateLegJointTorque(int legNo, const Math::Vector& footReaction)
+void WalkingRobot::calculateLegJointTorque(int legNo, const Vector& footReaction)
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= LEG_NUM);
@@ -470,18 +471,17 @@ void WalkingRobot::DeleteTrackLegs(void)
     return;
 }
 
-/// オブジェクトのメモリ領域を確保する
 void WalkingRobot::BodyData::InitBodyData()
 {
-    /// 行列のサイズ決定
-    transformation.setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    // 行列のサイズ決定
+    transformation.setSize(math::DH_DIMENSION, math::DH_DIMENSION);
     transformation.loadIdentity();
 
-    /// 位置ベクトルのサイズ決定
-    position.setSize(Const::THREE_DIMENSION);
+    // 位置ベクトルのサイズ決定
+    position.setSize(math::THREE_DIMENSION);
 
-    /// 速度ベクトルのサイズ決定
-    velocity.setSize(Const::THREE_DIMENSION);
+    // 速度ベクトルのサイズ決定
+    velocity.setSize(math::THREE_DIMENSION);
 
     return;
 }

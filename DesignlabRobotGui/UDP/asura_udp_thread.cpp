@@ -12,7 +12,6 @@
 #pragma comment(lib, "ws2_32.lib")
 
 
-using namespace Const;
 using namespace System;
 
 namespace designlab_robot_gui::udp
@@ -302,7 +301,7 @@ char AsuraUdpThread::buildPacket(SciPacketType type, int address, int command)
                 {
                     /// 脚関節データ取得
                     /// 単位をDegに修正し、100倍して有効数字5桁の正の整数にする（16bit）
-                    data = (int)((viewAsuraXData.leg_joint_angle[(int)((address - 1) / 3)](((address - 1) % 3) + 1) * RAD2DEG + 180.0) * 100.0);	/// <-オフセットして正値に
+                    data = (int)((viewAsuraXData.leg_joint_angle[(int)((address - 1) / 3)](((address - 1) % 3) + 1) * math::RAD2DEG + 180.0) * 100.0); /// <-オフセットして正値に
                 }
                 break;
 

@@ -1,272 +1,273 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		OpenGLObject.h
- *  à–¾
- *		OpenGL‚É‚æ‚é•¨‘Ì•`‰æƒNƒ‰ƒX(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/17(MON)
+ *  èª¬æ˜
+ *		OpenGLã«ã‚ˆã‚‹ç‰©ä½“æç”»ã‚¯ãƒ©ã‚¹(Windowså°‚ç”¨)
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/04/01(SAT)		æ›´æ–°æ—¥: 2007/04/17(MON)
  */
 
 #ifndef __OpenGLObject_h__
 #define __OpenGLObject_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include "OpenGL.h"
+
+#include "Math/Matrix/matrix.h"
+#include "Math/Matrix/matrix_library.h"
 
 namespace Graphic
 {
 /**
  *	----------------------------------------------------------------------
- *		OpenGLObjectƒNƒ‰ƒX
+ *		OpenGLObjectã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class OpenGLObject : public OpenGL
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
-protected:
-/**
- *	----------------------------------------
- *	ƒsƒbƒLƒ“ƒO‚ÉŠÖ‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-	/// ÅI“I‚É‘I‘ğ‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O”Ô†‚ğŠi”[‚·‚é
-	unsigned int nameNumberOfHitObj[NAME_ARRAY_SIZE];	
-
-/**
- *	----------------------------------------
- *	ƒtƒ‰ƒO
- *	----------------------------------------
- */
-	/// À•W²‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©
-	bool isCoordinateAxisDrawn;
-
-	/// ƒƒbƒVƒ…‚Ì°‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©
-	bool isGridFloorDrawn;
-
-	/// °•`‰æ‚Ì‚½‚ß‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg
-	int gridFloorDisplayListID;
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	OpenGLObject();
-
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit OpenGLObject(HWND hWnd);
-
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~OpenGLObject();
-
-/**
- *	----------------------------------------
- *	OpenGL‚ÌƒIƒuƒWƒFƒNƒgì¬EÁ‹
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		OpenGL‚Ì‰Šú‰»‚ğs‚¢AOpenGLObject‚ÉŠÖ˜A‚Ã‚¯‚é
-	 *	ˆø”
-	 *		hWnd: •`‰æ‚·‚é—Ìˆæ‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	 */
-	bool createGLObject(HWND hWnd = NULL);
-
-	/**
-	 *	à–¾
-	 *		I—¹ˆ—
-	 */
-	void destroyGLObject(void);
-
-/**
- *	------------------------------------------------------------
- *		ƒI[ƒo[ƒ‰ƒCƒhŠÖ”
- *	------------------------------------------------------------
- */
-/**
- *	----------------------------------------
- *	ƒV[ƒ“‚Ì•`‰æ
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		OpenGL‚ÌƒIƒuƒWƒFƒNƒg•`‰æ
-	 */
-	virtual void drawObjects(GLenum renderMode);
-
-	/**
-	 *	à–¾
-	 *		OpenGL‚ÌƒCƒ[ƒW•`‰æ
-	 */
-	virtual void drawScenes(void);
-
-	/**
-	 *	à–¾
-	 *		OpenGLƒCƒ[ƒW‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
-	 *		OpenGL•`‰æ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚É‚È‚é
-	 */
-	virtual void renderScenes(void);
-
-/**
- *	----------------------------------------
- *	ƒsƒbƒLƒ“ƒO‚ÉŠÖ‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		ƒfƒoƒCƒXiƒ}ƒEƒX‚È‚Çj‚É‚æ‚é•¨‘Ì‚ÌƒsƒbƒNƒAƒbƒvŠÖ”
-	 *		ƒfƒoƒCƒX‚É‚æ‚éƒCƒxƒ“ƒgiƒ}ƒEƒX‚¾‚Á‚½‚ç¶ƒNƒŠƒbƒN‚È‚ÇjŠÖ”“à‚ÅŒÄ‚Ô
-	 *	ˆø”
-	 *		x: ƒNƒŠƒbƒN‚µ‚½“_‚ÌxÀ•W
-	 *		y: ƒNƒŠƒbƒN‚µ‚½“_‚ÌyÀ•W
-	 */
-	virtual void pickup(int x, int y);
+    using Vector = designlab_robot_gui::math::Vector;
+    using Matrix = designlab_robot_gui::math::Matrix;
 
 protected:
-	/**
-	 *	à–¾
-	 *		ƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@‚©‚çƒfƒvƒXƒoƒbƒtƒ@‚ğ•À‚Ñ‘Ö‚¦‚½‚è‚µ‚È‚ª‚çƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ¯•Ê‚·‚é
-	 *	ˆø”
-	 *		hitCount: ƒqƒbƒg”
-	 *		selectBuffer:	glSelectBuffer() ‚ÌŒ‹‰Ê‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@
-	 *						‘I‘ğ‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘OAƒZƒŒƒNƒVƒ‡ƒ“‚³‚ê‚½ˆÊ’u‚Ì‰œs‚«‚ÌÅ¬’l‚ÆÅ‘å’l‚È‚Ç‚ªŠi”[‚³‚ê‚½ƒoƒbƒtƒ@
-	 */
-	virtual int selectHitObjects(GLuint hitCount, GLuint selectBuffer[]);
+    /**
+     *	----------------------------------------
+     *	ãƒ”ãƒƒã‚­ãƒ³ã‚°ã«é–¢ã™ã‚‹ã‚‚ã®
+     *	----------------------------------------
+     */
+     /// æœ€çµ‚çš„ã«é¸æŠã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ç•ªå·ã‚’æ ¼ç´ã™ã‚‹
+    unsigned int nameNumberOfHitObj[NAME_ARRAY_SIZE];
 
-	/**
-	 *	à–¾
-	 *		ƒsƒbƒNƒAƒbƒv‚É‚æ‚è‘I‚ñ‚¾•¨‘Ì‚Ìˆ—
-	 */
-	virtual void handlePickupResult(void);
+    /**
+     *	----------------------------------------
+     *	ãƒ•ãƒ©ã‚°
+     *	----------------------------------------
+     */
+     /// åº§æ¨™è»¸ã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹
+    bool isCoordinateAxisDrawn;
 
-/**
- *	------------------------------------------------------------
- *		ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
- *	------------------------------------------------------------
- */
+    /// ãƒ¡ãƒƒã‚·ãƒ¥ã®åºŠã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹
+    bool isGridFloorDrawn;
+
+    /// åºŠæç”»ã®ãŸã‚ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆ
+    int gridFloorDisplayListID;
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
+public:
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    OpenGLObject();
+
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    explicit OpenGLObject(HWND hWnd);
+
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~OpenGLObject();
+
+    /**
+     *	----------------------------------------
+     *	OpenGLã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆãƒ»æ¶ˆå»
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		OpenGLã®åˆæœŸåŒ–ã‚’è¡Œã„ã€OpenGLObjectã«é–¢é€£ã¥ã‘ã‚‹
+      *	å¼•æ•°
+      *		hWnd: æç”»ã™ã‚‹é ˜åŸŸã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+      */
+    bool createGLObject(HWND hWnd = NULL);
+
+    /**
+     *	èª¬æ˜
+     *		çµ‚äº†å‡¦ç†
+     */
+    void destroyGLObject(void);
+
+    /**
+     *	------------------------------------------------------------
+     *		ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰é–¢æ•°
+     *	------------------------------------------------------------
+     */
+     /**
+      *	----------------------------------------
+      *	ã‚·ãƒ¼ãƒ³ã®æç”»
+      *	----------------------------------------
+      */
+      /**
+       *	èª¬æ˜
+       *		OpenGLã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+       */
+    virtual void drawObjects(GLenum renderMode);
+
+    /**
+     *	èª¬æ˜
+     *		OpenGLã®ã‚¤ãƒ¡ãƒ¼ã‚¸æç”»
+     */
+    virtual void drawScenes(void);
+
+    /**
+     *	èª¬æ˜
+     *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
+     *		OpenGLæç”»ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«ãªã‚‹
+     */
+    virtual void renderScenes(void);
+
+    /**
+     *	----------------------------------------
+     *	ãƒ”ãƒƒã‚­ãƒ³ã‚°ã«é–¢ã™ã‚‹ã‚‚ã®
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ãƒ‡ãƒã‚¤ã‚¹ï¼ˆãƒã‚¦ã‚¹ãªã©ï¼‰ã«ã‚ˆã‚‹ç‰©ä½“ã®ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—é–¢æ•°
+      *		ãƒ‡ãƒã‚¤ã‚¹ã«ã‚ˆã‚‹ã‚¤ãƒ™ãƒ³ãƒˆï¼ˆãƒã‚¦ã‚¹ã ã£ãŸã‚‰å·¦ã‚¯ãƒªãƒƒã‚¯ãªã©ï¼‰é–¢æ•°å†…ã§å‘¼ã¶
+      *	å¼•æ•°
+      *		x: ã‚¯ãƒªãƒƒã‚¯ã—ãŸç‚¹ã®xåº§æ¨™
+      *		y: ã‚¯ãƒªãƒƒã‚¯ã—ãŸç‚¹ã®yåº§æ¨™
+      */
+    virtual void pickup(int x, int y);
+
+protected:
+    /**
+     *	èª¬æ˜
+     *		ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ãƒ‡ãƒ—ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ä¸¦ã³æ›¿ãˆãŸã‚Šã—ãªãŒã‚‰ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è­˜åˆ¥ã™ã‚‹
+     *	å¼•æ•°
+     *		hitCount: ãƒ’ãƒƒãƒˆæ•°
+     *		selectBuffer:	glSelectBuffer() ã®çµæœãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡
+     *						é¸æŠã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã€ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã•ã‚ŒãŸä½ç½®ã®å¥¥è¡Œãã®æœ€å°å€¤ã¨æœ€å¤§å€¤ãªã©ãŒæ ¼ç´ã•ã‚ŒãŸãƒãƒƒãƒ•ã‚¡
+     */
+    virtual int selectHitObjects(GLuint hitCount, GLuint selectBuffer[]);
+
+    /**
+     *	èª¬æ˜
+     *		ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—ã«ã‚ˆã‚Šé¸ã‚“ã ç‰©ä½“ã®å‡¦ç†
+     */
+    virtual void handlePickupResult(void);
+
+    /**
+     *	------------------------------------------------------------
+     *		ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     *	------------------------------------------------------------
+     */
 
 public:
-/**
- *	----------------------------------------
- *	•¨‘Ì‚Ì•\¦/”ñ•\¦
- *	----------------------------------------
- */
-	/// °‚ğŒ©‚¹‚é
-	void showGridFloor(void) {isGridFloorDrawn = true; return;}
-	/// °‚ğ‰B‚·
-	void hideGridFloor(void) {isGridFloorDrawn = false; return;}
+    /**
+     *	----------------------------------------
+     *	ç‰©ä½“ã®è¡¨ç¤º/éè¡¨ç¤º
+     *	----------------------------------------
+     */
+     /// åºŠã‚’è¦‹ã›ã‚‹
+    void showGridFloor(void) { isGridFloorDrawn = true; return; }
+    /// åºŠã‚’éš ã™
+    void hideGridFloor(void) { isGridFloorDrawn = false; return; }
 
-	/// À•W²‚ğŒ©‚¹‚é
-	void showCoordinateAxis(void) {isCoordinateAxisDrawn = true; return;}
-	/// À•W²‚ğ‰B‚·
-	void hideCoordinateAxis(void) {isCoordinateAxisDrawn = false; return;}
+    /// åº§æ¨™è»¸ã‚’è¦‹ã›ã‚‹
+    void showCoordinateAxis(void) { isCoordinateAxisDrawn = true; return; }
+    /// åº§æ¨™è»¸ã‚’éš ã™
+    void hideCoordinateAxis(void) { isCoordinateAxisDrawn = false; return; }
 
-/**
- *	----------------------------------------
- *	3Dƒ‚ƒfƒŠƒ“ƒO
- *	----------------------------------------
- */
-	/// À•W²•`‰æ
-	void drawCoordinateAxis(double length = 300.0, double width = 2.0, double scale = 1.0); 
+    /**
+     *	----------------------------------------
+     *	3Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°
+     *	----------------------------------------
+     */
+     /// åº§æ¨™è»¸æç”»
+    void drawCoordinateAxis(double length = 300.0, double width = 2.0, double scale = 1.0);
 
-	/**
-	 *	à–¾
-	 *		ƒ|ƒŠƒSƒ“ƒ‚ƒfƒŠƒ“ƒOi–@ü‚àŒvZj
-	 *		“Yš(1, 2, 3)‚Ì‡‚ÉCWiŒv‰ñ‚èj‚Å“ü—Í
-	 *		Še’¸“_‚ÌÀ•W‚ğ“ü—Í
-	 */
-	void drawPolygonSurface(double x1, double y1, double z1,
-							double x2, double y2, double z2,
-							double x3, double y3, double z3);
-	void drawPolygonSurface(const Math::Vector& point1, const Math::Vector& point2, const Math::Vector& point3);
+    /**
+     *	èª¬æ˜
+     *		ãƒãƒªã‚´ãƒ³ãƒ¢ãƒ‡ãƒªãƒ³ã‚°ï¼ˆæ³•ç·šã‚‚è¨ˆç®—ï¼‰
+     *		æ·»å­—(1, 2, 3)ã®é †ã«CWï¼ˆæ™‚è¨ˆå›ã‚Šï¼‰ã§å…¥åŠ›
+     *		å„é ‚ç‚¹ã®åº§æ¨™ã‚’å…¥åŠ›
+     */
+    void drawPolygonSurface(double x1, double y1, double z1,
+                double x2, double y2, double z2,
+                double x3, double y3, double z3);
+    void drawPolygonSurface(const Vector& point1, const Vector& point2, const Vector& point3);
 
-	/// ‰~’Œ•`‰æ
-	void drawCylinder(double radius, double height);
+    /// å††æŸ±æç”»
+    void drawCylinder(double radius, double height);
 
-	/// ‹…•`‰æ
-	void drawSphere(double radius);
+    /// çƒæç”»
+    void drawSphere(double radius);
 
-	/// Box•`‰æ(ü‰æ)
-	void drawBox(double startX, double startY, double startZ, double endX, double endY, double endZ);
-	void drawBox(const Math::Vector& startPoint, const Math::Vector& endPoint);
+    /// Boxæç”»(ç·šç”»)
+    void drawBox(double startX, double startY, double startZ, double endX, double endY, double endZ);
+    void drawBox(const Vector& startPoint, const Vector& endPoint);
 
-	/// ƒtƒŒ[ƒ€•`‰æ(•½–Ê‚Æ4‹÷‚Ì‚ü)
-	void drawFrame(double startX, double startY, double startZ, double endX, double endY, double endZ);
-	void drawFrame(const Math::Vector& startPoint, const Math::Vector& endPoint);
+    /// ãƒ•ãƒ¬ãƒ¼ãƒ æç”»(å¹³é¢ã¨4éš…ã®å‚ç·š)
+    void drawFrame(double startX, double startY, double startZ, double endX, double endY, double endZ);
+    void drawFrame(const Vector& startPoint, const Vector& endPoint);
 
-	/// ü•`‰æ(ü‰æ)
-	void drawLine(double startX, double startY, double startZ,
-						 double endX, double endY, double endZ, 
-						 double width = 1.0);
-	void drawLine(const Math::Vector& startPoint, const Math::Vector& endPoint, double width = 1.0);
+    /// ç·šæç”»(ç·šç”»)
+    void drawLine(double startX, double startY, double startZ,
+               double endX, double endY, double endZ,
+               double width = 1.0);
+    void drawLine(const Vector& startPoint, const Vector& endPoint, double width = 1.0);
 
-	/// OŠpŒ`•`‰æ
-	void drawTriangle(const Math::Vector& point1, const Math::Vector& point2, const Math::Vector& point3, double width = 1.0);
+    /// ä¸‰è§’å½¢æç”»
+    void drawTriangle(const Vector& point1, const Vector& point2, const Vector& point3, double width = 1.0);
 
-	/// lŠpŒ`•`‰æ
-	void drawQuadrangle(	const Math::Vector& point1, const Math::Vector& point2, 
-									const Math::Vector& point3, const Math::Vector& point4,
-									double width = 1.0);
+    /// å››è§’å½¢æç”»
+    void drawQuadrangle(const Vector& point1, const Vector& point2,
+                    const Vector& point3, const Vector& point4,
+                    double width = 1.0);
 
-/**
- *	----------------------------------------
- *	2Dƒ‚ƒfƒŠƒ“ƒO
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		•½–Ê”Â•`‰æ(‘ÎŠpü‚Ì’¸“_‚Æ‚‚³)
-	 */
-	/// …•½–ÊiXYj
-	void drawHorizontalPlane(double startX, double startY, double endX, double endY, double z);
-	/// ‘OŠz–ÊiYZj
-	void drawFrontalPlane(double startY, double startZ, double endY, double endZ, double x);
-	/// –îó–ÊiZXj
-	void drawSagittalPlane(double startZ, double startX, double endZ, double endX, double y);
+    /**
+     *	----------------------------------------
+     *	2Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		å¹³é¢æ¿æç”»(å¯¾è§’ç·šã®é ‚ç‚¹ã¨é«˜ã•)
+      */
+      /// æ°´å¹³é¢ï¼ˆXYï¼‰
+    void drawHorizontalPlane(double startX, double startY, double endX, double endY, double z);
+    /// å‰é¡é¢ï¼ˆYZï¼‰
+    void drawFrontalPlane(double startY, double startZ, double endY, double endZ, double x);
+    /// çŸ¢çŠ¶é¢ï¼ˆZXï¼‰
+    void drawSagittalPlane(double startZ, double startX, double endZ, double endX, double y);
 
-	/**
-	 *	à–¾
-	 *		ƒƒbƒVƒ…ó‚Ì°‚ğ•`‰æ‚·‚é
-	 *	ˆø”
-	 *		startX, startYF°‚Ì‘ÎŠpü‚Ìn“_
-	 *		endX, endYF°‚Ì‘ÎŠpü‚ÌI“_
-	 *		zF°‚Ì‚‚³
-	 *		dx, dyFƒƒbƒVƒ…‚ÌŠÔŠu
-	 */
-	void drawGridFloor(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ¡ãƒƒã‚·ãƒ¥çŠ¶ã®åºŠã‚’æç”»ã™ã‚‹
+     *	å¼•æ•°
+     *		startX, startYï¼šåºŠã®å¯¾è§’ç·šã®å§‹ç‚¹
+     *		endX, endYï¼šåºŠã®å¯¾è§’ç·šã®çµ‚ç‚¹
+     *		zï¼šåºŠã®é«˜ã•
+     *		dx, dyï¼šãƒ¡ãƒƒã‚·ãƒ¥ã®é–“éš”
+     */
+    void drawGridFloor(void);
 
-/**
- *	----------------------------------------
- *	ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg
- *	----------------------------------------
- */
-protected: 
-	/**
-	 *	à–¾
-	 *		ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì¶¬
-	 */
-	void newGLObjDispList(void);
-	/**
-	 *	à–¾
-	 *		ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ÌÁ‹
-	 */
-	void deleteObjDispList(void);	
-	
+    /**
+     *	----------------------------------------
+     *	ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆ
+     *	----------------------------------------
+     */
+protected:
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç”Ÿæˆ
+     */
+    void newGLObjDispList(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æ¶ˆå»
+     */
+    void deleteObjDispList(void);
+
 private:
 
 };	/// end of class OpenGLObject

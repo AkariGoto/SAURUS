@@ -1,288 +1,261 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		CameraView.cpp
- *  à–¾
- *		ƒJƒƒ‰ƒrƒ…[‚ğ¶¬‚·‚éiå‚Éƒ}ƒEƒX“®ì‚É‘Î‰j
- *  “ú•t
- *		ì¬“ú: 2007/06/04(MON)		XV“ú: 2007/06/13(WED)
- */
-
-//‰ŠúƒJƒƒ‰ˆÊ’uİ’è  20200822
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ï»¿
 #include "CameraView.h"
 
-using namespace std;
-using namespace Math;
-using namespace Const;
+#include "Math/Matrix/matrix_library.h"
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		CameraViewƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		CameraViewƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
 CameraView::CameraView()
 {
-	setDefaultCondition();
+    setDefaultCondition();
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 CameraView::~CameraView()
 {
 }
 
 /**
  *	----------------------------------------
- *	å‚È‘€ì
+ *	ä¸»ãªæ“ä½œ
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‹“_•ÏXŠJn
- *	ˆø”
- *		mode: •ÏXƒ‚[ƒh
- *		x: ‹N“_‚ÌxÀ•W
- *		y: ‹N“_‚ÌyÀ•W
- */
+ /**
+  *	èª¬æ˜
+  *		è¦–ç‚¹å¤‰æ›´é–‹å§‹
+  *	å¼•æ•°
+  *		mode: å¤‰æ›´ãƒ¢ãƒ¼ãƒ‰
+  *		x: èµ·ç‚¹ã®xåº§æ¨™
+  *		y: èµ·ç‚¹ã®yåº§æ¨™
+  */
 void  CameraView::beginViewControl(CameraView::Mode mode, int x, int y)
 {
-	modeState = mode;
+    using namespace designlab_robot_gui::math;
 
-	initX = x;
-	initY = y;
+    modeState = mode;
 
-	initAzimuth		= azimuth;
-	initElevation	= elevation;
-	initDistance	= distance;
+    initX = x;
+    initY = y;
 
-	for (int i=0; i<THREE_DIMENSION; i++)
-		initViewCenterPosition[i] = viewCenterPosition[i];
-			
-	return;
+    initAzimuth = azimuth;
+    initElevation = elevation;
+    initDistance = distance;
+
+    for (int i = 0; i < THREE_DIMENSION; i++)
+        initViewCenterPosition[i] = viewCenterPosition[i];
+
+    return;
 }
 
 /**
- *	‹“_•ÏXI—¹
+ *	è¦–ç‚¹å¤‰æ›´çµ‚äº†
  */
 void  CameraView::endViewControl(void)
 {
-	modeState = CameraView::STOP;
+    modeState = CameraView::STOP;
 }
 
 /**
- *	à–¾
- *		ƒ‚[ƒh‚É‚æ‚éView‚Ì•ÏX
+ *	èª¬æ˜
+ *		ãƒ¢ãƒ¼ãƒ‰ã«ã‚ˆã‚‹Viewã®å¤‰æ›´
  */
 void  CameraView::doViewControl(int x, int y)
 {
-	switch ( modeState )
-	{
-		case CameraView::PAN:
-			pan(x, y);
-			break;
-		
-		case CameraView::SPIN:
-			spin(x, y);
-			break;
+    switch (modeState)
+    {
+        case CameraView::PAN:
+            pan(x, y);
+            break;
 
-		case CameraView::ZOOM:
-			zoom(x, y);
-			break;
+        case CameraView::SPIN:
+            spin(x, y);
+            break;
 
-		case CameraView::STOP:
-			break;
-			
-		default:
-			return;
-			break;
-	}
+        case CameraView::ZOOM:
+            zoom(x, y);
+            break;
+
+        case CameraView::STOP:
+            break;
+
+        default:
+            return;
+            break;
+    }
 }
 
 /**
- *	à–¾
- *		‹–ì‚Ì•ÏX‚ÌŠeí‘€ì
+ *	èª¬æ˜
+ *		è¦–é‡ã®å¤‰æ›´ã®å„ç¨®æ“ä½œ
  */
-/**
- *	----------------------------------------
- *	‹–ì‚Ì•ÏX‚ÌŠeí‘€ì
- *	----------------------------------------
- */
-/**
- *	•Ài‘€ì
- */
+ /**
+  *	----------------------------------------
+  *	è¦–é‡ã®å¤‰æ›´ã®å„ç¨®æ“ä½œ
+  *	----------------------------------------
+  */
+  /**
+   *	ä¸¦é€²æ“ä½œ
+   */
 void CameraView::pan(int x, int y)
 {
-	double dx = (double)(x - initX);
-	double dy = (double)(y - initY);
+    using namespace designlab_robot_gui::math;
 
-	double upview[3];
-	double view[3];
-	double right[3];
+    double dx = (double)(x - initX);
+    double dy = (double)(y - initY);
 
-	getUpDirection(&upview[0], &upview[1], &upview[2]);
+    double upview[3];
+    double view[3];
+    double right[3];
 
-	getEyeDirection(&view[0], &view[1], &view[2]);
+    getUpDirection(&upview[0], &upview[1], &upview[2]);
 
-	outerProduct(view[0], view[1], view[2],
-				 upview[0], upview[1], upview[2],
-				 &right[0], &right[1], &right[2]
-				 );
+    getEyeDirection(&view[0], &view[1], &view[2]);
 
-	double vx = 5.0E-4;
-	double vy = 5.0E-4;
+    designlab_robot_gui::math::outerProduct(view[0], view[1], view[2],
+           upview[0], upview[1], upview[2],
+           &right[0], &right[1], &right[2]);
 
-	for (int i=0; i<THREE_DIMENSION; i++)
-	{
-		viewCenterPosition[i] = ( vx*dx*right[i] + vy*dy*upview[i] ) + initViewCenterPosition[i];
-	}
+    double vx = 5.0E-4;
+    double vy = 5.0E-4;
 
-	return;
+    for (int i = 0; i < THREE_DIMENSION; i++)
+    {
+        viewCenterPosition[i] = (vx * dx * right[i] + vy * dy * upview[i]) + initViewCenterPosition[i];
+    }
+
+    return;
 }
 
 /**
- *	‰ñ“]‘€ì
+ *	å›è»¢æ“ä½œ
  */
 void CameraView::spin(int x, int y)
 {
-	double dx = (double)(x - initX);
-	double dy = (double)(y - initY);
+    double dx = (double)(x - initX);
+    double dy = (double)(y - initY);
 
-	azimuth		= (-0.5)*(double)dx + initAzimuth;
-	elevation	= (0.5)*(double)dy + initElevation;
+    azimuth = (-0.5) * (double)dx + initAzimuth;
+    elevation = (0.5) * (double)dy + initElevation;
 
-	return;
+    return;
 }
 
 /**
- *	kÚ‘€ì
+ *	ç¸®å°ºæ“ä½œ
  */
 void CameraView::zoom(int x, int y)
 {
-	double dx = (double)(x - initX);
-	double dy = (double)(y - initY);
+    double dx = (double)(x - initX);
+    double dy = (double)(y - initY);
 
-	double dl = dy;
+    double dl = dy;
 
-	distance = (100.0)*dl + initDistance;
+    distance = (100.0) * dl + initDistance;
 
-	return;
+    return;
 }
 
 /**
  *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
+ *	ã‚»ãƒƒãƒˆé–¢æ•°
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‰æ–Êã‚Ì‘€ì‹N“_‚Æ‚È‚é“_‚ğƒZƒbƒg
- */
+ /**
+  *	èª¬æ˜
+  *		ç”»é¢ä¸Šã®æ“ä½œèµ·ç‚¹ã¨ãªã‚‹ç‚¹ã‚’ã‚»ãƒƒãƒˆ
+  */
 void CameraView::setControlPoint(int x, int y)
 {
-	initX = x;
-	initY = y;
+    using namespace designlab_robot_gui::math;
 
-	initAzimuth		= azimuth;
-	initElevation	= elevation;
-	initDistance	= distance;
+    initX = x;
+    initY = y;
 
-	for (int i=0; i<THREE_DIMENSION; i++)
-		initViewCenterPosition[i] = viewCenterPosition[i];
-			
-	return;
+    initAzimuth = azimuth;
+    initElevation = elevation;
+    initDistance = distance;
+
+    for (int i = 0; i < THREE_DIMENSION; i++)
+        initViewCenterPosition[i] = viewCenterPosition[i];
+
+    return;
 }
 
 /**
- *	à–¾
- *		•Ï”‚Ì’l‚ğƒfƒtƒHƒ‹ƒg‚ÉƒZƒbƒg
+ *	èª¬æ˜
+ *		å¤‰æ•°ã®å€¤ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã‚»ãƒƒãƒˆ
  */
 void CameraView::setDefaultCondition(void)
 {
-	initX = 0;
-	initY = 0;
+    using namespace designlab_robot_gui::math;
 
-	/*
-	azimuth		= 45;
-	elevation	= 45;
-	distance	= 2500;
-	*/
-	//20200822
-	azimuth = 90;
-	elevation = 15;
-	distance = 2500;
+    initX = 0;
+    initY = 0;
 
-	for (int i=0; i<THREE_DIMENSION; i++)
-		viewCenterPosition[i] = 0.0;
+    /*
+    azimuth		= 45;
+    elevation	= 45;
+    distance	= 2500;
+    */
+    //20200822
+    azimuth = 90;
+    elevation = 15;
+    distance = 2500;
 
-	setControlPoint(0, 0);
+    for (int i = 0; i < THREE_DIMENSION; i++)
+        viewCenterPosition[i] = 0.0;
 
-	modeState = CameraView::STOP;
+    setControlPoint(0, 0);
 
-	return;
+    modeState = CameraView::STOP;
+
+    return;
 }
 
 /**
- *	à–¾
- *		•ÏXƒ‚[ƒh‚ğİ’è
+ *	èª¬æ˜
+ *		å¤‰æ›´ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®š
  */
 void CameraView::setMode(CameraView::Mode mode)
 {
-	modeState = mode;
+    modeState = mode;
 }
 
 
 
 /**
- *	à–¾
- *		‹ü•ûŒü‚Ìæ“¾
+ *	èª¬æ˜
+ *		è¦–ç·šæ–¹å‘ã®å–å¾—
  */
 void CameraView::getEyeDirection(double* x, double* y, double* z)
 {
-	double xo = cos(elevation*PI/180)*cos(azimuth*PI/180);
-	double yo = cos(elevation*PI/180)*sin(azimuth*PI/180);
-	double zo = sin(elevation*PI/180);
+    double xo = cos(elevation * designlab_robot_gui::math::PI / 180) * cos(azimuth * designlab_robot_gui::math::PI / 180);
+    double yo = cos(elevation * designlab_robot_gui::math::PI / 180) * sin(azimuth * designlab_robot_gui::math::PI / 180);
+    double zo = sin(elevation * designlab_robot_gui::math::PI / 180);
 
-	*x = xo;
-	*y = yo;
-	*z = zo; 
+    *x = xo;
+    *y = yo;
+    *z = zo;
 
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		‹–ì‚Ìã•ûŒü‚Ìæ“¾
+ *	èª¬æ˜
+ *		è¦–é‡ã®ä¸Šæ–¹å‘ã®å–å¾—
  */
 void CameraView::getUpDirection(double* x, double* y, double* z)
 {
-	double xo = distance*cos( (elevation+90)*PI/180 )*cos(azimuth*PI/180);
-	double yo = distance*cos( (elevation+90)*PI/180 )*sin(azimuth*PI/180);
-	double zo = distance*sin( (elevation+90)*PI/180 );
- 
-	*x = xo;
-	*y = yo;
-	*z = zo;
-	
-	return;
+    double xo = distance * cos((elevation + 90) * designlab_robot_gui::math::PI / 180) * cos(azimuth * designlab_robot_gui::math::PI / 180);
+    double yo = distance * cos((elevation + 90) * designlab_robot_gui::math::PI / 180) * sin(azimuth * designlab_robot_gui::math::PI / 180);
+    double zo = distance * sin((elevation + 90) * designlab_robot_gui::math::PI / 180);
+
+    *x = xo;
+    *y = yo;
+    *z = zo;
+
+    return;
 }
 
 }	/// end of namespace Graphic

@@ -1,11 +1,9 @@
 ﻿
 #include "Data/data_handler.h"
-#include "Math/matrix_class.h"
+
 
 namespace designlab_robot_gui::data
 {
-
-math::Matrix3x3 sample;
 
 DataHandler::DataHandler(AsuraX* asuraPtr, AsuraData* asuraDataPtr, Planner* planPtr, PlanData* planDataPtr)
     : asuraDataSourcePointer(NULL),
@@ -202,7 +200,7 @@ void DataHandler::handlePlanData()
     return;
 }
 
-const Math::Matrix& DataHandler::getLegBaseTransformation(int legNo) const
+const math::Matrix& DataHandler::getLegBaseTransformation(int legNo) const
 {
     // 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -210,7 +208,7 @@ const Math::Matrix& DataHandler::getLegBaseTransformation(int legNo) const
     return asuraData.leg_base_transformation[legNo - 1];
 }
 
-const Math::Matrix& DataHandler::getLegJointTransformation(int legNo, int jointNo) const
+const math::Matrix& DataHandler::getLegJointTransformation(int legNo, int jointNo) const
 {
     // 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -219,7 +217,7 @@ const Math::Matrix& DataHandler::getLegJointTransformation(int legNo, int jointN
     return asuraData.leg_joint_transformation[legNo - 1][jointNo - 1];
 }
 
-const Math::Matrix& DataHandler::getLegFootTransformation(int legNo) const
+const math::Matrix& DataHandler::getLegFootTransformation(int legNo) const
 {
     // 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -227,7 +225,7 @@ const Math::Matrix& DataHandler::getLegFootTransformation(int legNo) const
     return asuraData.leg_foot_transformation[legNo - 1];
 }
 
-const Math::Vector& DataHandler::getLegBasePosition(int legNo) const
+const math::Vector& DataHandler::getLegBasePosition(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -235,7 +233,7 @@ const Math::Vector& DataHandler::getLegBasePosition(int legNo) const
     return asuraData.leg_base_position[legNo - 1];
 }
 
-const Math::Vector& DataHandler::getLegJointPosition(int legNo, int jointNo) const
+const math::Vector& DataHandler::getLegJointPosition(int legNo, int jointNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -244,7 +242,7 @@ const Math::Vector& DataHandler::getLegJointPosition(int legNo, int jointNo) con
     return asuraData.leg_joint_position[legNo - 1][jointNo - 1];
 }
 
-const Math::Vector& DataHandler::getLegFootPosition(int legNo) const
+const math::Vector& DataHandler::getLegFootPosition(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -252,7 +250,7 @@ const Math::Vector& DataHandler::getLegFootPosition(int legNo) const
     return asuraData.leg_foot_position[legNo - 1];
 }
 
-const Math::Vector& DataHandler::getLegJointAngle(int legNo) const
+const math::Vector& DataHandler::getLegJointAngle(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -260,7 +258,7 @@ const Math::Vector& DataHandler::getLegJointAngle(int legNo) const
     return asuraData.leg_joint_angle[legNo - 1];
 }
 
-const Math::Vector& DataHandler::getLegJointVelocity(int legNo) const
+const math::Vector& DataHandler::getLegJointVelocity(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -268,7 +266,7 @@ const Math::Vector& DataHandler::getLegJointVelocity(int legNo) const
     return asuraData.leg_joint_velocity[legNo - 1];
 }
 
-const Math::Vector& DataHandler::getLegJointTorque(int legNo) const
+const math::Vector& DataHandler::getLegJointTorque(int legNo) const
 {
     /// 引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);

@@ -3,7 +3,6 @@
 #define DESIGNLABROBOTGUI_PLAN_TRIPOD_GAIT_PLANNER_H_
 
 #include "Kinematics/asura_x.h"
-#include "Math/MathLibrary.h"
 #include "Plan/plan_parameter.h"
 #include "Plan/planner.h"
 
@@ -14,7 +13,7 @@ namespace designlab_robot_gui::plan
 class TripodGaitPlanner final : public Planner
 {
     using AsuraX = asura::AsuraX;
-    using Vector = Math::Vector;
+    using Vector = math::Vector;
 
 public:
     explicit TripodGaitPlanner(asura::AsuraX* asuraPointer_ = nullptr,
@@ -131,7 +130,7 @@ private:
     double* finalFootJointAngle;  //!< 移行後の関節角度
     double* settingFootJointAngle;  //!< 移行中の関節角度
 
-    Math::Vector* angularVelosity;  //!< 姿勢移行中の角速度
+    math::Vector* angularVelosity;  //!< 姿勢移行中の角速度
 
     //! それぞれの関節を動かし終わるまでの所要時間
     double* t01;

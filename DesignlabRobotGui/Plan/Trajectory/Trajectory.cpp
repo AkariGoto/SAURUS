@@ -1,7 +1,7 @@
 ﻿
 #include "Plan/Trajectory/trajectory.h"
 
-#include "Utility/EngConstant.h"
+#include "Math/math_constant.h"
 
 
 namespace designlab_robot_gui::plan
@@ -37,9 +37,9 @@ bool Trajectory::operator ==(const Trajectory& trajectory) const
 void Trajectory::initializeTrajectory()
 {
     // スタート地点
-    startPosition.setSize(Const::THREE_DIMENSION);
+    startPosition.setSize(math::THREE_DIMENSION);
     // ゴール地点
-    goalPosition.setSize(Const::THREE_DIMENSION);
+    goalPosition.setSize(math::THREE_DIMENSION);
 }
 
 void Trajectory::setDistance(const Vector& start, const Vector& goal)
@@ -56,7 +56,7 @@ void Trajectory::setTime(double start, double goal)
 
 void Trajectory::shiftStartPosition(const Vector& start)
 {
-    Vector shift(Const::THREE_DIMENSION);
+    Vector shift(math::THREE_DIMENSION);
     shift = goalPosition - startPosition;
 
     startPosition = start;
@@ -71,10 +71,10 @@ void Trajectory::shiftStartTime(const double start)
     goalTime = start + shift;
 }
 
-Math::Vector Trajectory::getPosition(const double splitTime)
+math::Vector Trajectory::getPosition(const double splitTime)
 {
     // 取り出す脚先軌道
-    Vector trajectory(Const::THREE_DIMENSION);
+    Vector trajectory(math::THREE_DIMENSION);
 
     if (splitTime <= startTime)
     {

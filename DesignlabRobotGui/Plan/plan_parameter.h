@@ -5,8 +5,7 @@
 #include <iostream>
 
 #include "Kinematics/asura_parameter.h"
-#include "Math/MathConstant.h"
-#include "Math/MathLibrary.h"
+#include "Math/math_constant.h"
 
 
 namespace designlab_robot_gui::plan
@@ -69,10 +68,9 @@ const double TRIPODGAIT_FOOT_REF_POSITION_4[] = { -500.0,	-500.0, -TRIPODGAIT_IN
 const double TRIPODGAIT_FOOT_REF_POSITION_5[] = { 0.00,	-700.0, -TRIPODGAIT_INITIAL_BODY_POSITION[2] };
 const double TRIPODGAIT_FOOT_REF_POSITION_6[] = { 500.0,	-500.0, -TRIPODGAIT_INITIAL_BODY_POSITION[2] };
 
-const double ANGULAR_VELOCITY = 0.02 * Const::PI;  // [rad/s]  角速度の仮の値
+const double ANGULAR_VELOCITY = 0.02 * math::PI;  // [rad/s]  角速度の仮の値
 
 }  // namespace designlab_robot_gui::plan
 
-extern unsigned char changeflag;
 
 #endif  // DESIGNLABROBOTGUI_PLAN_PLAN_PARAMETER_H_

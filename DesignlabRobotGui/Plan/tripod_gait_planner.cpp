@@ -1,6 +1,8 @@
 ﻿
 #include "Plan/tripod_gait_planner.h"
 
+#include "Math/math_constant.h"
+
 
 namespace designlab_robot_gui::plan
 {
@@ -58,21 +60,21 @@ void TripodGaitPlanner::initializeTripodGaitPlanner(void)
     stride = TRIPODGAIT_STRIDE;
 
     /// 歩行方向のセット
-    unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, Const::THREE_DIMENSION);
+    unitWalkingDirection = Vector(DEFAULT_LOCOMOTION_DIRECTION, math::THREE_DIMENSION);
 
     //20200929  支持脚時に使用するz軸方向のセット
-    unitUpDirection = Vector(UP_DIRECTION, Const::THREE_DIMENSION);
+    unitUpDirection = Vector(UP_DIRECTION, math::THREE_DIMENSION);
 
     /// 位置ベクトルの初期化
-    footReferencePosition[0] = Vector(TRIPODGAIT_FOOT_REF_POSITION_1, Const::THREE_DIMENSION);
-    footReferencePosition[1] = Vector(TRIPODGAIT_FOOT_REF_POSITION_2, Const::THREE_DIMENSION);
-    footReferencePosition[2] = Vector(TRIPODGAIT_FOOT_REF_POSITION_3, Const::THREE_DIMENSION);
-    footReferencePosition[3] = Vector(TRIPODGAIT_FOOT_REF_POSITION_4, Const::THREE_DIMENSION);
-    footReferencePosition[4] = Vector(TRIPODGAIT_FOOT_REF_POSITION_5, Const::THREE_DIMENSION);
-    footReferencePosition[5] = Vector(TRIPODGAIT_FOOT_REF_POSITION_6, Const::THREE_DIMENSION);
+    footReferencePosition[0] = Vector(TRIPODGAIT_FOOT_REF_POSITION_1, math::THREE_DIMENSION);
+    footReferencePosition[1] = Vector(TRIPODGAIT_FOOT_REF_POSITION_2, math::THREE_DIMENSION);
+    footReferencePosition[2] = Vector(TRIPODGAIT_FOOT_REF_POSITION_3, math::THREE_DIMENSION);
+    footReferencePosition[3] = Vector(TRIPODGAIT_FOOT_REF_POSITION_4, math::THREE_DIMENSION);
+    footReferencePosition[4] = Vector(TRIPODGAIT_FOOT_REF_POSITION_5, math::THREE_DIMENSION);
+    footReferencePosition[5] = Vector(TRIPODGAIT_FOOT_REF_POSITION_6, math::THREE_DIMENSION);
     /// 遊脚運動
-    swingUp = Vector(TRIPODGAIT_SWING_UP, Const::THREE_DIMENSION);
-    swingDown = Vector(TRIPODGAIT_SWING_DOWN, Const::THREE_DIMENSION);
+    swingUp = Vector(TRIPODGAIT_SWING_UP, math::THREE_DIMENSION);
+    swingDown = Vector(TRIPODGAIT_SWING_DOWN, math::THREE_DIMENSION);
 
     /// デフォルト値による歩容パラメータの計算
     calculateGaitParameters();
@@ -184,7 +186,7 @@ void TripodGaitPlanner::calculateGaitParameters(void)
 
 
     /// 胴体の初期位置
-    for (int l = 0; l < Const::THREE_DIMENSION; l++)
+    for (int l = 0; l < math::THREE_DIMENSION; l++)
     {
         initialBodyPosition(l + 1) = TRIPODGAIT_INITIAL_BODY_POSITION[l];
     }
@@ -693,21 +695,21 @@ void TripodGaitPlanner::newTripodGaitItems()
     swingStopPosition = new Vector[asura::LEG_NUM];
 
     /// ベクトルのサイズ決定
-    initialBodyPosition.setSize(Const::THREE_DIMENSION);
+    initialBodyPosition.setSize(math::THREE_DIMENSION);
 
-    unitWalkingDirection.setSize(Const::THREE_DIMENSION);
-    unitUpDirection.setSize(Const::THREE_DIMENSION);
-    swingUp.setSize(Const::THREE_DIMENSION);
-    swingDown.setSize(Const::THREE_DIMENSION);
+    unitWalkingDirection.setSize(math::THREE_DIMENSION);
+    unitUpDirection.setSize(math::THREE_DIMENSION);
+    swingUp.setSize(math::THREE_DIMENSION);
+    swingDown.setSize(math::THREE_DIMENSION);
 
     /// 脚位置関係
     int i;
     for (i = 0; i < asura::LEG_NUM; i++)
     {
-        footReferencePosition[i].setSize(Const::THREE_DIMENSION);
-        initialFootPosition[i].setSize(Const::THREE_DIMENSION);
-        swingStartPosition[i].setSize(Const::THREE_DIMENSION);
-        swingStopPosition[i].setSize(Const::THREE_DIMENSION);
+        footReferencePosition[i].setSize(math::THREE_DIMENSION);
+        initialFootPosition[i].setSize(math::THREE_DIMENSION);
+        swingStartPosition[i].setSize(math::THREE_DIMENSION);
+        swingStopPosition[i].setSize(math::THREE_DIMENSION);
     }
 
     /// 遊脚開始時間

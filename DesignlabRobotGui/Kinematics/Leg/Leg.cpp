@@ -42,7 +42,7 @@ Leg::Leg(int no, double x, double y, double z, double theta)
     legLimit.reachHeightMax = REACH_HEIGHT_MAX;
 
     // DHパラメータ
-    dhParam.alpha[0] = -Const::PI / 2;
+    dhParam.alpha[0] = -math::PI / 2;
     dhParam.alpha[1] = 0;
     dhParam.alpha[2] = 0;
 
@@ -91,9 +91,9 @@ Leg::Leg(int no, double x, double y, double z, double theta)
      *	行列のサイズ決定
      */
      /// ヤコビ行列: [3x3]
-    jacobian.setSize(Const::THREE_DIMENSION, Const::THREE_DIMENSION);
+    jacobian.setSize(math::THREE_DIMENSION, math::THREE_DIMENSION);
     /// 逆ヤコビ行列: [3x3]
-    inverseJacobian.setSize(Const::THREE_DIMENSION, Const::THREE_DIMENSION);
+    inverseJacobian.setSize(math::THREE_DIMENSION, math::THREE_DIMENSION);
 
     /// 脚の姿勢指標（逆運動学時に用いる）0 or 1
     this->SetLegPoseIndicator();
@@ -171,7 +171,7 @@ Kinematics Leg::solveDirectKinematics()
     legData.base_transformation = legBaseHomogeneousTransformation();
 
     /// 脚根元位置ベクトルを代入
-    for (i = 1; i <= Const::THREE_DIMENSION; i++)
+    for (i = 1; i <= math::THREE_DIMENSION; i++)
     {
         legData.base_position(i) = legData.base_transformation(i, 4);
     }
@@ -181,7 +181,7 @@ Kinematics Leg::solveDirectKinematics()
     legData.joint_transformation[0] = legData.base_transformation * legJointHomogeneousTransformation(1);
 
     /// 第1関節位置ベクトルを代入
-    for (i = 1; i <= Const::THREE_DIMENSION; i++)
+    for (i = 1; i <= math::THREE_DIMENSION; i++)
     {
         legData.joint_position[0](i) = legData.joint_transformation[0](i, 4);
     }
@@ -194,7 +194,7 @@ Kinematics Leg::solveDirectKinematics()
         legData.joint_transformation[i] = legData.joint_transformation[i - 1] * legJointHomogeneousTransformation(i + 1);
 
         /// 位置ベクトルを取得
-        for (j = 1; j <= Const::THREE_DIMENSION; j++)
+        for (j = 1; j <= math::THREE_DIMENSION; j++)
         {
             legData.joint_position[i](j) = legData.joint_transformation[i](j, 4);
         }
@@ -204,7 +204,7 @@ Kinematics Leg::solveDirectKinematics()
     legData.foot_transformation = legData.joint_transformation[2] * legFootHomogeneousTransformation();
 
     /// 足位置位置ベクトルを代入
-    for (i = 1; i <= Const::THREE_DIMENSION; i++)
+    for (i = 1; i <= math::THREE_DIMENSION; i++)
     {
         legData.foot_position(i) = legData.foot_transformation(i, 4);
     }
@@ -230,7 +230,7 @@ Kinematics Leg::solveInverseKinematics()
      /// 戻り値
     Kinematics kinematics = NO_KINE_ERROR;
     /// 脚座標系での脚先の同次変換行列
-    Matrix footTransform(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix footTransform(math::DH_DIMENSION, math::DH_DIMENSION);
     /// 脚先の位置
     double x = 0.00; double y = 0.00; double z = 0.00;
     /// 関節角の計算に使う
@@ -243,8 +243,8 @@ Kinematics Leg::solveInverseKinematics()
     /// 一時保存用
     double formerJoint1;
     ///脚先接地角度
-    //double leg_tip_angle = Const::PI/2 ;  //+ Const::PI/4;
-    //legData.leg_tip_angle = 90 / 180 * Const::PI;  //+ Const::PI/4;
+    //double leg_tip_angle = math::PI/2 ;  //+ math::PI/4;
+    //legData.leg_tip_angle = 90 / 180 * math::PI;  //+ math::PI/4;
 
 
     /// 脚の可動範囲をチェック
@@ -265,7 +265,7 @@ Kinematics Leg::solveInverseKinematics()
     z = footTransform(3, 4);//+ FOOT;	/// 足首高さだけオフセット（常にz方向にオフセットと仮定）
 
     //20221026
-    legData.leg_tip_angle = (-0.1 * sqrt(x * x + y * y) + 0.02 * z + 151) / 180 * Const::PI;
+    legData.leg_tip_angle = (-0.1 * sqrt(x * x + y * y) + 0.02 * z + 151) / 180 * math::PI;
 
     /// 計算補助変数を算出
     q1 = dhParam.d[1] + dhParam.d[2];
@@ -392,7 +392,7 @@ Kinematics Leg::checkLegJointMotionRange()
 Kinematics Leg::checkLegFootReachRange()
 {
     /// 脚座標系での脚先の同次変換行列
-    Matrix transform(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix transform(math::DH_DIMENSION, math::DH_DIMENSION);
 
     /// 計算用補助変数
     double x, y, z;
@@ -431,10 +431,10 @@ Kinematics Leg::checkLegFootReachRange()
 
 Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
 {
-    Matrix lastFootTransform(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix lastFootTransform(math::DH_DIMENSION, math::DH_DIMENSION);
 
     /// 引数チェック
-    if (nextFootPosition.getSize() != Const::THREE_DIMENSION)
+    if (nextFootPosition.getSize() != math::THREE_DIMENSION)
     {
         // エラーは cout ではなく， cerr に出力すること．
         std::cerr << "Error: [Leg::placeFootPosition] Invalid argument" << std::endl;
@@ -445,7 +445,7 @@ Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
     /// 足先の同次変換行列を一時保存
     lastFootTransform = legData.foot_transformation;
     /// 目標足先位置を代入	
-    for (int i = 1; i <= Const::THREE_DIMENSION; i++)
+    for (int i = 1; i <= math::THREE_DIMENSION; i++)
         legData.foot_transformation(i, 4) = nextFootPosition(i);
 
     /// 逆運動学を解く
@@ -489,7 +489,7 @@ Kinematics Leg::placeLegFootPosition(const Vector& nextFootPosition)
 Kinematics Leg::placeLegJointAngles(const Vector& nextJointAngle, const double& nextFootJointAngle)
 {
     /// 一時保存用
-    Vector lastJointAngle(Const::THREE_DIMENSION);
+    Vector lastJointAngle(math::THREE_DIMENSION);
     double lastFootJointAngle;
 
     /// 引数チェック
@@ -571,27 +571,27 @@ void Leg::LegData::NewLegData()
 {
     // 行列のサイズ決定
     // 同時変換行列
-    base_transformation.setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    base_transformation.setSize(math::DH_DIMENSION, math::DH_DIMENSION);
     base_transformation.loadIdentity();
 
     for (int i = 0; i < LEG_JOINT_NUM; i++)
     {
-        joint_transformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+        joint_transformation[i].setSize(math::DH_DIMENSION, math::DH_DIMENSION);
         joint_transformation[i].loadIdentity();
     }
 
-    foot_transformation.setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    foot_transformation.setSize(math::DH_DIMENSION, math::DH_DIMENSION);
     foot_transformation.loadIdentity();
 
     // 位置ベクトル
-    base_position.setSize(Const::THREE_DIMENSION);
+    base_position.setSize(math::THREE_DIMENSION);
 
     for (int j = 0; j < LEG_JOINT_NUM; j++)
     {
-        joint_position[j].setSize(Const::THREE_DIMENSION);
+        joint_position[j].setSize(math::THREE_DIMENSION);
     }
 
-    foot_position.setSize(Const::THREE_DIMENSION);
+    foot_position.setSize(math::THREE_DIMENSION);
 
     // 関節角度
     joint_angle.setSize(LEG_JOINT_NUM);

@@ -1,678 +1,650 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		OpenGL.cpp
- *  à–¾
- *		OpenGLŠÖŒW‚Ì•`‰æŠî‘bƒNƒ‰ƒX(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/15(SAT)
- */
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ï»¿
 #include "OpenGL.h"
 
-using namespace std;
-using namespace Math;
-using namespace Const;
+
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		OpenGLƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		OpenGLƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
 OpenGL::OpenGL()
 {
-	/// ƒnƒ“ƒhƒ‹‚ğ‰Šú‰»
-	windowHandle = NULL;
- 	deviceContextHandle = NULL;
- 	renderingContextHandle = NULL;
+    /// ãƒãƒ³ãƒ‰ãƒ«ã‚’åˆæœŸåŒ–
+    windowHandle = NULL;
+    deviceContextHandle = NULL;
+    renderingContextHandle = NULL;
 
-	/// ‹“_Œˆ’è
-	viewType = PERSPECTIVE;
+    /// è¦–ç‚¹æ±ºå®š
+    viewType = PERSPECTIVE;
 }
 
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 OpenGL::OpenGL(HWND hWnd)
 {
-	/// ƒnƒ“ƒhƒ‹‚ğ‰Šú‰»
-	windowHandle = NULL;
- 	deviceContextHandle = NULL;
- 	renderingContextHandle = NULL;
+    /// ãƒãƒ³ãƒ‰ãƒ«ã‚’åˆæœŸåŒ–
+    windowHandle = NULL;
+    deviceContextHandle = NULL;
+    renderingContextHandle = NULL;
 
-	/// ‹“_Œˆ’è
-	viewType = PERSPECTIVE;
+    /// è¦–ç‚¹æ±ºå®š
+    viewType = PERSPECTIVE;
 
-	/// OpenGL‰Šú‰»
-	initializeGL(hWnd);
+    /// OpenGLåˆæœŸåŒ–
+    initializeGL(hWnd);
 
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 OpenGL::~OpenGL()
 {
-	finalizeGL();
+    finalizeGL();
 }
 
 /**
  *	----------------------------------------
- *	OpenGL‚Ìİ’è‚ÉŠÖŒW‚·‚é‚à‚Ì
+ *	OpenGLã®è¨­å®šã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‰Šú‰»
- *	ˆø”
- *		hWnd: •`‰æ‚·‚é—Ìˆæ‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
- */
+ /**
+  *	èª¬æ˜
+  *		åˆæœŸåŒ–
+  *	å¼•æ•°
+  *		hWnd: æç”»ã™ã‚‹é ˜åŸŸã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+  */
 bool OpenGL::initializeGL(HWND hWnd)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	if (!::IsWindow(hWnd))
-	{
-		cerr << "Error: [OpenGL::initializeOpenGL] Invalid Window Handle" << endl;
-		return false;
-	}
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    if (!::IsWindow(hWnd))
+    {
+        std::cerr << "Error: [OpenGL::initializeOpenGL] Invalid Window Handle"
+            << std::endl;
+        return false;
+    }
 
-	/// ƒnƒ“ƒhƒ‹‚Ì‘ã“ü
-	windowHandle	= hWnd;
-	deviceContextHandle	= ::GetDC(windowHandle);
+    /// ãƒãƒ³ãƒ‰ãƒ«ã®ä»£å…¥
+    windowHandle = hWnd;
+    deviceContextHandle = ::GetDC(windowHandle);
 
-	/// ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚Ìİ’è
-	if (!setWindowPixelFormat())
-	{
-		cerr << "Error: [OpenGL::initializeOpenGL] setWindowPixelFormat Error" << endl;
-		return false;
-	}
+    /// ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
+    if (!setWindowPixelFormat())
+    {
+        std::cerr << "Error: [OpenGL::initializeOpenGL] setWindowPixelFormat Error"
+            << std::endl;
+        return false;
+    }
 
-	/// GLƒRƒ“ƒeƒLƒXƒg‚Ìİ’è
-	if (!createGLContext())
-	{
-		cerr << "Error: [OpenGL::initializeOpenGL] createGLContext Error" << endl;
-		return false;
-	}
+    /// GLã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®è¨­å®š
+    if (!createGLContext())
+    {
+        std::cerr << "Error: [OpenGL::initializeOpenGL] createGLContext Error"
+            << std::endl;
+        return false;
+    }
 
-	/// OpenGL‚ÌŠe‹@”\‚ÌŠJn
-	setOpenGLFunctions();
+    /// OpenGLã®å„æ©Ÿèƒ½ã®é–‹å§‹
+    setOpenGLFunctions();
 
-	/// Æ–¾‚Ìİ’è
-	setWorldLightings();
+    /// ç…§æ˜ã®è¨­å®š
+    setWorldLightings();
 
-	/// •`‰æ‚·‚éƒV[ƒ“‚ÌƒTƒCƒY‚ğŠi”[
-	RECT sceneSize;
-	::GetClientRect(windowHandle, &sceneSize);
-	sceneWidth = sceneSize.right;
-	sceneHeight = sceneSize.bottom;	
+    /// æç”»ã™ã‚‹ã‚·ãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’æ ¼ç´
+    RECT sceneSize;
+    ::GetClientRect(windowHandle, &sceneSize);
+    sceneWidth = sceneSize.right;
+    sceneHeight = sceneSize.bottom;
 
-	return true;
+    return true;
 }
 
 /**
- *	à–¾
- *		I—¹ˆ—
+ *	èª¬æ˜
+ *		çµ‚äº†å‡¦ç†
  */
 void OpenGL::finalizeGL(void)
 {
-	/// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ğƒJƒŒƒ“ƒg‚©‚ç‚Í‚¸‚·
-	if (wglGetCurrentContext())
-		wglMakeCurrent(NULL, NULL);
-	
-	if (renderingContextHandle != NULL)
-	{
-		wglDeleteContext(renderingContextHandle);
-		renderingContextHandle = NULL;
-	}
+    /// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚«ãƒ¬ãƒ³ãƒˆã‹ã‚‰ã¯ãšã™
+    if (wglGetCurrentContext())
+        wglMakeCurrent(NULL, NULL);
 
-	if (deviceContextHandle != NULL)
-		::ReleaseDC(windowHandle, deviceContextHandle);
+    if (renderingContextHandle != NULL)
+    {
+        wglDeleteContext(renderingContextHandle);
+        renderingContextHandle = NULL;
+    }
 
-	return;
+    if (deviceContextHandle != NULL)
+        ::ReleaseDC(windowHandle, deviceContextHandle);
+
+    return;
 }
 
 /**
- *	à–¾
- *		OpenGL‚Ì‹@”\İ’è
+ *	èª¬æ˜
+ *		OpenGLã®æ©Ÿèƒ½è¨­å®š
  */
 void OpenGL::setOpenGLFunctions(void)
 {
-	/**
-	 *	ƒoƒbƒtƒ@‚ğ‰Šú‰»‚·‚éƒJƒ‰[î•ñ‚ğw’è
-	 *	glClear‚Åg—p‚³‚ê‚éƒJƒ‰[
-	 */
-	glClearColor(0.7f, 0.8f, 0.9f, 1.0f);		/// ”wŒiF‚ÌŒˆ’è
+    /**
+     *	ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–ã™ã‚‹ã‚«ãƒ©ãƒ¼æƒ…å ±ã‚’æŒ‡å®š
+     *	glClearã§ä½¿ç”¨ã•ã‚Œã‚‹ã‚«ãƒ©ãƒ¼
+     */
+    glClearColor(0.7f, 0.8f, 0.9f, 1.0f);		/// èƒŒæ™¯è‰²ã®æ±ºå®š
 
-	/// ƒfƒvƒXƒoƒbƒtƒ@ƒNƒŠƒA’l‚Ìİ’è
-	glClearDepth( 1.0f );
+    /// ãƒ‡ãƒ—ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢å€¤ã®è¨­å®š
+    glClearDepth(1.0f);
 
-	/// ZiƒfƒvƒXjƒoƒbƒtƒ@‚Ìg—pŠJn
-	glEnable(GL_DEPTH_TEST);
+    /// Zï¼ˆãƒ‡ãƒ—ã‚¹ï¼‰ãƒãƒƒãƒ•ã‚¡ã®ä½¿ç”¨é–‹å§‹
+    glEnable(GL_DEPTH_TEST);
 
-	/**
-	 *	[“xƒoƒbƒtƒ@[”äŠr‚Ég—p‚³‚ê‚é’l‚ğw’è
-	 *	“¯ˆê‚©Aè‘O‚É‚ ‚é‚à‚Ì‚Åã‚ª‚«‚µ‚Ä‚¢‚­
-	 */
-	glDepthFunc(GL_LEQUAL);
+    /**
+     *	æ·±åº¦ãƒãƒƒãƒ•ã‚¡ãƒ¼æ¯”è¼ƒã«ä½¿ç”¨ã•ã‚Œã‚‹å€¤ã‚’æŒ‡å®š
+     *	åŒä¸€ã‹ã€æ‰‹å‰ã«ã‚ã‚‹ã‚‚ã®ã§ä¸ŠãŒãã—ã¦ã„ã
+     */
+    glDepthFunc(GL_LEQUAL);
 
-	/**
-	 *	ƒVƒF[ƒfƒBƒ“ƒOİ’è
-	 *	ƒvƒŠƒ~ƒeƒBƒu‚Ì–Ê‚ğŠe’¸“_‚ÌF‚©‚çŒvZ‚³‚ê‚½ƒOƒ‰ƒf[ƒVƒ‡ƒ“‚Å“h‚é
-	 */
-	glShadeModel(GL_SMOOTH);
+    /**
+     *	ã‚·ã‚§ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°è¨­å®š
+     *	ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®é¢ã‚’å„é ‚ç‚¹ã®è‰²ã‹ã‚‰è¨ˆç®—ã•ã‚ŒãŸã‚°ãƒ©ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã§å¡—ã‚‹
+     */
+    glShadeModel(GL_SMOOTH);
 
-	/**
-	 *	Ÿ‚Ìs—ñ‰‰Zƒ^[ƒQƒbƒg‚ğ‘I‘ğ‚·‚é
-	 *		ƒIƒuƒWƒFƒNƒg•`‰æƒ‚[ƒh
-	 */
-	glMatrixMode(GL_MODELVIEW);
+    /**
+     *	æ¬¡ã®è¡Œåˆ—æ¼”ç®—ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é¸æŠã™ã‚‹
+     *		ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»ãƒ¢ãƒ¼ãƒ‰
+     */
+    glMatrixMode(GL_MODELVIEW);
 
 }
 
 /**
- *	à–¾
- *		GL‚Ìİ’è‚ÌƒŠƒZƒbƒg
+ *	èª¬æ˜
+ *		GLã®è¨­å®šã®ãƒªã‚»ãƒƒãƒˆ
  */
 void OpenGL::clearOpenGLSettings(void)
 {
-	/// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚Ì‰Šú‰»
-	if (renderingContextHandle != NULL)
-	{
-		wglDeleteContext(renderingContextHandle);
-		renderingContextHandle = NULL;
-	}
+    /// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®åˆæœŸåŒ–
+    if (renderingContextHandle != NULL)
+    {
+        wglDeleteContext(renderingContextHandle);
+        renderingContextHandle = NULL;
+    }
 
-	/// ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgƒnƒ“ƒhƒ‹‚Ì‰Šú‰»
-	if (deviceContextHandle != NULL)
-		::ReleaseDC(windowHandle, deviceContextHandle);
+    /// ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒãƒ³ãƒ‰ãƒ«ã®åˆæœŸåŒ–
+    if (deviceContextHandle != NULL)
+        ::ReleaseDC(windowHandle, deviceContextHandle);
 
-	/// ‹“_‚ğƒp[ƒXƒyƒNƒeƒBƒu‚É
-	viewType = PERSPECTIVE;
+    /// è¦–ç‚¹ã‚’ãƒ‘ãƒ¼ã‚¹ãƒšã‚¯ãƒ†ã‚£ãƒ–ã«
+    viewType = PERSPECTIVE;
 
 }
 
 /**
  *	----------------------------------------
- *	•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
+ *	æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		Æ–¾Œø‰Ê‚Ìİ’è
- *		OpenGL‚Å‚ÍGL_LIGHT0‚©‚çGL_LIGHT7‚Ü‚Å‚Ì‚W‚Â‚ÌŒõŒ¹‚ğİ’è‚Å‚«‚é
- */
+ /**
+  *	èª¬æ˜
+  *		ç…§æ˜åŠ¹æœã®è¨­å®š
+  *		OpenGLã§ã¯GL_LIGHT0ã‹ã‚‰GL_LIGHT7ã¾ã§ã®ï¼˜ã¤ã®å…‰æºã‚’è¨­å®šã§ãã‚‹
+  */
 void OpenGL::setWorldLightings(void)
 {
-/**
- *	Æ–¾Œø‰Ê‚ÌŒˆ’è
- */
-	/// ŠÂ‹«Œõ
-	ambientLight0[0] = 1.0f;
-	ambientLight0[1] = 1.0f;
-	ambientLight0[2] = 1.0f;
-	ambientLight0[3] = 0.5f;
-	
-	/// ŠgUŒõ
-	diffuseLight0[0] = 1.0f;		
-	diffuseLight0[1] = 1.0f;
-	diffuseLight0[2] = 1.0f;
-	diffuseLight0[3] = 1.0f;
-	
-	/// ‹¾–ÊŒõ
-	specularLight0[0] = 1.0f;		
-	specularLight0[1] = 1.0f;
-	specularLight0[2] = 1.0f;
-	specularLight0[3] = 1.0f;
-	
-	/// ŒõŒ¹ˆÊ’u
-	positionLight0[0] = 0.5f;		
-	positionLight0[1] = -0.5f;
-	positionLight0[2] = 1.0f;
-	positionLight0[3] = 0.0f;
-	
-	/// ƒXƒ|ƒbƒgƒ‰ƒCƒg•ûŒü
-	directionLight0[0] = 0.0f;	
-	directionLight0[1] = 0.0f;
-	directionLight0[2] = -1.0f;
+    /**
+     *	ç…§æ˜åŠ¹æœã®æ±ºå®š
+     */
+     /// ç’°å¢ƒå…‰
+    ambientLight0[0] = 1.0f;
+    ambientLight0[1] = 1.0f;
+    ambientLight0[2] = 1.0f;
+    ambientLight0[3] = 0.5f;
 
-	/// ‚±‚±‚Å‚ÍGL_LIGHT0‚Ìˆê‚Â‚ÌŒõŒ¹‚Ì‚İİ’è‚·‚é
-	glLightfv(GL_LIGHT0,	GL_AMBIENT,			ambientLight0);
-	glLightfv(GL_LIGHT0,	GL_DIFFUSE,			diffuseLight0);
-	glLightfv(GL_LIGHT0,	GL_SPECULAR,		specularLight0);
-	glLightfv(GL_LIGHT0,	GL_POSITION,		positionLight0);
-//	glLightf(GL_LIGHT0,		GL_SPOT_CUTOFF,		45.0f);
-//	glLightfv(GL_LIGHT0,	GL_SPOT_DIRECTION,	directionLight0);
-//	glLightf(GL_LIGHT0,		GL_SPOT_EXPONENT,	20.0f);
+    /// æ‹¡æ•£å…‰
+    diffuseLight0[0] = 1.0f;
+    diffuseLight0[1] = 1.0f;
+    diffuseLight0[2] = 1.0f;
+    diffuseLight0[3] = 1.0f;
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_COLOR_MATERIAL);
+    /// é¡é¢å…‰
+    specularLight0[0] = 1.0f;
+    specularLight0[1] = 1.0f;
+    specularLight0[2] = 1.0f;
+    specularLight0[3] = 1.0f;
 
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);	
-	glColorMaterial(GL_FRONT_AND_BACK,GL_DIFFUSE);
+    /// å…‰æºä½ç½®
+    positionLight0[0] = 0.5f;
+    positionLight0[1] = -0.5f;
+    positionLight0[2] = 1.0f;
+    positionLight0[3] = 0.0f;
+
+    /// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆæ–¹å‘
+    directionLight0[0] = 0.0f;
+    directionLight0[1] = 0.0f;
+    directionLight0[2] = -1.0f;
+
+    /// ã“ã“ã§ã¯GL_LIGHT0ã®ä¸€ã¤ã®å…‰æºã®ã¿è¨­å®šã™ã‚‹
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight0);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight0);
+    glLightfv(GL_LIGHT0, GL_POSITION, positionLight0);
+    //	glLightf(GL_LIGHT0,		GL_SPOT_CUTOFF,		45.0f);
+    //	glLightfv(GL_LIGHT0,	GL_SPOT_DIRECTION,	directionLight0);
+    //	glLightf(GL_LIGHT0,		GL_SPOT_EXPONENT,	20.0f);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 }
 
 /**
- *	à–¾
- *		OpenGLƒCƒ[ƒW•`‰æ
+ *	èª¬æ˜
+ *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸æç”»
  */
 void OpenGL::drawScenes(void)
 {
-	/// s—ñƒ‚[ƒhØ‚è‘Ö‚¦
-	glMatrixMode(GL_MODELVIEW);
-	/// s—ñ‰Šú‰»
-	glLoadIdentity();
+    /// è¡Œåˆ—ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆ
+    glMatrixMode(GL_MODELVIEW);
+    /// è¡Œåˆ—åˆæœŸåŒ–
+    glLoadIdentity();
 
-	glDisable(GL_CULL_FACE);	
+    glDisable(GL_CULL_FACE);
 
-	glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		OpenGLƒCƒ[ƒW‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
- *		OpenGL•`‰æ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚É‚È‚é
+ *	èª¬æ˜
+ *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
+ *		OpenGLæç”»ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«ãªã‚‹
  */
 void OpenGL::renderScenes(void)
 {
-	/// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ğƒJƒŒƒ“ƒg‚É‚·‚é
-	if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
-	{
+    /// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚«ãƒ¬ãƒ³ãƒˆã«ã™ã‚‹
+    if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
+    {
 
-		/// ƒoƒbƒtƒ@‚ğƒNƒŠƒAiw’è‚µ‚½ƒoƒbƒtƒ@‚ğ“Á’è‚ÌF‚ÅÁ‹j
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		/// s—ñ‰Šú‰»
-		glLoadIdentity();
+        /// ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ï¼ˆæŒ‡å®šã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’ç‰¹å®šã®è‰²ã§æ¶ˆå»ï¼‰
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        /// è¡Œåˆ—åˆæœŸåŒ–
+        glLoadIdentity();
 
-		/// ‹“_Œˆ’è
-		setSceneView(sceneWidth, sceneHeight);
-	
-		/// ƒV[ƒ“‚ğ•`‰æ
-		glPushMatrix();
-			drawScenes();
-		glPopMatrix();
-		
-		/// ƒRƒ}ƒ“ƒh‚Ìƒtƒ‰ƒbƒVƒ…
-		glFlush();
+        /// è¦–ç‚¹æ±ºå®š
+        setSceneView(sceneWidth, sceneHeight);
 
-	}
+        /// ã‚·ãƒ¼ãƒ³ã‚’æç”»
+        glPushMatrix();
+        drawScenes();
+        glPopMatrix();
 
-	/**
-	 *		ƒoƒbƒtƒ@‚ÌØ‘Ö
-	 *			ƒoƒbƒNƒoƒbƒtƒ@‚ğƒtƒƒ“ƒgƒoƒbƒtƒ@‚ÉØ‚è‘Ö‚¦CV‚µ‚¢‰æ‘œ‚ğŒ©‚¹‚é
-	 */
-	SwapBuffers(wglGetCurrentDC());
+        /// ã‚³ãƒãƒ³ãƒ‰ã®ãƒ•ãƒ©ãƒƒã‚·ãƒ¥
+        glFlush();
 
-	wglMakeCurrent(deviceContextHandle, NULL);
+    }
 
-	return;
+    /**
+     *		ãƒãƒƒãƒ•ã‚¡ã®åˆ‡æ›¿
+     *			ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã«åˆ‡ã‚Šæ›¿ãˆï¼Œæ–°ã—ã„ç”»åƒã‚’è¦‹ã›ã‚‹
+     */
+    SwapBuffers(wglGetCurrentDC());
+
+    wglMakeCurrent(deviceContextHandle, NULL);
+
+    return;
 }
 
 /**
- *	à–¾
- *		•`‰æ—Ìˆæ‚ÌƒŠƒTƒCƒYˆ—
+ *	èª¬æ˜
+ *		æç”»é ˜åŸŸã®ãƒªã‚µã‚¤ã‚ºå‡¦ç†
  */
 void OpenGL::resizeScenes(int width, int height)
 {
-	/// s—ñƒ‚[ƒh‚ÌØ‚è‘Ö‚¦
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+    /// è¡Œåˆ—ãƒ¢ãƒ¼ãƒ‰ã®åˆ‡ã‚Šæ›¿ãˆ
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-	/**
-	 *	gluPerspective(fovy, aspect, zNear, zFar)
-	 *		fovy: ‹–ì‚Ì‚’¼•ûŒü‰æŠpiŠp“xjB‘å‚«‚¢‚Ù‚ÇLŠpƒŒƒ“ƒYA¬‚³‚¢‚Ù‚Ç–]‰“ƒŒƒ“ƒY‚É‚È‚éB
-	 *			  180“xˆÈã‚â-‚àg‚¦‚é‚ªA45`50“x‚ ‚½‚è‚ª•W€ƒŒƒ“ƒYil‚Ì–Ú‚É‹ß‚¢jB 
-	 *		aspect: •`‰æ”ÍˆÍ‚Ìc‰¡”äBViewport‚Ìwidth/Height‚ğƒZƒbƒg‚·‚ê‚ÎA•¨‘Ì‚Ìc‰¡”ä‚ª³‚µ‚­•`‰æ‚³‚ê‚éB 
-	 *		zNear: ‹“_‚©‚ç‚Ç‚ê‚¾‚¯—£‚ê‚½ˆÊ’u‚©‚ç•\¦‚·‚é‚©B•K‚¸0‚æ‚è‘å‚«‚­A‚©‚ÂZFar‚æ‚è‚à¬‚³‚È’l‚ğ“ü‚ê‚éB 
-	 *		zFar: ‹“_‚©‚ç‚Ç‚ê‚¾‚¯—£‚ê‚½ˆÊ’u‚Ü‚Å•\¦‚·‚é‚©B•K‚¸0‚æ‚è‘å‚«‚­A‚©‚ÂZNear‚æ‚è‚à‘å‚«‚È’l‚ğ“ü‚ê‚éB 
-	 */
-	gluPerspective(PERS_DEFAULT_FOVY, (GLdouble)width/(GLdouble)height, PERS_DEFAULT_NEAR, PERS_DEFAULT_FAR);
-	
-	/**
-	 *	void glViewport(GLint x , GLint y , GLsizei width , GLsizei height);
-	 *	ì¬‰æ‘œ‚ğA‚Ç‚±‚É•`‰æ‚·‚é‚©‚ğİ’è‚·‚é
-	 *	ƒfƒtƒHƒ‹ƒg‚Å‚ÍAX À•WAY À•W‹¤‚É 0AƒEƒBƒ“ƒhƒE‚Ì•‚Æ‚‚³‚Å•`‰æ‚³‚ê‚é
-	 *		x, y: •`‰æ”ÍˆÍ‚ÌŒ´“_ˆÊ’u‚ğw’èB’PˆÊ‚ÍƒsƒNƒZƒ‹B‚±‚±‚Å‚Í¶‰º‚ªi0, 0jAã•ûŒü‚ª+y‚Åİ’è‚·‚éB 
-	 *		width, height: •`‰æ”ÍˆÍ‚Ì•A‚‚³‚ğİ’èB’PˆÊ‚ÍƒsƒNƒZƒ‹B 
-	 *
-	 */
-	glViewport(0, 0, (GLint)width, (GLint)height);
+    /**
+     *	gluPerspective(fovy, aspect, zNear, zFar)
+     *		fovy: è¦–é‡ã®å‚ç›´æ–¹å‘ç”»è§’ï¼ˆè§’åº¦ï¼‰ã€‚å¤§ãã„ã»ã©åºƒè§’ãƒ¬ãƒ³ã‚ºã€å°ã•ã„ã»ã©æœ›é ãƒ¬ãƒ³ã‚ºã«ãªã‚‹ã€‚
+     *			  180åº¦ä»¥ä¸Šã‚„-ã‚‚ä½¿ãˆã‚‹ãŒã€45ï½50åº¦ã‚ãŸã‚ŠãŒæ¨™æº–ãƒ¬ãƒ³ã‚ºï¼ˆäººã®ç›®ã«è¿‘ã„ï¼‰ã€‚
+     *		aspect: æç”»ç¯„å›²ã®ç¸¦æ¨ªæ¯”ã€‚Viewportã®width/Heightã‚’ã‚»ãƒƒãƒˆã™ã‚Œã°ã€ç‰©ä½“ã®ç¸¦æ¨ªæ¯”ãŒæ­£ã—ãæç”»ã•ã‚Œã‚‹ã€‚
+     *		zNear: è¦–ç‚¹ã‹ã‚‰ã©ã‚Œã ã‘é›¢ã‚ŒãŸä½ç½®ã‹ã‚‰è¡¨ç¤ºã™ã‚‹ã‹ã€‚å¿…ãš0ã‚ˆã‚Šå¤§ããã€ã‹ã¤ZFarã‚ˆã‚Šã‚‚å°ã•ãªå€¤ã‚’å…¥ã‚Œã‚‹ã€‚
+     *		zFar: è¦–ç‚¹ã‹ã‚‰ã©ã‚Œã ã‘é›¢ã‚ŒãŸä½ç½®ã¾ã§è¡¨ç¤ºã™ã‚‹ã‹ã€‚å¿…ãš0ã‚ˆã‚Šå¤§ããã€ã‹ã¤ZNearã‚ˆã‚Šã‚‚å¤§ããªå€¤ã‚’å…¥ã‚Œã‚‹ã€‚
+     */
+    gluPerspective(PERS_DEFAULT_FOVY, (GLdouble)width / (GLdouble)height, PERS_DEFAULT_NEAR, PERS_DEFAULT_FAR);
 
-	/// ƒV[ƒ“‚ÌƒTƒCƒY‚ğŠi”[
-	sceneWidth = width;
-	sceneHeight = height;
+    /**
+     *	void glViewport(GLint x , GLint y , GLsizei width , GLsizei height);
+     *	ä½œæˆç”»åƒã‚’ã€ã©ã“ã«æç”»ã™ã‚‹ã‹ã‚’è¨­å®šã™ã‚‹
+     *	ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ã€X åº§æ¨™ã€Y åº§æ¨™å…±ã« 0ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å¹…ã¨é«˜ã•ã§æç”»ã•ã‚Œã‚‹
+     *		x, y: æç”»ç¯„å›²ã®åŸç‚¹ä½ç½®ã‚’æŒ‡å®šã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚ã“ã“ã§ã¯å·¦ä¸‹ãŒï¼ˆ0, 0ï¼‰ã€ä¸Šæ–¹å‘ãŒ+yã§è¨­å®šã™ã‚‹ã€‚
+     *		width, height: æç”»ç¯„å›²ã®å¹…ã€é«˜ã•ã‚’è¨­å®šã€‚å˜ä½ã¯ãƒ”ã‚¯ã‚»ãƒ«ã€‚
+     *
+     */
+    glViewport(0, 0, (GLint)width, (GLint)height);
 
-	/// s—ñƒ‚[ƒh‚ğƒ‚ƒfƒ‹ƒrƒ…[‚É–ß‚·
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    /// ã‚·ãƒ¼ãƒ³ã®ã‚µã‚¤ã‚ºã‚’æ ¼ç´
+    sceneWidth = width;
+    sceneHeight = height;
+
+    /// è¡Œåˆ—ãƒ¢ãƒ¼ãƒ‰ã‚’ãƒ¢ãƒ‡ãƒ«ãƒ“ãƒ¥ãƒ¼ã«æˆ»ã™
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 /**
  *	----------------------------------------
- *	‹“_‚Ìİ’è
+ *	è¦–ç‚¹ã®è¨­å®š
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		ƒV[ƒ“‚Ì‹“_‚ğViewType‚É‚æ‚èİ’è
- *	ˆø”
- *		width: ƒV[ƒ“‚Ì‰¡•
- *		height: ƒV[ƒ“‚Ì‚‚³
- */
+ /**
+  *	èª¬æ˜
+  *		ã‚·ãƒ¼ãƒ³ã®è¦–ç‚¹ã‚’ViewTypeã«ã‚ˆã‚Šè¨­å®š
+  *	å¼•æ•°
+  *		width: ã‚·ãƒ¼ãƒ³ã®æ¨ªå¹…
+  *		height: ã‚·ãƒ¼ãƒ³ã®é«˜ã•
+  */
 void OpenGL::setSceneView(double width, double height)
 {
-	/// ƒrƒ…[ƒ^ƒCƒv‚É‚æ‚è‹“_‚ğ•ÏX
-	switch (viewType)
-	{
-		case PERSPECTIVE:
-			setViewPoint(	cameraView.getDistance(),
-							cameraView.getAzimuth(), 
-							cameraView.getElevation(),
-							cameraView.getViewCenterPosition(1),
-							cameraView.getViewCenterPosition(2),
-							cameraView.getViewCenterPosition(3),
-							width, height
-						);
-			break;
+    /// ãƒ“ãƒ¥ãƒ¼ã‚¿ã‚¤ãƒ—ã«ã‚ˆã‚Šè¦–ç‚¹ã‚’å¤‰æ›´
+    switch (viewType)
+    {
+        case PERSPECTIVE:
+            setViewPoint(cameraView.getDistance(),
+                    cameraView.getAzimuth(),
+                    cameraView.getElevation(),
+                    cameraView.getViewCenterPosition(1),
+                    cameraView.getViewCenterPosition(2),
+                    cameraView.getViewCenterPosition(3),
+                    width, height
+            );
+            break;
 
-		case TOP:
-			setViewPoint(300, -90.0, 90.0, 0, 0, 0, width, height);
-			break;
-        
-		case SIDE:
-			setViewPoint(300, -90.0, 0.0, 0, 0, 0, width, height);
-			break;
-    
-		case FRONT:
-			setViewPoint(300, 0.0, 0.0, 0, 0, 0, width, height);
-			break;
+        case TOP:
+            setViewPoint(300, -90.0, 90.0, 0, 0, 0, width, height);
+            break;
 
-		default:
-			break;
+        case SIDE:
+            setViewPoint(300, -90.0, 0.0, 0, 0, 0, width, height);
+            break;
+
+        case FRONT:
+            setViewPoint(300, 0.0, 0.0, 0, 0, 0, width, height);
+            break;
+
+        default:
+            break;
     }
 
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		ƒV[ƒ“‚Ì‹“_‚ğˆø”‚É‚æ‚èİ’è
- *	ˆø”
- *		distance, azimuth, elevationF‹“_‚Ö‚Ì‹——£C•ûˆÊŠpC‹ÂŠp
- *		centerX, centerY, centerZF‹ŠE‚Ì’†SˆÊ’u‚ÌQÆ“_À•W
- *		width: ƒV[ƒ“‚Ì‰¡•
- *		height: ƒV[ƒ“‚Ì‚‚³
+ *	èª¬æ˜
+ *		ã‚·ãƒ¼ãƒ³ã®è¦–ç‚¹ã‚’å¼•æ•°ã«ã‚ˆã‚Šè¨­å®š
+ *	å¼•æ•°
+ *		distance, azimuth, elevationï¼šè¦–ç‚¹ã¸ã®è·é›¢ï¼Œæ–¹ä½è§’ï¼Œä»°è§’
+ *		centerX, centerY, centerZï¼šè¦–ç•Œã®ä¸­å¿ƒä½ç½®ã®å‚ç…§ç‚¹åº§æ¨™
+ *		width: ã‚·ãƒ¼ãƒ³ã®æ¨ªå¹…
+ *		height: ã‚·ãƒ¼ãƒ³ã®é«˜ã•
  */
-void OpenGL::setViewPoint(	double distance,	double azimuth, double elevation,
-							double centerX,		double centerY,	double centerZ,
-							double width,	double height
-							)
+void OpenGL::setViewPoint(double distance, double azimuth, double elevation,
+              double centerX, double centerY, double centerZ,
+              double width, double height
+)
 
 {
-	/// s—ñƒ‚[ƒhØ‚è‘Ö‚¦
-	glMatrixMode(GL_PROJECTION);
-	/// s—ñ‰Šú‰»
-	glLoadIdentity();
+    /// è¡Œåˆ—ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆ
+    glMatrixMode(GL_PROJECTION);
+    /// è¡Œåˆ—åˆæœŸåŒ–
+    glLoadIdentity();
 
-	glViewport(0, 0, (GLint)width, (GLint)height);
-	gluPerspective(	(GLdouble)45.0,						/// ‹–ìŠp“x[deg]
-					(GLdouble)(width/height),			/// ƒAƒXƒyƒNƒg”ä(ƒEƒBƒ“ƒhƒE‚Ì•/‚‚³)
-					(GLdouble)(distance*0.1),			/// ‹“_‚©‚çÅ‚à‹ß‚¢“_‚Ü‚Å‚Ì‹——£
-					(GLdouble)(distance*3.0)			/// ‹“_‚©‚çÅ‚à‰“‚¢“_‚Ü‚Å‚Ì‹——£
-					);
+    glViewport(0, 0, (GLint)width, (GLint)height);
+    gluPerspective((GLdouble)45.0,						/// è¦–é‡è§’åº¦[deg]
+            (GLdouble)(width / height),			/// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”(ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å¹…/é«˜ã•)
+            (GLdouble)(distance * 0.1),			/// è¦–ç‚¹ã‹ã‚‰æœ€ã‚‚è¿‘ã„ç‚¹ã¾ã§ã®è·é›¢
+            (GLdouble)(distance * 3.0)			/// è¦–ç‚¹ã‹ã‚‰æœ€ã‚‚é ã„ç‚¹ã¾ã§ã®è·é›¢
+    );
 
-	/// s—ñƒ‚[ƒhØ‚è‘Ö‚¦
-	glMatrixMode(GL_MODELVIEW);
-	/// s—ñ‰Šú‰»
-	glLoadIdentity();
+    /// è¡Œåˆ—ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆ
+    glMatrixMode(GL_MODELVIEW);
+    /// è¡Œåˆ—åˆæœŸåŒ–
+    glLoadIdentity();
 
-/**
- *	‚±‚±‚©‚çgluLookAt ‚Ì‚½‚ß‚Ìˆø”ŒvZ
- */
-	double theta = azimuth;
-	double phi = elevation;
+    /**
+     *	ã“ã“ã‹ã‚‰gluLookAt ã®ãŸã‚ã®å¼•æ•°è¨ˆç®—
+     */
+    double theta = azimuth;
+    double phi = elevation;
 
-	/// ‹“_‚ÌˆÊ’u
-	double eyeX;
-	double eyeY;
-	double eyeZ;
-	
-	/// ‹ŠE‚Ì’†SˆÊ’u‚ÌQÆ“_
-	double refCenterX;
-	double refCenterY;
-	double refCenterZ;
-	
-	/// ‹ŠE‚Ìã•ûŒü‚ÌƒxƒNƒgƒ‹
-	double upDirectionX;
-	double upDirectionY;
-	double upDirectionZ;
+    /// è¦–ç‚¹ã®ä½ç½®
+    double eyeX;
+    double eyeY;
+    double eyeZ;
 
-	eyeX = distance * cos(phi * PI / 180) * cos(theta * PI / 180);
-	eyeY = distance * cos(phi * PI / 180) * sin(theta * PI / 180);
-	eyeZ = distance * sin(phi * PI / 180);
-	
-	refCenterX = centerX;
-	refCenterY = centerY;
-	refCenterZ = centerZ;
-	
-	upDirectionX = distance * cos((phi + 90) * PI / 180) * cos(theta * PI / 180);
-	upDirectionY = distance * cos((phi + 90) * PI / 180) * sin(theta * PI / 180);
-	upDirectionZ = distance * sin((phi + 90) * PI / 180);
+    /// è¦–ç•Œã®ä¸­å¿ƒä½ç½®ã®å‚ç…§ç‚¹
+    double refCenterX;
+    double refCenterY;
+    double refCenterZ;
 
-	eyeX += refCenterX;
-	eyeY += refCenterY;
-	eyeZ += refCenterZ;
+    /// è¦–ç•Œã®ä¸Šæ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«
+    double upDirectionX;
+    double upDirectionY;
+    double upDirectionZ;
 
-	/// ‹“_‚Æ‹ü‚ÌŒü‚«‚ğŒˆ’è
-	gluLookAt(	(GLdouble)eyeX,				(GLdouble)eyeY,				(GLdouble)eyeZ, 
-				(GLdouble)refCenterX,		(GLdouble)refCenterY,		(GLdouble)refCenterZ,
-				(GLdouble)upDirectionX,		(GLdouble)upDirectionY,		(GLdouble)upDirectionZ 
-			);
+    eyeX = distance * cos(phi * designlab_robot_gui::math::PI / 180) * cos(theta * designlab_robot_gui::math::PI / 180);
+    eyeY = distance * cos(phi * designlab_robot_gui::math::PI / 180) * sin(theta * designlab_robot_gui::math::PI / 180);
+    eyeZ = distance * sin(phi * designlab_robot_gui::math::PI / 180);
 
-	return;
+    refCenterX = centerX;
+    refCenterY = centerY;
+    refCenterZ = centerZ;
+
+    upDirectionX = distance * cos((phi + 90) * designlab_robot_gui::math::PI / 180) * cos(theta * designlab_robot_gui::math::PI / 180);
+    upDirectionY = distance * cos((phi + 90) * designlab_robot_gui::math::PI / 180) * sin(theta * designlab_robot_gui::math::PI / 180);
+    upDirectionZ = distance * sin((phi + 90) * designlab_robot_gui::math::PI / 180);
+
+    eyeX += refCenterX;
+    eyeY += refCenterY;
+    eyeZ += refCenterZ;
+
+    /// è¦–ç‚¹ã¨è¦–ç·šã®å‘ãã‚’æ±ºå®š
+    gluLookAt((GLdouble)eyeX, (GLdouble)eyeY, (GLdouble)eyeZ,
+          (GLdouble)refCenterX, (GLdouble)refCenterY, (GLdouble)refCenterZ,
+          (GLdouble)upDirectionX, (GLdouble)upDirectionY, (GLdouble)upDirectionZ
+    );
+
+    return;
 }
 
 /**
  *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
+ *	ã‚»ãƒƒãƒˆé–¢æ•°
  *	----------------------------------------
  */
 bool OpenGL::setWindowHandle(HWND hWnd)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	if ( !::IsWindow(hWnd) )
-	{
-		cerr << "Error: [OpenGL::setWindowHandle] Invalid Window Handle" << endl;
-		return false;
-	}
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    if (!::IsWindow(hWnd))
+    {
+        std::cerr << "Error: [OpenGL::setWindowHandle] Invalid Window Handle"
+            << std::endl;
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 void OpenGL::setViewType(ViewType type)
 {
-	viewType = type;
+    viewType = type;
 
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		ƒ}ƒeƒŠƒAƒ‹ƒJƒ‰[‚Ìİ’è
+ *	èª¬æ˜
+ *		ãƒãƒ†ãƒªã‚¢ãƒ«ã‚«ãƒ©ãƒ¼ã®è¨­å®š
  */
 void OpenGL::setMaterialColor(double red, double green, double blue, double alpha)
 {
-	GLfloat materialAmbDiff[] = {(GLfloat)red, (GLfloat)green, (GLfloat)blue, (GLfloat)alpha};
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, materialAmbDiff);
+    GLfloat materialAmbDiff[] = { (GLfloat)red, (GLfloat)green, (GLfloat)blue, (GLfloat)alpha };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, materialAmbDiff);
 
-	GLfloat materialSpecular[] = {(GLfloat)(red*0.01), (GLfloat)(green*0.01), (GLfloat)(blue*0.01), (GLfloat)alpha};
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialSpecular);
+    GLfloat materialSpecular[] = { (GLfloat)(red * 0.01), (GLfloat)(green * 0.01), (GLfloat)(blue * 0.01), (GLfloat)alpha };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialSpecular);
 
-	return;
+    return;
 }
 
 void OpenGL::setMaterialColor(const GLfloat* materialAmbDiffColor)
 {
-	setMaterialColor(materialAmbDiffColor[0], materialAmbDiffColor[1], materialAmbDiffColor[2], materialAmbDiffColor[3]);
-	return;
+    setMaterialColor(materialAmbDiffColor[0], materialAmbDiffColor[1], materialAmbDiffColor[2], materialAmbDiffColor[3]);
+    return;
 }
 
 void OpenGL::setMaterialColor(COLOR color)
 {
-	const GLfloat* materialAmbDiffColor = selectMaterialColor(color);
-	setMaterialColor(materialAmbDiffColor[0], materialAmbDiffColor[1], materialAmbDiffColor[2], materialAmbDiffColor[3]);
-	return;
+    const GLfloat* materialAmbDiffColor = selectMaterialColor(color);
+    setMaterialColor(materialAmbDiffColor[0], materialAmbDiffColor[1], materialAmbDiffColor[2], materialAmbDiffColor[3]);
+    return;
 }
 
 /**
  *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
+ *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		ƒ}ƒeƒŠƒAƒ‹ƒJƒ‰[‚Ìæ“¾
- */
+ /**
+  *	èª¬æ˜
+  *		ãƒãƒ†ãƒªã‚¢ãƒ«ã‚«ãƒ©ãƒ¼ã®å–å¾—
+  */
 const GLfloat* OpenGL::selectMaterialColor(COLOR color)
 {
-	switch (color)
-	{
-		case RED:		return materialAmbDiffRed;
-		case GREEN:		return materialAmbDiffGreen;
-		case BLUE:		return materialAmbDiffBlue;
-		case YELLOW:	return materialAmbDiffYellow;
-		case GRAY:		return materialAmbDiffGray;
-		case BLACK:		return materialAmbDiffBlack;
-		case WHITE:		return materialAmbDiffWhite;
-		case SKY:		return materialAmbDiffSky;
-		case ORANGE:	return materialAmbDiffOrange;
-		case PURPLE:	return materialAmbDiffPurple;
-		default:		return NULL;
-	}
-	return NULL;
+    switch (color)
+    {
+        case RED:		return materialAmbDiffRed;
+        case GREEN:		return materialAmbDiffGreen;
+        case BLUE:		return materialAmbDiffBlue;
+        case YELLOW:	return materialAmbDiffYellow;
+        case GRAY:		return materialAmbDiffGray;
+        case BLACK:		return materialAmbDiffBlack;
+        case WHITE:		return materialAmbDiffWhite;
+        case SKY:		return materialAmbDiffSky;
+        case ORANGE:	return materialAmbDiffOrange;
+        case PURPLE:	return materialAmbDiffPurple;
+        default:		return NULL;
+    }
+    return NULL;
 }
 
 /**
- *	ƒJƒƒ‰‹“_•ÏXŠJn
+ *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹å¤‰æ›´é–‹å§‹
  */
 void OpenGL::beginCameraViewControl(CameraView::Mode mode, int x, int y)
 {
-	cameraView.beginViewControl(mode, x, y);
-	return;
+    cameraView.beginViewControl(mode, x, y);
+    return;
 }
 
 /**
- *	ƒJƒƒ‰‹“_•ÏXI—¹
+ *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹å¤‰æ›´çµ‚äº†
  */
 void OpenGL::endCameraViewControl(void)
 {
-	cameraView.endViewControl();
-	return;
+    cameraView.endViewControl();
+    return;
 }
 
 /**
- *	ƒJƒƒ‰‹“_•ÏX
+ *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹å¤‰æ›´
  */
 void OpenGL::doCameraViewControl(int x, int y)
 {
-	cameraView.doViewControl(x, y);
-	return;
+    cameraView.doViewControl(x, y);
+    return;
 }
 
 /**
  *	------------------------------------------------------------
- *		OpenGLƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
+ *		OpenGLã‚¯ãƒ©ã‚¹ã®privateãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	----------------------------------------
- *	OpenGL‚Ì‰Šú‰»‚Ì‚½‚ß‚Ì•â•ŠÖ”
- *	----------------------------------------
- */
-/// ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚Ìİ’è
+ /**
+  *	----------------------------------------
+  *	OpenGLã®åˆæœŸåŒ–ã®ãŸã‚ã®è£œåŠ©é–¢æ•°
+  *	----------------------------------------
+  */
+  /// ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
 bool OpenGL::setWindowPixelFormat(void)
 {
-	PIXELFORMATDESCRIPTOR pfd;
-	
-	pfd.nSize			= sizeof(PIXELFORMATDESCRIPTOR);		/// ‚±‚Ì\‘¢‘Ì‚ÌƒTƒCƒY
-	pfd.nVersion		= 1;									/// Version number : must be 1
-	pfd.dwFlags			=	PFD_DRAW_TO_WINDOW |				/// ƒEƒBƒ“ƒhƒE‚Ö‚Ì•`‰æ‚ğƒTƒ|[ƒg
-							PFD_SUPPORT_OPENGL |				/// OpenGL‚ÌƒTƒ|[ƒg
-							PFD_DOUBLEBUFFER |					/// ƒ_ƒuƒ‹ƒoƒbƒtƒ@ˆ—
-							PFD_STEREO_DONTCARE;				/// monoscopic ‚© stereoscopic‚ğƒTƒ|[ƒg
-	pfd.iPixelType		= PFD_TYPE_RGBA;						/// RGBA ƒ^ƒCƒv
-	pfd.cColorBits		= 32;									/// —˜—p‚Å‚«‚éƒJƒ‰[‚Ì”‚ğŒˆ‚ß‚é
-	pfd.cRedBits		= 8;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚ÌÔƒrƒbƒg”
-	pfd.cRedShift		= 16;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚ÌÔƒrƒbƒg‚Ì‚½‚ß‚ÌƒVƒtƒgƒJƒEƒ“ƒg
-	pfd.cGreenBits		= 8;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚Ì—Îƒrƒbƒg”
-	pfd.cGreenShift		= 8;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚Ì—Îƒrƒbƒg‚Ì‚½‚ß‚ÌƒVƒtƒgƒJƒEƒ“ƒg
-	pfd.cBlueBits		= 8;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚ÌÂƒrƒbƒg”
-	pfd.cBlueShift		= 0;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚ÌÂƒrƒbƒg‚Ì‚½‚ß‚ÌƒVƒtƒgƒJƒEƒ“ƒg
-	pfd.cAlphaBits		= 0;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚ÌƒAƒ‹ƒtƒ@ƒrƒbƒg”
-	pfd.cAlphaShift		= 0;									/// RGBAƒJƒ‰[ƒoƒbƒtƒ@‚ÌƒAƒ‹ƒtƒ@ƒrƒbƒg‚Ì‚½‚ß‚ÌƒVƒtƒgƒJƒEƒ“ƒg
-	pfd.cAccumBits		= 64;									/// ƒAƒLƒ…[ƒ€ƒŒ[ƒVƒ‡ƒ“ƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚Ìƒrƒbƒg”
-	pfd.cAccumRedBits	= 16;									/// ƒAƒLƒ…[ƒ€ƒŒ[ƒVƒ‡ƒ“ƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚ÌÔƒrƒbƒg”
-	pfd.cAccumGreenBits = 16;									/// ƒAƒLƒ…[ƒ€ƒŒ[ƒVƒ‡ƒ“ƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚Ì—Îƒrƒbƒg”
-	pfd.cAccumBlueBits	= 16;									/// ƒAƒLƒ…[ƒ€ƒŒ[ƒVƒ‡ƒ“ƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚ÌÂƒrƒbƒg”
-	pfd.cAccumAlphaBits = 0;									/// ƒAƒLƒ…[ƒ€ƒŒ[ƒVƒ‡ƒ“ƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚ÌƒAƒ‹ƒtƒ@ƒrƒbƒg”
-	pfd.cDepthBits		= 32;									/// ƒfƒvƒXƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚Ìƒrƒbƒg”
-	pfd.cStencilBits	= 8;									/// ƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚ÌƒsƒNƒZƒ‹“–‚è‚Ìƒrƒbƒg”
-	pfd.cAuxBuffers		= 0;									/// •â•ƒoƒbƒtƒ@‚Ì”. Win32ã‚Å‚ÍƒTƒ|[ƒgŠO
-	pfd.iLayerType		= PFD_MAIN_PLANE;						/// ƒŒƒCƒ„ƒ^ƒCƒv‚Ì‹Lq. Œ»İ‚Íg—p‚³‚ê‚Ä‚È‚¢
-	pfd.bReserved		= 0;									/// ƒI[ƒo[ƒŒƒC‚ÆƒAƒ“ƒ_[ƒŒƒC‚Ìplane‚Ì”. (0‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢)
-	pfd.dwLayerMask		= 0;									/// ƒŒƒCƒ„ƒ}ƒXƒN‚Ì‹Lq. Œ»İ‚Å‚Íg—p‚³‚ê‚Ä‚¢‚È‚¢
-	pfd.dwVisibleMask	= 0;									/// ƒrƒWƒuƒ‹ƒ}ƒXƒN‚Ìİ’è
-	pfd.dwDamageMask	= 0;									/// ƒ_ƒ[ƒWƒ}ƒXƒN‚Ìİ’è. Œ»İ‚Å‚Íg—p‚³‚ê‚Ä‚¢‚È‚¢
+    PIXELFORMATDESCRIPTOR pfd;
 
-	// —v‹‚³‚ê‚½ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚ÉÅ‚à‹ß‚¢ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚ğ•Ô‚·
-	int pixelFormat = ChoosePixelFormat(deviceContextHandle, &pfd);
-	
-	if (pixelFormat == 0)		// Choose default
-	{
-		pixelFormat = 1;
+    pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);		/// ã“ã®æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º
+    pfd.nVersion = 1;									/// Version number : must be 1
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW |				/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®æç”»ã‚’ã‚µãƒãƒ¼ãƒˆ
+        PFD_SUPPORT_OPENGL |				/// OpenGLã®ã‚µãƒãƒ¼ãƒˆ
+        PFD_DOUBLEBUFFER |					/// ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡å‡¦ç†
+        PFD_STEREO_DONTCARE;				/// monoscopic ã‹ stereoscopicã‚’ã‚µãƒãƒ¼ãƒˆ
+    pfd.iPixelType = PFD_TYPE_RGBA;						/// RGBA ã‚¿ã‚¤ãƒ—
+    pfd.cColorBits = 32;									/// åˆ©ç”¨ã§ãã‚‹ã‚«ãƒ©ãƒ¼ã®æ•°ã‚’æ±ºã‚ã‚‹
+    pfd.cRedBits = 8;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®èµ¤ãƒ“ãƒƒãƒˆæ•°
+    pfd.cRedShift = 16;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®èµ¤ãƒ“ãƒƒãƒˆã®ãŸã‚ã®ã‚·ãƒ•ãƒˆã‚«ã‚¦ãƒ³ãƒˆ
+    pfd.cGreenBits = 8;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ç·‘ãƒ“ãƒƒãƒˆæ•°
+    pfd.cGreenShift = 8;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ç·‘ãƒ“ãƒƒãƒˆã®ãŸã‚ã®ã‚·ãƒ•ãƒˆã‚«ã‚¦ãƒ³ãƒˆ
+    pfd.cBlueBits = 8;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®é’ãƒ“ãƒƒãƒˆæ•°
+    pfd.cBlueShift = 0;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®é’ãƒ“ãƒƒãƒˆã®ãŸã‚ã®ã‚·ãƒ•ãƒˆã‚«ã‚¦ãƒ³ãƒˆ
+    pfd.cAlphaBits = 0;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒ«ãƒ•ã‚¡ãƒ“ãƒƒãƒˆæ•°
+    pfd.cAlphaShift = 0;									/// RGBAã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒ«ãƒ•ã‚¡ãƒ“ãƒƒãƒˆã®ãŸã‚ã®ã‚·ãƒ•ãƒˆã‚«ã‚¦ãƒ³ãƒˆ
+    pfd.cAccumBits = 64;									/// ã‚¢ã‚­ãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®ãƒ“ãƒƒãƒˆæ•°
+    pfd.cAccumRedBits = 16;									/// ã‚¢ã‚­ãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®èµ¤ãƒ“ãƒƒãƒˆæ•°
+    pfd.cAccumGreenBits = 16;									/// ã‚¢ã‚­ãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®ç·‘ãƒ“ãƒƒãƒˆæ•°
+    pfd.cAccumBlueBits = 16;									/// ã‚¢ã‚­ãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®é’ãƒ“ãƒƒãƒˆæ•°
+    pfd.cAccumAlphaBits = 0;									/// ã‚¢ã‚­ãƒ¥ãƒ¼ãƒ ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®ã‚¢ãƒ«ãƒ•ã‚¡ãƒ“ãƒƒãƒˆæ•°
+    pfd.cDepthBits = 32;									/// ãƒ‡ãƒ—ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®ãƒ“ãƒƒãƒˆæ•°
+    pfd.cStencilBits = 8;									/// ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã®ãƒ”ã‚¯ã‚»ãƒ«å½“ã‚Šã®ãƒ“ãƒƒãƒˆæ•°
+    pfd.cAuxBuffers = 0;									/// è£œåŠ©ãƒãƒƒãƒ•ã‚¡ã®æ•°. Win32ä¸Šã§ã¯ã‚µãƒãƒ¼ãƒˆå¤–
+    pfd.iLayerType = PFD_MAIN_PLANE;						/// ãƒ¬ã‚¤ãƒ¤ã‚¿ã‚¤ãƒ—ã®è¨˜è¿°. ç¾åœ¨ã¯ä½¿ç”¨ã•ã‚Œã¦ãªã„
+    pfd.bReserved = 0;									/// ã‚ªãƒ¼ãƒãƒ¼ãƒ¬ã‚¤ã¨ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ¬ã‚¤ã®planeã®æ•°. (0ã§ãªã‘ã‚Œã°ãªã‚‰ãªã„)
+    pfd.dwLayerMask = 0;									/// ãƒ¬ã‚¤ãƒ¤ãƒã‚¹ã‚¯ã®è¨˜è¿°. ç¾åœ¨ã§ã¯ä½¿ç”¨ã•ã‚Œã¦ã„ãªã„
+    pfd.dwVisibleMask = 0;									/// ãƒ“ã‚¸ãƒ–ãƒ«ãƒã‚¹ã‚¯ã®è¨­å®š
+    pfd.dwDamageMask = 0;									/// ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒã‚¹ã‚¯ã®è¨­å®š. ç¾åœ¨ã§ã¯ä½¿ç”¨ã•ã‚Œã¦ã„ãªã„
 
-		// w’è‚µ‚½ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚ÉŠÖ‚·‚éî•ñ‚ğ“¾‚é
-		if ( DescribePixelFormat(deviceContextHandle, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &pfd) == 0 )
-			return false;
-	}
+    // è¦æ±‚ã•ã‚ŒãŸãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«æœ€ã‚‚è¿‘ã„ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¿”ã™
+    int pixelFormat = ChoosePixelFormat(deviceContextHandle, &pfd);
 
-	// w’è‚µ‚½ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÌƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚ğİ’è‚·‚é
-	if ( !SetPixelFormat(deviceContextHandle, pixelFormat, &pfd) )
-		return false;
-	
-	return true;
+    if (pixelFormat == 0)		// Choose default
+    {
+        pixelFormat = 1;
+
+        // æŒ‡å®šã—ãŸãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«é–¢ã™ã‚‹æƒ…å ±ã‚’å¾—ã‚‹
+        if (DescribePixelFormat(deviceContextHandle, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &pfd) == 0)
+            return false;
+    }
+
+    // æŒ‡å®šã—ãŸãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¨­å®šã™ã‚‹
+    if (!SetPixelFormat(deviceContextHandle, pixelFormat, &pfd))
+        return false;
+
+    return true;
 }
 
-/// ƒRƒ“ƒeƒLƒXƒg‚Ìİ’è
+/// ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®è¨­å®š
 bool OpenGL::createGLContext(void)
 {
-	/// OpenGL‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ğì¬
-	renderingContextHandle = wglCreateContext(deviceContextHandle);
-	if ( !renderingContextHandle )	// ì¬•s‰Â
-		return false;
-	
-	/// Œ»İ‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ÉƒZƒbƒg
-	if ( !wglMakeCurrent(deviceContextHandle, renderingContextHandle) )
-		return false;
+    /// OpenGLã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ä½œæˆ
+    renderingContextHandle = wglCreateContext(deviceContextHandle);
+    if (!renderingContextHandle)	// ä½œæˆä¸å¯
+        return false;
 
-	return true;
+    /// ç¾åœ¨ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ã‚»ãƒƒãƒˆ
+    if (!wglMakeCurrent(deviceContextHandle, renderingContextHandle))
+        return false;
+
+    return true;
 }
 
 

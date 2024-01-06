@@ -1,5 +1,9 @@
 ﻿
-#include "asuraGraphic.h"
+#include "AsuraGraphic.h"
+
+#include "Math/math_constant.h"
+
+using namespace designlab_robot_gui;
 
 
 namespace Graphic
@@ -109,10 +113,10 @@ void AsuraGraphic::newAsuraDisplayList()
     glNewList(bodyDisplayListID, GL_COMPILE);
     setMaterialColor(linkColor);
 
-    drawBox(-BODY_LENGTH / 2, -BODY_WIDTH / Const::ROOT_2 / 2 + 50, -BODY_HEIGHT / 2,
-            BODY_LENGTH / 2, BODY_WIDTH / Const::ROOT_2 / 2 - 50, BODY_HEIGHT / 2);
-    drawBox(-BODY_LENGTH / Const::ROOT_2 / 2 + 50, -BODY_WIDTH / 2, -BODY_HEIGHT / 2,
-            BODY_LENGTH / Const::ROOT_2 / 2 - 50, BODY_WIDTH / 2, BODY_HEIGHT / 2);
+    drawBox(-BODY_LENGTH / 2, -BODY_WIDTH / designlab_robot_gui::math::ROOT_2 / 2 + 50, -BODY_HEIGHT / 2,
+            BODY_LENGTH / 2, BODY_WIDTH / designlab_robot_gui::math::ROOT_2 / 2 - 50, BODY_HEIGHT / 2);
+    drawBox(-BODY_LENGTH / designlab_robot_gui::math::ROOT_2 / 2 + 50, -BODY_WIDTH / 2, -BODY_HEIGHT / 2,
+            BODY_LENGTH / designlab_robot_gui::math::ROOT_2 / 2 - 50, BODY_WIDTH / 2, BODY_HEIGHT / 2);
 
     glEndList();
 
@@ -182,7 +186,7 @@ void AsuraGraphic::deleteAsuraDisplayList()
 
 void AsuraGraphic::drawObjects(GLenum renderMode)
 {
-    Matrix gAb(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix gAb(math::DH_DIMENSION, math::DH_DIMENSION);
 
     switch (renderMode)
     {
@@ -447,7 +451,7 @@ void AsuraGraphic::drawAsura()
 void AsuraGraphic::drawBody()
 {
     // グローバルから胴体座標への変換行列
-    Matrix gAb(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix gAb(math::DH_DIMENSION, math::DH_DIMENSION);
 
     glPushMatrix();
 
@@ -468,8 +472,8 @@ void AsuraGraphic::drawLeg(const int legNo)
     // 脚の引数チェック
     assert(1 <= legNo && legNo <= designlab_robot_gui::asura::LEG_NUM);
 
-    Matrix trans(Const::DH_DIMENSION, Const::DH_DIMENSION);	// 座標変換用の行列
-    Matrix bAl(Const::DH_DIMENSION, Const::DH_DIMENSION);		// 胴体 -> 脚
+    Matrix trans(math::DH_DIMENSION, math::DH_DIMENSION);	// 座標変換用の行列
+    Matrix bAl(math::DH_DIMENSION, math::DH_DIMENSION);		// 胴体 -> 脚
 
 
     glPushMatrix();
@@ -574,9 +578,9 @@ void AsuraGraphic::transformOpenGLMatrix(const Matrix& matrix)
     int k = 0;
 
     // 行列要素を配列に格納
-    for (int i = 1; i <= Const::DH_DIMENSION; i++)
+    for (int i = 1; i <= math::DH_DIMENSION; i++)
     {
-        for (int j = 1; j <= Const::DH_DIMENSION; j++)
+        for (int j = 1; j <= math::DH_DIMENSION; j++)
         {
             T[k] = matrix(j, i);
             k++;

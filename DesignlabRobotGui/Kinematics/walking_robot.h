@@ -5,8 +5,9 @@
 #include <cassert>
 
 #include "Kinematics/asura_parameter.h"
-#include "Kinematics/Leg/Leg.h" 
-#include "Math/Matrix/Matrix.h"
+#include "Kinematics/Leg/leg.h" 
+#include "Math/Matrix/matrix.h"
+#include "Math/math_constant.h"
 #include "Plan/plan_parameter.h"
 
 
@@ -15,8 +16,8 @@ namespace designlab_robot_gui::asura
 
 class WalkingRobot
 {
-    using Matrix = Math::Matrix;
-    using Vector = Math::Vector;
+    using Matrix = math::Matrix;
+    using Vector = math::Vector;
 
     class BodyData final
     {
@@ -207,12 +208,12 @@ inline const LegPhase WalkingRobot::getLegPhase(int legNo) const
 
 //! グローバルから胴体ローカルへ
 //! 同時座標変換行列を変換する
-inline Math::Matrix WalkingRobot::transformationGlobalToLocal(const Math::Matrix& matrix)
+inline math::Matrix WalkingRobot::transformationGlobalToLocal(const Matrix& matrix)
 {
-    assert(matrix.getRow() == Const::DH_DIMENSION && matrix.getColumn() == Const::DH_DIMENSION);
+    assert(matrix.getRow() == math::DH_DIMENSION && matrix.getColumn() == math::DH_DIMENSION);
 
-    Matrix result(Const::DH_DIMENSION, Const::DH_DIMENSION);
-    Matrix transform(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix result(math::DH_DIMENSION, math::DH_DIMENSION);
+    Matrix transform(math::DH_DIMENSION, math::DH_DIMENSION);
 
     transform(1, 1) = body_data.transformation(1, 1);
     transform(2, 1) = body_data.transformation(1, 2);
@@ -249,14 +250,14 @@ inline Math::Matrix WalkingRobot::transformationGlobalToLocal(const Math::Matrix
 
 //! グローバルから胴体ローカルへ
 //! 3次元位置ベクトルを変換する
-inline Math::Vector WalkingRobot::transformationGlobalToLocal(const Math::Vector& vector)
+inline math::Vector WalkingRobot::transformationGlobalToLocal(const Vector& vector)
 {
-    assert(vector.getSize() == Const::THREE_DIMENSION);
+    assert(vector.getSize() == math::THREE_DIMENSION);
 
-    Vector result(Const::THREE_DIMENSION);
-    Vector left(Const::DH_DIMENSION);
-    Vector right(Const::DH_DIMENSION);
-    Matrix transform(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Vector result(math::THREE_DIMENSION);
+    Vector left(math::DH_DIMENSION);
+    Vector right(math::DH_DIMENSION);
+    Matrix transform(math::DH_DIMENSION, math::DH_DIMENSION);
 
     //! グローバルから胴体ローカルへの同次変換行列
     transform(1, 1) = body_data.transformation(1, 1);
@@ -306,11 +307,11 @@ inline Math::Vector WalkingRobot::transformationGlobalToLocal(const Math::Vector
 
 //! 胴体ローカルからグローバルへ
 //! 同時座標変換行列を変換する
-inline Math::Matrix WalkingRobot::transformationLocalToGlobal(const Math::Matrix& matrix)
+inline math::Matrix WalkingRobot::transformationLocalToGlobal(const Matrix& matrix)
 {
-    assert(matrix.getRow() == Const::DH_DIMENSION && matrix.getColumn() == Const::DH_DIMENSION);
+    assert(matrix.getRow() == math::DH_DIMENSION && matrix.getColumn() == math::DH_DIMENSION);
 
-    Matrix result(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix result(math::DH_DIMENSION, math::DH_DIMENSION);
 
     result = body_data.transformation * matrix;
 
@@ -319,13 +320,13 @@ inline Math::Matrix WalkingRobot::transformationLocalToGlobal(const Math::Matrix
 
 //! 胴体ローカルからグローバルへ
 //! 3次元位置ベクトルを変換する
-inline Math::Vector WalkingRobot::transformationLocalToGlobal(const Math::Vector& vector)
+inline math::Vector WalkingRobot::transformationLocalToGlobal(const Vector& vector)
 {
-    assert(vector.getSize() == Const::THREE_DIMENSION);
+    assert(vector.getSize() == math::THREE_DIMENSION);
 
-    Vector result(Const::THREE_DIMENSION);
-    Vector left(Const::DH_DIMENSION);
-    Vector right(Const::DH_DIMENSION);
+    Vector result(math::THREE_DIMENSION);
+    Vector left(math::DH_DIMENSION);
+    Vector right(math::DH_DIMENSION);
 
     // 一時代入
     right(1) = vector(1);
@@ -344,10 +345,10 @@ inline Math::Vector WalkingRobot::transformationLocalToGlobal(const Math::Vector
     return result;
 }
 
-inline Math::Matrix WalkingRobot::rollY(double angle)
+inline math::Matrix WalkingRobot::rollY(double angle)
 {
     // 戻り値の行列
-    Matrix A(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    Matrix A(math::DH_DIMENSION, math::DH_DIMENSION);
 
     A(1, 1) = cos(angle);
     A(2, 1) = 0;

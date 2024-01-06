@@ -1,6 +1,7 @@
 ﻿
 #include "Data/asura_data.h"
-#include "Utility/EngConstant.h"
+
+#include "Math/math_constant.h"
 
 
 namespace designlab_robot_gui::data
@@ -76,17 +77,17 @@ void AsuraData::newAsuraData()
     // 胴体
 
     // 同次変換行列のサイズ決定
-    body_transformation.setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+    body_transformation.setSize(math::DH_DIMENSION, math::DH_DIMENSION);
     body_transformation.loadIdentity();
 
     // 胴体位置
-    body_position.setSize(Const::THREE_DIMENSION);
+    body_position.setSize(math::THREE_DIMENSION);
 
     // 胴体速度
-    body_velocity.setSize(Const::THREE_DIMENSION);
+    body_velocity.setSize(math::THREE_DIMENSION);
 
     // 歩行方向
-    walking_direction.setSize(Const::THREE_DIMENSION);
+    walking_direction.setSize(math::THREE_DIMENSION);
 
     // 移動様式
     locomotion_style = asura::LocomotionStyle::LEGGED;
@@ -96,21 +97,21 @@ void AsuraData::newAsuraData()
         // 行列のサイズ決定		
         for (int j = 0; j < asura::LEG_JOINT_NUM; j++)
         {
-            leg_joint_transformation[i][j].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+            leg_joint_transformation[i][j].setSize(math::DH_DIMENSION, math::DH_DIMENSION);
             leg_joint_transformation[i][j].loadIdentity();
 
-            leg_joint_position[i][j].setSize(Const::THREE_DIMENSION);
+            leg_joint_position[i][j].setSize(math::THREE_DIMENSION);
         }
 
-        leg_base_transformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+        leg_base_transformation[i].setSize(math::DH_DIMENSION, math::DH_DIMENSION);
         leg_base_transformation[i].loadIdentity();
 
-        leg_base_position[i].setSize(Const::THREE_DIMENSION);
+        leg_base_position[i].setSize(math::THREE_DIMENSION);
 
-        leg_foot_transformation[i].setSize(Const::DH_DIMENSION, Const::DH_DIMENSION);
+        leg_foot_transformation[i].setSize(math::DH_DIMENSION, math::DH_DIMENSION);
         leg_foot_transformation[i].loadIdentity();
 
-        leg_foot_position[i].setSize(Const::THREE_DIMENSION);
+        leg_foot_position[i].setSize(math::THREE_DIMENSION);
 
         leg_joint_angle[i].setSize(asura::LEG_JOINT_NUM);
         leg_joint_velocity[i].setSize(asura::LEG_JOINT_NUM);

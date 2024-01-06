@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-#include "Math/Matrix/Matrix.h"
+#include "Math/Matrix/matrix.h"
 #include "Kinematics/asura_x.h"
 #include "Plan/plan_parameter.h"
 #include "Plan/time_manager.h"
@@ -18,7 +18,7 @@ namespace designlab_robot_gui::plan
 class Planner
 {
     using AsuraX = asura::AsuraX;
-    using Vector = Math::Vector;
+    using Vector = math::Vector;
 
 protected:
     asura::AsuraX* asuraPointer;  //!< 制御するロボットオブジェクトへのポインタ
@@ -96,11 +96,10 @@ public:
      *			downPhase：DOWN相
      */
     void setLegSwingTrajectory(int legNo,
-                        const Math::Vector& start,
-                        const Math::Vector& upPhase,
-                        const Math::Vector& returnPhase,
-                        const Math::Vector& downPhase
-    );
+                        const math::Vector& start,
+                        const math::Vector& upPhase,
+                        const math::Vector& returnPhase,
+                        const math::Vector& downPhase);
 
     /**
      *		遊脚時間を設定する
@@ -118,7 +117,7 @@ public:
     /**
      *		遊脚の軌道上の位置を取得する
      */
-    Math::Vector getLegSwingPosition(int legNo, double splitTime);
+    math::Vector getLegSwingPosition(int legNo, double splitTime);
 
     /**
      *		遊脚する

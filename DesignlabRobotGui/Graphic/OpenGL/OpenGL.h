@@ -1,38 +1,37 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		OpenGL.h
- *  à–¾
- *		OpenGLŠÖŒW‚Ì•`‰æŠî‘bƒNƒ‰ƒX(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/15(SAT)
+ *  èª¬æ˜
+ *		OpenGLé–¢ä¿‚ã®æç”»åŸºç¤ã‚¯ãƒ©ã‚¹(Windowså°‚ç”¨)
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/04/01(SAT)		æ›´æ–°æ—¥: 2007/04/15(SAT)
  */
 
 #ifndef __OpenGL_h__
 #define __OpenGL_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include <windows.h>
 #include <iostream>
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
-//#include <gl/GLAUX.h>
+  //#include <gl/GLAUX.h>
 
-#include "..\..\Math\MathLibrary.h"
 #include "OpenGLParameter.h"
 #include "CameraView.h"
 /**
  *	----------------------------------------------------------------------
- *		ƒŠƒ“ƒJ‚Ö‚Ì’Ê’m
+ *		ãƒªãƒ³ã‚«ã¸ã®é€šçŸ¥
  *	----------------------------------------------------------------------
  */
 #pragma comment (lib, "opengl32.lib")
 #pragma comment (lib, "glu32.lib")
-//#pragma comment (lib, "glaux.lib")
+ //#pragma comment (lib, "glaux.lib")
 
 
 
@@ -40,236 +39,236 @@ namespace Graphic
 {
 /**
  *	----------------------------------------------------------------------
- *		OpenGLƒNƒ‰ƒX
+ *		OpenGLã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class OpenGL
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
-protected:
-/**
- *	ƒnƒ“ƒhƒ‹
- *		windowHandleFƒEƒBƒ“ƒhƒE
- *		deviceContextHandleFƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
- *		renderingContextHandleFƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg
- */
-	HWND	windowHandle;
- 	HDC		deviceContextHandle;
- 	HGLRC	renderingContextHandle;
-
-/**
- *	•`‰æ‚·‚éƒTƒCƒY
- */
-	int	sceneWidth;
-	int sceneHeight;
-
-/**
- *	ƒ‰ƒCƒeƒBƒ“ƒO
- */
-	GLfloat ambientLight0[4];		/// ŠÂ‹«Œõ
-	GLfloat diffuseLight0[4];		/// ŠgUŒõ
-	GLfloat specularLight0[4];		/// ‹¾–ÊŒõ
-	GLfloat positionLight0[4];		/// ŒõŒ¹ˆÊ’u
-	GLfloat directionLight0[3];	/// ƒXƒ|ƒbƒgƒ‰ƒCƒg•ûŒü
-
-/**
- *	‹“_‚ÉŠÖŒW‚·‚é‚à‚Ì
- */
-
-	/**
-	 *	ƒJƒƒ‰‹“_ƒIƒuƒWƒFƒNƒg
-	 */
-	CameraView cameraView;
-
-	/// ‹“_ƒ^ƒCƒv
-	ViewType viewType;
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	OpenGL();
-
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit OpenGL(HWND hWnd);
-
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~OpenGL();
-
-/**
- *	----------------------------------------
- *	OpenGL‚Ìİ’è‚ÉŠÖŒW‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		‰Šú‰»
-	 *	ˆø”
-	 *		hWnd: •`‰æ‚·‚é—Ìˆæ‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	 */
-	bool initializeGL(HWND hWnd = NULL);
-
-	/**
-	 *	à–¾
-	 *		I—¹ˆ—
-	 */
-	void finalizeGL(void);
-
-	/**
-	 *	à–¾
-	 *		OpenGL‚Ì‹@”\İ’è
-	 */
-	void setOpenGLFunctions(void);
-
-	/**
-	 *	à–¾
-	 *		GL‚Ìİ’è‚ÌƒŠƒZƒbƒg
-	 */
-	void clearOpenGLSettings(void);
-
-/**
- *	----------------------------------------
- *	•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		Æ–¾Œø‰Ê‚Ìİ’è
-	 *		OpenGL‚Å‚ÍGL_LIGHT0‚©‚çGL_LIGHT7‚Ü‚Å‚Ì‚W‚Â‚ÌŒõŒ¹‚ğİ’è‚Å‚«‚é
-	 */
-	void setWorldLightings(void);
-
-	/**
-	 *	à–¾
-	 *		OpenGL‚ÌƒCƒ[ƒW•`‰æ
-	 */
-	virtual void drawScenes(void);
-
-	/**
-	 *	à–¾
-	 *		OpenGLƒCƒ[ƒW‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
-	 *		OpenGL•`‰æ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚É‚È‚é
-	 */
-	virtual void renderScenes(void);
-
-	/**
-	 *	à–¾
-	 *		•`‰æ—Ìˆæ‚ÌƒŠƒTƒCƒYˆ—
-	 */
-	void resizeScenes(int width, int height);
-
-/**
- *	----------------------------------------
- *	‹“_‚Ìİ’è
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		ƒV[ƒ“‚Ì‹“_‚ğViewType‚É‚æ‚èİ’è
-	 *	ˆø”
-	 *		width: ƒV[ƒ“‚Ì‰¡•
-	 *		height: ƒV[ƒ“‚Ì‚‚³
-	 */
-	virtual void setSceneView(double width, double height);
-
-	/**
-	 *	à–¾
-	 *		ƒV[ƒ“‚Ì‹“_‚ğˆø”‚É‚æ‚èİ’è
-	 *	ˆø”
-	 *		distance, azimuth, elevationF‹“_‚Ö‚Ì‹——£C•ûˆÊŠpC‹ÂŠp
-	 *		centerX, centerY, centerZF‹ŠE‚Ì’†SˆÊ’u‚ÌQÆ“_À•W
-	 *		width: ƒV[ƒ“‚Ì‰¡•
-	 *		height: ƒV[ƒ“‚Ì‚‚³
-	 */
-	void setViewPoint(	double distance, double azimuth, double elevation,
-						double centerX = 0.0, double centerY = 0.0, double centerZ = 0.0,
-						double width = 1.0, double height = 1.0);
-
-/**
- *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
- *	----------------------------------------
- */
-	bool setWindowHandle(HWND hWnd);
-	void setViewType(ViewType type);
-
-	/**
-	 *	à–¾
-	 *		ƒ}ƒeƒŠƒAƒ‹ƒJƒ‰[‚Ìİ’è
-	 */
-	void setMaterialColor(double red, double green, double blue, double alpha);
-	void setMaterialColor(const GLfloat* materialAmbDiffColor);
-	void setMaterialColor(COLOR color);
-
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-	HDC getDeviceContextHandle(void) const{return deviceContextHandle;}
-	HWND getWindowHandle(void) const{return windowHandle;}
-	ViewType getViewType(void) const{return viewType;}
-
-	/**
-	 *	à–¾
-	 *		ƒ}ƒeƒŠƒAƒ‹ƒJƒ‰[‚Ìæ“¾
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
      */
-	const GLfloat* selectMaterialColor(COLOR color);
+protected:
+    /**
+     *	ãƒãƒ³ãƒ‰ãƒ«
+     *		windowHandleï¼šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+     *		deviceContextHandleï¼šãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+     *		renderingContextHandleï¼šãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+     */
+    HWND	windowHandle;
+    HDC		deviceContextHandle;
+    HGLRC	renderingContextHandle;
 
-/**
- *	----------------------------------------
- *	ƒJƒƒ‰ƒIƒuƒWƒFƒNƒg
- *	----------------------------------------
- */
-	/**
-	 *	ƒJƒƒ‰ƒIƒuƒWƒFƒNƒg‚Ìæ“¾
-	 */
-	CameraView& getCameraView(void){return cameraView;}
+    /**
+     *	æç”»ã™ã‚‹ã‚µã‚¤ã‚º
+     */
+    int	sceneWidth;
+    int sceneHeight;
 
-	/**
-	 *	ƒJƒƒ‰‹“_•ÏXŠJn
-	 */
-	void beginCameraViewControl(CameraView::Mode mode, int x, int y);
+    /**
+     *	ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
+     */
+    GLfloat ambientLight0[4];		/// ç’°å¢ƒå…‰
+    GLfloat diffuseLight0[4];		/// æ‹¡æ•£å…‰
+    GLfloat specularLight0[4];		/// é¡é¢å…‰
+    GLfloat positionLight0[4];		/// å…‰æºä½ç½®
+    GLfloat directionLight0[3];	/// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆæ–¹å‘
 
-	/**
-	 *	ƒJƒƒ‰‹“_•ÏXI—¹
-	 */
-	void endCameraViewControl(void);
+    /**
+     *	è¦–ç‚¹ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     */
 
-	/**
-	 *	ƒJƒƒ‰‹“_•ÏX
-	 */
-	void doCameraViewControl(int x, int y);
+     /**
+      *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+      */
+    CameraView cameraView;
 
-/**
- *	----------------------------------------
- *	OpenGL‚Ì‰Šú‰»‚Ì‚½‚ß‚Ì•â•ŠÖ”
- *	----------------------------------------
- */
+    /// è¦–ç‚¹ã‚¿ã‚¤ãƒ—
+    ViewType viewType;
+
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
+public:
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    OpenGL();
+
+    /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    explicit OpenGL(HWND hWnd);
+
+    /// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    virtual ~OpenGL();
+
+    /**
+     *	----------------------------------------
+     *	OpenGLã®è¨­å®šã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		åˆæœŸåŒ–
+      *	å¼•æ•°
+      *		hWnd: æç”»ã™ã‚‹é ˜åŸŸã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+      */
+    bool initializeGL(HWND hWnd = NULL);
+
+    /**
+     *	èª¬æ˜
+     *		çµ‚äº†å‡¦ç†
+     */
+    void finalizeGL(void);
+
+    /**
+     *	èª¬æ˜
+     *		OpenGLã®æ©Ÿèƒ½è¨­å®š
+     */
+    void setOpenGLFunctions(void);
+
+    /**
+     *	èª¬æ˜
+     *		GLã®è¨­å®šã®ãƒªã‚»ãƒƒãƒˆ
+     */
+    void clearOpenGLSettings(void);
+
+    /**
+     *	----------------------------------------
+     *	æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ç…§æ˜åŠ¹æœã®è¨­å®š
+      *		OpenGLã§ã¯GL_LIGHT0ã‹ã‚‰GL_LIGHT7ã¾ã§ã®ï¼˜ã¤ã®å…‰æºã‚’è¨­å®šã§ãã‚‹
+      */
+    void setWorldLightings(void);
+
+    /**
+     *	èª¬æ˜
+     *		OpenGLã®ã‚¤ãƒ¡ãƒ¼ã‚¸æç”»
+     */
+    virtual void drawScenes(void);
+
+    /**
+     *	èª¬æ˜
+     *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
+     *		OpenGLæç”»ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«ãªã‚‹
+     */
+    virtual void renderScenes(void);
+
+    /**
+     *	èª¬æ˜
+     *		æç”»é ˜åŸŸã®ãƒªã‚µã‚¤ã‚ºå‡¦ç†
+     */
+    void resizeScenes(int width, int height);
+
+    /**
+     *	----------------------------------------
+     *	è¦–ç‚¹ã®è¨­å®š
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ã‚·ãƒ¼ãƒ³ã®è¦–ç‚¹ã‚’ViewTypeã«ã‚ˆã‚Šè¨­å®š
+      *	å¼•æ•°
+      *		width: ã‚·ãƒ¼ãƒ³ã®æ¨ªå¹…
+      *		height: ã‚·ãƒ¼ãƒ³ã®é«˜ã•
+      */
+    virtual void setSceneView(double width, double height);
+
+    /**
+     *	èª¬æ˜
+     *		ã‚·ãƒ¼ãƒ³ã®è¦–ç‚¹ã‚’å¼•æ•°ã«ã‚ˆã‚Šè¨­å®š
+     *	å¼•æ•°
+     *		distance, azimuth, elevationï¼šè¦–ç‚¹ã¸ã®è·é›¢ï¼Œæ–¹ä½è§’ï¼Œä»°è§’
+     *		centerX, centerY, centerZï¼šè¦–ç•Œã®ä¸­å¿ƒä½ç½®ã®å‚ç…§ç‚¹åº§æ¨™
+     *		width: ã‚·ãƒ¼ãƒ³ã®æ¨ªå¹…
+     *		height: ã‚·ãƒ¼ãƒ³ã®é«˜ã•
+     */
+    void setViewPoint(double distance, double azimuth, double elevation,
+              double centerX = 0.0, double centerY = 0.0, double centerZ = 0.0,
+              double width = 1.0, double height = 1.0);
+
+    /**
+     *	----------------------------------------
+     *	ã‚»ãƒƒãƒˆé–¢æ•°
+     *	----------------------------------------
+     */
+    bool setWindowHandle(HWND hWnd);
+    void setViewType(ViewType type);
+
+    /**
+     *	èª¬æ˜
+     *		ãƒãƒ†ãƒªã‚¢ãƒ«ã‚«ãƒ©ãƒ¼ã®è¨­å®š
+     */
+    void setMaterialColor(double red, double green, double blue, double alpha);
+    void setMaterialColor(const GLfloat* materialAmbDiffColor);
+    void setMaterialColor(COLOR color);
+
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	----------------------------------------
+     */
+    HDC getDeviceContextHandle(void) const { return deviceContextHandle; }
+    HWND getWindowHandle(void) const { return windowHandle; }
+    ViewType getViewType(void) const { return viewType; }
+
+    /**
+     *	èª¬æ˜
+     *		ãƒãƒ†ãƒªã‚¢ãƒ«ã‚«ãƒ©ãƒ¼ã®å–å¾—
+       */
+    const GLfloat* selectMaterialColor(COLOR color);
+
+    /**
+     *	----------------------------------------
+     *	ã‚«ãƒ¡ãƒ©ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     *	----------------------------------------
+     */
+     /**
+      *	ã‚«ãƒ¡ãƒ©ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾—
+      */
+    CameraView& getCameraView(void) { return cameraView; }
+
+    /**
+     *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹å¤‰æ›´é–‹å§‹
+     */
+    void beginCameraViewControl(CameraView::Mode mode, int x, int y);
+
+    /**
+     *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹å¤‰æ›´çµ‚äº†
+     */
+    void endCameraViewControl(void);
+
+    /**
+     *	ã‚«ãƒ¡ãƒ©è¦–ç‚¹å¤‰æ›´
+     */
+    void doCameraViewControl(int x, int y);
+
+    /**
+     *	----------------------------------------
+     *	OpenGLã®åˆæœŸåŒ–ã®ãŸã‚ã®è£œåŠ©é–¢æ•°
+     *	----------------------------------------
+     */
 private:
 
-	/**
-	 *	à–¾
-	 *		ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚Ìİ’è
-	 */
-	bool setWindowPixelFormat(void);
-	/**
-	 *	à–¾
-	 *		ƒRƒ“ƒeƒLƒXƒg‚Ìİ’è
-	 */
-	bool createGLContext(void);
+    /**
+     *	èª¬æ˜
+     *		ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®š
+     */
+    bool setWindowPixelFormat(void);
+    /**
+     *	èª¬æ˜
+     *		ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®è¨­å®š
+     */
+    bool createGLContext(void);
 
 };
 

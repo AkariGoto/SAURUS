@@ -3,7 +3,7 @@
 #define DESIGNLABROBOTGUI_DATA_ASURA_DATA_H_
 
 #include "Kinematics/asura_parameter.h"
-#include "Math/Matrix/Matrix.h"
+#include "Math/Matrix/matrix.h"
 
 
 namespace designlab_robot_gui::data
@@ -20,8 +20,8 @@ private:
 
     using LocomotionStyle = asura::LocomotionStyle;
     using LegPhase = asura::LegPhase;
-    using Matrix = Math::Matrix;
-    using Vector = Math::Vector;
+    using Matrix = math::Matrix;
+    using Vector = math::Vector;
 
 public:
     AsuraData();

@@ -1,7 +1,7 @@
 ﻿
-#include "Planner.h"
-#include "Math/MathLibrary.h"
-#include "Math/Matrix/Matrix.h"
+#include "Plan/planner.h"
+#include "Math/Matrix/matrix_library.h"
+#include "Math/Matrix/matrix.h"
 
 
 namespace designlab_robot_gui::plan
@@ -98,7 +98,7 @@ void Planner::setLegSwingTime(int legNo,
     legTrajectory[legNo - 1].setLegTrajectoryTime(start, upPhase, returnPhase, downPhase);
 }
 
-Math::Vector Planner::getLegSwingPosition(int legNo, double splitTime)
+math::Vector Planner::getLegSwingPosition(int legNo, double splitTime)
 {
     /// 脚の引数チェック
     assert(1 <= legNo && legNo <= asura::LEG_NUM);
@@ -176,7 +176,7 @@ PlanStatus Planner::moveBody(double splitTime)
     }
 
     // 軌道上の目標脚先位置
-    Vector targetPosition(Const::THREE_DIMENSION);
+    Vector targetPosition(math::THREE_DIMENSION);
     /// 運動学の結果
     asura::Kinematics kine;
     /// エラーを起こした脚番号

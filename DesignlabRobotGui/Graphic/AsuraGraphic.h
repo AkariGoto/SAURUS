@@ -31,8 +31,8 @@ const int TRACK_DISP_LIST_NUM = Asura::TRACK_JOINT_NUM+2;
 class AsuraGraphic : public OpenGLObject
 {
     using AsuraData = designlab_robot_gui::data::AsuraData;
-    using Vector = Math::Vector;
-    using Matrix = Math::Matrix;
+    using Vector = designlab_robot_gui::math::Vector;
+    using Matrix = designlab_robot_gui::math::Matrix;
 
 private:
     /**
@@ -188,7 +188,7 @@ private:
      *		OpenGL座標変換のためのヘルプ関数
      *			OpenGL用の4x4座標変換
      */
-    void transformOpenGLMatrix(const Math::Matrix& matrix);
+    void transformOpenGLMatrix(const designlab_robot_gui::math::Matrix& matrix);
 
     /**
      *	説明

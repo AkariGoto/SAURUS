@@ -1,13 +1,13 @@
 ﻿
-#ifndef __MathGeometry_h__
-#define __MathGeometry_h__
+#ifndef DESIGNLABROBOTGUI_MATH_MATH_GEOMETRY_H_
+#define DESIGNLABROBOTGUI_MATH_MATH_GEOMETRY_H_
 
 #include <cmath>
 
-#include "Matrix/MatrixLibrary.h"
+#include "Math/Matrix/matrix_library.h"
 
 
-namespace Math
+namespace designlab_robot_gui::math
 {
 
 
@@ -21,8 +21,8 @@ double distancePointToPoint(const Vector& point1, const Vector& point2);
  *			normalVectorToLine: 直線に垂直
  *			normalVectorToSegment: 線分に垂直
  */
-extern Vector normalVectorToLine(const Vector& point, const Vector& linePoint, const Vector& lineDirectionVector);
-extern Vector normalVectorToSegment(const Vector& point, const Vector& start, const Vector& end);
+Vector normalVectorToLine(const Vector& point, const Vector& linePoint, const Vector& lineDirectionVector);
+Vector normalVectorToSegment(const Vector& point, const Vector& start, const Vector& end);
 
 /**
  *		distancePointAndLine: 点と直線との距離
@@ -30,7 +30,7 @@ extern Vector normalVectorToSegment(const Vector& point, const Vector& start, co
  *			linePoint: 直線上の点
  *			lineDirectionVector: 直線の方向ベクトル
  */
-extern double distancePointAndLine(const Vector& point, const Vector& linePoint, const Vector& lineDirectionVector);
+double distancePointAndLine(const Vector& point, const Vector& linePoint, const Vector& lineDirectionVector);
 
 /**
  *		DistancePointAndSegment: 点と線分との距離
@@ -38,7 +38,7 @@ extern double distancePointAndLine(const Vector& point, const Vector& linePoint,
  *			start: 線分の始点
  *			end: 線分の終点
  */
-extern double distancePointAndSegment(const Vector& point, const Vector& start, const Vector& end);
+double distancePointAndSegment(const Vector& point, const Vector& start, const Vector& end);
 
 
 /**
@@ -46,7 +46,7 @@ extern double distancePointAndSegment(const Vector& point, const Vector& start, 
  *			引数:
  *			p1, p2, p3: 平面上の一直線上にない3点
  */
-extern Vector normalVectorOfPlane(const Vector& p1, const Vector& p2, const Vector& p3);
+Vector normalVectorOfPlane(const Vector& p1, const Vector& p2, const Vector& p3);
 
 /**
  *		IntersectPointLineAndPlane			: 直線と平面との交点
@@ -56,7 +56,7 @@ extern Vector normalVectorOfPlane(const Vector& p1, const Vector& p2, const Vect
  *				planePoint: 平面上の点
  *				planeNormalVector: 平面の法線ベクトル
  */
-extern Vector intersectPointLineAndPlane(const Vector& linePoint, const Vector& lineDirectionVector,
+Vector intersectPointLineAndPlane(const Vector& linePoint, const Vector& lineDirectionVector,
                             const Vector& planePoint, const Vector& planeNormalVector);
 
 /**
@@ -93,5 +93,6 @@ extern bool isPointInsideQuadrangle(const Vector& p, const Vector& a, const Vect
  */
 extern double minDistanceToQuadrangleEdge(const Vector& p, const Vector& a, const Vector& b, const Vector& c, const Vector& d);
 
-}	/// end of namespace Math
-#endif	/// __MathGeometry_h__
+}  // namespace designlab_robot_gui::math
+
+#endif  // DESIGNLABROBOTGUI_MATH_MATH_GEOMETRY_H_

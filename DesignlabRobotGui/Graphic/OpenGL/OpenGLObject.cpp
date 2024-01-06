@@ -1,949 +1,932 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		OpenGLObject.cpp
- *  à–¾
- *		OpenGL‚É‚æ‚é•¨‘Ì•`‰æƒNƒ‰ƒX(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/17(MON)
- */
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ï»¿
 #include "OpenGLObject.h"
 
-using namespace std;
-using namespace Math;
-using namespace Const;
+#include "Math/Matrix/matrix_library.h"
 
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		OpenGLObjectƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		OpenGLObjectƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
 OpenGLObject::OpenGLObject()
 {
 }
 
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 OpenGLObject::OpenGLObject(HWND hWnd)
 {
-	/**
-	 *	OpenGLObject‚Ìì¬
-	 */
-	createGLObject(hWnd);
+    /**
+     *	OpenGLObjectã®ä½œæˆ
+     */
+    createGLObject(hWnd);
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 OpenGLObject::~OpenGLObject()
 {
-	destroyGLObject();
+    destroyGLObject();
 }
 
 
 
 /**
  *	----------------------------------------
- *	OpenGL‚Ìİ’è‚ÉŠÖŒW‚·‚é‚à‚Ì
+ *	OpenGLã®è¨­å®šã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		‰Šú‰»
- *	ˆø”
- *		hWnd: •`‰æ‚·‚é—Ìˆæ‚ÌƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
- */
+ /**
+  *	èª¬æ˜
+  *		åˆæœŸåŒ–
+  *	å¼•æ•°
+  *		hWnd: æç”»ã™ã‚‹é ˜åŸŸã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+  */
 bool OpenGLObject::createGLObject(HWND hWnd)
 {
-	/// Å‰‚ÉOpenGL‚ÌƒfƒtƒHƒ‹ƒg‰Šú‰»‚ğs‚¤
-	if (!OpenGL::initializeGL(hWnd))
-		return false;
+    /// æœ€åˆã«OpenGLã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆåˆæœŸåŒ–ã‚’è¡Œã†
+    if (!OpenGL::initializeGL(hWnd))
+        return false;
 
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒgì¬
-	newGLObjDispList();
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆä½œæˆ
+    newGLObjDispList();
 
-	/**
-	 *	ƒtƒ‰ƒO—Ş‚Ì‰Šú‰»
-	 */
-	isCoordinateAxisDrawn = true;
-	isGridFloorDrawn = true;
+    /**
+     *	ãƒ•ãƒ©ã‚°é¡ã®åˆæœŸåŒ–
+     */
+    isCoordinateAxisDrawn = true;
+    isGridFloorDrawn = true;
 
-	return true;
+    return true;
 }
 
 /**
- *	à–¾
- *		I—¹ˆ—
+ *	èª¬æ˜
+ *		çµ‚äº†å‡¦ç†
  */
 void OpenGLObject::destroyGLObject(void)
 {
-	/**
-	 *	ƒtƒ‰ƒO—Ş‚Ì‰Šú‰»
-	 */
-	isCoordinateAxisDrawn = false;
-	isGridFloorDrawn = false;
+    /**
+     *	ãƒ•ãƒ©ã‚°é¡ã®åˆæœŸåŒ–
+     */
+    isCoordinateAxisDrawn = false;
+    isGridFloorDrawn = false;
 
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì”jŠü
-	deleteObjDispList();
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç ´æ£„
+    deleteObjDispList();
 
-	/// ÅŒã‚ÉŠî’êƒNƒ‰ƒX‚ÌI—¹ˆ—
-	OpenGL::finalizeGL();
+    /// æœ€å¾Œã«åŸºåº•ã‚¯ãƒ©ã‚¹ã®çµ‚äº†å‡¦ç†
+    OpenGL::finalizeGL();
 
-	return;
+    return;
 }
 
 /**
  *	------------------------------------------------------------
- *		ƒI[ƒo[ƒ‰ƒCƒhŠÖ”
+ *		ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰é–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	----------------------------------------
- *	•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
- *	----------------------------------------
- */
-/**
- *	à–¾
- *		OpenGL‚ÌƒIƒuƒWƒFƒNƒg•`‰æ
- */
+ /**
+  *	----------------------------------------
+  *	æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
+  *	----------------------------------------
+  */
+  /**
+   *	èª¬æ˜
+   *		OpenGLã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+   */
 void OpenGLObject::drawObjects(GLenum renderMode)
 {
-	switch (renderMode)
-	{
-		case GL_RENDER:
-				glDisable(GL_CULL_FACE);	
-				/// À•WŒn•`‰æ
-					drawCoordinateAxis();
-				glEnable(GL_CULL_FACE);	
-			break;
+    switch (renderMode)
+    {
+        case GL_RENDER:
+            glDisable(GL_CULL_FACE);
+            /// åº§æ¨™ç³»æç”»
+            drawCoordinateAxis();
+            glEnable(GL_CULL_FACE);
+            break;
 
-		case GL_SELECT:
-			break;
+        case GL_SELECT:
+            break;
 
-		default:
-			break;
-	}
+        default:
+            break;
+    }
 }
 
 /**
- *	à–¾
- *		OpenGL‚ÌƒIƒuƒWƒFƒNƒg•`‰æ
+ *	èª¬æ˜
+ *		OpenGLã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
  */
 void OpenGLObject::drawScenes(void)
 {
-	drawObjects(GL_RENDER);
-	return;
+    drawObjects(GL_RENDER);
+    return;
 }
 
 /**
- *	à–¾
- *		OpenGLƒCƒ[ƒW‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
- *		OpenGL•`‰æ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚É‚È‚é
+ *	èª¬æ˜
+ *		OpenGLã‚¤ãƒ¡ãƒ¼ã‚¸ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°
+ *		OpenGLæç”»ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã«ãªã‚‹
  */
 void OpenGLObject::renderScenes(void)
 {
-	/// ƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ğƒJƒŒƒ“ƒg‚É‚·‚é
-	if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
-	{
-		/// ƒoƒbƒtƒ@‚ğƒNƒŠƒAiw’è‚µ‚½ƒoƒbƒtƒ@‚ğ“Á’è‚ÌF‚ÅÁ‹j
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		glLoadIdentity();
+    /// ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚«ãƒ¬ãƒ³ãƒˆã«ã™ã‚‹
+    if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
+    {
+        /// ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ï¼ˆæŒ‡å®šã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’ç‰¹å®šã®è‰²ã§æ¶ˆå»ï¼‰
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        glLoadIdentity();
 
-		/// ‹“_Œˆ’è
-		setSceneView(sceneWidth, sceneHeight);
+        /// è¦–ç‚¹æ±ºå®š
+        setSceneView(sceneWidth, sceneHeight);
 
-		/// ¡‚ÌÀ•WŒn‚ğ•Û‘¶‚µ‚Ä‚¨‚­
-		glPushMatrix();
-		{
+        /// ä»Šã®åº§æ¨™ç³»ã‚’ä¿å­˜ã—ã¦ãŠã
+        glPushMatrix();
+        {
 
-			/// ƒV[ƒ“‚ğ•`‰æ
-			drawScenes();
+            /// ã‚·ãƒ¼ãƒ³ã‚’æç”»
+            drawScenes();
 
-		}
-		/// À•WŒn‚ğ–ß‚·
-		glPopMatrix();
+        }
+        /// åº§æ¨™ç³»ã‚’æˆ»ã™
+        glPopMatrix();
 
-		/// ƒRƒ}ƒ“ƒh‚Ìƒtƒ‰ƒbƒVƒ…
-		glFlush();
-	}
+        /// ã‚³ãƒãƒ³ãƒ‰ã®ãƒ•ãƒ©ãƒƒã‚·ãƒ¥
+        glFlush();
+    }
 
-	/**
-	 *		ƒoƒbƒtƒ@‚ÌØ‘Ö
-	 *			ƒoƒbƒNƒoƒbƒtƒ@‚ğƒtƒƒ“ƒgƒoƒbƒtƒ@‚ÉØ‚è‘Ö‚¦CV‚µ‚¢‰æ‘œ‚ğŒ©‚¹‚é
-	 */
-	SwapBuffers(wglGetCurrentDC());
+    /**
+     *		ãƒãƒƒãƒ•ã‚¡ã®åˆ‡æ›¿
+     *			ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã«åˆ‡ã‚Šæ›¿ãˆï¼Œæ–°ã—ã„ç”»åƒã‚’è¦‹ã›ã‚‹
+     */
+    SwapBuffers(wglGetCurrentDC());
 
-	wglMakeCurrent(deviceContextHandle, NULL);
+    wglMakeCurrent(deviceContextHandle, NULL);
 
-	return;
+    return;
 }
 
 /**
  *	----------------------------------------
- *	ƒsƒbƒLƒ“ƒO‚ÉŠÖ‚·‚é‚à‚Ì
+ *	ãƒ”ãƒƒã‚­ãƒ³ã‚°ã«é–¢ã™ã‚‹ã‚‚ã®
  *	----------------------------------------
  */
-/**
- *	à–¾
- *		ƒ}ƒEƒX‚É‚æ‚é•¨‘Ì‚ÌƒsƒbƒNƒAƒbƒvŠÖ”
- *		ƒ}ƒEƒXƒCƒxƒ“ƒgi‘å‘Ì‚Í¶ƒNƒŠƒbƒNjŠÖ”“à‚ÅŒÄ‚Ô
- *	ˆø”
- *		x: ƒNƒŠƒbƒN‚µ‚½“_‚ÌxÀ•W
- *		y: ƒNƒŠƒbƒN‚µ‚½“_‚ÌyÀ•W
- */
+ /**
+  *	èª¬æ˜
+  *		ãƒã‚¦ã‚¹ã«ã‚ˆã‚‹ç‰©ä½“ã®ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—é–¢æ•°
+  *		ãƒã‚¦ã‚¹ã‚¤ãƒ™ãƒ³ãƒˆï¼ˆå¤§ä½“ã¯å·¦ã‚¯ãƒªãƒƒã‚¯ï¼‰é–¢æ•°å†…ã§å‘¼ã¶
+  *	å¼•æ•°
+  *		x: ã‚¯ãƒªãƒƒã‚¯ã—ãŸç‚¹ã®xåº§æ¨™
+  *		y: ã‚¯ãƒªãƒƒã‚¯ã—ãŸç‚¹ã®yåº§æ¨™
+  */
 void OpenGLObject::pickup(int x, int y)
 {
-	GLuint selectBuf[SELECT_BUFF_SIZE];		/// ƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@
-	GLint hitCount = 0;					/// ƒqƒbƒgƒJƒEƒ“ƒg
-	GLint viewPort[4] = {0,0,0,0};		/// ƒrƒ…[ƒ|[ƒg		
-	float currentAspect;				/// Œ»İ‚ÌƒAƒXƒyƒNƒg”ä
+    GLuint selectBuf[SELECT_BUFF_SIZE];		/// ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡
+    GLint hitCount = 0;					/// ãƒ’ãƒƒãƒˆã‚«ã‚¦ãƒ³ãƒˆ
+    GLint viewPort[4] = { 0,0,0,0 };		/// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆ		
+    float currentAspect;				/// ç¾åœ¨ã®ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
 
-	wglMakeCurrent(deviceContextHandle, renderingContextHandle);
+    wglMakeCurrent(deviceContextHandle, renderingContextHandle);
 
-/**
- *	ƒZƒŒƒNƒVƒ‡ƒ“ŠJn
- */
-	/// Œ»İ‚Ìƒrƒ…[ƒ|[ƒg‚ğ‘ã“ü
-	glGetIntegerv(GL_VIEWPORT, viewPort);
+    /**
+     *	ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³é–‹å§‹
+     */
+     /// ç¾åœ¨ã®ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚’ä»£å…¥
+    glGetIntegerv(GL_VIEWPORT, viewPort);
 
-	/**
-	 *	ƒoƒbƒtƒ@‚Ì‘I‘ğ
-	 *
-	 *	glSelectBuffer(GLsizei size, GLuint *buffer)
-	 *	buffer ‚É GLuint Œ^‚Ì”z—ñAsize ‚É‚»‚Ì—v‘f”‚ğw’è‚·‚éB
-	 *	E‚±‚Ì”z—ñ‚É‘I‘ğ‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘OAƒZƒŒƒNƒVƒ‡ƒ“‚³‚ê‚½ˆÊ’u‚Ì‰œs‚«‚ÌÅ¬’l‚ÆÅ‘å’l‚È‚Ç‚ªŠi”[‚³‚ê‚é‚©‚çA
-	 *	@—v‘f”‚ÍƒIƒuƒWƒFƒNƒg”‚É‚µ‚½‚ª‚Á‚ÄA‘½‚ß‚Éw’è‚µ‚Ä‚¨‚­B
-	 *	EƒZƒŒƒNƒVƒ‡ƒ“ƒ‚[ƒh‚É“ü‚é‘OiglRenderMode(GL_SELECT) ‚ğÀs‚·‚é‘Oj‚ÉÀs‚·‚é•K—v‚ª‚ ‚éB
-	 */
-	glSelectBuffer(SELECT_BUFF_SIZE, selectBuf);
+    /**
+     *	ãƒãƒƒãƒ•ã‚¡ã®é¸æŠ
+     *
+     *	glSelectBuffer(GLsizei size, GLuint *buffer)
+     *	buffer ã« GLuint å‹ã®é…åˆ—ã€size ã«ãã®è¦ç´ æ•°ã‚’æŒ‡å®šã™ã‚‹ã€‚
+     *	ãƒ»ã“ã®é…åˆ—ã«é¸æŠã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã€ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã•ã‚ŒãŸä½ç½®ã®å¥¥è¡Œãã®æœ€å°å€¤ã¨æœ€å¤§å€¤ãªã©ãŒæ ¼ç´ã•ã‚Œã‚‹ã‹ã‚‰ã€
+     *	ã€€è¦ç´ æ•°ã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°ã«ã—ãŸãŒã£ã¦ã€å¤šã‚ã«æŒ‡å®šã—ã¦ãŠãã€‚
+     *	ãƒ»ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹å‰ï¼ˆglRenderMode(GL_SELECT) ã‚’å®Ÿè¡Œã™ã‚‹å‰ï¼‰ã«å®Ÿè¡Œã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+     */
+    glSelectBuffer(SELECT_BUFF_SIZE, selectBuf);
 
-	/// ƒZƒŒƒNƒVƒ‡ƒ“ƒ‚[ƒh‚É“ü‚é
-	(void)glRenderMode(GL_SELECT);
+    /// ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚‹
+    (void)glRenderMode(GL_SELECT);
 
-	/**
-	 *	ƒIƒuƒWƒFƒNƒg‚É‚Â‚¯‚é–¼‘Oi®”’lj‚ğ“o˜^‚µ‚Ä‚¨‚­ƒl[ƒ€ƒXƒ^ƒbƒN‚ğ‰Šú‰»‚·‚éB
-	 *	‚±‚ê‚ÍƒZƒŒƒNƒVƒ‡ƒ“ƒ‚[ƒh‚É“ü‚Á‚½ŒãiglRenderMode(GL_SELECT) ‚ğÀs‚µ‚½Œãj‚És‚í‚È‚¯‚ê‚Î–³‹‚³‚ê‚é
-	 */
-	glInitNames();
+    /**
+     *	ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã¤ã‘ã‚‹åå‰ï¼ˆæ•´æ•°å€¤ï¼‰ã‚’ç™»éŒ²ã—ã¦ãŠããƒãƒ¼ãƒ ã‚¹ã‚¿ãƒƒã‚¯ã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
+     *	ã“ã‚Œã¯ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã£ãŸå¾Œï¼ˆglRenderMode(GL_SELECT) ã‚’å®Ÿè¡Œã—ãŸå¾Œï¼‰ã«è¡Œã‚ãªã‘ã‚Œã°ç„¡è¦–ã•ã‚Œã‚‹
+     */
+    glInitNames();
 
-	/**
-	 *	ƒvƒƒWƒFƒNƒVƒ‡ƒ“ƒ‚[ƒh
-	 *	ƒZƒŒƒNƒVƒ‡ƒ“‚Ìˆ—‚Í‹“_À•WŒn‚Ås‚¤
-	 */
-	glMatrixMode(GL_PROJECTION);			
-	
-	/**
-	 *	ƒZƒŒƒNƒVƒ‡ƒ“ƒ‚[ƒh‚Ì‚Æ‚«‚Ì‚İ‰º‚Ìs—ñŒvZ‚ğ”½‰f‚³‚¹‚é‚½‚ß‚É
-	 *	PushiŒ»İ‚Ì“§‹•ÏŠ·ƒ}ƒgƒŠƒNƒX‚ğ•Û‘¶j‚·‚é
-	 */
-	glPushMatrix();
-	/// “§‹•ÏŠ·ƒ}ƒgƒŠƒNƒX‚ğ‰Šú‰»‚·‚é
-	glLoadIdentity();
-		/**
-		 *	ƒsƒbƒLƒ“ƒOs—ñ‚ÌæZ
-		 *		•\¦—Ìˆæ‚ªƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ÌüˆÍ‚¾‚¯‚É‚È‚é‚æ‚¤‚É•ÏŠ·s—ñ‚ğİ’è‚·‚éB
-		 *		ƒ}ƒEƒX‚ÌÀ•WŒn‚ÍAƒXƒNƒŠ[ƒ“‚ÌÀ•WŒn‚É‘Î‚µ‚Äã‰º‚ª”½“]‚µ‚Ä‚¢‚é‚Ì‚Å‚»‚ê‚ğ•â³‚·‚é
-		 */
-		gluPickMatrix((GLdouble)x, (GLdouble)(viewPort[3] - y), 5.0, 5.0, viewPort);
-		
-		/**
-		 *	’Êí‚Ì•`‰æ‚Æ“¯‚¶“§‹•ÏŠ·ƒ}ƒgƒŠƒNƒX‚ğİ’è‚·‚é
-		 *		ƒsƒbƒNƒAƒbƒv‚ÆŒ»İŒ©‚¦‚Ä‚é‚à‚Ì‚Æ‚Ì‚¸‚ê‚ğ–h‚®‚½‚ß
-		 */
-		currentAspect = (float)viewPort[2]/(float)viewPort[3];
-		gluPerspective(PERS_DEFAULT_FOVY, currentAspect, PERS_DEFAULT_NEAR, PERS_DEFAULT_FAR);
-		
-		/// ‚±‚±‚Åƒ‚ƒfƒ‹ƒrƒ…[ƒ‚[ƒh‚É‚·‚é
-		glMatrixMode(GL_MODELVIEW);
-		
-		/// ƒZƒŒƒNƒVƒ‡ƒ“ƒ‚[ƒh‚Å•`‰æ‚·‚é
-		drawObjects(GL_SELECT);
-		/// ƒvƒƒWƒFƒNƒVƒ‡ƒ“ƒ‚[ƒh‚É–ß‚·
-		glMatrixMode(GL_PROJECTION);
+    /**
+     *	ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰
+     *	ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã®å‡¦ç†ã¯è¦–ç‚¹åº§æ¨™ç³»ã§è¡Œã†
+     */
+    glMatrixMode(GL_PROJECTION);
 
-	glPopMatrix();
+    /**
+     *	ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰ã®ã¨ãã®ã¿ä¸‹ã®è¡Œåˆ—è¨ˆç®—ã‚’åæ˜ ã•ã›ã‚‹ãŸã‚ã«
+     *	Pushï¼ˆç¾åœ¨ã®é€è¦–å¤‰æ›ãƒãƒˆãƒªã‚¯ã‚¹ã‚’ä¿å­˜ï¼‰ã™ã‚‹
+     */
+    glPushMatrix();
+    /// é€è¦–å¤‰æ›ãƒãƒˆãƒªã‚¯ã‚¹ã‚’åˆæœŸåŒ–ã™ã‚‹
+    glLoadIdentity();
+    /**
+     *	ãƒ”ãƒƒã‚­ãƒ³ã‚°è¡Œåˆ—ã®ä¹—ç®—
+     *		è¡¨ç¤ºé ˜åŸŸãŒãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®å‘¨å›²ã ã‘ã«ãªã‚‹ã‚ˆã†ã«å¤‰æ›è¡Œåˆ—ã‚’è¨­å®šã™ã‚‹ã€‚
+     *		ãƒã‚¦ã‚¹ã®åº§æ¨™ç³»ã¯ã€ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®åº§æ¨™ç³»ã«å¯¾ã—ã¦ä¸Šä¸‹ãŒåè»¢ã—ã¦ã„ã‚‹ã®ã§ãã‚Œã‚’è£œæ­£ã™ã‚‹
+     */
+    gluPickMatrix((GLdouble)x, (GLdouble)(viewPort[3] - y), 5.0, 5.0, viewPort);
 
-	glMatrixMode(GL_MODELVIEW);			//ƒ‚ƒfƒ‹ƒrƒ…[ƒ‚[ƒh‚Ö–ß‚·
+    /**
+     *	é€šå¸¸ã®æç”»ã¨åŒã˜é€è¦–å¤‰æ›ãƒãƒˆãƒªã‚¯ã‚¹ã‚’è¨­å®šã™ã‚‹
+     *		ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—æ™‚ã¨ç¾åœ¨è¦‹ãˆã¦ã‚‹ã‚‚ã®ã¨ã®ãšã‚Œã‚’é˜²ããŸã‚
+     */
+    currentAspect = (float)viewPort[2] / (float)viewPort[3];
+    gluPerspective(PERS_DEFAULT_FOVY, currentAspect, PERS_DEFAULT_NEAR, PERS_DEFAULT_FAR);
 
-	hitCount = glRenderMode(GL_RENDER);
+    /// ã“ã“ã§ãƒ¢ãƒ‡ãƒ«ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
+    glMatrixMode(GL_MODELVIEW);
 
-	/// ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ‘I‚Ô
-	selectHitObjects(hitCount, selectBuf);
+    /// ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰ã§æç”»ã™ã‚‹
+    drawObjects(GL_SELECT);
+    /// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰ã«æˆ»ã™
+    glMatrixMode(GL_PROJECTION);
 
-	/// ƒqƒbƒg‚µ‚½Œ‹‰Ê‚É‚æ‚èAˆ—‚ğs‚¤
-	handlePickupResult();
+    glPopMatrix();
 
-	wglMakeCurrent( NULL, NULL );
+    glMatrixMode(GL_MODELVIEW);			//ãƒ¢ãƒ‡ãƒ«ãƒ“ãƒ¥ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã¸æˆ»ã™
+
+    hitCount = glRenderMode(GL_RENDER);
+
+    /// ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸ã¶
+    selectHitObjects(hitCount, selectBuf);
+
+    /// ãƒ’ãƒƒãƒˆã—ãŸçµæœã«ã‚ˆã‚Šã€å‡¦ç†ã‚’è¡Œã†
+    handlePickupResult();
+
+    wglMakeCurrent(NULL, NULL);
 }
 
 /**
- *	à–¾
- *		ƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@‚©‚çƒfƒvƒXƒoƒbƒtƒ@‚ğ•À‚Ñ‘Ö‚¦‚½‚è‚µ‚È‚ª‚çƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ¯•Ê‚·‚é
- *	ˆø”
- *		hitCount: ƒqƒbƒg”
- *		selectBuffer:	glSelectBuffer() ‚ÌŒ‹‰Ê‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@
- *						‘I‘ğ‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘OAƒZƒŒƒNƒVƒ‡ƒ“‚³‚ê‚½ˆÊ’u‚Ì‰œs‚«‚ÌÅ¬’l‚ÆÅ‘å’l‚È‚Ç‚ªŠi”[‚³‚ê‚½ƒoƒbƒtƒ@
+ *	èª¬æ˜
+ *		ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ãƒ‡ãƒ—ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ä¸¦ã³æ›¿ãˆãŸã‚Šã—ãªãŒã‚‰ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è­˜åˆ¥ã™ã‚‹
+ *	å¼•æ•°
+ *		hitCount: ãƒ’ãƒƒãƒˆæ•°
+ *		selectBuffer:	glSelectBuffer() ã®çµæœãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡
+ *						é¸æŠã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã€ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã•ã‚ŒãŸä½ç½®ã®å¥¥è¡Œãã®æœ€å°å€¤ã¨æœ€å¤§å€¤ãªã©ãŒæ ¼ç´ã•ã‚ŒãŸãƒãƒƒãƒ•ã‚¡
  */
 int OpenGLObject::selectHitObjects(GLuint hitCount, GLuint selectBuffer[])
 {
-	/**
-	 *	ƒ[ƒJƒ‹•Ï”
-	 */
-	GLuint i;				/// ƒJƒEƒ“ƒ^
-	unsigned int nameIndex;	/// –¼‘O—ñ‚Åg—p‚·‚éƒJƒEƒ“ƒ^
-
-	GLuint nameCount;		/// ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘OŠK‘w‚Ì”
-	GLuint* work_pointer;	/// ì‹Æ—pƒ|ƒCƒ“ƒ^
-	GLuint minZ;			/// zi[“xj‚ÌÅ¬’l
-	GLuint maxZ;			/// zi[“xj‚ÌÅ‘å’l
-	
-	double nearDepth;		/// ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌƒfƒvƒX”ÍˆÍiè‘Oj
-	double farDepth;		/// ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌƒfƒvƒX”ÍˆÍi‰œj
-	double minDepth;		/// ƒqƒbƒg‚µ‚½ƒ|ƒŠƒSƒ“‚Ì’†‚ÌÅ¬ƒfƒvƒX’l
-
-	unsigned int nameArray[NAME_ARRAY_SIZE];	/// –¼‘OŠK‘w‚Ì”z—ñiNAME_ARRAY_SIZE‚ÍÅ‘åŠK‘w”j
-
-	/**
-	 *	ƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@‚ÉŠi”[‚³‚ê‚éƒf[ƒ^
-	 *		1.ƒl[ƒ€ƒXƒ^ƒbƒN‚ÉÏ‚Ü‚ê‚½–¼‘O‚ÌŒÂ”i–¼‘OŠK‘w‚ÌŒÂ”j
-	 *		2.‘I‘ğ”ÍˆÍ‚ğ‰¡Ø‚éƒvƒŠƒ~ƒeƒBƒu‚Ì’¸“_‚ÌƒfƒvƒX’l‚ÌÅ¬’l
-	 *		3.‘I‘ğ”ÍˆÍ‚ğ‰¡Ø‚éƒvƒŠƒ~ƒeƒBƒu‚Ì’¸“_‚ÌƒfƒvƒX’l‚ÌÅ‘å’l
-	 *		4.ƒl[ƒ€ƒXƒ^ƒbƒNi= ƒIƒuƒWƒFƒNƒg‚Ì–¼‘Oj[nŒÂ] 
-	 *	‚±‚ê‚ç‚ªƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg”‚¾‚¯A‡”Ô‚ÉŠm•Û‚³‚ê‚Ä‚¢‚é
-	 *
-	 *	‚Â‚Ü‚èAmŒÂƒqƒbƒg‚µ‚½‚È‚çAm * (1 + 2 + n)•ª‚Ìunsigned int ‚Ì”z—ñ‚ªŠm•Û‚³‚ê‚é 
-	 *	 [ŠK‘w‚Ì[‚³] [Z’l(Å¬)] [Z’l(Å‘å)][ŠK‘w’†‚Ì”Ô†]... [ŠK‘w‚Ì[‚³]EEE 
-	 *
-	 *	—á‚¦‚ÎA
-	 *		[2][1.5][1.8][2][1] ‚Æ‚È‚Á‚Ä‚¢‚éAuƒsƒbƒNƒAƒbƒvv‚µ‚½uƒ|ƒŠƒSƒ“ƒf[ƒ^v‚ÍA
-	 *	‚Â‚Ü‚è
-	 *		ŠK‘w‚Ì[‚³F2 
-	 *		‰œs‚«’l(è‘O‘¤)F1.5 
-	 *		‰œs‚«’l(‰œ‘¤)F1.8 
-	 *		ŠK‘w’†‚Ì”Ô†F2-1 
+    /**
+     *	ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
      */
+    GLuint i;				/// ã‚«ã‚¦ãƒ³ã‚¿
+    unsigned int nameIndex;	/// åå‰åˆ—ã§ä½¿ç”¨ã™ã‚‹ã‚«ã‚¦ãƒ³ã‚¿
 
-	/// ƒqƒbƒg‚µ‚Ä‚¢‚È‚¢
-	if (hitCount<=0) return -1;
+    GLuint nameCount;		/// ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰éšå±¤ã®æ•°
+    GLuint* work_pointer;	/// ä½œæ¥­ç”¨ãƒã‚¤ãƒ³ã‚¿
+    GLuint minZ;			/// zï¼ˆæ·±åº¦ï¼‰ã®æœ€å°å€¤
+    GLuint maxZ;			/// zï¼ˆæ·±åº¦ï¼‰ã®æœ€å¤§å€¤
 
-	/// Å¬[“x‚Ì‰Šú‰»
-	minDepth = 10.0;
+    double nearDepth;		/// ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ—ã‚¹ç¯„å›²ï¼ˆæ‰‹å‰ï¼‰
+    double farDepth;		/// ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ—ã‚¹ç¯„å›²ï¼ˆå¥¥ï¼‰
+    double minDepth;		/// ãƒ’ãƒƒãƒˆã—ãŸãƒãƒªã‚´ãƒ³ã®ä¸­ã®æœ€å°ãƒ‡ãƒ—ã‚¹å€¤
 
-	/// ƒZƒŒƒNƒVƒ‡ƒ“ƒoƒbƒtƒ@‚Ìƒ|ƒCƒ“ƒ^‚ğì‹Æ—pƒ|ƒCƒ“ƒ^‚Ö“n‚·
-	work_pointer = (GLuint*)selectBuffer;
+    unsigned int nameArray[NAME_ARRAY_SIZE];	/// åå‰éšå±¤ã®é…åˆ—ï¼ˆNAME_ARRAY_SIZEã¯æœ€å¤§éšå±¤æ•°ï¼‰
 
-	/// ƒqƒbƒg”•ªŠm”F‚·‚é
-	for (i=0;i<hitCount;i++) 
-	{
-		/**
-		 *	----------------------------------------
-		 *	STEP1 ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒgŒÂX‚Ìˆ—
-		 *	----------------------------------------
-		 */
-		/// –¼‘O‚ÌŒÂ”‚ğŠi”[
-		nameCount = *work_pointer;
+    /**
+     *	ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´ã•ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿
+     *		1.ãƒãƒ¼ãƒ ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã¾ã‚ŒãŸåå‰ã®å€‹æ•°ï¼ˆåå‰éšå±¤ã®å€‹æ•°ï¼‰
+     *		2.é¸æŠç¯„å›²ã‚’æ¨ªåˆ‡ã‚‹ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®é ‚ç‚¹ã®ãƒ‡ãƒ—ã‚¹å€¤ã®æœ€å°å€¤
+     *		3.é¸æŠç¯„å›²ã‚’æ¨ªåˆ‡ã‚‹ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®é ‚ç‚¹ã®ãƒ‡ãƒ—ã‚¹å€¤ã®æœ€å¤§å€¤
+     *		4.ãƒãƒ¼ãƒ ã‚¹ã‚¿ãƒƒã‚¯ï¼ˆ= ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ï¼‰[nå€‹]
+     *	ã“ã‚Œã‚‰ãŒãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°ã ã‘ã€é †ç•ªã«ç¢ºä¿ã•ã‚Œã¦ã„ã‚‹
+     *
+     *	ã¤ã¾ã‚Šã€må€‹ãƒ’ãƒƒãƒˆã—ãŸãªã‚‰ã€m * (1 + 2 + n)åˆ†ã®unsigned int ã®é…åˆ—ãŒç¢ºä¿ã•ã‚Œã‚‹
+     *	 [éšå±¤ã®æ·±ã•] [Zå€¤(æœ€å°)] [Zå€¤(æœ€å¤§)][éšå±¤ä¸­ã®ç•ªå·]... [éšå±¤ã®æ·±ã•]ãƒ»ãƒ»ãƒ»
+     *
+     *	ä¾‹ãˆã°ã€
+     *		[2][1.5][1.8][2][1] ã¨ãªã£ã¦ã„ã‚‹ã€ã€Œãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—ã€ã—ãŸã€Œãƒãƒªã‚´ãƒ³ãƒ‡ãƒ¼ã‚¿ã€ã¯ã€
+     *	ã¤ã¾ã‚Š
+     *		éšå±¤ã®æ·±ã•ï¼š2
+     *		å¥¥è¡Œãå€¤(æ‰‹å‰å´)ï¼š1.5
+     *		å¥¥è¡Œãå€¤(å¥¥å´)ï¼š1.8
+     *		éšå±¤ä¸­ã®ç•ªå·ï¼š2-1
+       */
 
-		/// ƒ|ƒCƒ“ƒ^‚ÌƒCƒ“ƒNƒŠƒƒ“ƒg‚ÅAƒfƒvƒX’l‚ÌÅ¬’l
-		work_pointer++;
-		minZ		= *work_pointer;
-		nearDepth	= (double)minZ / 0x7fffffff;
+       /// ãƒ’ãƒƒãƒˆã—ã¦ã„ãªã„
+    if (hitCount <= 0) return -1;
 
-		/// ƒ|ƒCƒ“ƒ^‚ÌƒCƒ“ƒNƒŠƒƒ“ƒg‚ÅAƒfƒvƒX’l‚ÌÅ‘å’l
-		work_pointer++;
-		maxZ		= *work_pointer;
-		farDepth	= (double)minZ / 0x7fffffff;
+    /// æœ€å°æ·±åº¦ã®åˆæœŸåŒ–
+    minDepth = 10.0;
+
+    /// ã‚»ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ•ã‚¡ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ä½œæ¥­ç”¨ãƒã‚¤ãƒ³ã‚¿ã¸æ¸¡ã™
+    work_pointer = (GLuint*)selectBuffer;
+
+    /// ãƒ’ãƒƒãƒˆæ•°åˆ†ç¢ºèªã™ã‚‹
+    for (i = 0; i < hitCount; i++)
+    {
+        /**
+         *	----------------------------------------
+         *	STEP1 ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå€‹ã€…ã®å‡¦ç†
+         *	----------------------------------------
+         */
+         /// åå‰ã®å€‹æ•°ã‚’æ ¼ç´
+        nameCount = *work_pointer;
+
+        /// ãƒã‚¤ãƒ³ã‚¿ã®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã§ã€ãƒ‡ãƒ—ã‚¹å€¤ã®æœ€å°å€¤
+        work_pointer++;
+        minZ = *work_pointer;
+        nearDepth = (double)minZ / 0x7fffffff;
+
+        /// ãƒã‚¤ãƒ³ã‚¿ã®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã§ã€ãƒ‡ãƒ—ã‚¹å€¤ã®æœ€å¤§å€¤
+        work_pointer++;
+        maxZ = *work_pointer;
+        farDepth = (double)minZ / 0x7fffffff;
 
 
-		/**
-		 *	ƒ|ƒCƒ“ƒ^‚ÌƒCƒ“ƒNƒŠƒƒ“ƒg‚ÅA–¼‘O—ñ‚Ìæ“¾
-		 *	‚È‚¨A–¼‘O‚ÌŒÂ”‚¾‚¯æ“¾‚·‚é
-		 */
-		for (nameIndex=0;nameIndex<nameCount;nameIndex++)
-		{
-			work_pointer++;
-			nameArray[nameIndex] = *work_pointer;			
-		}
+        /**
+         *	ãƒã‚¤ãƒ³ã‚¿ã®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã§ã€åå‰åˆ—ã®å–å¾—
+         *	ãªãŠã€åå‰ã®å€‹æ•°ã ã‘å–å¾—ã™ã‚‹
+         */
+        for (nameIndex = 0; nameIndex < nameCount; nameIndex++)
+        {
+            work_pointer++;
+            nameArray[nameIndex] = *work_pointer;
+        }
 
-		if (NAME_ARRAY_SIZE < nameCount)
-		{
-			cerr << "Error: [OpenGLObject::selectHitObjects] Name array size error" << endl;
-			continue;
-		}
+        if (NAME_ARRAY_SIZE < nameCount)
+        {
+            std::cerr << "Error: [OpenGLObject::selectHitObjects] Name array size error"
+                << std::endl;
+            continue;
+        }
 
-		/**
-		 *	----------------------------------------
-		 *	STEP2 Å¬ƒfƒvƒXiÅ‚àè‘O‚É‚ ‚é‚à‚Ìj‚ğ’Tõ
-		 *	----------------------------------------
-		 */
+        /**
+         *	----------------------------------------
+         *	STEP2 æœ€å°ãƒ‡ãƒ—ã‚¹ï¼ˆæœ€ã‚‚æ‰‹å‰ã«ã‚ã‚‹ã‚‚ã®ï¼‰ã‚’æ¢ç´¢
+         *	----------------------------------------
+         */
 
-		/// Å¬’l‚Ì”äŠr
-		if (nearDepth < minDepth) 
-		{
-			/// Å¬’l‚ÌXV
-			minDepth = nearDepth;
-			
-			for (nameIndex=0;nameIndex<nameCount;nameIndex++)
-			{
-				nameNumberOfHitObj[nameIndex] = nameArray[nameIndex];			
-			}
-		}
-	}
+         /// æœ€å°å€¤ã®æ¯”è¼ƒ
+        if (nearDepth < minDepth)
+        {
+            /// æœ€å°å€¤ã®æ›´æ–°
+            minDepth = nearDepth;
 
-	return 1;
+            for (nameIndex = 0; nameIndex < nameCount; nameIndex++)
+            {
+                nameNumberOfHitObj[nameIndex] = nameArray[nameIndex];
+            }
+        }
+    }
+
+    return 1;
 }
 
 /**
- *	à–¾
- *		ƒsƒbƒNƒAƒbƒv‚É‚æ‚è‘I‚ñ‚¾•¨‘Ì‚Ìˆ—
+ *	èª¬æ˜
+ *		ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—ã«ã‚ˆã‚Šé¸ã‚“ã ç‰©ä½“ã®å‡¦ç†
  */
 void OpenGLObject::handlePickupResult(void)
 {
-	return;
+    return;
 }
 
 /**
  *	------------------------------------------------------------
- *		ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ‚ÉŠÖŒW‚·‚é‚à‚Ì
+ *		ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»ã«é–¢ä¿‚ã™ã‚‹ã‚‚ã®
  *	------------------------------------------------------------
  */
-/**
- *	----------------------------------------
- *	3Dƒ‚ƒfƒŠƒ“ƒO
- *	----------------------------------------
- */
-/// À•W²•`‰æ
+ /**
+  *	----------------------------------------
+  *	3Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°
+  *	----------------------------------------
+  */
+  /// åº§æ¨™è»¸æç”»
 void OpenGLObject::drawCoordinateAxis(double length, double width, double scale)
 {
-	if ( !isCoordinateAxisDrawn )
-		return;
+    if (!isCoordinateAxisDrawn)
+        return;
 
-	/// ‹…‚Ì”¼Œa
-	const double RADIUS = 50.0;
+    /// çƒã®åŠå¾„
+    const double RADIUS = 50.0;
 
-	glPushMatrix();
-		/**
-		 *	x²‚Ì•`‰æiÔj
-		 */
-		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffRed );
-		glLineWidth( (GLfloat)(width*scale) );
-		glBegin(GL_LINES);
-			glVertex3f( 0.0f,	0.0f,	0.0f );
-			glVertex3f( (GLfloat)(length*scale),	0.0f,	0.0f );
-		glEnd();
+    glPushMatrix();
+    /**
+     *	xè»¸ã®æç”»ï¼ˆèµ¤ï¼‰
+     */
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffRed);
+    glLineWidth((GLfloat)(width * scale));
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f((GLfloat)(length * scale), 0.0f, 0.0f);
+    glEnd();
 
-		glTranslatef( (GLfloat)(length*scale), 0.0f, 0.0f );
-		drawSphere(RADIUS*scale);
-	glPopMatrix();
+    glTranslatef((GLfloat)(length * scale), 0.0f, 0.0f);
+    drawSphere(RADIUS * scale);
+    glPopMatrix();
 
-	glPushMatrix();
-		/**
-		 *	y²‚Ì•`‰æi—Îj
-		 */
-		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffGreen);
-		glLineWidth( (GLfloat)(width*scale) );
-		glBegin(GL_LINES);
-			glVertex3f( 0.0f,	0.0f,	0.0f );
-			glVertex3f( 0.0f,	(GLfloat)(length*scale),	0.0f );
-		glEnd();
+    glPushMatrix();
+    /**
+     *	yè»¸ã®æç”»ï¼ˆç·‘ï¼‰
+     */
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffGreen);
+    glLineWidth((GLfloat)(width * scale));
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, (GLfloat)(length * scale), 0.0f);
+    glEnd();
 
-		glTranslatef( 0.0f, (GLfloat)(length*scale), 0.0f );
-		drawSphere(RADIUS*scale);
-	glPopMatrix();
+    glTranslatef(0.0f, (GLfloat)(length * scale), 0.0f);
+    drawSphere(RADIUS * scale);
+    glPopMatrix();
 
-	glPushMatrix();
-		/**
-		 *	z²‚Ì•`‰æiÂj
-		 */
-		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffBlue);
-		glLineWidth( (GLfloat)(width*scale) );
-		glBegin(GL_LINES);
-			glVertex3f( 0.0f,	0.0f,	0.0f );
-			glVertex3f( 0.0f,	0.0f,	(GLfloat)(length*scale) );
-		glEnd();
+    glPushMatrix();
+    /**
+     *	zè»¸ã®æç”»ï¼ˆé’ï¼‰
+     */
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffBlue);
+    glLineWidth((GLfloat)(width * scale));
+    glBegin(GL_LINES);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, (GLfloat)(length * scale));
+    glEnd();
 
-		glTranslatef( 0.0f, 0.0f, (GLfloat)(length*scale) );
-		drawSphere(RADIUS*scale);
-	glPopMatrix();
+    glTranslatef(0.0f, 0.0f, (GLfloat)(length * scale));
+    drawSphere(RADIUS * scale);
+    glPopMatrix();
 
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffYellow);
-	drawSphere(RADIUS*scale);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffYellow);
+    drawSphere(RADIUS * scale);
 }
 
 /**
- *	à–¾
- *		ƒ|ƒŠƒSƒ“ƒ‚ƒfƒŠƒ“ƒOi¬•ªj
- *		“Yš(1, 2, 3)‚Ì‡‚ÉCWiŒv‰ñ‚èj‚Å“ü—Í
- *		Še’¸“_‚ÌÀ•W‚ğ“ü—Í
+ *	èª¬æ˜
+ *		ãƒãƒªã‚´ãƒ³ãƒ¢ãƒ‡ãƒªãƒ³ã‚°ï¼ˆæˆåˆ†ï¼‰
+ *		æ·»å­—(1, 2, 3)ã®é †ã«CWï¼ˆæ™‚è¨ˆå›ã‚Šï¼‰ã§å…¥åŠ›
+ *		å„é ‚ç‚¹ã®åº§æ¨™ã‚’å…¥åŠ›
  */
-void OpenGLObject::drawPolygonSurface(	double x1, double y1, double z1,
-														double x2, double y2, double z2,
-														double x3, double y3, double z3)
+void OpenGLObject::drawPolygonSurface(double x1, double y1, double z1,
+                            double x2, double y2, double z2,
+                            double x3, double y3, double z3)
 {
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-	double norm;
-	double x, y, z;
-	double vx1,vy1,vz1,vx2,vy2,vz2;
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+    double norm;
+    double x, y, z;
+    double vx1, vy1, vz1, vx2, vy2, vz2;
 
-	/// ƒxƒNƒgƒ‹‚Ì·‚ğŒvZ
-	vx1 = x1 - x2;
-	vy1 = y1 - y2;
-	vz1 = z1 - z2;
+    /// ãƒ™ã‚¯ãƒˆãƒ«ã®å·®ã‚’è¨ˆç®—
+    vx1 = x1 - x2;
+    vy1 = y1 - y2;
+    vz1 = z1 - z2;
 
-	vx2 = x3 - x2;
-	vy2 = y3 - y2;
-	vz2 = z3 - z2;
+    vx2 = x3 - x2;
+    vy2 = y3 - y2;
+    vz2 = z3 - z2;
 
-	/// ŠOÏŒvZ
-	outerProduct(vx1, vy1, vz1, vx2, vy2, vz2, &x, &y, &z);
-	norm = sqrt(x*x + y*y + z*z);
+    /// å¤–ç©è¨ˆç®—
+    designlab_robot_gui::math::outerProduct(vx1, vy1, vz1, vx2, vy2, vz2, &x, &y, &z);
+    norm = sqrt(x * x + y * y + z * z);
 
-	if (norm == 0)
-	{
-		cerr << "Error: [OpenGL::drawPolygonSurface] argument error\n" << endl;
-		return;
-	}
+    if (norm == 0)
+    {
+        std::cerr << "Error: [OpenGL::drawPolygonSurface] argument error\n" << std::endl;
+        return;
+    }
 
-	x = x/norm;
-	y = y/norm;
-	z = z/norm;
+    x = x / norm;
+    y = y / norm;
+    z = z / norm;
 
-	glBegin(GL_POLYGON);
-		glNormal3f( (GLfloat)x, (GLfloat)y, (GLfloat)z );
-		glVertex3f( (GLfloat)x1, (GLfloat)y1, (GLfloat)z1 );
-		glVertex3f( (GLfloat)x2, (GLfloat)y2, (GLfloat)z2 );
-		glVertex3f( (GLfloat)x3, (GLfloat)y3, (GLfloat)z3 );
-	glEnd();
+    glBegin(GL_POLYGON);
+    glNormal3f((GLfloat)x, (GLfloat)y, (GLfloat)z);
+    glVertex3f((GLfloat)x1, (GLfloat)y1, (GLfloat)z1);
+    glVertex3f((GLfloat)x2, (GLfloat)y2, (GLfloat)z2);
+    glVertex3f((GLfloat)x3, (GLfloat)y3, (GLfloat)z3);
+    glEnd();
 
 
 
-	return;
+    return;
 }
 
 /**
- *		ƒ|ƒŠƒSƒ“ƒ‚ƒfƒŠƒ“ƒOiƒxƒNƒgƒ‹j
- *		“Yš(1, 2, 3)‚Ì‡‚ÉCWiŒv‰ñ‚èj‚Å“ü—Í
- *		Še’¸“_‚ÌÀ•W‚ğ“ü—Í
+ *		ãƒãƒªã‚´ãƒ³ãƒ¢ãƒ‡ãƒªãƒ³ã‚°ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ï¼‰
+ *		æ·»å­—(1, 2, 3)ã®é †ã«CWï¼ˆæ™‚è¨ˆå›ã‚Šï¼‰ã§å…¥åŠ›
+ *		å„é ‚ç‚¹ã®åº§æ¨™ã‚’å…¥åŠ›
  */
-void OpenGLObject::drawPolygonSurface(const Vector& point1, const Vector& point2, const Vector& point3)
+void OpenGLObject::drawPolygonSurface(const Vector& point1,
+                                      const Vector& point2,
+                                      const Vector& point3)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( point1.getSize() == THREE_DIMENSION ); 
-	assert( point2.getSize() == THREE_DIMENSION ); 
-	assert( point3.getSize() == THREE_DIMENSION ); 
-	
-	drawPolygonSurface( point1(1), point1(2), point1(3), point2(1), point2(2), point2(3), point3(1), point3(2), point3(3) );
+    using designlab_robot_gui::math::THREE_DIMENSION;
+
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(point1.getSize() == THREE_DIMENSION);
+    assert(point2.getSize() == THREE_DIMENSION);
+    assert(point3.getSize() == THREE_DIMENSION);
+
+    drawPolygonSurface(point1(1), point1(2), point1(3), point2(1), point2(2), point2(3), point3(1), point3(2), point3(3));
 }
 
-/// ‰~’Œ•`‰æ
+/// å††æŸ±æç”»
 void OpenGLObject::drawCylinder(double radius, double height)
 {
-	/// quadric object ‚ğˆê‚Â¶¬‚·‚é
+    /// quadric object ã‚’ä¸€ã¤ç”Ÿæˆã™ã‚‹
     GLUquadricObj* quad = gluNewQuadric();
- 
-	/// –Ê‚Ì“h‚è’×‚µ‚ğw’è‚·‚éiü‰æ‚Å‚Í‚È‚­‰A‰e‚ğ‚Â‚¯‚½‰~’Œ‚ğ•`‚­j
+
+    /// é¢ã®å¡—ã‚Šæ½°ã—ã‚’æŒ‡å®šã™ã‚‹ï¼ˆç·šç”»ã§ã¯ãªãé™°å½±ã‚’ã¤ã‘ãŸå††æŸ±ã‚’æãï¼‰
     gluQuadricDrawStyle(quad, GLU_FILL);
 
-    /// ƒXƒ€[ƒXƒVƒF[ƒfƒBƒ“ƒO‚ğs‚¤‚æ‚¤İ’è‚·‚é
+    /// ã‚¹ãƒ ãƒ¼ã‚¹ã‚·ã‚§ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’è¡Œã†ã‚ˆã†è¨­å®šã™ã‚‹
     gluQuadricNormals(quad, GLU_SMOOTH);
 
-	glPushMatrix();
-		glTranslated( (GLdouble)0,0, (GLdouble)(-0.5*height) );
-		gluCylinder(quad, (GLdouble)radius, (GLdouble)radius, (GLdouble)height, (GLint)16, (GLint)1 );
-		gluDisk(quad, (GLdouble)0, (GLdouble)radius, (GLint)16, (GLint)1 );
-		glTranslated( (GLdouble)0,0, (GLdouble)height );
-		gluDisk(quad, (GLdouble)0, (GLdouble)radius, (GLint)16, (GLint)1 );
-	glPopMatrix();
+    glPushMatrix();
+    glTranslated((GLdouble)0, 0, (GLdouble)(-0.5 * height));
+    gluCylinder(quad, (GLdouble)radius, (GLdouble)radius, (GLdouble)height, (GLint)16, (GLint)1);
+    gluDisk(quad, (GLdouble)0, (GLdouble)radius, (GLint)16, (GLint)1);
+    glTranslated((GLdouble)0, 0, (GLdouble)height);
+    gluDisk(quad, (GLdouble)0, (GLdouble)radius, (GLint)16, (GLint)1);
+    glPopMatrix();
 
-	/// ¶¬‚µ‚½quadric object ‚ğíœ
-	gluDeleteQuadric(quad);
+    /// ç”Ÿæˆã—ãŸquadric object ã‚’å‰Šé™¤
+    gluDeleteQuadric(quad);
 
-	return;
+    return;
 }
 
-/// ‹…•`‰æ
+/// çƒæç”»
 void OpenGLObject::drawSphere(double radius)
 {
-	/// quadric object ‚ğˆê‚Â¶¬‚·‚é
-	GLUquadricObj* quad = gluNewQuadric();
+    /// quadric object ã‚’ä¸€ã¤ç”Ÿæˆã™ã‚‹
+    GLUquadricObj* quad = gluNewQuadric();
 
-	/// –Ê‚Ì“h‚è’×‚µ‚ğw’è‚·‚é(ü‰æ‚Å‚Í‚È‚­‰A‰e‚ğ‚Â‚¯‚½‰~’Œ‚ğ•`‚­)
-	gluQuadricDrawStyle(quad, GLU_FILL);
+    /// é¢ã®å¡—ã‚Šæ½°ã—ã‚’æŒ‡å®šã™ã‚‹(ç·šç”»ã§ã¯ãªãé™°å½±ã‚’ã¤ã‘ãŸå††æŸ±ã‚’æã)
+    gluQuadricDrawStyle(quad, GLU_FILL);
 
-	/// ƒXƒ€[ƒXƒVƒF[ƒfƒBƒ“ƒO‚ğs‚¤‚æ‚¤İ’è‚·‚é
-	gluQuadricNormals(quad, GLU_SMOOTH);
+    /// ã‚¹ãƒ ãƒ¼ã‚¹ã‚·ã‚§ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’è¡Œã†ã‚ˆã†è¨­å®šã™ã‚‹
+    gluQuadricNormals(quad, GLU_SMOOTH);
 
-	/// ‹…–Ê
-	gluSphere(quad, (GLdouble)radius, (GLint)16, (GLint)16 );
-	
-	/// ¶¬‚µ‚½quadric object ‚ğíœ
-	gluDeleteQuadric(quad);
-	
-	return;
+    /// çƒé¢
+    gluSphere(quad, (GLdouble)radius, (GLint)16, (GLint)16);
+
+    /// ç”Ÿæˆã—ãŸquadric object ã‚’å‰Šé™¤
+    gluDeleteQuadric(quad);
+
+    return;
 }
 
 /**
- *		Box•`‰æ(ü‰æ)
- *			¬•ª“ü—Í
+ *		Boxæç”»(ç·šç”»)
+ *			æˆåˆ†å…¥åŠ›
  */
 void OpenGLObject::drawBox(double startX, double startY, double startZ, double endX, double endY, double endZ)
 {
-	/// ‘æ1–Ê•`‰æ(x-y•½–Ê‚É•½s‚È–Ê)
-	//////////////////////////////////
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, 0.0f, 1.0f);
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)endZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)endZ );
-	glEnd();
-	
-	/// ‘æ2–Ê•`‰æ(y-z•½–Ê‚É•½s‚È–Ê)
-	//////////////////////////////////
-	glBegin(GL_POLYGON);
-		glNormal3f(1.0f, 0.0f, 0.0f);
-		glVertex3f( (GLfloat)endX, (GLfloat)endY,		(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX, (GLfloat)startY,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX, (GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)endX, (GLfloat)endY,		(GLfloat)startZ );
-	glEnd();
-	
-	/// ‘æ3–Ê•`‰æ(x-y•½–Ê‚É•½s‚È–Ê)
-	//////////////////////////////////
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, 0.0f, -1.0f);
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)startZ );
-	glEnd();
-	
-	/// ‘æ4–Ê•`‰æ(y-z•½–Ê‚É•½s‚È–Ê)
-	//////////////////////////////////
-	glBegin(GL_POLYGON);
-		glNormal3f(-1.0f, 0.0f, 0.0f);
-		glVertex3f( (GLfloat)startX, (GLfloat)endY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX, (GLfloat)startY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX, (GLfloat)startY,		(GLfloat)endZ );
-		glVertex3f( (GLfloat)startX, (GLfloat)endY,		(GLfloat)endZ );
-	glEnd();
-	
-	/// ‘æ5–Ê•`‰æ(x-z•½–Ê‚É•½s‚È–Ê)
-	//////////////////////////////////
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, -1.0f, 0.0f);
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)endZ );
-	glEnd();
-	
-	/// ‘æ6–Ê•`‰æ(x-z•½–Ê‚É•½s‚È–Ê)
-	//////////////////////////////////
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, 1.0f, 0.0f);
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)startZ );
-	glEnd();
+    /// ç¬¬1é¢æç”»(x-yå¹³é¢ã«å¹³è¡Œãªé¢)
+    //////////////////////////////////
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)endZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)endZ);
+    glEnd();
 
-	return;
+    /// ç¬¬2é¢æç”»(y-zå¹³é¢ã«å¹³è¡Œãªé¢)
+    //////////////////////////////////
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)startZ);
+    glEnd();
+
+    /// ç¬¬3é¢æç”»(x-yå¹³é¢ã«å¹³è¡Œãªé¢)
+    //////////////////////////////////
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)startZ);
+    glEnd();
+
+    /// ç¬¬4é¢æç”»(y-zå¹³é¢ã«å¹³è¡Œãªé¢)
+    //////////////////////////////////
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)endZ);
+    glEnd();
+
+    /// ç¬¬5é¢æç”»(x-zå¹³é¢ã«å¹³è¡Œãªé¢)
+    //////////////////////////////////
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)endZ);
+    glEnd();
+
+    /// ç¬¬6é¢æç”»(x-zå¹³é¢ã«å¹³è¡Œãªé¢)
+    //////////////////////////////////
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)startZ);
+    glEnd();
+
+    return;
 }
 
 /**
- *		Box•`‰æ(ü‰æ)
- *			ƒxƒNƒgƒ‹“ü—Í
+ *		Boxæç”»(ç·šç”»)
+ *			ãƒ™ã‚¯ãƒˆãƒ«å…¥åŠ›
  */
 void OpenGLObject::drawBox(const Vector& startPoint, const Vector& endPoint)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( startPoint.getSize() == THREE_DIMENSION );
-	assert( endPoint.getSize() == THREE_DIMENSION );
+    using designlab_robot_gui::math::THREE_DIMENSION;
 
-	drawBox( startPoint(1), startPoint(2), startPoint(3), endPoint(1), endPoint(2), endPoint(3) );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(startPoint.getSize() == THREE_DIMENSION);
+    assert(endPoint.getSize() == THREE_DIMENSION);
 
-	return;
+    drawBox(startPoint(1), startPoint(2), startPoint(3), endPoint(1), endPoint(2), endPoint(3));
+
+    return;
 }
 
 /**
- *		ƒtƒŒ[ƒ€•`‰æi•½–Ê‚Æ4‹÷‚Ì‚üj
- *			¬•ª“ü—Í
+ *		ãƒ•ãƒ¬ãƒ¼ãƒ æç”»ï¼ˆå¹³é¢ã¨4éš…ã®å‚ç·šï¼‰
+ *			æˆåˆ†å…¥åŠ›
  */
 void OpenGLObject::drawFrame(double startX, double startY, double startZ, double endX, double endY, double endZ)
 {
-	/// F‚ğƒOƒŒ[‚Éİ’è
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffGray);
-	/// ü•Œˆ’è
-	glLineWidth(4.0f);
+    /// è‰²ã‚’ã‚°ãƒ¬ãƒ¼ã«è¨­å®š
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialAmbDiffGray);
+    /// ç·šå¹…æ±ºå®š
+    glLineWidth(4.0f);
 
-	/// •½–Ê•`‰æ
-	glBegin(GL_LINE_LOOP);
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)startZ );
-	glEnd();
+    /// å¹³é¢æç”»
+    glBegin(GL_LINE_LOOP);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)startZ);
+    glEnd();
 
-	/// ˆÈ‰º‚Å‚ü•`‰æ
-	glBegin(GL_LINES);
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)startZ );
-	glEnd();
+    /// ä»¥ä¸‹ã§å‚ç·šæç”»
+    glBegin(GL_LINES);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)startZ);
+    glEnd();
 
-	glBegin(GL_LINES);
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)endZ );
-	glEnd();
+    glBegin(GL_LINES);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)endZ);
+    glEnd();
 
-	glBegin(GL_LINES);
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)endZ );
-	glEnd();
+    glBegin(GL_LINES);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)endZ);
+    glEnd();
 
-	glBegin(GL_LINES);
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)endZ );
-	glEnd();
+    glBegin(GL_LINES);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)endZ);
+    glEnd();
 
-	return;
+    return;
 }
 
 /**
- *		ƒtƒŒ[ƒ€•`‰æi•½–Ê‚Æ4‹÷‚Ì‚üj
- *			ƒxƒNƒgƒ‹“ü—Í
+ *		ãƒ•ãƒ¬ãƒ¼ãƒ æç”»ï¼ˆå¹³é¢ã¨4éš…ã®å‚ç·šï¼‰
+ *			ãƒ™ã‚¯ãƒˆãƒ«å…¥åŠ›
  */
 void OpenGLObject::drawFrame(const Vector& startPoint, const Vector& endPoint)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( startPoint.getSize() == THREE_DIMENSION );
-	assert( endPoint.getSize() == THREE_DIMENSION );
+    using designlab_robot_gui::math::THREE_DIMENSION;
 
-	drawFrame( startPoint(1), startPoint(2), startPoint(3), endPoint(1), endPoint(2), endPoint(3) );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(startPoint.getSize() == THREE_DIMENSION);
+    assert(endPoint.getSize() == THREE_DIMENSION);
 
-	return;
+    drawFrame(startPoint(1), startPoint(2), startPoint(3), endPoint(1), endPoint(2), endPoint(3));
+
+    return;
 }
 
 /**
- *		ü•`‰æ
+ *		ç·šæç”»
  */
 
-/// ü•`‰æi¬•ª“ü—Íj
+ /// ç·šæç”»ï¼ˆæˆåˆ†å…¥åŠ›ï¼‰
 void OpenGLObject::drawLine(double startX, double startY, double startZ,
-										double endX, double endY, double endZ, 
-										double width)
+                    double endX, double endY, double endZ,
+                    double width)
 {
-	/// ü‚Ì‘¾‚³Œˆ’è
-	glLineWidth( (GLfloat)width );
+    /// ç·šã®å¤ªã•æ±ºå®š
+    glLineWidth((GLfloat)width);
 
-	/// ü‚Ì•`‰æ
-	glBegin(GL_LINES);
-		glVertex3f( (GLfloat)startX, (GLfloat)startY, (GLfloat)startZ );
-		glVertex3f( (GLfloat)endX, (GLfloat)endY, (GLfloat)endZ );  
-	glEnd();
+    /// ç·šã®æç”»
+    glBegin(GL_LINES);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)endZ);
+    glEnd();
 
-	return;
+    return;
 }
 
-/// ü•`‰æiƒxƒNƒgƒ‹“ü—Íj
+/// ç·šæç”»ï¼ˆãƒ™ã‚¯ãƒˆãƒ«å…¥åŠ›ï¼‰
 void OpenGLObject::drawLine(const Vector& startPoint, const Vector& endPoint, double width)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( startPoint.getSize() == THREE_DIMENSION );
-	assert( endPoint.getSize() == THREE_DIMENSION );
+    using designlab_robot_gui::math::THREE_DIMENSION;
 
-	drawLine( startPoint(1), startPoint(2), startPoint(3), endPoint(1), endPoint(2), endPoint(3), width );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(startPoint.getSize() == THREE_DIMENSION);
+    assert(endPoint.getSize() == THREE_DIMENSION);
+
+    drawLine(startPoint(1), startPoint(2), startPoint(3), endPoint(1), endPoint(2), endPoint(3), width);
 }
 
-/// OŠpŒ`•`‰æ
-void OpenGLObject::drawTriangle(	const Vector& point1, const Vector& point2, 
-												const Vector& point3, double width )
+/// ä¸‰è§’å½¢æç”»
+void OpenGLObject::drawTriangle(const Vector& point1, const Vector& point2,
+                                const Vector& point3, double width)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( point1.getSize() == THREE_DIMENSION );
-	assert( point2.getSize() == THREE_DIMENSION );
-	assert( point3.getSize() == THREE_DIMENSION );
+    using designlab_robot_gui::math::THREE_DIMENSION;
 
-	/// ÀÛ‚É•`‰æ
-	drawLine( point1, point2, width );
-	drawLine( point2, point3, width );
-	drawLine( point3, point1, width );
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(point1.getSize() == THREE_DIMENSION);
+    assert(point2.getSize() == THREE_DIMENSION);
+    assert(point3.getSize() == THREE_DIMENSION);
+
+    /// å®Ÿéš›ã«æç”»
+    drawLine(point1, point2, width);
+    drawLine(point2, point3, width);
+    drawLine(point3, point1, width);
 
 }
 
-/// lŠpŒ`•`‰æ
-void OpenGLObject::drawQuadrangle(	const Vector& point1, const Vector& point2, 
-													const Vector& point3, const Vector& point4,
-													double width )
+/// å››è§’å½¢æç”»
+void OpenGLObject::drawQuadrangle(const Vector& point1, const Vector& point2,
+                                  const Vector& point3, const Vector& point4,
+                                  double width)
 {
-	/// ˆø”ƒ`ƒFƒbƒN
-	assert( point1.getSize() == THREE_DIMENSION );
-	assert( point2.getSize() == THREE_DIMENSION );
-	assert( point3.getSize() == THREE_DIMENSION );
-	assert( point4.getSize() == THREE_DIMENSION );
+    using designlab_robot_gui::math::THREE_DIMENSION;
 
-	drawLine( point1, point2, width);
-	drawLine( point2, point3, width);
-	drawLine( point3, point1, width);
-	drawLine( point1, point2, width);
+    /// å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    assert(point1.getSize() == THREE_DIMENSION);
+    assert(point2.getSize() == THREE_DIMENSION);
+    assert(point3.getSize() == THREE_DIMENSION);
+    assert(point4.getSize() == THREE_DIMENSION);
+
+    drawLine(point1, point2, width);
+    drawLine(point2, point3, width);
+    drawLine(point3, point1, width);
+    drawLine(point1, point2, width);
 }
 
 /**
  *	----------------------------------------
- *	2Dƒ‚ƒfƒŠƒ“ƒO
+ *	2Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°
  *	----------------------------------------
  */
-/**
- *		•½–Ê”Â•`‰æ(‘ÎŠpü‚Ì’¸“_‚Æ‚‚³)
- */
-/// …•½–ÊiXY
+ /**
+  *		å¹³é¢æ¿æç”»(å¯¾è§’ç·šã®é ‚ç‚¹ã¨é«˜ã•)
+  */
+  /// æ°´å¹³é¢ï¼ˆXY
 void OpenGLObject::drawHorizontalPlane(double startX, double startY, double endX, double endY, double z)
 {
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, 0.0f, 1.0f);
-		glVertex3f( (GLfloat)startX,	(GLfloat)startY,	(GLfloat)z );
-		glVertex3f( (GLfloat)startX,	(GLfloat)endY,		(GLfloat)z );
-		glVertex3f( (GLfloat)endX,		(GLfloat)endY,		(GLfloat)z );
-		glVertex3f( (GLfloat)endX,		(GLfloat)startY,	(GLfloat)z );
-	glEnd();
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f((GLfloat)startX, (GLfloat)startY, (GLfloat)z);
+    glVertex3f((GLfloat)startX, (GLfloat)endY, (GLfloat)z);
+    glVertex3f((GLfloat)endX, (GLfloat)endY, (GLfloat)z);
+    glVertex3f((GLfloat)endX, (GLfloat)startY, (GLfloat)z);
+    glEnd();
 }
 
-/// ‘OŠz–ÊiYZj
+/// å‰é¡é¢ï¼ˆYZï¼‰
 void OpenGLObject::drawFrontalPlane(double startY, double startZ, double endY, double endZ, double x)
 {
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, 0.0f, 1.0f);
-		glVertex3f( (GLfloat)x,	(GLfloat)startY,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)x,	(GLfloat)startY,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)x,	(GLfloat)endY,		(GLfloat)endZ );
-		glVertex3f( (GLfloat)x,	(GLfloat)endY,		(GLfloat)startZ );
-	glEnd();
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f((GLfloat)x, (GLfloat)startY, (GLfloat)startZ);
+    glVertex3f((GLfloat)x, (GLfloat)startY, (GLfloat)endZ);
+    glVertex3f((GLfloat)x, (GLfloat)endY, (GLfloat)endZ);
+    glVertex3f((GLfloat)x, (GLfloat)endY, (GLfloat)startZ);
+    glEnd();
 }
 
-/// –îó–ÊiZXj
+/// çŸ¢çŠ¶é¢ï¼ˆZXï¼‰
 void OpenGLObject::drawSagittalPlane(double startZ, double startX, double endZ, double endX, double y)
 {
-	glBegin(GL_POLYGON);
-		glNormal3f(0.0f, 0.0f, 1.0f);
-		glVertex3f( (GLfloat)startX,	(GLfloat)y,	(GLfloat)startZ );
-		glVertex3f( (GLfloat)startX,	(GLfloat)y,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)y,	(GLfloat)endZ );
-		glVertex3f( (GLfloat)endX,		(GLfloat)y,	(GLfloat)startZ );
-	glEnd();
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f((GLfloat)startX, (GLfloat)y, (GLfloat)startZ);
+    glVertex3f((GLfloat)startX, (GLfloat)y, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)y, (GLfloat)endZ);
+    glVertex3f((GLfloat)endX, (GLfloat)y, (GLfloat)startZ);
+    glEnd();
 }
 
 /**
- *		ƒƒbƒVƒ…ó‚Ì°‚ğ•`‰æ‚·‚é
- *			startX, startYF°‚Ì‘ÎŠpü‚Ìn“_
- *			endX, endYF°‚Ì‘ÎŠpü‚ÌI“_
- *			zF°‚Ì‚‚³
- *			dx, dyFƒƒbƒVƒ…‚ÌŠÔŠu
+ *		ãƒ¡ãƒƒã‚·ãƒ¥çŠ¶ã®åºŠã‚’æç”»ã™ã‚‹
+ *			startX, startYï¼šåºŠã®å¯¾è§’ç·šã®å§‹ç‚¹
+ *			endX, endYï¼šåºŠã®å¯¾è§’ç·šã®çµ‚ç‚¹
+ *			zï¼šåºŠã®é«˜ã•
+ *			dx, dyï¼šãƒ¡ãƒƒã‚·ãƒ¥ã®é–“éš”
  */
 void OpenGLObject::drawGridFloor(void)
 {
-	if ( !isGridFloorDrawn )
-		return;
+    if (!isGridFloorDrawn)
+        return;
 
-	glCallList( gridFloorDisplayListID );
+    glCallList(gridFloorDisplayListID);
 
 }
 
 /**
  *	------------------------------------------------------------
- *		OpenGLObjectƒNƒ‰ƒX‚Ìprotected‚Èƒƒ“ƒoŠÖ”
+ *		OpenGLObjectã‚¯ãƒ©ã‚¹ã®protectedãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	à–¾
- *		ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì¶¬
- */
+ /**
+  *	èª¬æ˜
+  *		ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç”Ÿæˆ
+  */
 void OpenGLObject::newGLObjDispList(void)
 {
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒgID‚Ìì¬
-	gridFloorDisplayListID = glGenLists(1);
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆIDã®ä½œæˆ
+    gridFloorDisplayListID = glGenLists(1);
 
-	/// ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
-	Vector start(3);
-	Vector end(3);
+    /// ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
+    Vector start(3);
+    Vector end(3);
 
-	const GLfloat glidColor[4] = {0.1f, 0.1f, 0.3f, 1.0f};
-	const GLfloat planeColor[4] = {0.2f, 0.4, 0.6f, 1.0f};
+    const GLfloat glidColor[4] = { 0.1f, 0.1f, 0.3f, 1.0f };
+    const GLfloat planeColor[4] = { 0.2f, 0.4, 0.6f, 1.0f };
 
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ìì¬
-	glNewList(gridFloorDisplayListID, GL_COMPILE);
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ä½œæˆ
+    glNewList(gridFloorDisplayListID, GL_COMPILE);
 
-		setMaterialColor( planeColor );
-		/**
-		 *		•½–Ê‚Ì•`‰æ
-		 */
-		glBegin(GL_POLYGON);
-			glNormal3f(0.0f, 0.0f, 1.0f);
-			glVertex3f( (GLfloat)GRID_START_X,	(GLfloat)GRID_START_Y,	(GLfloat)GRID_HEIGHT );
-			glVertex3f( (GLfloat)GRID_START_X,	(GLfloat)GRID_END_Y,		(GLfloat)GRID_HEIGHT );
-			glVertex3f( (GLfloat)GRID_END_X,		(GLfloat)GRID_END_Y,		(GLfloat)GRID_HEIGHT );
-			glVertex3f( (GLfloat)GRID_END_X,		(GLfloat)GRID_START_Y,	(GLfloat)GRID_HEIGHT );
-		glEnd();
+    setMaterialColor(planeColor);
+    /**
+     *		å¹³é¢ã®æç”»
+     */
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f((GLfloat)GRID_START_X, (GLfloat)GRID_START_Y, (GLfloat)GRID_HEIGHT);
+    glVertex3f((GLfloat)GRID_START_X, (GLfloat)GRID_END_Y, (GLfloat)GRID_HEIGHT);
+    glVertex3f((GLfloat)GRID_END_X, (GLfloat)GRID_END_Y, (GLfloat)GRID_HEIGHT);
+    glVertex3f((GLfloat)GRID_END_X, (GLfloat)GRID_START_Y, (GLfloat)GRID_HEIGHT);
+    glEnd();
 
-		/**
-		 *		ƒOƒŠƒbƒh‚Ì•`‰æ
-		 */
-		/// F‚Ì‘I‘ğ
-		setMaterialColor( glidColor );
+    /**
+     *		ã‚°ãƒªãƒƒãƒ‰ã®æç”»
+     */
+     /// è‰²ã®é¸æŠ
+    setMaterialColor(glidColor);
 
-		/// ‚‚³ŒÅ’è
-		start(3) = GRID_HEIGHT+1.0;	end(3) = GRID_HEIGHT+1.0;
+    /// é«˜ã•å›ºå®š
+    start(3) = GRID_HEIGHT + 1.0;	end(3) = GRID_HEIGHT + 1.0;
 
-		// x•ûŒü‚Ì•`‰æ
-		start(2) = GRID_START_Y;		end(2) = GRID_END_Y;
+    // xæ–¹å‘ã®æç”»
+    start(2) = GRID_START_Y;		end(2) = GRID_END_Y;
 
-		double x;
-		for ( x=GRID_START_X; x<=GRID_END_X; x+=GRID_DX )
-		{
-			start(1) = x;	end(1) = x;
-			drawLine( start, end, 1.5);
-		}
-	
-		/// y•ûŒü‚Ì•`‰æ
-		start(1) = GRID_START_X;		end(1) = GRID_END_X;
+    double x;
+    for (x = GRID_START_X; x <= GRID_END_X; x += GRID_DX)
+    {
+        start(1) = x;	end(1) = x;
+        drawLine(start, end, 1.5);
+    }
 
-		double y;
-		for ( y=GRID_START_Y; y<=GRID_END_Y; y+=GRID_DY )
-		{
-			start(2) = y;	end(2) = y;
-			drawLine( start, end, 1.5);
-		}
+    /// yæ–¹å‘ã®æç”»
+    start(1) = GRID_START_X;		end(1) = GRID_END_X;
 
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì•Û‘¶
-	glEndList();
+    double y;
+    for (y = GRID_START_Y; y <= GRID_END_Y; y += GRID_DY)
+    {
+        start(2) = y;	end(2) = y;
+        drawLine(start, end, 1.5);
+    }
 
-	return;
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ä¿å­˜
+    glEndList();
+
+    return;
 }
 
 /**
- *	à–¾
- *		ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ÌÁ‹
+ *	èª¬æ˜
+ *		ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æ¶ˆå»
  */
 void OpenGLObject::deleteObjDispList(void)
 {
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ÌÁ‹
-	glDeleteLists(gridFloorDisplayListID, 1);
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æ¶ˆå»
+    glDeleteLists(gridFloorDisplayListID, 1);
 }
 
 }	/// end of namespace Graphic

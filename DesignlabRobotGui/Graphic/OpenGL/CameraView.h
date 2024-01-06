@@ -1,22 +1,19 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		CameraView.h
- *  à–¾
- *		ƒJƒƒ‰ƒrƒ…[‚ğ¶¬‚·‚éiå‚Éƒ}ƒEƒX“®ì‚É‘Î‰j
- *  “ú•t
- *		ì¬“ú: 2007/06/04(MON)		XV“ú: 2007/06/13(WED)
+ *  èª¬æ˜
+ *		ã‚«ãƒ¡ãƒ©ãƒ“ãƒ¥ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹ï¼ˆä¸»ã«ãƒã‚¦ã‚¹å‹•ä½œã«å¯¾å¿œï¼‰
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2007/06/04(MON)		æ›´æ–°æ—¥: 2007/06/13(WED)
  */
 
 #ifndef __CameraView_h__
 #define __CameraView_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
 #include <cmath>
-#include "../../Math/MathLibrary.h"
+
+#include "Math/math_constant.h"
+
 
 namespace Graphic
 {
@@ -24,178 +21,178 @@ namespace Graphic
 
 /**
  *	----------------------------------------------------------------------
- *		CameraViewƒNƒ‰ƒX
+ *		CameraViewã‚¯ãƒ©ã‚¹
  *	----------------------------------------------------------------------
  */
 class CameraView
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *		•ÏXƒ‚[ƒh
- *			PAN			: •Ài
- *			SPIN		: ‰ñ“]
- *			ZOOM		: kÚ
- *			STOP		: ’â~
- */
-	enum Mode{PAN, SPIN, ZOOM, STOP};
+    /**
+     *		å¤‰æ›´ãƒ¢ãƒ¼ãƒ‰
+     *			PAN			: ä¸¦é€²
+     *			SPIN		: å›è»¢
+     *			ZOOM		: ç¸®å°º
+     *			STOP		: åœæ­¢
+     */
+    enum Mode { PAN, SPIN, ZOOM, STOP };
 
 private:
-/**
- *		ƒJƒƒ‰î•ñ
- *			azimuth				: •ûˆÊŠp(ƒAƒWƒ}ƒX)[deg]
- *			elevation			: ‹ÂŠp(ƒGƒŒƒxƒCƒVƒ‡ƒ“)[deg]
- *			distance				: ‹——£
- */
-	double		azimuth;
-	double		elevation;
-	double		distance;
+    /**
+     *		ã‚«ãƒ¡ãƒ©æƒ…å ±
+     *			azimuth				: æ–¹ä½è§’(ã‚¢ã‚¸ãƒã‚¹)[deg]
+     *			elevation			: ä»°è§’(ã‚¨ãƒ¬ãƒ™ã‚¤ã‚·ãƒ§ãƒ³)[deg]
+     *			distance				: è·é›¢
+     */
+    double		azimuth;
+    double		elevation;
+    double		distance;
 
-/**
- *		‹“_‚Ì’†SˆÊ’u
- */
-	double viewCenterPosition[3];
+    /**
+     *		è¦–ç‚¹ã®ä¸­å¿ƒä½ç½®
+     */
+    double viewCenterPosition[3];
 
-/**
- *		‹“_‚Ì‰Šúî•ñ
- *			initAzimuth				: •ûˆÊŠp(ƒAƒWƒ}ƒX)[deg]
- *			initElevation			: ‹ÂŠp(ƒGƒŒƒxƒCƒVƒ‡ƒ“)[deg]
- *			initDistance			: ‹——£
- */
-	double		initAzimuth;
-	double		initElevation;
-	double		initDistance;
+    /**
+     *		è¦–ç‚¹ã®åˆæœŸæƒ…å ±
+     *			initAzimuth				: æ–¹ä½è§’(ã‚¢ã‚¸ãƒã‚¹)[deg]
+     *			initElevation			: ä»°è§’(ã‚¨ãƒ¬ãƒ™ã‚¤ã‚·ãƒ§ãƒ³)[deg]
+     *			initDistance			: è·é›¢
+     */
+    double		initAzimuth;
+    double		initElevation;
+    double		initDistance;
 
-/**
- *		‹“_‚Ì‰Šú’†SˆÊ’u
- */
-	double		initViewCenterPosition[Const::THREE_DIMENSION];
+    /**
+     *		è¦–ç‚¹ã®åˆæœŸä¸­å¿ƒä½ç½®
+     */
+    double		initViewCenterPosition[designlab_robot_gui::math::THREE_DIMENSION];
 
-/**
- *		‹“_‚Ì2ŸŒ³‰ŠúˆÊ’u
- */
-	int initX;
-	int initY;
+    /**
+     *		è¦–ç‚¹ã®2æ¬¡å…ƒåˆæœŸä½ç½®
+     */
+    int initX;
+    int initY;
 
-/**
- *		ƒ‚[ƒhó‘Ô
- */
-	Mode	modeState;
+    /**
+     *		ãƒ¢ãƒ¼ãƒ‰çŠ¶æ…‹
+     */
+    Mode	modeState;
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	CameraView();
-	virtual ~CameraView();
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+    CameraView();
+    virtual ~CameraView();
 
-/**
- *	----------------------------------------
- *	å‚È‘€ì
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		‹“_•ÏXŠJn
-	 *	ˆø”
-	 *		mode: •ÏXƒ‚[ƒh
-	 *		x: ‹N“_‚ÌxÀ•W
-	 *		y: ‹N“_‚ÌyÀ•W
-	 */
-	void beginViewControl(CameraView::Mode mode, int x, int y);
+    /**
+     *	----------------------------------------
+     *	ä¸»ãªæ“ä½œ
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		è¦–ç‚¹å¤‰æ›´é–‹å§‹
+      *	å¼•æ•°
+      *		mode: å¤‰æ›´ãƒ¢ãƒ¼ãƒ‰
+      *		x: èµ·ç‚¹ã®xåº§æ¨™
+      *		y: èµ·ç‚¹ã®yåº§æ¨™
+      */
+    void beginViewControl(CameraView::Mode mode, int x, int y);
 
-	/**
-	 *	‹“_•ÏXI—¹
-	 */
-	void endViewControl(void);
+    /**
+     *	è¦–ç‚¹å¤‰æ›´çµ‚äº†
+     */
+    void endViewControl(void);
 
-	/**
-	 *	à–¾
-	 *		ƒ‚[ƒh‚É‚æ‚éView‚Ì•ÏX
-	 */
-	void doViewControl(int x, int y);
+    /**
+     *	èª¬æ˜
+     *		ãƒ¢ãƒ¼ãƒ‰ã«ã‚ˆã‚‹Viewã®å¤‰æ›´
+     */
+    void doViewControl(int x, int y);
 
-/**
- *		‹–ì‚Ì•ÏX‚ÌŠeí‘€ì
- *			pan		: •Ài‘€ì
- *			Rotate			: ‰ñ“]‘€ì
- *			Scale			: kÚ‘€ì
- */
-	void	pan(int x, int y);
-	void	spin(int x, int y);
-	void	zoom(int x, int y);
-
-
-/**
- *	----------------------------------------
- *	ƒZƒbƒgŠÖ”
- *	----------------------------------------
- */
-/**
- *	à–¾
- *		‰æ–Êã‚Ì‘€ì‹N“_‚Æ‚È‚é“_‚ğƒZƒbƒg
- */
-	void setControlPoint(int x, int y);
-
-/**
- *	à–¾
- *		•Ï”‚Ì’l‚ğƒfƒtƒHƒ‹ƒg‚ÉƒZƒbƒg
- */
-	void setDefaultCondition(void);
+    /**
+     *		è¦–é‡ã®å¤‰æ›´ã®å„ç¨®æ“ä½œ
+     *			pan		: ä¸¦é€²æ“ä½œ
+     *			Rotate			: å›è»¢æ“ä½œ
+     *			Scale			: ç¸®å°ºæ“ä½œ
+     */
+    void	pan(int x, int y);
+    void	spin(int x, int y);
+    void	zoom(int x, int y);
 
 
-/**
- *	à–¾
- *		•ÏXƒ‚[ƒh‚ğİ’è
- */
-	void setMode(CameraView::Mode mode);
+    /**
+     *	----------------------------------------
+     *	ã‚»ãƒƒãƒˆé–¢æ•°
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ç”»é¢ä¸Šã®æ“ä½œèµ·ç‚¹ã¨ãªã‚‹ç‚¹ã‚’ã‚»ãƒƒãƒˆ
+      */
+    void setControlPoint(int x, int y);
 
-/**
- *	----------------------------------------
- *	ƒAƒNƒZƒXŠÖ”
- *	----------------------------------------
- */
-	double getAzimuth(void) const {return azimuth;}
-	double getElevation(void) const {return elevation;}
-	double getDistance(void) const {return distance;}
-	double getViewCenterPosition(int num) const
-			{
-				assert( 1<= num && num <= Const::THREE_DIMENSION);
-				return viewCenterPosition[num-1];
-			}
+    /**
+     *	èª¬æ˜
+     *		å¤‰æ•°ã®å€¤ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã‚»ãƒƒãƒˆ
+     */
+    void setDefaultCondition(void);
 
-/**
- *	à–¾
- *		•ÏXƒ‚[ƒh‚ğæ“¾
- */
-	CameraView::Mode getMode(void) const{ return modeState; }
+
+    /**
+     *	èª¬æ˜
+     *		å¤‰æ›´ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®š
+     */
+    void setMode(CameraView::Mode mode);
+
+    /**
+     *	----------------------------------------
+     *	ã‚¢ã‚¯ã‚»ã‚¹é–¢æ•°
+     *	----------------------------------------
+     */
+    double getAzimuth(void) const { return azimuth; }
+    double getElevation(void) const { return elevation; }
+    double getDistance(void) const { return distance; }
+    double getViewCenterPosition(int num) const
+    {
+        assert(1 <= num && num <= designlab_robot_gui::math::THREE_DIMENSION);
+        return viewCenterPosition[num - 1];
+    }
+
+    /**
+     *	èª¬æ˜
+     *		å¤‰æ›´ãƒ¢ãƒ¼ãƒ‰ã‚’å–å¾—
+     */
+    CameraView::Mode getMode(void) const { return modeState; }
 
 
 
 
 private:
-/**
- *	à–¾
- *		‹ü•ûŒü‚Ìæ“¾
- */
-	void getEyeDirection(double* x, double* y, double* z);
+    /**
+     *	èª¬æ˜
+     *		è¦–ç·šæ–¹å‘ã®å–å¾—
+     */
+    void getEyeDirection(double* x, double* y, double* z);
 
-/**
- *	à–¾
- *		‹–ì‚Ìã•ûŒü‚Ìæ“¾
- */
-	void getUpDirection(double* x, double* y, double* z);
+    /**
+     *	èª¬æ˜
+     *		è¦–é‡ã®ä¸Šæ–¹å‘ã®å–å¾—
+     */
+    void getUpDirection(double* x, double* y, double* z);
 
 };	/// end of namespace CameraView
 

@@ -2,8 +2,7 @@
 #ifndef DESIGNLABROBOTGUI_KINEMATICS_ASURA_PARAMETER_H_
 #define DESIGNLABROBOTGUI_KINEMATICS_ASURA_PARAMETER_H_
 
-#include "Math/MathLibrary.h"
-#include "Math/MathConstant.h"
+#include "Math/math_constant.h"
 
 
 // constexpr を使うと，コンパイル時に定数に置き換えられる．
@@ -44,24 +43,24 @@ const double	LINK3H = 30.0;					//脛リンクの厚さ
 const double	Pulley_Radius = 33.75;//26.0;
 
 // SAURUSの各関節の可動範囲 (単位: degree)
-const double LEG_ANGLE1_MIN = -45.0 / 180 * Const::PI;
-const double LEG_ANGLE1_MAX = 45.0 / 180 * Const::PI;
-const double LEG_ANGLE2_MIN = -75.0 / 180 * Const::PI;
-const double LEG_ANGLE2_MAX = 75.0 / 180 * Const::PI;
-const double LEG_ANGLE3_MIN = -130.0 / 180 * Const::PI;
-const double LEG_ANGLE3_MAX = 130.0 / 180 * Const::PI;
-const double LEG_ANGLE4_MIN = -90.0 / 180 * Const::PI;
-const double LEG_ANGLE4_MAX = 140.0 / 180 * Const::PI;
+const double LEG_ANGLE1_MIN = -45.0 / 180 * math::PI;
+const double LEG_ANGLE1_MAX = 45.0 / 180 * math::PI;
+const double LEG_ANGLE2_MIN = -75.0 / 180 * math::PI;
+const double LEG_ANGLE2_MAX = 75.0 / 180 * math::PI;
+const double LEG_ANGLE3_MIN = -130.0 / 180 * math::PI;
+const double LEG_ANGLE3_MAX = 130.0 / 180 * math::PI;
+const double LEG_ANGLE4_MIN = -90.0 / 180 * math::PI;
+const double LEG_ANGLE4_MAX = 140.0 / 180 * math::PI;
 
 // ASURA
-// const double	LEG_ANGLE1_MIN = -45.0 / 180 * Const::PI;
-// const double	LEG_ANGLE1_MAX = 45.0 / 180 * Const::PI;
-// const double	LEG_ANGLE2_MIN = -75.0 / 180 * Const::PI;
-// const double	LEG_ANGLE2_MAX = 75.0 / 180 * Const::PI;
-// const double	LEG_ANGLE3_MIN = -130.0 / 180 * Const::PI;
-// const double	LEG_ANGLE3_MAX = 130.0 / 180 * Const::PI;
-// const double	LEG_ANGLE4_MIN = -90.0 / 180 * Const::PI;
-// const double	LEG_ANGLE4_MAX = 140.0 / 180 * Const::PI;
+// const double	LEG_ANGLE1_MIN = -45.0 / 180 * math::PI;
+// const double	LEG_ANGLE1_MAX = 45.0 / 180 * math::PI;
+// const double	LEG_ANGLE2_MIN = -75.0 / 180 * math::PI;
+// const double	LEG_ANGLE2_MAX = 75.0 / 180 * math::PI;
+// const double	LEG_ANGLE3_MIN = -130.0 / 180 * math::PI;
+// const double	LEG_ANGLE3_MAX = 130.0 / 180 * math::PI;
+// const double	LEG_ANGLE4_MIN = -90.0 / 180 * math::PI;
+// const double	LEG_ANGLE4_MAX = 140.0 / 180 * math::PI;
 
 
 /// 脚の到達範囲 (単位 : mm)
@@ -118,10 +117,10 @@ const double	BODY_HEIGHT = 156;//69.0;ASURA_20231128
 const double	WIDTH_CLAWLER = 441.0;
 const double	WIDTH_CL_FOOT = 491.0;
 
-const double	LEG_ROOT_POSX[] = { BODY_LENGTH / Const::ROOT_2 / 2,	0.0,			-BODY_LENGTH / Const::ROOT_2 / 2,	-BODY_LENGTH / Const::ROOT_2 / 2,	0.0,				BODY_LENGTH / Const::ROOT_2 / 2 };
-const double	LEG_ROOT_POSY[] = { BODY_WIDTH / Const::ROOT_2 / 2,	BODY_WIDTH / 2,	BODY_WIDTH / Const::ROOT_2 / 2,		-BODY_WIDTH / Const::ROOT_2 / 2,	-BODY_WIDTH / 2,		-BODY_WIDTH / Const::ROOT_2 / 2 };
-const double	LEG_ROOT_POSZ[] = { 0,							0,				0,								0,								0,					0 };
-const double	LEG_ROOT_ANGLE[] = { Const::PI / 4,					Const::PI / 2,	Const::PI * 3 / 4,					-Const::PI * 3 / 4,					-Const::PI / 2,		-Const::PI / 4 };
+const double	LEG_ROOT_POSX[] = { BODY_LENGTH / math::ROOT_2 / 2, 0.0, -BODY_LENGTH / math::ROOT_2 / 2,	-BODY_LENGTH / math::ROOT_2 / 2, 0.0, BODY_LENGTH / math::ROOT_2 / 2 };
+const double	LEG_ROOT_POSY[] = { BODY_WIDTH / math::ROOT_2 / 2,  BODY_WIDTH / 2, BODY_WIDTH / math::ROOT_2 / 2, -BODY_WIDTH / math::ROOT_2 / 2,	-BODY_WIDTH / 2, -BODY_WIDTH / math::ROOT_2 / 2 };
+const double	LEG_ROOT_POSZ[] = { 0, 0, 0, 0, 0, 0 };
+const double	LEG_ROOT_ANGLE[] = { math::PI / 4, math::PI / 2, math::PI * 3 / 4, -math::PI * 3 / 4, -math::PI / 2, -math::PI / 4 };
 
 const double	LEG_INITIAL_ANGLE1[] = { 0.0, 0.0, 0.0, 0.0 };
 const double	LEG_INITIAL_ANGLE2[] = { 0.0, 0.0, 0.0, 0.0 };

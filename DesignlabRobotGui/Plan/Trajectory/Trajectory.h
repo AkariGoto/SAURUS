@@ -10,8 +10,8 @@ namespace designlab_robot_gui::plan
 
 class Trajectory
 {
-    using Vector = Math::Vector;
-    using Matrix = Math::Matrix;
+    using Vector = math::Vector;
+    using Matrix = math::Matrix;
 
 public:
     inline Trajectory() { initializeTrajectory(); }

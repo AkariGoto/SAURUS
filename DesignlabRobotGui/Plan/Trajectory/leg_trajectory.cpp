@@ -1,8 +1,7 @@
 ﻿
 #include "Plan/Trajectory/leg_trajectory.h"
 
-#include "Utility/EngConstant.h"
-#include "Math//MathConstant.h"
+#include "Math/math_constant.h"
 
 
 namespace designlab_robot_gui::plan
@@ -47,13 +46,15 @@ bool LegTrajectory::operator==(const LegTrajectory& trajectory) const
 void LegTrajectory::initializeLegTrajectory()
 {
     // 遊脚ストローク
-    returnStroke.setSize(Const::THREE_DIMENSION);
-    // 遊脚振り上げ高さ
-    upSwing.setSize(Const::THREE_DIMENSION);
-    // 遊脚振り下げ高さ
-    downSwing.setSize(Const::THREE_DIMENSION);
+    returnStroke.setSize(math::THREE_DIMENSION);
 
-    Swing.setSize(Const::THREE_DIMENSION);
+    // 遊脚振り上げ高さ
+    upSwing.setSize(math::THREE_DIMENSION);
+
+    // 遊脚振り下げ高さ
+    downSwing.setSize(math::THREE_DIMENSION);
+
+    Swing.setSize(math::THREE_DIMENSION);
 }
 
 void LegTrajectory::setLegTrajectory(const Vector& start,
@@ -86,10 +87,10 @@ void LegTrajectory::setLegTrajectoryTime(double start, double upPhase,
     goalTime = startTime + upTime + returnTime + downTime;
 }
 
-Math::Vector LegTrajectory::getPosition(double splitTime)
+math::Vector LegTrajectory::getPosition(double splitTime)
 {
     // 取り出す脚先軌道
-    Vector trajectory(Const::THREE_DIMENSION);
+    Vector trajectory(math::THREE_DIMENSION);
 
     // 合成サイクロイド軌道
     // 離脱,接地時の速度が連続. 遊脚時間の場合分けが2パターンで済む.
@@ -113,16 +114,16 @@ Math::Vector LegTrajectory::getPosition(double splitTime)
         // up相
 
         trajectory = startPosition
-            + ((splitTime - startTime) / SwingTime - sin(4 * Const::PI * (splitTime - startTime) / SwingTime) / Const::PI / 4) * upSwing * 2
-            + ((splitTime - startTime) / SwingTime - sin(2 * Const::PI * (splitTime - startTime) / SwingTime) / Const::PI / 2) * returnStroke;
+            + ((splitTime - startTime) / SwingTime - sin(4 * math::PI * (splitTime - startTime) / SwingTime) / math::PI / 4) * upSwing * 2
+            + ((splitTime - startTime) / SwingTime - sin(2 * math::PI * (splitTime - startTime) / SwingTime) / math::PI / 2) * returnStroke;
     }
     else if ((MiddleTime < splitTime) && (splitTime < goalTime))
     {
         // down相	*downSwingの中身は負
 
         trajectory = startPosition + upSwing
-            + ((splitTime - MiddleTime) / SwingTime - sin(4 * Const::PI * (splitTime - MiddleTime) / SwingTime) / Const::PI / 4) * downSwing * 2
-            + ((splitTime - startTime) / SwingTime - sin(2 * Const::PI * (splitTime - startTime) / SwingTime) / Const::PI / 2) * returnStroke;
+            + ((splitTime - MiddleTime) / SwingTime - sin(4 * math::PI * (splitTime - MiddleTime) / SwingTime) / math::PI / 4) * downSwing * 2
+            + ((splitTime - startTime) / SwingTime - sin(2 * math::PI * (splitTime - startTime) / SwingTime) / math::PI / 2) * returnStroke;
     }
     else if (goalTime <= splitTime)
     {

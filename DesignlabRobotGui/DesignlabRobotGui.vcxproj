@@ -99,7 +99,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\Users\goto\Desktop\VisualStudio\DesignlabRobotGui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DesignlabRobotGui</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -128,7 +128,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\goto\Desktop\VisualStudio\DesignlabRobotGui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DesignlabRobotGui</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
@@ -158,8 +158,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DesignlabRobotGui</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
@@ -190,6 +189,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)DesignlabRobotGui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -231,11 +231,10 @@
     <ClInclude Include="Kinematics\Leg\leg.h" />
     <ClInclude Include="Kinematics\walking_robot.h" />
     <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="Math\MathConstant.h" />
+    <ClInclude Include="Math\math_constant.h" />
     <ClInclude Include="Math\math_geometry.h" />
-    <ClInclude Include="Math\MathLibrary.h" />
-    <ClInclude Include="Math\Matrix\Matrix.h" />
-    <ClInclude Include="Math\Matrix\MatrixLibrary.h" />
+    <ClInclude Include="Math\Matrix\matrix.h" />
+    <ClInclude Include="Math\Matrix\matrix_library.h" />
     <ClInclude Include="Math\matrix_class.h" />
     <ClInclude Include="Math\vector_class.h" />
     <ClInclude Include="pch.h" />
@@ -264,7 +263,6 @@
     <ClInclude Include="UDP\udp_packet.h" />
     <ClInclude Include="Utility\ArrayList.h" />
     <ClInclude Include="Utility\Asc2Int.h" />
-    <ClInclude Include="Utility\EngConstant.h" />
     <ClInclude Include="Utility\RingBuffer.h" />
     <ClInclude Include="Utility\SafeOperation.h" />
   </ItemGroup>
@@ -327,11 +325,11 @@
     <ClCompile Include="Math\math_geometry.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Math\Matrix\Matrix.cpp">
+    <ClCompile Include="Math\Matrix\matrix.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Math\Matrix\MatrixLibrary.cpp">
+    <ClCompile Include="Math\Matrix\matrix_library.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

@@ -1,7 +1,7 @@
 ﻿
 #include "Plan/Trajectory/body_trajectory.h"
 
-#include "Utility/EngConstant.h"
+#include "Math/math_constant.h"
 
 
 namespace designlab_robot_gui::plan
@@ -39,7 +39,7 @@ bool BodyTrajectory::operator==(const BodyTrajectory& trajectory) const
 
 void BodyTrajectory::initializeBodyTrajectory()
 {
-    moveStride.setSize(Const::THREE_DIMENSION);
+    moveStride.setSize(math::THREE_DIMENSION);
     moveTime = 0.0;
 }
 
@@ -55,10 +55,10 @@ void BodyTrajectory::setBodyTrajectoryTime(const double time)
     goalTime = startTime + time;
 }
 
-Math::Vector BodyTrajectory::getPosition(const double splitTime)
+math::Vector BodyTrajectory::getPosition(const double splitTime)
 {
     // 取り出す重心軌道
-    Vector trajectory(Const::THREE_DIMENSION);
+    Vector trajectory(math::THREE_DIMENSION);
 
     return trajectory;
 }

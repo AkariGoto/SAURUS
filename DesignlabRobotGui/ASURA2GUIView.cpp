@@ -9,6 +9,7 @@
 
 #include "ASURA2GUIDoc.h"
 #include "ASURA2GUIView.h"
+#include "Math/math_constant.h"
 #include "Plan/plan_parameter.h"
 #include "System\Console.h"
 
@@ -113,12 +114,12 @@ CASURA2GUIDoc* CASURA2GUIView::GetDocument() const // デバッグ以外のバ�
 void CASURA2GUIView::initializeCASURA2GUIView(void)
 {
     //20201019
-    localFootPosition = new Math::Vector[designlab_robot_gui::asura::LEG_NUM];
-    worldFootPosition = new Math::Vector[designlab_robot_gui::asura::LEG_NUM];
+    localFootPosition = new designlab_robot_gui::math::Vector[designlab_robot_gui::asura::LEG_NUM];
+    worldFootPosition = new designlab_robot_gui::math::Vector[designlab_robot_gui::asura::LEG_NUM];
     for (int i = 0; i < designlab_robot_gui::asura::LEG_NUM; i++)
     {
-        localFootPosition[i].setSize(Const::DH_DIMENSION);
-        worldFootPosition[i].setSize(Const::DH_DIMENSION);
+        localFootPosition[i].setSize(designlab_robot_gui::math::DH_DIMENSION);
+        worldFootPosition[i].setSize(designlab_robot_gui::math::DH_DIMENSION);
     }
 
     /// フラグ類の初期化
@@ -295,7 +296,7 @@ void CASURA2GUIView::updateFormView(void)
 
     //関節の表示
     double joint4 = 0;
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](1) * Const::RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](1) * designlab_robot_gui::math::RAD2DEG);
     SetDlgItemText(IDC_JOINT1, data);
 
     //ログ取得
@@ -305,7 +306,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](2) * Const::RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](2) * designlab_robot_gui::math::RAD2DEG);
     SetDlgItemText(IDC_JOINT2, data);
 
     //ログ取得
@@ -315,7 +316,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](3) * Const::RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_joint_angle[1](3) * designlab_robot_gui::math::RAD2DEG);
     SetDlgItemText(IDC_JOINT3, data);
 
     //ログ取得
@@ -325,7 +326,7 @@ void CASURA2GUIView::updateFormView(void)
         txtFile.WriteString(L",");
     }
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.foot_joint_angle[1] * Const::RAD2DEG);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.foot_joint_angle[1] * designlab_robot_gui::math::RAD2DEG);
     SetDlgItemText(IDC_JOINT4, data);
 
     //ログ取得
@@ -339,13 +340,13 @@ void CASURA2GUIView::updateFormView(void)
 
     double shaft_diameter = 11.5;
 
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](1) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](1) / (shaft_diameter * designlab_robot_gui::math::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT1, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](2) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](2) / (shaft_diameter * designlab_robot_gui::math::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT2, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](3) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](3) / (shaft_diameter * designlab_robot_gui::math::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT3, data);
-    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](4) / (shaft_diameter * Const::PI) * 360 * 3 * 18);
+    data.Format(TEXT("%5.1lf"), viewAsuraXData.leg_actuator_position[1](4) / (shaft_diameter * designlab_robot_gui::math::PI) * 360 * 3 * 18);
     SetDlgItemText(IDC_ACT4, data);
 
     //脚先位置の表示

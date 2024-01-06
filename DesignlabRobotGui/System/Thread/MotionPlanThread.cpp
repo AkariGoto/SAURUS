@@ -3,7 +3,6 @@
 
 #include "ASURA2GUI.h"
 #include "System/Thread/MotionPlanThread.h"
-#include "Utility/EngConstant.h"
 
 
 namespace designlab_robot_gui::system

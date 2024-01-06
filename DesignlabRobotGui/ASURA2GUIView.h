@@ -65,8 +65,8 @@ private:
     AsuraData viewAsuraXData;
     PlanData viewPlanData;
 
-    Math::Vector* localFootPosition; //脚座標系による脚先位置
-    Math::Vector* worldFootPosition; //ワールド座標系による脚先位置
+    designlab_robot_gui::math::Vector* localFootPosition; //脚座標系による脚先位置
+    designlab_robot_gui::math::Vector* worldFootPosition; //ワールド座標系による脚先位置
 
     Graphic::AsuraGraphic* asuraXGraphic;
 

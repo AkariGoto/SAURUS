@@ -11,7 +11,7 @@ namespace designlab_robot_gui::plan
 
 class LegTrajectory final : public Trajectory
 {
-    using Vector = Math::Vector;
+    using Vector = math::Vector;
 
 public:
     LegTrajectory();

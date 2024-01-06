@@ -18,8 +18,8 @@ class DataHandler final
     using AsuraX = asura::AsuraX;
     using LegPhase = asura::LegPhase;
     using Planner = plan::Planner;
-    using Matrix = Math::Matrix;
-    using Vector = Math::Vector;
+    using Matrix = math::Matrix;
+    using Vector = math::Vector;
 
 public:
     //! デフォルトコンストラクタは使用禁止，必ず以下の引数付きコンストラクタを使用すること

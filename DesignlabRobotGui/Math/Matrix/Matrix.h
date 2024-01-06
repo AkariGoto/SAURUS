@@ -1,15 +1,6 @@
-﻿/**
- *  ファイル名
- *		Matrix.h
- *  説明
- *		演算子やメソッドなど行列の主な演算の定義
- *  日付
- *		作成日: 2007/01/15(MON)		更新日: 2007/03/06(TUE)
- */
-
-
-#ifndef __Matrix_h__	/// 2重インクルード回避
-#define __Matrix_h__	/// 2重インクルード禁止
+﻿
+#ifndef DESIGNLABROBOTGUI_MATH_MATRIX_MATRIX_H_
+#define DESIGNLABROBOTGUI_MATH_MATRIX_MATRIX_H_
 
 #include <iostream>
 #include <iomanip>
@@ -18,14 +9,15 @@
 #include <cassert>
 
 
- /// ゼロとみなす数
+/// ゼロとみなす数
 const double NEAR_ZERO = 1.0E-16;
 /// ゼロとの相対誤差
 const double ZERO_ERROR_MARGIN = 1.0E-8;
 /// マシン誤差
 const double MATRIX_TINY = 1.0E-20;
 
-namespace Math
+
+namespace designlab_robot_gui::math
 {
 
 class Matrix;
@@ -623,7 +615,6 @@ inline const double& Vector::operator()(int index) const
     return this->elements[index - 1];
 }
 
-} /// end of namespace Math
+}  // namespace designlab_robot_gui::math
 
-#endif /// __Matrix_h__
-
+#endif  // DESIGNLABROBOTGUI_MATH_MATRIX_MATRIX_H_

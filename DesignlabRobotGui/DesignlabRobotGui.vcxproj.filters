@@ -48,10 +48,10 @@
     <ClCompile Include="Math\math_geometry.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Matrix\Matrix.cpp">
+    <ClCompile Include="Math\Matrix\matrix.cpp">
       <Filter>Math\Matrix</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Matrix\MatrixLibrary.cpp">
+    <ClCompile Include="Math\Matrix\matrix_library.cpp">
       <Filter>Math\Matrix</Filter>
     </ClCompile>
     <ClCompile Include="Plan\planner.cpp">
@@ -175,19 +175,16 @@
     <ClInclude Include="Kinematics\walking_robot.h">
       <Filter>Kinematics</Filter>
     </ClInclude>
-    <ClInclude Include="Math\MathConstant.h">
+    <ClInclude Include="Math\math_constant.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\math_geometry.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\MathLibrary.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Matrix\Matrix.h">
+    <ClInclude Include="Math\Matrix\matrix.h">
       <Filter>Math\Matrix</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Matrix\MatrixLibrary.h">
+    <ClInclude Include="Math\Matrix\matrix_library.h">
       <Filter>Math\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="Plan\planner.h">
@@ -236,9 +233,6 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Asc2Int.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\EngConstant.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\RingBuffer.h">
