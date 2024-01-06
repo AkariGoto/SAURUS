@@ -1,54 +1,27 @@
-﻿/**
- *  ファイル名
- *		OpenGL.h
- *  説明
- *		OpenGL関係の描画基礎クラス(Windows専用)
- *  日付
- *		作成日: 2007/04/01(SAT)		更新日: 2007/04/15(SAT)
- */
-
+﻿
 #ifndef __OpenGL_h__
 #define __OpenGL_h__
 
- /**
-  *	----------------------------------------------------------------------
-  *		ヘッダファイルインクルード
-  *	----------------------------------------------------------------------
-  */
 #include <windows.h>
 #include <iostream>
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
-  //#include <gl/GLAUX.h>
 
 #include "OpenGLParameter.h"
-#include "CameraView.h"
-/**
- *	----------------------------------------------------------------------
- *		リンカへの通知
- *	----------------------------------------------------------------------
- */
+#include "Graphic/OpenGL/camera_view.h"
+
 #pragma comment (lib, "opengl32.lib")
 #pragma comment (lib, "glu32.lib")
- //#pragma comment (lib, "glaux.lib")
-
 
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		OpenGLクラス
- *	----------------------------------------------------------------------
- */
+
 class OpenGL
 {
-    /**
-     *	------------------------------------------------------------
-     *		メンバ変数
-     *	------------------------------------------------------------
-     */
+    using CameraView = designlab_robot_gui::graphic::CameraView;
+
 protected:
     /**
      *	ハンドル

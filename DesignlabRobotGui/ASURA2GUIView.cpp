@@ -66,11 +66,6 @@ void CASURA2GUIView::OnInitialUpdate()
     GetParentFrame()->RecalcLayout();
     ResizeParentToFit();
 
-    //20201019
-    /*
-    CButton* radioWorld = (CButton*)GetDlgItem(IDC_RADIO_WORLD);
-    radioWorld->SetCheck(1);
-    */
     CButton* radioLeg = (CButton*)GetDlgItem(IDC_RADIO_LEG);
     radioLeg->SetCheck(1);
 
@@ -78,7 +73,7 @@ void CASURA2GUIView::OnInitialUpdate()
     chkbox1->SetCheck(1);
 
     /// グラフィックの初期化
-    initializeGraphics();  //  20200819
+    initializeGraphics();
 }
 
 
@@ -538,14 +533,7 @@ void CASURA2GUIView::OnClickedCheckLog()
     // TODO: ここにコントロール通知ハンドラー コードを追加します。
 }
 
-/**
- *	------------------------------------------------------------
- *		CAsuraWareViewの privateなメンバ関数
- *	------------------------------------------------------------
- */
- /**
-  *	サブクラス化したコントロールのウィンドウプロシージャ
-  */
+
 LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     /**
@@ -593,7 +581,7 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
                 //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::SPIN, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(Graphic::CameraView::SPIN, x, y);  //20200820
+                pView->asuraXGraphic->beginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::SPIN, x, y);  //20200820
                 break;
 
             case WM_LBUTTONUP:
@@ -604,20 +592,17 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
             case WM_MBUTTONDOWN:
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
-                //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::PAN, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(Graphic::CameraView::PAN, x, y);  //20200820
+                pView->asuraXGraphic->beginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::PAN, x, y);
                 break;
 
             case WM_MBUTTONUP:
-                //pView->asuraXGraphic[0]->endCameraViewControl();
-                pView->asuraXGraphic->endCameraViewControl();  //20200820
+                pView->asuraXGraphic->endCameraViewControl();
                 break;
 
             case WM_MOUSEWHEEL:
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
-                //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::ZOOM, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(Graphic::CameraView::ZOOM, x, y);  //20200820
+                pView->asuraXGraphic->beginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::ZOOM, x, y);
 
                 zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
                 xDelta = x - zDelta / 10;

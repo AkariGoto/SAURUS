@@ -220,7 +220,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="Graphic\AsuraGraphic.h" />
     <ClInclude Include="Graphic\OpenGL\AviMaker.h" />
-    <ClInclude Include="Graphic\OpenGL\CameraView.h" />
+    <ClInclude Include="Graphic\OpenGL\camera_view.h" />
     <ClInclude Include="Graphic\OpenGL\OpenGL.h" />
     <ClInclude Include="Graphic\OpenGL\OpenGLMovie.h" />
     <ClInclude Include="Graphic\OpenGL\OpenGLObject.h" />
@@ -295,9 +295,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Graphic\OpenGL\CameraView.cpp">
+    <ClCompile Include="Graphic\OpenGL\camera_view.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Graphic\OpenGL\OpenGL.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
@@ -323,7 +323,7 @@
     </ClCompile>
     <ClCompile Include="Math\Matrix\matrix.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Math\Matrix\matrix_library.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>

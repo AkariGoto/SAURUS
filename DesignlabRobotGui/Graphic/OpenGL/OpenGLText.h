@@ -1,105 +1,67 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		OpenGLText.h
- *  à–¾
- *		OpenGL‚É‚æ‚éƒeƒLƒXƒgo—Í(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/15(SAT)
- */
-
+ï»¿
 #ifndef __OpenGLText_h__
 #define __OpenGLText_h__
 
-
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
 #include <windows.h>
 #include <gl/gl.h>
 #include <gl/glu.h>
-//#include <gl/glaux.h>
 
-/// ƒŠƒ“ƒJ‚Ö‚Ì’Ê’m
+// ãƒªãƒ³ã‚«ã¸ã®é€šçŸ¥
+
 #pragma comment (lib, "opengl32.lib")
 #pragma comment (lib, "glu32.lib")
-//#pragma comment (lib, "glaux.lib")
 
-/**
- *	----------------------------------------------------------------------
- *		’è”Aƒ}ƒNƒéŒ¾
- *	----------------------------------------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒtƒHƒ“ƒg
-const char OPENGL_DEFAULT_FONT[]={ "Arial" };
-const int OPENGL_DEFAULT_BUFFER_SIZE = 256;
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		OpenGLTextƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
-class OpenGLText
+
+//! ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ•ã‚©ãƒ³ãƒˆ
+constexpr char OPENGL_DEFAULT_FONT[] = { "Arial" };
+constexpr int OPENGL_DEFAULT_BUFFER_SIZE = 256;
+
+
+class OpenGLText final
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
-protected:
-	/**
-	 *	Glyph Metrics float\‘¢‘Ì
-	 */
-	GLYPHMETRICSFLOAT	gmf[256];
-	/// ƒvƒŒƒCƒŠƒXƒg‚Ì‚½‚ß‚ÌƒtƒHƒ“ƒgƒx[ƒX
-	GLuint				fontBase;
-	/// ƒtƒHƒ“ƒg‚ªì¬‚Å‚«‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-	bool				isFontBuilt;
-
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	explicit OpenGLText();
-	/// ƒfƒXƒgƒ‰ƒNƒ^
-	virtual ~OpenGLText();
-	
-/**
- *	ƒtƒHƒ“ƒg‚Ìì¬
- */
-	void buildFont(	HDC hDC,									/// ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ö‚Ìƒnƒ“ƒhƒ‹
-					char* fontName = NULL,						/// ƒtƒHƒ“ƒg–¼
-					GLfloat fontDepth = 0.5f,					/// zi[‚³j•ûŒü‚Ö‚ÌƒtƒHƒ“ƒgƒTƒCƒY
-					int fontWeight = FW_BOLD,					/// ƒtƒHƒ“ƒgƒEƒFƒCƒg
-					DWORD fontItalic = FALSE,					/// ƒCƒ^ƒŠƒbƒN‚Ìƒtƒ‰ƒO
-					DWORD fontUnderline = FALSE,				/// ƒAƒ“ƒ_[ƒ‰ƒCƒ“‚Ìƒtƒ‰ƒO
-					DWORD fontStrikeOut = FALSE,				/// ‘Å‚¿Á‚µü•t‚«‚Ìƒtƒ‰ƒO
-					DWORD fontCharacterSet = ANSI_CHARSET		/// ƒLƒƒƒ‰ƒNƒ^[ƒZƒbƒg‚Ì¯•Êq
-					);
 
-/**
- *		•¶š—ñ‚Ìo—Í
- */
-	bool print(const char* format, ...);
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    OpenGLText() = default;
 
-protected:
-/**
- *	ƒtƒHƒ“ƒg‚Ì”jŠü
- */
-	void killFont(void);
+    inline ~OpenGLText() { KillFont(); }
 
-};	/// end of class OpenGLText
+
+    //! @brief ãƒ•ã‚©ãƒ³ãƒˆã®ä½œæˆ
+    //! @param hDC ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ«
+    //! @param font_name ãƒ•ã‚©ãƒ³ãƒˆå
+    //! @param font_depth zï¼ˆæ·±ã•ï¼‰æ–¹å‘ã¸ã®ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
+    //! @param font_weight ãƒ•ã‚©ãƒ³ãƒˆã‚¦ã‚§ã‚¤ãƒˆ
+    //! @param fontItalic ã‚¤ã‚¿ãƒªãƒƒã‚¯ã®ãƒ•ãƒ©ã‚°
+    //! @param fontUnderline ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³ã®ãƒ•ãƒ©ã‚°
+    //! @param fontStrikeOut æ‰“ã¡æ¶ˆã—ç·šä»˜ãã®ãƒ•ãƒ©ã‚°
+    //! @param fontCharacterSet ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚»ãƒƒãƒˆã®è­˜åˆ¥å­
+    void BuildFont(HDC hDC, char* font_name = NULL, GLfloat font_depth = 0.5f,
+                   int font_weight = FW_BOLD, DWORD fontItalic = FALSE,
+                   DWORD fontUnderline = FALSE, DWORD fontStrikeOut = FALSE,
+                   DWORD fontCharacterSet = ANSI_CHARSET);
+
+    //! @brief æ–‡å­—åˆ—ã®å‡ºåŠ›ï¼
+    bool Print(const char* format, ...);
+
+private:
+    //! @brief ãƒ•ã‚©ãƒ³ãƒˆã®ç ´æ£„ï¼
+    void KillFont();
+
+
+    //! Glyph Metrics floatæ§‹é€ ä½“
+    GLYPHMETRICSFLOAT gmf[OPENGL_DEFAULT_BUFFER_SIZE];
+
+    //! ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ãŸã‚ã®ãƒ•ã‚©ãƒ³ãƒˆãƒ™ãƒ¼ã‚¹
+    GLuint font_base;
+
+    //! ãƒ•ã‚©ãƒ³ãƒˆãŒä½œæˆã§ããŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+    bool is_font_built{ false };
+
+};
 
 }	/// end of namespace Graphic
 

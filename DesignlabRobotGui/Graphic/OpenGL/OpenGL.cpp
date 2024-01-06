@@ -546,7 +546,7 @@ const GLfloat* OpenGL::selectMaterialColor(COLOR color)
  */
 void OpenGL::beginCameraViewControl(CameraView::Mode mode, int x, int y)
 {
-    cameraView.beginViewControl(mode, x, y);
+    cameraView.BeginViewControl(mode, x, y);
     return;
 }
 
@@ -555,7 +555,7 @@ void OpenGL::beginCameraViewControl(CameraView::Mode mode, int x, int y)
  */
 void OpenGL::endCameraViewControl(void)
 {
-    cameraView.endViewControl();
+    cameraView.EndViewControl();
     return;
 }
 
@@ -564,7 +564,7 @@ void OpenGL::endCameraViewControl(void)
  */
 void OpenGL::doCameraViewControl(int x, int y)
 {
-    cameraView.doViewControl(x, y);
+    cameraView.DoViewControl(x, y);
     return;
 }
 

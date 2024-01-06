@@ -1,20 +1,20 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		OpenGLMovie.h
- *  à–¾
- *		OpenGL‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğAVI‚É•ÏŠ·
- *  “ú•t
- *		ì¬“ú: 2008/09/02(TUE)		XV“ú: 2008/09/03(WED)
+ *  èª¬æ˜
+ *		OpenGLã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’AVIã«å¤‰æ›
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2008/09/02(TUE)		æ›´æ–°æ—¥: 2008/09/03(WED)
  */
 
 #ifndef __OpenGLMovie_h__
 #define __OpenGLMovie_h__
 
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include <windows.h>
 
 #include <gl/GL.h> 
@@ -22,156 +22,156 @@
 
 namespace Graphic
 {
-    
-/**
- *	----------------------------------------------------------------------
- *		OpenGLMovieƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- *
- *	OpenGL‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒT[ƒtƒFƒX‚©‚çAVI“®‰æ‚ğì¬‚·‚é
- *	‚½‚¾‚µAˆê“x“®‰æƒIƒuƒWƒFƒNƒg‚ªì¬‚³‚ê‚½‚ç“®‰æƒtƒŒ[ƒ€‚Ì•‚Æ‚‚³‚Í•ÏX•s‰Â
- *	–{ƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg‚Í’PˆêƒvƒƒZƒX“à‚Å“¯‚É•¡”¶¬‰Â”\
- */
 
 /**
- *	g‚¢•ûiHow to usej
- *		1. ƒIƒuƒWƒFƒNƒg‚ğì¬‚·‚é
- *			—á	OpenGLMovie m_movieRecorder("Output.Avi", VIEWPORTWIDTH, VIEWPORTHEIGHT);
- *		2. ƒIƒuƒWƒFƒNƒgì¬ŒãASwapBuffers()ŒÄ‚Ño‚µ‘O‚ÉOpenGLMovie::RecordFrame()ƒƒ\ƒbƒh‚ğŠeƒtƒŒ[ƒ€‚Ì•`Ê–ˆ‚ÉŒÄ‚Ño‚¹‚ÎAAVI‚ğì¬‰Â 
+ *	----------------------------------------------------------------------
+ *		OpenGLMovieã‚¯ãƒ©ã‚¹
+ *	----------------------------------------------------------------------
  *
- *			SAMPLE CODE
- *				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- *   
- *				// Render as usual
- *				glPushMatrix();
- *					drawScene();
- *				glPopMatrix();
- *
- *				// Capture the Rendering into OpenGLMovie's movie file
- *				m_movieRecorder.recordFrame();
- *
- *				SwapBuffers(wglGetCurrentDC());
- *
- *			OpenGLMovie::recordFrame() ‚Í“à•”‚Å glReadPixels() ƒƒ\ƒbƒh‚ğg—p‚µAƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚Ì“à—e‚ğ“Ç‚İ‚İo—Íƒtƒ@ƒCƒ‹‚É
- *			‚»‚ÌƒtƒŒ[ƒ€‚ğ‰Á‚¦‚Ä‚¢‚éB
- *			‹L˜^‚µ‚½‚­‚È‚¢ƒtƒŒ[ƒ€‚ª‚ ‚éê‡‚ÍA‚½‚¾m_movieRecorder.recordFrame() ƒƒ\ƒbƒh‚ğŒÄ‚Î‚È‚¯‚ê‚Î‚æ‚¢B
+ *	OpenGLã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚µãƒ¼ãƒ•ã‚§ã‚¹ã‹ã‚‰AVIå‹•ç”»ã‚’ä½œæˆã™ã‚‹
+ *	ãŸã ã—ã€ä¸€åº¦å‹•ç”»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä½œæˆã•ã‚ŒãŸã‚‰å‹•ç”»ãƒ•ãƒ¬ãƒ¼ãƒ ã®å¹…ã¨é«˜ã•ã¯å¤‰æ›´ä¸å¯
+ *	æœ¬ã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯å˜ä¸€ãƒ—ãƒ­ã‚»ã‚¹å†…ã§åŒæ™‚ã«è¤‡æ•°ç”Ÿæˆå¯èƒ½
  */
+
+ /**
+  *	ä½¿ã„æ–¹ï¼ˆHow to useï¼‰
+  *		1. ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã™ã‚‹
+  *			ä¾‹	OpenGLMovie m_movieRecorder("Output.Avi", VIEWPORTWIDTH, VIEWPORTHEIGHT);
+  *		2. ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆå¾Œã€SwapBuffers()å‘¼ã³å‡ºã—å‰ã«OpenGLMovie::RecordFrame()ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å„ãƒ•ãƒ¬ãƒ¼ãƒ ã®æå†™æ¯ã«å‘¼ã³å‡ºã›ã°ã€AVIã‚’ä½œæˆå¯
+  *
+  *			SAMPLE CODE
+  *				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  *
+  *				// Render as usual
+  *				glPushMatrix();
+  *					drawScene();
+  *				glPopMatrix();
+  *
+  *				// Capture the Rendering into OpenGLMovie's movie file
+  *				m_movieRecorder.recordFrame();
+  *
+  *				SwapBuffers(wglGetCurrentDC());
+  *
+  *			OpenGLMovie::recordFrame() ã¯å†…éƒ¨ã§ glReadPixels() ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä½¿ç”¨ã—ã€ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®å†…å®¹ã‚’èª­ã¿è¾¼ã¿å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«ã«
+  *			ãã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’åŠ ãˆã¦ã„ã‚‹ã€‚
+  *			è¨˜éŒ²ã—ãŸããªã„ãƒ•ãƒ¬ãƒ¼ãƒ ãŒã‚ã‚‹å ´åˆã¯ã€ãŸã m_movieRecorder.recordFrame() ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã°ãªã‘ã‚Œã°ã‚ˆã„ã€‚
+  */
 
 class OpenGLMovie
 {
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒo•Ï”
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒå¤‰æ•°
+     *	------------------------------------------------------------
+     */
 private:
-/**
- *	ƒ€[ƒr[ƒtƒ@ƒCƒ‹‚ÌƒIƒuƒWƒFƒNƒg
- */
-	AviMaker	movieFile;
+    /**
+     *	ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     */
+    AviMaker	movieFile;
 
-/**
- *	----------------------------------------
- *	ì¬‚·‚éƒ€[ƒr[ƒtƒ@ƒCƒ‹î•ñ
- *	----------------------------------------
- */	
-	int			movieWidth;			/// ƒ€[ƒr[ƒtƒŒ[ƒ€‚Ì•
-	int			movieHeight;		/// ƒ€[ƒr[ƒtƒŒ[ƒ€‚Ì‚‚³
-	int			movieBitsPerPixel;	/// 1ƒsƒNƒZƒ‹“–‚½‚è‚Ìƒrƒbƒg”
-	LPVOID		pFramePixelBits;	/// ‘‚«‚ŞƒsƒNƒZƒ‹—ñƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
+    /**
+     *	----------------------------------------
+     *	ä½œæˆã™ã‚‹ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±
+     *	----------------------------------------
+     */
+    int			movieWidth;			/// ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®å¹…
+    int			movieHeight;		/// ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®é«˜ã•
+    int			movieBitsPerPixel;	/// 1ãƒ”ã‚¯ã‚»ãƒ«å½“ãŸã‚Šã®ãƒ“ãƒƒãƒˆæ•°
+    LPVOID		pFramePixelBits;	/// æ›¸ãè¾¼ã‚€ãƒ”ã‚¯ã‚»ãƒ«åˆ—ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-/**
- *	------------------------------------------------------------
- *		ƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */	
+    /**
+     *	------------------------------------------------------------
+     *		ãƒ¡ãƒ³ãƒé–¢æ•°
+     *	------------------------------------------------------------
+     */
 public:
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-	/**
-	 *	à–¾
-	 *		ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 *	ˆø”
-	 *		pFileName: ì¬‚·‚éƒtƒ@ƒCƒ‹–¼
-	 *		codec_:	ˆ³k‚Ég—p‚·‚éƒrƒfƒIƒR[ƒfƒbƒN‚ÌFOURCC ƒR[ƒhiƒCƒ“ƒXƒg[ƒ‹Ï‚İ‚ÌƒR[ƒfƒbƒN‚ğ‘I‘ğ‚·‚é‚±‚Æj
-	 *				ƒfƒtƒHƒ‹ƒg‚ÍWMV3B—á‚¦‚ÎADIVX‚È‚ç mmioFOURCC('D','I','V','X') ‚Æ‚·‚é
-	 *				0‚È‚ç‚Î–³ˆ³k
-	 *		frameRate_: ƒtƒŒ[ƒ€ƒŒ[ƒg
-	 */
-	explicit OpenGLMovie(	LPCTSTR pOutputMovieFileName = _T("Output.avi"), 
-							DWORD codec = mmioFOURCC('W','M','V','3'),				/// ƒrƒfƒIƒR[ƒfƒbƒN
-							DWORD frameRate = 10,									/// ƒtƒŒ[ƒ€ƒŒ[ƒg (FPS)
-							int frameWidth = GetSystemMetrics(SM_CXSCREEN),			/// ƒ€[ƒr[ƒtƒŒ[ƒ€•
-							int frameHeight = GetSystemMetrics(SM_CYSCREEN),		/// ƒ€[ƒr[ƒtƒŒ[ƒ€‚‚³
-							int bitsPerPixel = 24)									/// ’PˆÊƒsƒNƒZƒ‹“–‚½‚è‚Ìƒrƒbƒg”
-								: movieFile(pOutputMovieFileName, codec, frameRate)
-	{
-		movieWidth = 0;
-		movieHeight = 0;
-		movieBitsPerPixel = 0;
-		pFramePixelBits = NULL;
-		
-		initialize(frameWidth, frameHeight, bitsPerPixel);
-	}
+    /**
+     *	----------------------------------------
+     *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	----------------------------------------
+     */
+     /**
+      *	èª¬æ˜
+      *		ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+      *	å¼•æ•°
+      *		pFileName: ä½œæˆã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+      *		codec_:	åœ§ç¸®ã«ä½¿ç”¨ã™ã‚‹ãƒ“ãƒ‡ã‚ªã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®FOURCC ã‚³ãƒ¼ãƒ‰ï¼ˆã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ¸ˆã¿ã®ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã‚’é¸æŠã™ã‚‹ã“ã¨ï¼‰
+      *				ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯WMV3ã€‚ä¾‹ãˆã°ã€DIVXãªã‚‰ mmioFOURCC('D','I','V','X') ã¨ã™ã‚‹
+      *				0ãªã‚‰ã°ç„¡åœ§ç¸®
+      *		frameRate_: ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ
+      */
+    explicit OpenGLMovie(LPCTSTR pOutputMovieFileName = _T("Output.avi"),
+                DWORD codec = mmioFOURCC('W', 'M', 'V', '3'),				/// ãƒ“ãƒ‡ã‚ªã‚³ãƒ¼ãƒ‡ãƒƒã‚¯
+                DWORD frameRate = 10,									/// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ (FPS)
+                int frameWidth = GetSystemMetrics(SM_CXSCREEN),			/// ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ å¹…
+                int frameHeight = GetSystemMetrics(SM_CYSCREEN),		/// ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ é«˜ã•
+                int bitsPerPixel = 24)									/// å˜ä½ãƒ”ã‚¯ã‚»ãƒ«å½“ãŸã‚Šã®ãƒ“ãƒƒãƒˆæ•°
+        : movieFile(pOutputMovieFileName, codec, frameRate)
+    {
+        movieWidth = 0;
+        movieHeight = 0;
+        movieBitsPerPixel = 0;
+        pFramePixelBits = NULL;
 
-	/**
-	 *	à–¾
-	 *		ƒfƒXƒgƒ‰ƒNƒ^
-	 *	ˆø”
-	 *		“®‰æƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚ÄA‘SƒtƒŒ[ƒ€‚ğÁ‹
-	 */	
-	virtual ~OpenGLMovie(void)
-	{
-		if(pFramePixelBits)
-		{
-			free(pFramePixelBits);
-			pFramePixelBits = NULL;
-		}
-	}
+        initialize(frameWidth, frameHeight, bitsPerPixel);
+    }
 
-/**
- *	----------------------------------------
- *	‰Šú‰»
- *	----------------------------------------
- */
-	void initialize(int frameWidth = GetSystemMetrics(SM_CXSCREEN),			/// ƒ€[ƒr[ƒtƒŒ[ƒ€•
-					int frameHeight = GetSystemMetrics(SM_CYSCREEN),		/// ƒ€[ƒr[ƒtƒŒ[ƒ€‚‚³
-					int bitsPerPixel = 24)									/// ’PˆÊƒsƒNƒZƒ‹“–‚½‚è‚Ìƒrƒbƒg”	
-	{
-		movieWidth = frameWidth;
-		movieHeight = frameHeight;
-		movieBitsPerPixel = bitsPerPixel;
+    /**
+     *	èª¬æ˜
+     *		ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+     *	å¼•æ•°
+     *		å‹•ç”»ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã¦ã€å…¨ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æ¶ˆå»
+     */
+    virtual ~OpenGLMovie(void)
+    {
+        if (pFramePixelBits)
+        {
+            free(pFramePixelBits);
+            pFramePixelBits = NULL;
+        }
+    }
 
-		if (pFramePixelBits)
-		{
-			free(pFramePixelBits);
-			pFramePixelBits = NULL;
-		}
+    /**
+     *	----------------------------------------
+     *	åˆæœŸåŒ–
+     *	----------------------------------------
+     */
+    void initialize(int frameWidth = GetSystemMetrics(SM_CXSCREEN),			/// ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ å¹…
+            int frameHeight = GetSystemMetrics(SM_CYSCREEN),		/// ãƒ ãƒ¼ãƒ“ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ é«˜ã•
+            int bitsPerPixel = 24)									/// å˜ä½ãƒ”ã‚¯ã‚»ãƒ«å½“ãŸã‚Šã®ãƒ“ãƒƒãƒˆæ•°	
+    {
+        movieWidth = frameWidth;
+        movieHeight = frameHeight;
+        movieBitsPerPixel = bitsPerPixel;
 
-		/// ƒsƒNƒZƒ‹ƒf[ƒ^‚Ìƒrƒbƒg—ñ‚ğ•Û‚·‚é‚½‚ß‚É•K—v‚Èƒƒ‚ƒŠ‚ğŠm•Û
-		pFramePixelBits = malloc(movieWidth * movieHeight * movieBitsPerPixel/8);
-	}
+        if (pFramePixelBits)
+        {
+            free(pFramePixelBits);
+            pFramePixelBits = NULL;
+        }
 
-	/**
-	 *	à–¾
-	 *		“®‰æ‚Ì‹L˜^
-	 *		EOpenGL‚ÌƒtƒŒ[ƒ€ƒoƒbƒtƒ@‚Ì“à—e‚ğ“Ç‚İ‚İA“Ç‚İ‚İÏ‚İƒtƒŒ[ƒ€ƒf[ƒ^‚ğ
-	 *		@V‚µ‚¢ƒtƒŒ[ƒ€‚Æ‚µ‚ÄA“®‰æƒtƒ@ƒCƒ‹‚É‘}“ü‚·‚éB
-	 *		EŠeƒŒƒ“ƒ_ƒŠƒ“ƒOƒtƒŒ[ƒ€–ˆ‚ÌSwapBuffers()ƒƒ\ƒbƒh‘O‚É‚ÄŒÄ‚Ño‚·•K—v‚ª‚ ‚é
-	 */
-	inline HRESULT recordFrame()
-	{
-		glFlush();
-		glFinish();
-		glReadPixels(0, 0, movieWidth, movieHeight, GL_BGR_EXT, GL_UNSIGNED_BYTE, pFramePixelBits);
+        /// ãƒ”ã‚¯ã‚»ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãƒ“ãƒƒãƒˆåˆ—ã‚’ä¿æŒã™ã‚‹ãŸã‚ã«å¿…è¦ãªãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿
+        pFramePixelBits = malloc(movieWidth * movieHeight * movieBitsPerPixel / 8);
+    }
 
-		return movieFile.appendNewFrame(movieWidth, movieHeight, pFramePixelBits, movieBitsPerPixel);
-	}
+    /**
+     *	èª¬æ˜
+     *		å‹•ç”»ã®è¨˜éŒ²
+     *		ãƒ»OpenGLã®ãƒ•ãƒ¬ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®å†…å®¹ã‚’èª­ã¿è¾¼ã¿ã€èª­ã¿è¾¼ã¿æ¸ˆã¿ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’
+     *		ã€€æ–°ã—ã„ãƒ•ãƒ¬ãƒ¼ãƒ ã¨ã—ã¦ã€å‹•ç”»ãƒ•ã‚¡ã‚¤ãƒ«ã«æŒ¿å…¥ã™ã‚‹ã€‚
+     *		ãƒ»å„ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã®SwapBuffers()ãƒ¡ã‚½ãƒƒãƒ‰å‰ã«ã¦å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹
+     */
+    inline HRESULT recordFrame()
+    {
+        glFlush();
+        glFinish();
+        glReadPixels(0, 0, movieWidth, movieHeight, GL_BGR_EXT, GL_UNSIGNED_BYTE, pFramePixelBits);
 
-	inline const AviMaker* getMovieFile() const{return &movieFile;}
+        return movieFile.appendNewFrame(movieWidth, movieHeight, pFramePixelBits, movieBitsPerPixel);
+    }
+
+    inline const AviMaker* getMovieFile() const { return &movieFile; }
 };	/// end of class OpenGLMovie
 
 }	/// end of namespace Graphics

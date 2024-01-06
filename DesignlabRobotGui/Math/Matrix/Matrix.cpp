@@ -1,4 +1,6 @@
 ﻿
+#include "pch.h"
+
 #include "Matrix.h"
 
 using namespace std;
@@ -850,13 +852,13 @@ void Matrix::deleteMatrix(void)
  *	引数
  *		Matrix  a	: LU分解される行列
  *		Matrix  lu	: LU分解後の行列
- *		Matrix  indx: 部分ピボット選択の際の行交換を記録
+ *		Matrix  index: 部分ピボット選択の際の行交換を記録
  *		double* d	: 行交換の回数が偶数=1，行交換の回数が奇数=-1
  *
  *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
  *						Cambridge University Press, 1988
  */
-int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d) const
+int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& index, double* d) const
 {
     int		i, imax = 0, j, k;
     double	big, dum, sum, temp;
@@ -887,7 +889,7 @@ int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d
         vv[i - 1] = 1.0 / big;
     }
 
-    /// Crout法，列についてのループ
+    /// Crout 法，列についてのループ
     for (j = 1; j <= n; j++)
     {
         for (i = 1; i < j; i++)
@@ -934,7 +936,7 @@ int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d
             vv[imax - 1] = vv[j - 1];		/// スケール因子を交換する
         }
 
-        indx[j - 1] = imax;
+        index[j - 1] = imax;
 
         /**
          *		ピボット要素が0なら行列は特異である
@@ -962,13 +964,13 @@ int Matrix::luDecomposition(const Matrix& a, Matrix& lu, Vector& indx, double* d
  *		後退代入を用いて連立1次方程式を解く
  *	引数
  *		Matrix  a	: LU分解で求めたAのLU分解（不変）
- *		Matrix  indx: LU分解の際の部分ピボット選択の行交換情報
+ *		Matrix  index : LU分解の際の部分ピボット選択の行交換情報
  *		double* d	: 行交換の回数が偶数=1，行交換の回数が奇数=-1
  *
  *		Reference :	William H. Press, et al, NUMERICAL RECIPES in C,
  *						Cambridge University Press, 1988
  */
-void Matrix::luBackSubstitution(const Matrix& a, const Vector& indx, Vector& b) const
+void Matrix::luBackSubstitution(const Matrix& a, const Vector& index, Vector& b) const
 {
     int    i, ii = 0, ip, j;
     double sum;
@@ -980,7 +982,7 @@ void Matrix::luBackSubstitution(const Matrix& a, const Vector& indx, Vector& b) 
      */
     for (i = 1; i <= n; i++)
     {
-        ip = (int)indx[i - 1];
+        ip = (int)index[i - 1];
         sum = b[ip - 1];
         b[ip - 1] = b[i - 1];
 
@@ -1759,7 +1761,7 @@ void Vector::cleanUp(void)
 
 /**
  *	------------------------------------------------------------
- *		Vectorクラスのprivateなメンバ関数
+ *		Vectorクラスの private なメンバ関数
  *	------------------------------------------------------------
  */
  /// ベクトルの領域確保

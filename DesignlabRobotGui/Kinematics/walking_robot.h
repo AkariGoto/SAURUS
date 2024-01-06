@@ -210,7 +210,8 @@ inline const LegPhase WalkingRobot::getLegPhase(int legNo) const
 //! 同時座標変換行列を変換する
 inline math::Matrix WalkingRobot::transformationGlobalToLocal(const Matrix& matrix)
 {
-    assert(matrix.getRow() == math::DH_DIMENSION && matrix.getColumn() == math::DH_DIMENSION);
+    assert(matrix.getRow() == math::DH_DIMENSION &&
+           matrix.getColumn() == math::DH_DIMENSION);
 
     Matrix result(math::DH_DIMENSION, math::DH_DIMENSION);
     Matrix transform(math::DH_DIMENSION, math::DH_DIMENSION);

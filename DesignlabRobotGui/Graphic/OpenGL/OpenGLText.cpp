@@ -1,12 +1,4 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
- *		OpenGLText.cpp
- *  à–¾
- *		OpenGL‚É‚æ‚éƒeƒLƒXƒgo—Í(Windowsê—p)
- *  “ú•t
- *		ì¬“ú: 2007/04/01(SAT)		XV“ú: 2007/04/15(SAT)
- */
-
+ï»¿
 #include <stdio.h>
 #include <string.h>
 
@@ -14,168 +6,130 @@
 
 namespace Graphic
 {
-/**
- *	----------------------------------------------------------------------
- *		OpenGLTextƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
 
-/**
- *	------------------------------------------------------------
- *		OpenGLTextƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
-
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-OpenGLText::OpenGLText()
+void OpenGLText::BuildFont(HDC hDC, char* fontName, GLfloat fontDepth,
+    int fontWeight, DWORD fontItalic,
+    DWORD fontUnderline, DWORD fontStrikeOut,
+    DWORD fontCharacterSet)
 {
-	/// ƒtƒHƒ“ƒgì¬ƒtƒ‰ƒO‚Íoff
-	isFontBuilt = false;
+    // æ—¢ã«ãƒ•ã‚©ãƒ³ãƒˆãŒä½œæˆã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+    if (is_font_built)
+    {
+        // ä½œæˆã•ã‚Œã¦ã„ã‚Œã°æ¶ˆåŽ»
+        KillFont();
+    }
+
+    /// ãƒ¦ãƒ¼ã‚¶ã®ãƒ•ã‚©ãƒ³ãƒˆ
+    HFONT font;
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚©ãƒ³ãƒˆã‚’ä½¿ã†ã‹ã©ã†ã‹
+    bool  isDefaultFontUsed = false;
+
+    /// å¼•æ•°ã®ãƒ•ã‚©ãƒ³ãƒˆåãŒNULLã ã£ãŸã‚‰ï¼Œãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’ä½¿ã†
+    if (fontName == NULL)
+    {
+        /// ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—åˆ—ã¨'\0'ã®ãŸã‚ã®ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿
+        fontName = new char[strlen(OPENGL_DEFAULT_FONT) + 1];
+        strcpy(fontName, OPENGL_DEFAULT_FONT);
+        isDefaultFontUsed = true;
+    }
+
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‚’ç¢ºä¿
+    font_base = glGenLists(OPENGL_DEFAULT_BUFFER_SIZE);
+
+    /// CreateFonté–¢æ•°ï¼ˆWin APIï¼‰ã«ã‚ˆã‚Šãƒ•ã‚©ãƒ³ãƒˆä½œæˆ
+    font = CreateFont(-12,							/// æ–‡å­—ã‚»ãƒ«ã¾ãŸã¯æ–‡å­—ã®é«˜ã•
+        2,								/// å¹³å‡æ–‡å­—å¹…
+        0,								/// æ–‡å­—é€ã‚Šã®æ–¹å‘ã¨Xè»¸ã¨ã®è§’åº¦
+        0,								/// ãƒ™ãƒ¼ã‚¹ãƒ©ã‚¤ãƒ³ã¨Xè»¸ã¨ã®è§’åº¦
+        fontWeight,						/// ãƒ•ã‚©ãƒ³ãƒˆã®å¤ªã•
+        fontItalic,						/// ã‚¤ã‚¿ãƒªãƒƒã‚¯ä½“æŒ‡å®š
+        fontUnderline,					/// ä¸‹ç·šä»˜ãæŒ‡å®š
+        fontStrikeOut,					/// æ‰“ã¡æ¶ˆã—ç·šä»˜ãæŒ‡å®š
+        fontCharacterSet,				/// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ã‚»ãƒƒãƒˆ
+        OUT_TT_PRECIS,					/// å‡ºåŠ›ç²¾åº¦
+        CLIP_DEFAULT_PRECIS,			/// ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°ã®ç²¾åº¦
+        ANTIALIASED_QUALITY,			/// å‡ºåŠ›å“è³ª
+        FF_DONTCARE | DEFAULT_PITCH,	/// ãƒ”ãƒƒãƒã¨ãƒ•ã‚¡ãƒŸãƒª
+        (LPCTSTR)fontName				/// ãƒ•ã‚©ãƒ³ãƒˆå
+    );
+
+    /// ä½œæˆã—ãŸãƒ•ã‚©ãƒ³ãƒˆã‚’ä½¿ç”¨
+    SelectObject(hDC, font);
+
+    /// 3 æ¬¡å…ƒãƒ•ã‚©ãƒ³ãƒˆã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹é–¢æ•°
+    wglUseFontOutlines(hDC,							/// ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¸ã®ãƒãƒ³ãƒ‰ãƒ«Select The Current DC
+        0,								/// æœ€åˆã®æ–‡å­—ã‚³ãƒ¼ãƒ‰
+        OPENGL_DEFAULT_BUFFER_SIZE - 1,	/// ä½œæˆã™ã‚‹ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®æ•°
+        font_base,						/// æœ€åˆã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆ
+        0.0f,							/// çœŸã®3æ¬¡å…ƒãƒ•ã‚©ãƒ³ãƒˆã¨ã®ã‚ºãƒ¬ 
+        fontDepth,						/// z ã®è² ã®æ–¹å‘ã¸ã®åŽšã•
+        WGL_FONT_POLYGONS,				/// WGL_FONT_LINES (ãƒ¯ã‚£ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ) ã‹ WGL_FONT_POLYGONS (ã‚½ãƒªãƒƒãƒ‰) ã®æŒ‡å®š (å®šæ•°) 
+        gmf								/// ã‚°ãƒªãƒ• (glyph) ã®å¯¸æ³•ã‚’æ ¼ç´ã™ã‚‹é…åˆ— 
+    );
+
+    if (isDefaultFontUsed)
+    {
+        delete[] fontName;
+    }
+
+    // ãƒ•ã‚©ãƒ³ãƒˆä½œæˆå®Œäº†
+    is_font_built = true;
 }
 
-/// ƒfƒXƒgƒ‰ƒNƒ^
-OpenGLText::~OpenGLText()
+bool OpenGLText::Print(const char* format, ...)
 {
-	killFont();
+    /// ãƒ•ã‚©ãƒ³ãƒˆãŒä½œæˆã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰
+    if (!is_font_built)
+    {
+        return false;
+    }
+
+
+    /// ãƒ†ã‚­ã‚¹ãƒˆã®é•·ã•
+    float length = 0;
+    /// ãƒ†ã‚­ã‚¹ãƒˆã®æ ¼ç´é…åˆ—
+    char text[OPENGL_DEFAULT_BUFFER_SIZE];
+    /// å¼•æ•°ãƒªã‚¹ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    va_list ap;
+
+    // å¼•æ•°ã®ãƒ†ã‚­ã‚¹ãƒˆãŒç„¡ã‹ã£ãŸã‚‰
+    if (format == NULL)
+    {
+        return false;  // ä½•ã‚‚ã—ãªã„ï¼Ž
+    }
+
+
+    /// å¤‰æ•°ã®ãŸã‚ã®æ§‹æ–‡è§£æž
+    va_start(ap, format);
+    /// å®Ÿéš›ã®æ•°ã¸å¤‰æ›
+    vsprintf(text, format, ap);
+    va_end(ap);	/// çµæžœã‚’ãƒ†ã‚­ã‚¹ãƒˆã«æ ¼ç´
+
+    unsigned int loop;
+    /// ãƒ†ã‚­ã‚¹ãƒˆé•·ã•ã‚’èª¿ã¹ã‚‹ãŸã‚ã®ãƒ«ãƒ¼ãƒ—
+    for (loop = 0; loop < (strlen(text)); loop++)
+    {
+        /// å„æ–‡å­—ã®å¹…ã”ã¨ã«ã‚ˆã£ã¦é•·ã•ã‚’å¢—ã‚„ã™
+        length += gmf[text[loop]].gmfCellIncX;
+    }
+
+    /// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ä¸Šã§ã®ãƒ†ã‚­ã‚¹ãƒˆã®ä¸­å¤®ä½ç½®
+    glTranslatef(-length / 2, 0.0f, 0.0f);
+
+    /// ä»¥ä¸‹ã§å®Ÿéš›ã«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»
+    glPushAttrib(GL_LIST_BIT);		/// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ãƒ“ãƒƒãƒˆã‚’ãƒ—ãƒƒã‚·ãƒ¥
+    glListBase(font_base);	/// ãƒ™ãƒ¼ã‚¹æ–‡å­—ã‚’0ã«ã‚»ãƒƒãƒˆ
+    glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);		/// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»
+    glPopAttrib();	/// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ãƒ“ãƒƒãƒˆã‚’ãƒãƒƒãƒ—
+    glTranslatef(-length / 2, 0.0f, 0.0f);
+
+    return true;
 }
 
-/// ƒtƒHƒ“ƒg‚Ìì¬
-void OpenGLText::buildFont(	HDC hDC,				/// ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ö‚Ìƒnƒ“ƒhƒ‹
-							char* fontName,			/// ƒtƒHƒ“ƒg–¼
-							GLfloat fontDepth,		/// zi[‚³j•ûŒü‚Ö‚ÌƒtƒHƒ“ƒgƒTƒCƒY
-							int fontWeight,			/// ƒtƒHƒ“ƒgƒEƒFƒCƒg
-							DWORD fontItalic,		/// ƒCƒ^ƒŠƒbƒN‚Ìƒtƒ‰ƒO
-							DWORD fontUnderline,	/// ƒAƒ“ƒ_[ƒ‰ƒCƒ“‚Ìƒtƒ‰ƒO
-							DWORD fontStrikeOut,	/// ‘Å‚¿Á‚µü‚Ìƒtƒ‰ƒO
-							DWORD fontCharacterSet	/// ƒLƒƒƒ‰ƒNƒ^[ƒZƒbƒg‚ÌŽ¯•ÊŽq
-							)
+void OpenGLText::KillFont()
 {
-
-	/// Šù‚ÉƒtƒHƒ“ƒg‚ªì¬‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	if (isFontBuilt)
-		killFont();	/// ì¬‚³‚ê‚Ä‚¢‚ê‚ÎÁ‹Ž
-
-	/// ƒ†[ƒU‚ÌƒtƒHƒ“ƒg
-	HFONT font;
-	/// ƒfƒtƒHƒ‹ƒg‚ÌƒtƒHƒ“ƒg‚ðŽg‚¤‚©‚Ç‚¤‚©
-	bool  isDefaultFontUsed = false;
-
-	/// ˆø”‚ÌƒtƒHƒ“ƒg–¼‚ªNULL‚¾‚Á‚½‚çCƒfƒtƒHƒ‹ƒg‚ðŽg‚¤
-	if (fontName == NULL)
-	{
-		/// ƒtƒHƒ“ƒg•¶Žš—ñ‚Æ'\0'‚Ì‚½‚ß‚Ìƒƒ‚ƒŠ‚ðŠm•Û
-		fontName = new char[strlen( OPENGL_DEFAULT_FONT ) + 1];
-		strcpy(fontName, OPENGL_DEFAULT_FONT);
-		isDefaultFontUsed = true;
-	}
-
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ðŠm•Û
-	fontBase = glGenLists(OPENGL_DEFAULT_BUFFER_SIZE);
-
-	/// CreateFontŠÖ”iWin APIj‚É‚æ‚èƒtƒHƒ“ƒgì¬
-	font = CreateFont(	-12,							/// •¶ŽšƒZƒ‹‚Ü‚½‚Í•¶Žš‚Ì‚‚³
-						2,								/// •½‹Ï•¶Žš•
-						0,								/// •¶Žš‘—‚è‚Ì•ûŒü‚ÆXŽ²‚Æ‚ÌŠp“x
-						0,								/// ƒx[ƒXƒ‰ƒCƒ“‚ÆXŽ²‚Æ‚ÌŠp“x
-						fontWeight,						/// ƒtƒHƒ“ƒg‚Ì‘¾‚³
-						fontItalic,						/// ƒCƒ^ƒŠƒbƒN‘ÌŽw’è
-						fontUnderline,					/// ‰ºü•t‚«Žw’è
-						fontStrikeOut,					/// ‘Å‚¿Á‚µü•t‚«Žw’è
-						fontCharacterSet,				/// ƒLƒƒƒ‰ƒNƒ^ƒZƒbƒg
-						OUT_TT_PRECIS,					/// o—Í¸“x
-						CLIP_DEFAULT_PRECIS,			/// ƒNƒŠƒbƒsƒ“ƒO‚Ì¸“x
-						ANTIALIASED_QUALITY,			/// o—Í•iŽ¿
-						FF_DONTCARE | DEFAULT_PITCH,	/// ƒsƒbƒ`‚Æƒtƒ@ƒ~ƒŠ
-						(LPCTSTR)fontName				/// ƒtƒHƒ“ƒg–¼
-					);
-
-	/// ì¬‚µ‚½ƒtƒHƒ“ƒg‚ðŽg—p
-	SelectObject(hDC, font);
-
-	/// 3 ŽŸŒ³ƒtƒHƒ“ƒg‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ðì¬‚·‚éŠÖ”
-	wglUseFontOutlines(	hDC,							/// ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ö‚Ìƒnƒ“ƒhƒ‹Select The Current DC
-						0,								/// Å‰‚Ì•¶ŽšƒR[ƒh
-						OPENGL_DEFAULT_BUFFER_SIZE-1,	/// ì¬‚·‚éƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì”
-						fontBase,						/// Å‰‚ÌƒfƒBƒXƒvƒŒƒCƒŠƒXƒg
-						0.0f,							/// ^‚Ì3ŽŸŒ³ƒtƒHƒ“ƒg‚Æ‚ÌƒYƒŒ 
-						fontDepth,						/// z ‚Ì•‰‚Ì•ûŒü‚Ö‚ÌŒú‚³
-						WGL_FONT_POLYGONS,				/// WGL_FONT_LINES (ƒƒBƒ„[ƒtƒŒ[ƒ€) ‚© WGL_FONT_POLYGONS (ƒ\ƒŠƒbƒh) ‚ÌŽw’è (’è”) 
-						gmf								/// ƒOƒŠƒt (glyph) ‚Ì¡–@‚ðŠi”[‚·‚é”z—ñ 
-						);							
-
-	if (isDefaultFontUsed)
-		delete [] fontName;
-
-	/// ƒtƒHƒ“ƒgì¬Š®—¹
-	isFontBuilt = true;
-
-}
-
-/**
- *		•¶Žš—ñ‚Ìo—Í
- *			
- */
-bool OpenGLText::print(const char* format, ...)
-{
-	/// ƒtƒHƒ“ƒg‚ªì¬‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç
-	if (!isFontBuilt)
-		return false;
-
-	/// ƒeƒLƒXƒg‚Ì’·‚³
-	float length=0;
-	/// ƒeƒLƒXƒg‚ÌŠi”[”z—ñ
-	char text[OPENGL_DEFAULT_BUFFER_SIZE];	
-	/// ˆø”ƒŠƒXƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	va_list ap;
-
-	/// ˆø”‚ÌƒeƒLƒXƒg‚ª–³‚©‚Á‚½‚ç
-	if (format == NULL)
-		return false;	/// ‰½‚à‚µ‚È‚¢
-
-	/// •Ï”‚Ì‚½‚ß‚Ì\•¶‰ðÍ
-	va_start(ap, format);
-		/// ŽÀÛ‚Ì”‚Ö•ÏŠ·
-	    vsprintf(text, format, ap);
-	va_end(ap);	/// Œ‹‰Ê‚ðƒeƒLƒXƒg‚ÉŠi”[
-
-	unsigned int loop;
-	/// ƒeƒLƒXƒg’·‚³‚ð’²‚×‚é‚½‚ß‚Ìƒ‹[ƒv
-	for (loop=0;loop<(strlen(text));loop++)
-	{
-		/// Še•¶Žš‚Ì•‚²‚Æ‚É‚æ‚Á‚Ä’·‚³‚ð‘‚â‚·
-		length += gmf[ text[loop] ].gmfCellIncX;
-	}
-	
-	/// ƒXƒNƒŠ[ƒ“ã‚Å‚ÌƒeƒLƒXƒg‚Ì’†‰›ˆÊ’u
-	glTranslatef(-length/2, 0.0f, 0.0f);
-
-	/// ˆÈ‰º‚ÅŽÀÛ‚ÉƒXƒNƒŠ[ƒ“‚ÉƒeƒLƒXƒg‚ð•`‰æ
-	glPushAttrib(GL_LIST_BIT);		/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ìƒrƒbƒg‚ðƒvƒbƒVƒ…
-	glListBase(fontBase);	/// ƒx[ƒX•¶Žš‚ð0‚ÉƒZƒbƒg
-	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);		/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚ÌƒeƒLƒXƒg‚ð•`‰æ
-	glPopAttrib();	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ìƒrƒbƒg‚ðƒ|ƒbƒv
-	glTranslatef(-length/2, 0.0f, 0.0f);
-
-	return true;
-}
-
-/**
- *	------------------------------------------------------------
- *		OpenGLTextƒNƒ‰ƒX‚Ìprivate‚Èƒƒ“ƒoŠÖ”
- *	------------------------------------------------------------
- */
-/**
- *	ƒtƒHƒ“ƒg‚Ì”jŠü
- */
-void OpenGLText::killFont(void)
-{
-	/// ƒfƒBƒXƒvƒŒƒCƒŠƒXƒg‚Ì”jŠü
-	glDeleteLists(fontBase, OPENGL_DEFAULT_BUFFER_SIZE);
+    // ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ç ´æ£„ï¼Ž
+    glDeleteLists(font_base, OPENGL_DEFAULT_BUFFER_SIZE);
 }
 
 

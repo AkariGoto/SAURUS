@@ -30,7 +30,7 @@
     <ClCompile Include="Graphic\OpenGL\AviMaker.cpp">
       <Filter>Graphic\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic\OpenGL\CameraView.cpp">
+    <ClCompile Include="Graphic\OpenGL\camera_view.cpp">
       <Filter>Graphic\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Graphic\OpenGL\OpenGL.cpp">
@@ -145,7 +145,7 @@
     <ClInclude Include="Graphic\OpenGL\AviMaker.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic\OpenGL\CameraView.h">
+    <ClInclude Include="Graphic\OpenGL\camera_view.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Graphic\OpenGL\OpenGL.h">

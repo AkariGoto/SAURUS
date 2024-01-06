@@ -25,17 +25,17 @@ private:
 
 public:
     AsuraData();
-    AsuraData(const AsuraData& asuraData);
+    AsuraData(const AsuraData& asura_data);
     ~AsuraData() = default;
 
     /// 代入演算子
-    virtual AsuraData& operator=(const AsuraData& asuraData);
+    virtual AsuraData& operator=(const AsuraData& asura_data);
 
     /// 等価演算子
-    bool operator==(const AsuraData& asuraData);
+    bool operator==(const AsuraData& asura_data);
 
     /// 非等価演算子
-    bool operator!=(const AsuraData& asuraData);
+    bool operator!=(const AsuraData& asura_data);
 
     Matrix body_transformation;          //!< 胴体の同次変換行列．4x4の行列．
     Vector body_position;                //!< 胴体の位置．3次元ベクトル．
@@ -86,7 +86,7 @@ private:
     void newAsuraData();
 
     //! コピーコンストラクタと代入演算子のヘルプ関数
-    void copy(const AsuraData& asuraData);
+    void copy(const AsuraData& asura_data);
 };
 
 }  // namespace designlab_robot_gui::data
