@@ -3,7 +3,6 @@
 #define __AsuraGraphic_h__
 
 #include "OpenGL/OpenGLObject.h"
-#include "OpenGL/OpenGLText.h"
 #include "OpenGL/OpenGLMovie.h"
 
 #include "Data/asura_data.h"

@@ -1,648 +1,648 @@
-/**
- *  ƒtƒ@ƒCƒ‹–¼
+ï»¿/**
+ *  ãƒ•ã‚¡ã‚¤ãƒ«å
  *		AviMaker.cpp
- *  à–¾
- *		AVI‚ğì¬‚·‚éƒNƒ‰ƒX
- *  “ú•t
- *		ì¬“ú: 2008/09/02(TUE)		XV“ú: 2008/09/03(WED)
+ *  èª¬æ˜
+ *		AVIã‚’ä½œæˆã™ã‚‹ã‚¯ãƒ©ã‚¹
+ *  æ—¥ä»˜
+ *		ä½œæˆæ—¥: 2008/09/02(TUE)		æ›´æ–°æ—¥: 2008/09/03(WED)
  */
-/**
- *	----------------------------------------------------------------------
- *		ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
- *	----------------------------------------------------------------------
- */
+ /**
+  *	----------------------------------------------------------------------
+  *		ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+  *	----------------------------------------------------------------------
+  */
 #include "AviMaker.h"
 
-/**
- *	----------------------------------------------------------------------
- *		ƒ}ƒNƒAŒ^‚Ì’è‹`
- *	----------------------------------------------------------------------
- */
+  /**
+   *	----------------------------------------------------------------------
+   *		ãƒã‚¯ãƒ­ã€å‹ã®å®šç¾©
+   *	----------------------------------------------------------------------
+   */
 #ifndef __countof
 #define __countof(x)	((sizeof(x)/sizeof(x[0])))
 #endif
 
-/**
- *	----------------------------------------------------------------------
- *		AviMakerƒNƒ‰ƒX
- *	----------------------------------------------------------------------
- */
+   /**
+    *	----------------------------------------------------------------------
+    *		AviMakerã‚¯ãƒ©ã‚¹
+    *	----------------------------------------------------------------------
+    */
 
-/**
- *	------------------------------------------------------------
- *		AviMakerƒNƒ‰ƒX‚Ìƒƒ“ƒoŠÖ”’è‹`
- *	------------------------------------------------------------
- */
+    /**
+     *	------------------------------------------------------------
+     *		AviMakerã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒé–¢æ•°å®šç¾©
+     *	------------------------------------------------------------
+     */
 
-/**
- *	----------------------------------------
- *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
- *	----------------------------------------
- */
-/// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
-AviMaker:: AviMaker(LPCTSTR pFileName /* =_T("Output.avi") */, 
-			DWORD codec_ /* = mmioFOURCC('M','P','G','4') */,
-			DWORD frameRate_ /* = 1 */)
+     /**
+      *	----------------------------------------
+      *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+      *	----------------------------------------
+      */
+      /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+AviMaker::AviMaker(LPCTSTR pFileName /* =_T("Output.avi") */,
+      DWORD codec_ /* = mmioFOURCC('M','P','G','4') */,
+      DWORD frameRate_ /* = 1 */)
 {
-	initialize(pFileName, codec_, frameRate_);
+    initialize(pFileName, codec_, frameRate_);
 
 }
 
 AviMaker::~AviMaker(void)
 {
-	fianalize();
+    fianalize();
 }
 
 /**
- *	à–¾
- *		‰Šú‰»
- *	ˆø”
- *		pFileName: ì¬‚·‚éƒtƒ@ƒCƒ‹–¼
- *		codec_:	ˆ³k‚Ég—p‚·‚éƒrƒfƒIƒR[ƒfƒbƒN‚ÌFOURCC ƒR[ƒhiƒCƒ“ƒXƒg[ƒ‹Ï‚İ‚ÌƒR[ƒfƒbƒN‚ğ‘I‘ğ‚·‚é‚±‚Æj
- *				ƒfƒtƒHƒ‹ƒg‚ÍWMV3B—á‚¦‚ÎADIVX‚È‚ç mmioFOURCC('D','I','V','X') ‚Æ‚·‚é
- *				0‚È‚ç‚Î–³ˆ³k
- *		frameRate_: ƒtƒŒ[ƒ€ƒŒ[ƒg
+ *	èª¬æ˜
+ *		åˆæœŸåŒ–
+ *	å¼•æ•°
+ *		pFileName: ä½œæˆã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+ *		codec_:	åœ§ç¸®ã«ä½¿ç”¨ã™ã‚‹ãƒ“ãƒ‡ã‚ªã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®FOURCC ã‚³ãƒ¼ãƒ‰ï¼ˆã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ¸ˆã¿ã®ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã‚’é¸æŠã™ã‚‹ã“ã¨ï¼‰
+ *				ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯WMV3ã€‚ä¾‹ãˆã°ã€DIVXãªã‚‰ mmioFOURCC('D','I','V','X') ã¨ã™ã‚‹
+ *				0ãªã‚‰ã°ç„¡åœ§ç¸®
+ *		frameRate_: ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆ
  */
 void AviMaker::initialize(LPCTSTR pFileName, DWORD codec_, DWORD frameRate_)
 {
-/**
- *	ƒvƒ‰ƒbƒgƒtƒH[ƒ€ SDK ŠÖ”
- *		AVIFile ƒ‰ƒCƒuƒ‰ƒŠ‚ğ‰Šú‰»
- *			EAVIFile ƒ‰ƒCƒuƒ‰ƒŠ‚Í‰Šú‰»‚³‚ê‚½‰ñ”‚ÌƒJƒEƒ“ƒg‚ğŠÇ—‚·‚é‚ªA‰ğ•ú‚³‚ê‚½‰ñ”‚ÌƒJƒEƒ“ƒg‚ÍŠÇ—‚µ‚Ü‚È‚¢B
- *			EAVIFile ƒ‰ƒCƒuƒ‰ƒŠ‚ğ‰ğ•ú‚µ‚ÄƒJƒEƒ“ƒg‚ğ 1 ‚ÂŒ¸‚ç‚·‚É‚ÍAAVIFileExit ŠÖ”‚ğg‚¤B
- *			EAVIFileInit ŠÖ”‚ÍA‘¼‚Ì AVIFile ŠÖ”‚ğg‚¤‘O‚ÉŒÄ‚Ño‚È‚­‚Ä‚Í‚È‚ç‚È‚¢B
- *		ƒvƒƒOƒ‰ƒ€‚Ì‰Šú‰»‚Éˆê“x‚¾‚¯ŒÄ‚Ño‚·
- */
-	AVIFileInit();
+    /**
+     *	ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ  SDK é–¢æ•°
+     *		AVIFile ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’åˆæœŸåŒ–
+     *			ãƒ»AVIFile ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã¯åˆæœŸåŒ–ã•ã‚ŒãŸå›æ•°ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’ç®¡ç†ã™ã‚‹ãŒã€è§£æ”¾ã•ã‚ŒãŸå›æ•°ã®ã‚«ã‚¦ãƒ³ãƒˆã¯ç®¡ç†ã—ã¾ãªã„ã€‚
+     *			ãƒ»AVIFile ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’è§£æ”¾ã—ã¦ã‚«ã‚¦ãƒ³ãƒˆã‚’ 1 ã¤æ¸›ã‚‰ã™ã«ã¯ã€AVIFileExit é–¢æ•°ã‚’ä½¿ã†ã€‚
+     *			ãƒ»AVIFileInit é–¢æ•°ã¯ã€ä»–ã® AVIFile é–¢æ•°ã‚’ä½¿ã†å‰ã«å‘¼ã³å‡ºãªãã¦ã¯ãªã‚‰ãªã„ã€‚
+     *		ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®åˆæœŸåŒ–æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã³å‡ºã™
+     */
+    AVIFileInit();
 
-/**
- *	ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
- */ 
-	heapHandle = NULL;
-	memDCHandle = NULL;
-	lpDIBPixelBits = NULL;
-	frameCounter = NULL;
+    /**
+     *	ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
+     */
+    heapHandle = NULL;
+    memDCHandle = NULL;
+    lpDIBPixelBits = NULL;
+    frameCounter = NULL;
 
-	pAviFile = NULL;
-	pAviStream = NULL;
-	pAviCompressedStream = NULL;
+    pAviFile = NULL;
+    pAviStream = NULL;
+    pAviCompressedStream = NULL;
 
-	fccHandler = codec_;
-	frameRate = frameRate_;
+    fccHandler = codec_;
+    frameRate = frameRate_;
 
-/**
- *	•¶š—ñ‚Ì‰Šú‰»
- */
-	_tcscpy(outputFileName, pFileName);
-	_tcscpy(lastErrMsg, _T("Method Succeeded"));
-	lastErrMsg[__countof(lastErrMsg)-1] = _T('\0');
+    /**
+     *	æ–‡å­—åˆ—ã®åˆæœŸåŒ–
+     */
+    _tcscpy(outputFileName, pFileName);
+    _tcscpy(lastErrMsg, _T("Method Succeeded"));
+    lastErrMsg[__countof(lastErrMsg) - 1] = _T('\0');
 
-/**
- *	ˆÈ‰º‚Ìˆ—‚ÍVC8ˆÈ~‚Å•K—vBiŠÖ”ƒ|ƒCƒ“ƒ^—pj
- *	ƒRƒ“ƒpƒCƒ‰‚ÉŒx‚ğó‚¯‚½‚çAíœ‚µ‚Ä‚à—Ç‚¢
- */ 
-	pAppendFrame[0] = &AviMaker::appendDummy;
-	pAppendFrame[1] = &AviMaker::appendFrameFirstTime;
-	pAppendFrame[2] = &AviMaker::appendFrameUsual;
+    /**
+     *	ä»¥ä¸‹ã®å‡¦ç†ã¯VC8ä»¥é™ã§å¿…è¦ã€‚ï¼ˆé–¢æ•°ãƒã‚¤ãƒ³ã‚¿ç”¨ï¼‰
+     *	ã‚³ãƒ³ãƒ‘ã‚¤ãƒ©ã«è­¦å‘Šã‚’å—ã‘ãŸã‚‰ã€å‰Šé™¤ã—ã¦ã‚‚è‰¯ã„
+     */
+    pAppendFrame[0] = &AviMaker::appendDummy;
+    pAppendFrame[1] = &AviMaker::appendFrameFirstTime;
+    pAppendFrame[2] = &AviMaker::appendFrameUsual;
 
-	pAppendFrameBits[0] = &AviMaker::appendDummy;
-	pAppendFrameBits[1] = &AviMaker::appendFrameFirstTime;
-	pAppendFrameBits[2] = &AviMaker::appendFrameUsual;
+    pAppendFrameBits[0] = &AviMaker::appendDummy;
+    pAppendFrameBits[1] = &AviMaker::appendFrameFirstTime;
+    pAppendFrameBits[2] = &AviMaker::appendFrameUsual;
 
-	appendFuncSelector=1;		//0=Dummy	1=FirstTime	2=Usual
+    appendFuncSelector = 1;		//0=Dummy	1=FirstTime	2=Usual
 
-	return;
+    return;
 }
 
 /**
- *	à–¾
- *		“®‰æì¬‚Ì‚½‚ß‚ÌI—¹ˆ—
+ *	èª¬æ˜
+ *		å‹•ç”»ä½œæˆã®ãŸã‚ã®çµ‚äº†å‡¦ç†
  */
 void AviMaker::fianalize(void)
 {
-	releaseMemory();
+    releaseMemory();
 
-/**
- *	ƒvƒ‰ƒbƒgƒtƒH[ƒ€ SDK ŠÖ”
- *		AVIFile ƒ‰ƒCƒuƒ‰ƒŠ‚ÌI—¹ˆ—
- */	
-	AVIFileExit();
+    /**
+     *	ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ  SDK é–¢æ•°
+     *		AVIFile ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®çµ‚äº†å‡¦ç†
+     */
+    AVIFileExit();
 }
 
 /**
- *	à–¾
- *		‰Šú‰»
- *	ˆø”
- *		pFileName: ì¬‚·‚éƒtƒ@ƒCƒ‹–¼
+ *	èª¬æ˜
+ *		åˆæœŸåŒ–
+ *	å¼•æ•°
+ *		pFileName: ä½œæˆã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
  */
 void AviMaker::setOutputFileName(LPCTSTR pFileName)
 {
-	_tcscpy(outputFileName, pFileName);
+    _tcscpy(outputFileName, pFileName);
 }
 
 /**
  *	----------------------------------------
- *	“®‰æ‚Ìì¬
- *	ƒI[ƒo[ƒ[ƒh
+ *	å‹•ç”»ã®ä½œæˆ
+ *	ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
  *	----------------------------------------
- */	
-/**
- *	à–¾
- *		“®‰æ‚ÌÅŒã‚Éw’è‚µ‚½HBitmap‚ğV‚µ‚¢ƒtƒŒ[ƒ€‚Æ‚µ‚Ä‘}“ü‚·‚é
- *	ˆø”
- *		hBitmap: ‘}“ü‚·‚éHBITMAPŒ^ƒIƒuƒWƒFƒNƒg
  */
+ /**
+  *	èª¬æ˜
+  *		å‹•ç”»ã®æœ€å¾Œã«æŒ‡å®šã—ãŸHBitmapã‚’æ–°ã—ã„ãƒ•ãƒ¬ãƒ¼ãƒ ã¨ã—ã¦æŒ¿å…¥ã™ã‚‹
+  *	å¼•æ•°
+  *		hBitmap: æŒ¿å…¥ã™ã‚‹HBITMAPå‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+  */
 HRESULT AviMaker::appendNewFrame(HBITMAP hBitmap)
 {
-	return (this->*pAppendFrame[appendFuncSelector])((HBITMAP)hBitmap);
+    return (this->*pAppendFrame[appendFuncSelector])((HBITMAP)hBitmap);
 }
 
 /**
- *	à–¾
- *		“®‰æ‚ÌÅŒã‚Éw’è‚µ‚½Bitmap‚Ìƒrƒbƒg‚ğV‚µ‚¢ƒtƒŒ[ƒ€‚Æ‚µ‚Ä‘}“ü‚·‚é
- *	ˆø”
- *		width: ‘}“ü‚·‚éƒrƒbƒg—ñ‚Ì‚‚³
- *		height: ‘}“ü‚·‚éƒrƒbƒg—ñ‚Ì•
- *		pBits: w’è‚·‚éƒrƒbƒg—ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
- *		bitsPerPixel: 1ƒsƒNƒZƒ‹“–‚½‚è‚Ìƒrƒbƒg
+ *	èª¬æ˜
+ *		å‹•ç”»ã®æœ€å¾Œã«æŒ‡å®šã—ãŸBitmapã®ãƒ“ãƒƒãƒˆã‚’æ–°ã—ã„ãƒ•ãƒ¬ãƒ¼ãƒ ã¨ã—ã¦æŒ¿å…¥ã™ã‚‹
+ *	å¼•æ•°
+ *		width: æŒ¿å…¥ã™ã‚‹ãƒ“ãƒƒãƒˆåˆ—ã®é«˜ã•
+ *		height: æŒ¿å…¥ã™ã‚‹ãƒ“ãƒƒãƒˆåˆ—ã®å¹…
+ *		pBits: æŒ‡å®šã™ã‚‹ãƒ“ãƒƒãƒˆåˆ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+ *		bitsPerPixel: 1ãƒ”ã‚¯ã‚»ãƒ«å½“ãŸã‚Šã®ãƒ“ãƒƒãƒˆ
  */
-HRESULT	AviMaker::appendNewFrame(int width, int height, LPVOID pBits,int bitsPerPixel)
+HRESULT	AviMaker::appendNewFrame(int width, int height, LPVOID pBits, int bitsPerPixel)
 {
-	return (this->*pAppendFrameBits[appendFuncSelector])(width, height, pBits, bitsPerPixel);
+    return (this->*pAppendFrameBits[appendFuncSelector])(width, height, pBits, bitsPerPixel);
 }
 /**
  *	------------------------------------------------------------
- *		AviMaker ƒNƒ‰ƒX‚Ì private ‚Èƒƒ“ƒoŠÖ”
+ *		AviMaker ã‚¯ãƒ©ã‚¹ã® private ãªãƒ¡ãƒ³ãƒé–¢æ•°
  *	------------------------------------------------------------
  */
-/**
- *	à–¾
- *		“®‰æì¬‚Ì‚½‚ß‚Ì‰Šú‰»
- *		ƒƒ‚ƒŠAƒXƒgƒŠ[ƒ€Aˆ³k‚ÌƒIƒvƒVƒ‡ƒ“‚Ìİ’è‚ğ‚·‚é
- *	ˆø”
- *		farameWidth: ƒtƒŒ[ƒ€•
- *		frameHeight: ƒtƒŒ[ƒ€‚‚³
- *		bitsPerPixel: ƒsƒNƒZƒ‹’PˆÊ‚Å‚Ìƒrƒbƒg—ñ
- *	•Ô‹p’l
- *		S_OKˆÈŠO: ¸”s
- *		S_OK: ¬Œ÷
- */ 
+ /**
+  *	èª¬æ˜
+  *		å‹•ç”»ä½œæˆã®ãŸã‚ã®åˆæœŸåŒ–
+  *		ãƒ¡ãƒ¢ãƒªã€ã‚¹ãƒˆãƒªãƒ¼ãƒ ã€åœ§ç¸®ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¨­å®šã‚’ã™ã‚‹
+  *	å¼•æ•°
+  *		farameWidth: ãƒ•ãƒ¬ãƒ¼ãƒ å¹…
+  *		frameHeight: ãƒ•ãƒ¬ãƒ¼ãƒ é«˜ã•
+  *		bitsPerPixel: ãƒ”ã‚¯ã‚»ãƒ«å˜ä½ã§ã®ãƒ“ãƒƒãƒˆåˆ—
+  *	è¿”å´å€¤
+  *		S_OKä»¥å¤–: å¤±æ•—
+  *		S_OK: æˆåŠŸ
+  */
 HRESULT AviMaker::initializeEngine(int frameWidth, int frameHeight, int bitsPerPixel)
 {
-	/// •Ô‹p’l
-	HRESULT hResult;
+    /// è¿”å´å€¤
+    HRESULT hResult;
 
-	/// AVIˆ³kƒIƒvƒVƒ‡ƒ“\‘¢‘Ì
-	LPAVICOMPRESSOPTIONS pOptions[1] = {&aviCompressOptions};
+    /// AVIåœ§ç¸®ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ§‹é€ ä½“
+    LPAVICOMPRESSOPTIONS pOptions[1] = { &aviCompressOptions };
 
-	/**
-	 *	‰æ–Ê\¬‚ğæ“¾
-	 */
-	int	maxWidth = GetSystemMetrics(SM_CXSCREEN); 
-	int maxHeight = GetSystemMetrics(SM_CYSCREEN);
+    /**
+     *	ç”»é¢æ§‹æˆã‚’å–å¾—
+     */
+    int	maxWidth = GetSystemMetrics(SM_CXSCREEN);
+    int maxHeight = GetSystemMetrics(SM_CYSCREEN);
 
-/**
- *	STEP 0
- *		ƒƒ‚ƒŠ—Ìˆæ‚ÌŠm•Û
- */
-	/**
-	 *	ƒƒ‚ƒŠƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgiƒƒ‚ƒŠ‚Ì˜_—“I‚ÈƒfƒoƒCƒXj‚ğì¬
-	 */
-	memDCHandle = CreateCompatibleDC(NULL);
-	/// ¸”s”»’è
-	if (memDCHandle == NULL)	
-	{
-		setLastErrMsg(_T("Unable to Create Compatible DC"));
-		return E_FAIL;
-	}
-	
-	/// •‚Æ‚‚³‚Ì”ÍˆÍİ’è
-	if (frameWidth > maxWidth)	maxWidth= frameWidth;
-	if (frameHeight > maxHeight)	maxHeight = frameHeight;
+    /**
+     *	STEP 0
+     *		ãƒ¡ãƒ¢ãƒªé ˜åŸŸã®ç¢ºä¿
+     */
+     /**
+      *	ãƒ¡ãƒ¢ãƒªãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆï¼ˆãƒ¡ãƒ¢ãƒªã®è«–ç†çš„ãªãƒ‡ãƒã‚¤ã‚¹ï¼‰ã‚’ä½œæˆ
+      */
+    memDCHandle = CreateCompatibleDC(NULL);
+    /// å¤±æ•—åˆ¤å®š
+    if (memDCHandle == NULL)
+    {
+        setLastErrMsg(_T("Unable to Create Compatible DC"));
+        return E_FAIL;
+    }
 
-	/**
-	 *	ƒpƒtƒH[ƒ}ƒ“ƒX‚Ì‚½‚ßƒvƒ‰ƒCƒx[ƒgƒq[ƒv‚Ìì¬
-	 *		—\‚ß‚ ‚é’ö“x‚Ì‰¼‘zƒƒ‚ƒŠ—Ìˆæ‚ğ—\–ñ‚µ‚Ä‚¨‚«AƒvƒƒOƒ‰ƒ€‚©‚ç—v‹‚³‚êŸ‘æA
-	 *		‚»‚Ì—\–ñ‚³‚ê‚½—Ìˆæ‚©‚çƒƒ‚ƒŠ‚ğØ‚èo‚µ‚Ä‚«‚ÄŒø—¦—Ç‚­ƒƒ‚ƒŠƒuƒƒbƒN‚ğŠm•Û‚·‚éB
-	 */
-	heapHandle = HeapCreate(HEAP_NO_SERIALIZE, maxWidth * maxHeight * 4, 0);
-	/// ¸”s”»’è
-	if(heapHandle==NULL)
-	{
-		setLastErrMsg(_T("Unable to Create Heap"));
-		return E_FAIL;
-	}
-	
-	/**
-	 *	ƒƒ‚ƒŠƒuƒƒbƒN‚ğHeapCreate ŠÖ”‚Åì¬‚µ‚½ƒq[ƒv‚©‚çŠ„‚è“–‚Ä‚é
-	 *	‚±‚ê‚É‚æ‚èADIBiƒfƒoƒCƒX“Æ—§ƒrƒbƒgƒ}ƒbƒvj—pƒsƒNƒZƒ‹—ñ‚ğì¬
-	 *	1ƒsƒNƒZƒ‹‚ ‚½‚è4ƒoƒCƒgB
-	 */ 
-	lpDIBPixelBits = HeapAlloc(heapHandle, HEAP_ZERO_MEMORY|HEAP_NO_SERIALIZE, maxWidth * maxHeight * 4);
-	/// ¸”s”»’è
-	if (lpDIBPixelBits == NULL)	
-	{	
-		setLastErrMsg(_T("Unable to Allocate Memory on Heap"));
-		return E_FAIL;
-	}
+    /// å¹…ã¨é«˜ã•ã®ç¯„å›²è¨­å®š
+    if (frameWidth > maxWidth)	maxWidth = frameWidth;
+    if (frameHeight > maxHeight)	maxHeight = frameHeight;
 
-/**
- *	STEP 1
- *		AVI‚Ìİ’è‚Ég—p‚·‚éŠeí•Ï”A\‘¢‘Ì‚ğŒˆ’è
- */
-/**
- *	AVIStreamSetFormat ŠÖ”‚Åg—p‚·‚é BITMAPINFO \‘¢‘Ì‚Ìİ’è
- *		typedef struct tagBITMAPINFO {
- *							BITMAPINFOHEADER bmiHeader;				FƒtƒH[ƒ}ƒbƒg‚ÆƒTƒCƒY‚ÉŠÖ‚·‚éî•ñ‚ğ•Û‚µ‚Ä‚¢‚éABITMAPINFOHEADER \‘¢‘Ì
- *							RGBQUAD          bmiColors[1];			Ÿ‚Ì‚¤‚¿‚Ì‚Ç‚ê‚©‚ğ•ÛB
- *																	RGBQUAD ‚Ì”z—ñB”z—ñ‚Ì—v‘f‚ÍFƒe[ƒuƒ‹i’FƒpƒŒƒbƒgj‚ğ\¬‚·‚éB 
- *																	Œ»İg—p‚³‚ê‚Ä‚¢‚é˜_—ƒpƒŒƒbƒg‚Ö‚ÌƒCƒ“ƒfƒbƒNƒX‚ğw’è‚·‚éA16ƒrƒbƒg•„†–³‚µ‚Ì®”‚Ì”z—ñB
- *						} BITMAPINFO, *PBITMAPINFO;
- *
- *		typedef struct tagBITMAPINFOHEADER{
- *							DWORD  biSize;							\‘¢‘Ì‚É•K—v‚ÈƒoƒCƒg”( •K‚¸ sizeof(BITMAPINFOHEADER) ‚Åw’èB)
- *							LONG   biWidth;							ƒrƒbƒgƒ}ƒbƒv‚Ì•‚ğƒsƒNƒZƒ‹’PˆÊ‚Åw’è			
- *							LONG   biHeight;						ƒrƒbƒgƒ}ƒbƒv‚Ì‚‚³‚ğƒsƒNƒZƒ‹’PˆÊ‚Åw’è
- *							WORD   biPlanes;						ƒ^[ƒQƒbƒg ƒfƒoƒCƒX‚Ì–Ê‚Ì”‚ğw’èB‚±‚Ì’l‚Í 1
- *							WORD   biBitCount;						1 ƒsƒNƒZƒ‹‚ ‚½‚è‚Ìƒrƒbƒg” (bits-per-pixel) ‚ğw’èB‚±‚ê‚Í0A1A4A8A16A24A32‚Ì‚Ç‚ê‚©‚ğw’èB
- *							DWORD  biCompression;					ˆ³k‚³‚ê‚½ "bottom-up" ƒrƒbƒgƒ}ƒbƒv‚Ìˆ³kŒ`®‚ğw’èBBI_***‚ğw’èBi***‚ÍARGBARLE8ARLE4ABITFIELDSAJPEGAPNGj
- *							DWORD  biSizeImage;						‰æ‘œƒTƒCƒY‚ğƒoƒCƒg’PˆÊ‚Åw’è
- *							LONG   biXPelsPerMeter;					ƒrƒbƒgƒ}ƒbƒv‚Ìƒ^[ƒQƒbƒg ƒfƒoƒCƒX‚Ì…•½•ûŒü‚Ì‰ğ‘œ“x‚ğApixels-per-meter ‚Åw’è
- *							LONG   biYPelsPerMeter;					ƒrƒbƒgƒ}ƒbƒv‚Ìƒ^[ƒQƒbƒg ƒfƒoƒCƒX‚Ì‚’¼•ûŒü‚Ì‰ğ‘œ“x‚ğApixels-per-meter ‚Åw’è
- *							DWORD  biClrUsed;						ÀÛ‚Éƒrƒbƒgƒ}ƒbƒv‚É‚æ‚Á‚Äg—p‚³‚ê‚éFƒe[ƒuƒ‹’†‚ÌFƒCƒ“ƒfƒbƒNƒX‚Ì”‚ğw’è
- *							DWORD  biClrImportant;					ƒrƒbƒgƒ}ƒbƒv‚ğ•\¦‚·‚é‚Ì‚É•K—v‚ÈFƒCƒ“ƒfƒbƒNƒX‚Ì”‚ğw’è
- *						} BITMAPINFOHEADER, *PBITMAPINFOHEADER;
- *						
- */
-	/// \‘¢‘Ì‚Ì‰Šú‰»
-	BITMAPINFO bmpInfo;
-	ZeroMemory(&bmpInfo,sizeof(BITMAPINFO));
-	/// \‘¢‘Ì‚Ìİ’è
-	bmpInfo.bmiHeader.biPlanes		= 1;
-	bmpInfo.bmiHeader.biWidth		= frameWidth;
-	bmpInfo.bmiHeader.biHeight		= frameHeight;
-	bmpInfo.bmiHeader.biCompression	= BI_RGB;
-	bmpInfo.bmiHeader.biBitCount	= bitsPerPixel;
-	bmpInfo.bmiHeader.biSize		= sizeof(BITMAPINFOHEADER);
-	bmpInfo.bmiHeader.biSizeImage	= ((bmpInfo.bmiHeader.biWidth*bmpInfo.bmiHeader.biBitCount+31)/32*4)*bmpInfo.bmiHeader.biHeight;//bmpInfo.bmiHeader.biWidth*bmpInfo.bmiHeader.biHeight*bmpInfo.bmiHeader.biBitCount/32*4;
+    /**
+     *	ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã®ãŸã‚ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ’ãƒ¼ãƒ—ã®ä½œæˆ
+     *		äºˆã‚ã‚ã‚‹ç¨‹åº¦ã®ä»®æƒ³ãƒ¡ãƒ¢ãƒªé ˜åŸŸã‚’äºˆç´„ã—ã¦ãŠãã€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‹ã‚‰è¦æ±‚ã•ã‚Œæ¬¡ç¬¬ã€
+     *		ãã®äºˆç´„ã•ã‚ŒãŸé ˜åŸŸã‹ã‚‰ãƒ¡ãƒ¢ãƒªã‚’åˆ‡ã‚Šå‡ºã—ã¦ãã¦åŠ¹ç‡è‰¯ããƒ¡ãƒ¢ãƒªãƒ–ãƒ­ãƒƒã‚¯ã‚’ç¢ºä¿ã™ã‚‹ã€‚
+     */
+    heapHandle = HeapCreate(HEAP_NO_SERIALIZE, maxWidth * maxHeight * 4, 0);
+    /// å¤±æ•—åˆ¤å®š
+    if (heapHandle == NULL)
+    {
+        setLastErrMsg(_T("Unable to Create Heap"));
+        return E_FAIL;
+    }
+
+    /**
+     *	ãƒ¡ãƒ¢ãƒªãƒ–ãƒ­ãƒƒã‚¯ã‚’HeapCreate é–¢æ•°ã§ä½œæˆã—ãŸãƒ’ãƒ¼ãƒ—ã‹ã‚‰å‰²ã‚Šå½“ã¦ã‚‹
+     *	ã“ã‚Œã«ã‚ˆã‚Šã€DIBï¼ˆãƒ‡ãƒã‚¤ã‚¹ç‹¬ç«‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ï¼‰ç”¨ãƒ”ã‚¯ã‚»ãƒ«åˆ—ã‚’ä½œæˆ
+     *	1ãƒ”ã‚¯ã‚»ãƒ«ã‚ãŸã‚Š4ãƒã‚¤ãƒˆã€‚
+     */
+    lpDIBPixelBits = HeapAlloc(heapHandle, HEAP_ZERO_MEMORY | HEAP_NO_SERIALIZE, maxWidth * maxHeight * 4);
+    /// å¤±æ•—åˆ¤å®š
+    if (lpDIBPixelBits == NULL)
+    {
+        setLastErrMsg(_T("Unable to Allocate Memory on Heap"));
+        return E_FAIL;
+    }
+
+    /**
+     *	STEP 1
+     *		AVIã®è¨­å®šã«ä½¿ç”¨ã™ã‚‹å„ç¨®å¤‰æ•°ã€æ§‹é€ ä½“ã‚’æ±ºå®š
+     */
+     /**
+      *	AVIStreamSetFormat é–¢æ•°ã§ä½¿ç”¨ã™ã‚‹ BITMAPINFO æ§‹é€ ä½“ã®è¨­å®š
+      *		typedef struct tagBITMAPINFO {
+      *							BITMAPINFOHEADER bmiHeader;				è‰²ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¨ã‚µã‚¤ã‚ºã«é–¢ã™ã‚‹æƒ…å ±ã‚’ä¿æŒã—ã¦ã„ã‚‹ã€BITMAPINFOHEADER æ§‹é€ ä½“
+      *							RGBQUAD          bmiColors[1];			æ¬¡ã®ã†ã¡ã®ã©ã‚Œã‹ã‚’ä¿æŒã€‚
+      *																	RGBQUAD ã®é…åˆ—ã€‚é…åˆ—ã®è¦ç´ ã¯è‰²ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆæ³¨ï¼šãƒ‘ãƒ¬ãƒƒãƒˆï¼‰ã‚’æ§‹æˆã™ã‚‹ã€‚
+      *																	ç¾åœ¨ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹è«–ç†ãƒ‘ãƒ¬ãƒƒãƒˆã¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒ‡å®šã™ã‚‹ã€16ãƒ“ãƒƒãƒˆç¬¦å·ç„¡ã—ã®æ•´æ•°ã®é…åˆ—ã€‚
+      *						} BITMAPINFO, *PBITMAPINFO;
+      *
+      *		typedef struct tagBITMAPINFOHEADER{
+      *							DWORD  biSize;							æ§‹é€ ä½“ã«å¿…è¦ãªãƒã‚¤ãƒˆæ•°( å¿…ãš sizeof(BITMAPINFOHEADER) ã§æŒ‡å®šã€‚)
+      *							LONG   biWidth;							ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®å¹…ã‚’ãƒ”ã‚¯ã‚»ãƒ«å˜ä½ã§æŒ‡å®š
+      *							LONG   biHeight;						ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®é«˜ã•ã‚’ãƒ”ã‚¯ã‚»ãƒ«å˜ä½ã§æŒ‡å®š
+      *							WORD   biPlanes;						ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ ãƒ‡ãƒã‚¤ã‚¹ã®é¢ã®æ•°ã‚’æŒ‡å®šã€‚ã“ã®å€¤ã¯ 1
+      *							WORD   biBitCount;						1 ãƒ”ã‚¯ã‚»ãƒ«ã‚ãŸã‚Šã®ãƒ“ãƒƒãƒˆæ•° (bits-per-pixel) ã‚’æŒ‡å®šã€‚ã“ã‚Œã¯0ã€1ã€4ã€8ã€16ã€24ã€32ã®ã©ã‚Œã‹ã‚’æŒ‡å®šã€‚
+      *							DWORD  biCompression;					åœ§ç¸®ã•ã‚ŒãŸ "bottom-up" ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®åœ§ç¸®å½¢å¼ã‚’æŒ‡å®šã€‚BI_***ã‚’æŒ‡å®šã€‚ï¼ˆ***ã¯ã€RGBã€RLE8ã€RLE4ã€BITFIELDSã€JPEGã€PNGï¼‰
+      *							DWORD  biSizeImage;						ç”»åƒã‚µã‚¤ã‚ºã‚’ãƒã‚¤ãƒˆå˜ä½ã§æŒ‡å®š
+      *							LONG   biXPelsPerMeter;					ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ ãƒ‡ãƒã‚¤ã‚¹ã®æ°´å¹³æ–¹å‘ã®è§£åƒåº¦ã‚’ã€pixels-per-meter ã§æŒ‡å®š
+      *							LONG   biYPelsPerMeter;					ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ ãƒ‡ãƒã‚¤ã‚¹ã®å‚ç›´æ–¹å‘ã®è§£åƒåº¦ã‚’ã€pixels-per-meter ã§æŒ‡å®š
+      *							DWORD  biClrUsed;						å®Ÿéš›ã«ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã«ã‚ˆã£ã¦ä½¿ç”¨ã•ã‚Œã‚‹è‰²ãƒ†ãƒ¼ãƒ–ãƒ«ä¸­ã®è‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ã‚’æŒ‡å®š
+      *							DWORD  biClrImportant;					ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’è¡¨ç¤ºã™ã‚‹ã®ã«å¿…è¦ãªè‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ã‚’æŒ‡å®š
+      *						} BITMAPINFOHEADER, *PBITMAPINFOHEADER;
+      *
+      */
+      /// æ§‹é€ ä½“ã®åˆæœŸåŒ–
+    BITMAPINFO bmpInfo;
+    ZeroMemory(&bmpInfo, sizeof(BITMAPINFO));
+    /// æ§‹é€ ä½“ã®è¨­å®š
+    bmpInfo.bmiHeader.biPlanes = 1;
+    bmpInfo.bmiHeader.biWidth = frameWidth;
+    bmpInfo.bmiHeader.biHeight = frameHeight;
+    bmpInfo.bmiHeader.biCompression = BI_RGB;
+    bmpInfo.bmiHeader.biBitCount = bitsPerPixel;
+    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmpInfo.bmiHeader.biSizeImage = ((bmpInfo.bmiHeader.biWidth * bmpInfo.bmiHeader.biBitCount + 31) / 32 * 4) * bmpInfo.bmiHeader.biHeight;//bmpInfo.bmiHeader.biWidth*bmpInfo.bmiHeader.biHeight*bmpInfo.bmiHeader.biBitCount/32*4;
 
 
-/**
- *	AVIƒtƒ@ƒCƒ‹ƒtƒH[ƒ}ƒbƒg‚ğŒˆ’è‚·‚é AVISTREAMINFO \‘¢‘Ì‚ğİ’è‚·‚é
- *
- *	typedef struct {
- *				DWORD fccType;					ŠJ‚­ƒXƒgƒŠ[ƒ€ƒ^ƒCƒv‚ğ¦‚·B‹K’è’l‚Í streamtype***Bi***‚ÍAUDIOAMIDIATEXTAVIDEO‚Ì‚Ç‚ê‚©j
- *				DWORD fccHandler;				ƒrƒfƒIƒXƒgƒŠ[ƒ€‚ğ•Û‘¶‚·‚é‚Éˆ³k‚·‚éƒnƒ“ƒhƒ‰‚Ì4•¶šƒR[ƒh
- *				DWORD dwFlags;					ƒXƒgƒŠ[ƒ€ƒtƒ‰ƒO
- *				DWORD dwCaps;					‹@”\ƒtƒ‰ƒO
- *				WORD  wPriority;				ƒXƒgƒŠ[ƒ€‚Ì—Dæ‡ˆÊ
- *				WORD  wLanguage;				ƒXƒgƒŠ[ƒ€‚ÌŒ¾Œê
- *				DWORD dwScale;					ƒXƒgƒŠ[ƒ€‚ÌŠÔ’PˆÊ
- *				DWORD dwRate;					ƒXƒgƒŠ[ƒ€‚ÌƒŒ[ƒg
- *				DWORD dwStart;					AVIƒtƒ@ƒCƒ‹‚ÌÅ‰‚ÌƒtƒŒ[ƒ€‚ÌƒTƒ“ƒvƒ‹”Ô†BdwScale‚ÆdwRate‚Å’PˆÊ‚ª’è‹`‚³‚ê‚éB’Êí‚Í0
- *				DWORD dwLength;					ƒXƒgƒŠ[ƒ€‚Ì’·‚³BdwScale‚ÆdwRate‚Å’PˆÊ‚ª’è‹`‚³‚ê‚éB
- *				DWORD dwInitialFrames;			ƒI[ƒeƒBƒI ƒXƒLƒ…[BƒCƒ“ƒ^[ƒŠ[ƒuƒtƒ@ƒCƒ‹“à‚ÌƒrƒfƒIƒXƒgƒŠ[ƒ€‘O•û‚ÖƒI[ƒfƒBƒIƒXƒgƒŠ[ƒ€‚ğ‚Ç‚Ì’ö“x‚¸‚ç‚·‚©‚ğw’è‚·‚éB’Êí‚Í0.75•bB
- *				DWORD dwSuggestedBufferSize;	ƒXƒgƒŠ[ƒ€‚ğ“Ç‚İ‚Ş‚Æ‚«‚É“K‚µ‚½ƒoƒbƒtƒ@ƒTƒCƒYB‚±‚Ì’l‚Í0‚Ì‚Æ‚«‚à‚ ‚éB
- *				DWORD dwQuality;				ƒrƒfƒIƒXƒgƒŠ[ƒ€‚Ì•i¿B0`10000‚Ì”ÍˆÍ‚Å-1‚Ì‚Æ‚«‚ÍƒfƒtƒHƒ‹ƒg‚Ì•i¿B
- *				DWORD dwSampleSize;				1‚Â‚Ìƒf[ƒ^ƒTƒ“ƒvƒ‹‚ÌƒoƒCƒgƒTƒCƒYB0‚Ìê‡AƒTƒ“ƒvƒ‹‚ÌƒTƒCƒY‚Í‰Â•ÏB
- *				RECT  rcFrame;					•\¦‚ğs‚¤‹éŒ`BƒrƒfƒIƒXƒgƒŠ[ƒ€‚Å‚Ì‚İg‚í‚ê‚éB
- *	 			DWORD dwEditCount;				ƒtƒ@ƒCƒ‹‚ğ•ÒWi’Ç‰Á‚Ü‚½‚Ííœj‚µ‚½‰ñ”
- *				DWORD dwFormatChangeCount;		ƒtƒH[ƒ}ƒbƒg‚Ì•ÏX‰ñ”
- *				char  szName[64];				ƒXƒgƒŠ[ƒ€‚ğà–¾‚·‚éNULL‚ÅI‚í‚é•¶š—ñ
- *			} AVISTREAMINFO;
- */
-	/// \‘¢‘Ì‚Ì‰Šú‰»
-	ZeroMemory(&aviStreamInfo,sizeof(AVISTREAMINFO));
-	/// \‘¢‘Ì‚Ìİ’è
-	aviStreamInfo.fccType				= streamtypeVIDEO;
-	aviStreamInfo.fccHandler			= fccHandler;
-	aviStreamInfo.dwScale				= 1;
-	aviStreamInfo.dwRate				= frameRate;
-	aviStreamInfo.dwQuality				= (DWORD)-1;				
-	aviStreamInfo.dwSuggestedBufferSize = maxWidth*maxHeight*4;
+    /**
+     *	AVIãƒ•ã‚¡ã‚¤ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’æ±ºå®šã™ã‚‹ AVISTREAMINFO æ§‹é€ ä½“ã‚’è¨­å®šã™ã‚‹
+     *
+     *	typedef struct {
+     *				DWORD fccType;					é–‹ãã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚¿ã‚¤ãƒ—ã‚’ç¤ºã™ã€‚è¦å®šå€¤ã¯ streamtype***ã€‚ï¼ˆ***ã¯AUDIOã€MIDIã€TEXTã€VIDEOã®ã©ã‚Œã‹ï¼‰
+     *				DWORD fccHandler;				ãƒ“ãƒ‡ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ä¿å­˜ã™ã‚‹æ™‚ã«åœ§ç¸®ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ©ã®4æ–‡å­—ã‚³ãƒ¼ãƒ‰
+     *				DWORD dwFlags;					ã‚¹ãƒˆãƒªãƒ¼ãƒ ãƒ•ãƒ©ã‚°
+     *				DWORD dwCaps;					æ©Ÿèƒ½ãƒ•ãƒ©ã‚°
+     *				WORD  wPriority;				ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å„ªå…ˆé †ä½
+     *				WORD  wLanguage;				ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®è¨€èª
+     *				DWORD dwScale;					ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®æ™‚é–“å˜ä½
+     *				DWORD dwRate;					ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ãƒ¬ãƒ¼ãƒˆ
+     *				DWORD dwStart;					AVIãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€åˆã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚µãƒ³ãƒ—ãƒ«ç•ªå·ã€‚dwScaleã¨dwRateã§å˜ä½ãŒå®šç¾©ã•ã‚Œã‚‹ã€‚é€šå¸¸ã¯0
+     *				DWORD dwLength;					ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®é•·ã•ã€‚dwScaleã¨dwRateã§å˜ä½ãŒå®šç¾©ã•ã‚Œã‚‹ã€‚
+     *				DWORD dwInitialFrames;			ã‚ªãƒ¼ãƒ†ã‚£ã‚ª ã‚¹ã‚­ãƒ¥ãƒ¼ã€‚ã‚¤ãƒ³ã‚¿ãƒ¼ãƒªãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«å†…ã®ãƒ“ãƒ‡ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ å‰æ–¹ã¸ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ã©ã®ç¨‹åº¦ãšã‚‰ã™ã‹ã‚’æŒ‡å®šã™ã‚‹ã€‚é€šå¸¸ã¯0.75ç§’ã€‚
+     *				DWORD dwSuggestedBufferSize;	ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’èª­ã¿è¾¼ã‚€ã¨ãã«é©ã—ãŸãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã€‚ã“ã®å€¤ã¯0ã®ã¨ãã‚‚ã‚ã‚‹ã€‚
+     *				DWORD dwQuality;				ãƒ“ãƒ‡ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å“è³ªã€‚0ï½10000ã®ç¯„å›²ã§-1ã®ã¨ãã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å“è³ªã€‚
+     *				DWORD dwSampleSize;				1ã¤ã®ãƒ‡ãƒ¼ã‚¿ã‚µãƒ³ãƒ—ãƒ«ã®ãƒã‚¤ãƒˆã‚µã‚¤ã‚ºã€‚0ã®å ´åˆã€ã‚µãƒ³ãƒ—ãƒ«ã®ã‚µã‚¤ã‚ºã¯å¯å¤‰ã€‚
+     *				RECT  rcFrame;					è¡¨ç¤ºã‚’è¡Œã†çŸ©å½¢ã€‚ãƒ“ãƒ‡ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã§ã®ã¿ä½¿ã‚ã‚Œã‚‹ã€‚
+     *	 			DWORD dwEditCount;				ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç·¨é›†ï¼ˆè¿½åŠ ã¾ãŸã¯å‰Šé™¤ï¼‰ã—ãŸå›æ•°
+     *				DWORD dwFormatChangeCount;		ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®å¤‰æ›´å›æ•°
+     *				char  szName[64];				ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’èª¬æ˜ã™ã‚‹NULLã§çµ‚ã‚ã‚‹æ–‡å­—åˆ—
+     *			} AVISTREAMINFO;
+     */
+     /// æ§‹é€ ä½“ã®åˆæœŸåŒ–
+    ZeroMemory(&aviStreamInfo, sizeof(AVISTREAMINFO));
+    /// æ§‹é€ ä½“ã®è¨­å®š
+    aviStreamInfo.fccType = streamtypeVIDEO;
+    aviStreamInfo.fccHandler = fccHandler;
+    aviStreamInfo.dwScale = 1;
+    aviStreamInfo.dwRate = frameRate;
+    aviStreamInfo.dwQuality = (DWORD)-1;
+    aviStreamInfo.dwSuggestedBufferSize = maxWidth * maxHeight * 4;
     SetRect(&aviStreamInfo.rcFrame, 0, 0, frameWidth, frameHeight);
-	_tcscpy(aviStreamInfo.szName, _T("Video Stream"));
+    _tcscpy(aviStreamInfo.szName, _T("Video Stream"));
 
-/**
- *	ˆ³kƒIƒvƒVƒ‡ƒ“‚ğŠi”[‚·‚éAVICOMPRESSOPTIONS\‘¢‘Ì‚Ìİ’è
- *	typedef struct { 
-				DWORD  fccType;					ŠJ‚­ƒXƒgƒŠ[ƒ€ƒ^ƒCƒv‚ğ¦‚·B‹K’è’l‚Í streamtype***Bi***‚ÍAUDIOAMIDIATEXTAVIDEO‚Ì‚Ç‚ê‚©j
-				DWORD  fccHandler;				ƒrƒfƒIƒXƒgƒŠ[ƒ€‚ğ•Û‘¶‚·‚é‚Éˆ³k‚·‚éƒnƒ“ƒhƒ‰‚Ì4•¶šƒR[ƒh
-				DWORD  dwKeyFrameEvery;			ƒL[ƒtƒŒ[ƒ€‚ÌüŠúBAVICOMPRESSF_KEYFRAMESƒtƒ‰ƒO‚ğw’è‚µ‚½‚Æ‚«‚Ì‚İ‚±‚Ì’l‚Íg‚í‚ê‚éB‚»‚êˆÈŠO‚Å‚Í‚·‚×‚Ä‚ÌƒtƒŒ[ƒ€‚ªƒL[ƒtƒŒ[ƒ€B
-				DWORD  dwQuality;				ƒrƒfƒIƒXƒgƒŠ[ƒ€‚Ì•i¿
-				DWORD  dwBytesPerSecond;		ƒf[ƒ^”ä—¦BAVICOICMF_CHOOSE_PREVIEWMPRESSF_DATARATEƒtƒ‰ƒO‚ğw’è‚µ‚½‚Æ‚«‚Ì‚İ‚±‚Ì’l‚Íg‚í‚ê‚éB
-				DWORD  dwFlags;					ˆ³kƒtƒ‰ƒOBŸ‚Ì4‚ÂAVICOMPRESSF_***‚ğ‘I‘ğ‰Â‚Å•¡”w’è‚à‰ÂBi***‚ÍADATARATEAINTERLEAVEAKEYFRAMESAVALIDj
-				LPVOID lpFormat;				ƒf[ƒ^ƒtƒH[ƒ}ƒbƒg\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^BƒI[ƒfƒBƒIƒXƒgƒŠ[ƒ€‚Å‚ÍWAVEFORMAT\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^B
-				DWORD  cbFormat;				lpFormat‚Åw’è‚µ‚½ƒf[ƒ^ƒtƒH[ƒ}ƒbƒg\‘¢‘Ì‚ÌƒoƒCƒg”
-				LPVOID lpParms;					ƒrƒfƒIˆ³k—p‚Ìƒf[ƒ^
-				DWORD  cbParms;					lpParams‚Åw’è‚µ‚½ƒf[ƒ^‚ÌƒoƒCƒg”
-				DWORD  dwInterleaveEvery;		ƒCƒ“ƒ^[ƒŠ[ƒu’lBAVICOMPRESSF_INTERLEAVEƒtƒ‰ƒO‚ğw’è‚µ‚½‚Æ‚«‚Ì‚İ‚±‚Ì’l‚Íg‚í‚ê‚éB
-			} AVICOMPRESSOPTIONS;
+    /**
+     *	åœ§ç¸®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’æ ¼ç´ã™ã‚‹AVICOMPRESSOPTIONSæ§‹é€ ä½“ã®è¨­å®š
+     *	typedef struct {
+            DWORD  fccType;					é–‹ãã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚¿ã‚¤ãƒ—ã‚’ç¤ºã™ã€‚è¦å®šå€¤ã¯ streamtype***ã€‚ï¼ˆ***ã¯AUDIOã€MIDIã€TEXTã€VIDEOã®ã©ã‚Œã‹ï¼‰
+            DWORD  fccHandler;				ãƒ“ãƒ‡ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ä¿å­˜ã™ã‚‹æ™‚ã«åœ§ç¸®ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ©ã®4æ–‡å­—ã‚³ãƒ¼ãƒ‰
+            DWORD  dwKeyFrameEvery;			ã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®å‘¨æœŸã€‚AVICOMPRESSF_KEYFRAMESãƒ•ãƒ©ã‚°ã‚’æŒ‡å®šã—ãŸã¨ãã®ã¿ã“ã®å€¤ã¯ä½¿ã‚ã‚Œã‚‹ã€‚ãã‚Œä»¥å¤–ã§ã¯ã™ã¹ã¦ã®ãƒ•ãƒ¬ãƒ¼ãƒ ãŒã‚­ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã€‚
+            DWORD  dwQuality;				ãƒ“ãƒ‡ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å“è³ª
+            DWORD  dwBytesPerSecond;		ãƒ‡ãƒ¼ã‚¿æ¯”ç‡ã€‚AVICOICMF_CHOOSE_PREVIEWMPRESSF_DATARATEãƒ•ãƒ©ã‚°ã‚’æŒ‡å®šã—ãŸã¨ãã®ã¿ã“ã®å€¤ã¯ä½¿ã‚ã‚Œã‚‹ã€‚
+            DWORD  dwFlags;					åœ§ç¸®ãƒ•ãƒ©ã‚°ã€‚æ¬¡ã®4ã¤AVICOMPRESSF_***ã‚’é¸æŠå¯ã§è¤‡æ•°æŒ‡å®šã‚‚å¯ã€‚ï¼ˆ***ã¯ã€DATARATEã€INTERLEAVEã€KEYFRAMESã€VALIDï¼‰
+            LPVOID lpFormat;				ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã§ã¯WAVEFORMATæ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚
+            DWORD  cbFormat;				lpFormatã§æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæ§‹é€ ä½“ã®ãƒã‚¤ãƒˆæ•°
+            LPVOID lpParms;					ãƒ“ãƒ‡ã‚ªåœ§ç¸®ç”¨ã®ãƒ‡ãƒ¼ã‚¿
+            DWORD  cbParms;					lpParamsã§æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®ãƒã‚¤ãƒˆæ•°
+            DWORD  dwInterleaveEvery;		ã‚¤ãƒ³ã‚¿ãƒ¼ãƒªãƒ¼ãƒ–å€¤ã€‚AVICOMPRESSF_INTERLEAVEãƒ•ãƒ©ã‚°ã‚’æŒ‡å®šã—ãŸã¨ãã®ã¿ã“ã®å€¤ã¯ä½¿ã‚ã‚Œã‚‹ã€‚
+          } AVICOMPRESSOPTIONS;
 
- */
+     */
 
- 	/// \‘¢‘Ì‚Ì‰Šú‰»
-	ZeroMemory(&aviCompressOptions,sizeof(AVICOMPRESSOPTIONS));
-	/// \‘¢‘Ì‚Ìİ’è	
-	aviCompressOptions.fccType			= streamtypeVIDEO;
-	aviCompressOptions.fccHandler		= aviStreamInfo.fccHandler;
-	aviCompressOptions.dwFlags			= AVICOMPRESSF_KEYFRAMES|AVICOMPRESSF_VALID;//|AVICOMPRESSF_DATARATE;
-	aviCompressOptions.dwKeyFrameEvery	= 1;
-	//aviCompressOptions.dwBytesPerSecond	= 1000/8;
-	//aviCompressOptions.dwQuality			= 100;
+     /// æ§‹é€ ä½“ã®åˆæœŸåŒ–
+    ZeroMemory(&aviCompressOptions, sizeof(AVICOMPRESSOPTIONS));
+    /// æ§‹é€ ä½“ã®è¨­å®š	
+    aviCompressOptions.fccType = streamtypeVIDEO;
+    aviCompressOptions.fccHandler = aviStreamInfo.fccHandler;
+    aviCompressOptions.dwFlags = AVICOMPRESSF_KEYFRAMES | AVICOMPRESSF_VALID;//|AVICOMPRESSF_DATARATE;
+    aviCompressOptions.dwKeyFrameEvery = 1;
+    //aviCompressOptions.dwBytesPerSecond	= 1000/8;
+    //aviCompressOptions.dwQuality			= 100;
 
-/**
- *	STEP 2
- *		ƒtƒ@ƒCƒ‹–¼‚ğw’è‚µ‚ÄAVIƒtƒ@ƒCƒ‹‚ğŠJ‚­
- */
-	hResult = AVIFileOpen(&pAviFile, outputFileName, OF_CREATE|OF_WRITE, NULL);
-	
-	if (hResult != AVIERR_OK)
-	{
-		// Check it succeded.
-		switch (hResult)
-		{
-			case AVIERR_BADFORMAT: 
-				setLastErrMsg(_T("AVIFileOpen() Failed. The file couldn't be read, indicating a corrupt file or an unrecognized format."));
-				break;
+  /**
+   *	STEP 2
+   *		ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦AVIãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+   */
+    hResult = AVIFileOpen(&pAviFile, outputFileName, OF_CREATE | OF_WRITE, NULL);
 
-			case AVIERR_MEMORY:		
-				setLastErrMsg(_T("AVIFileOpen() Failed. The file could not be opened because of insufficient memory.")); 
-				break;
+    if (hResult != AVIERR_OK)
+    {
+        // Check it succeded.
+        switch (hResult)
+        {
+            case AVIERR_BADFORMAT:
+                setLastErrMsg(_T("AVIFileOpen() Failed. The file couldn't be read, indicating a corrupt file or an unrecognized format."));
+                break;
 
-			case AVIERR_FILEREAD:
-				setLastErrMsg(_T("AVIFileOpen() Failed. A disk error occurred while reading the file.")); 
-				break;
+            case AVIERR_MEMORY:
+                setLastErrMsg(_T("AVIFileOpen() Failed. The file could not be opened because of insufficient memory."));
+                break;
 
-			case AVIERR_FILEOPEN:		
-				setLastErrMsg(_T("AVIFileOpen() Failed. A disk error occurred while opening the file."));
-				break;
-	
-			case REGDB_E_CLASSNOTREG:		
-				setLastErrMsg(_T("AVIFileOpen() Failed. According to the registry, the type of file specified in AVIFileOpen does not have a handler to process it"));
-				break;
-		}
+            case AVIERR_FILEREAD:
+                setLastErrMsg(_T("AVIFileOpen() Failed. A disk error occurred while reading the file."));
+                break;
 
-		return hResult;
-	}
+            case AVIERR_FILEOPEN:
+                setLastErrMsg(_T("AVIFileOpen() Failed. A disk error occurred while opening the file."));
+                break;
 
-/**
- *	STEP 3
- *		Šù‘¶‚Ìƒtƒ@ƒCƒ‹‚ÉV‚µ‚¢ƒXƒgƒŠ[ƒ€‚ğì¬‚µA‚»‚ÌƒXƒgƒŠ[ƒ€‚Ö‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX‚ğì¬
- */
-	hResult = AVIFileCreateStream(pAviFile, &pAviStream, &aviStreamInfo);
-	if (hResult != AVIERR_OK)
-	{
-		setLastErrMsg(_T("Unable to Create Video Stream in the Movie File"));
-		return hResult;
-	}
+            case REGDB_E_CLASSNOTREG:
+                setLastErrMsg(_T("AVIFileOpen() Failed. According to the registry, the type of file specified in AVIFileOpen does not have a handler to process it"));
+                break;
+        }
+
+        return hResult;
+    }
+
+    /**
+     *	STEP 3
+     *		æ—¢å­˜ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«æ–°ã—ã„ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ä½œæˆã—ã€ãã®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã¸ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã‚’ä½œæˆ
+     */
+    hResult = AVIFileCreateStream(pAviFile, &pAviStream, &aviStreamInfo);
+    if (hResult != AVIERR_OK)
+    {
+        setLastErrMsg(_T("Unable to Create Video Stream in the Movie File"));
+        return hResult;
+    }
 
 
-/**
- *	STEP 4
- *		”ñˆ³kƒXƒgƒŠ[ƒ€‚Æˆ³kƒtƒBƒ‹ƒ^‚©‚çˆ³k‚³‚ê‚½ƒXƒgƒŠ[ƒ€‚ğì¬‚µAˆ³k‚³‚ê‚½ƒXƒgƒŠ[ƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ÌƒAƒhƒŒƒX‚ğæ“¾‚·‚é
- */
-	hResult = AVIMakeCompressedStream(&pAviCompressedStream, pAviStream, &aviCompressOptions, NULL);
-	
-	if (hResult != AVIERR_OK)
-	{
+    /**
+     *	STEP 4
+     *		éåœ§ç¸®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã¨åœ§ç¸®ãƒ•ã‚£ãƒ«ã‚¿ã‹ã‚‰åœ§ç¸®ã•ã‚ŒãŸã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ä½œæˆã—ã€åœ§ç¸®ã•ã‚ŒãŸã‚¹ãƒˆãƒªãƒ¼ãƒ ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã™ã‚‹
+     */
+    hResult = AVIMakeCompressedStream(&pAviCompressedStream, pAviStream, &aviCompressOptions, NULL);
 
-		/**
-		 *	ƒGƒ‰[‚ª”­¶‚·‚é‰Â”\«‚ª”äŠr“I‚‚¢
-		 *		——R‚Ìˆê‚Â‚ÉAƒ†[ƒU‚ÌŠÂ‹«‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢ƒR[ƒfƒbƒN‚ğg—p‚·‚éê‡B
-		 *		‚±‚Ìê‡‚Í mmioFOURCC() ‚ğƒ`ƒFƒbƒN‚·‚éB
-		 */		
-		switch(hResult)
-		{
+    if (hResult != AVIERR_OK)
+    {
 
-			case AVIERR_NOCOMPRESSOR:
-				setLastErrMsg(_T("AVIMakeCompressedStream() failed: A suitable compressor cannot be found."));
-					break;
+        /**
+         *	ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã™ã‚‹å¯èƒ½æ€§ãŒæ¯”è¼ƒçš„é«˜ã„
+         *		ç†ç”±ã®ä¸€ã¤ã«ã€ãƒ¦ãƒ¼ã‚¶ã®ç’°å¢ƒã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€‚
+         *		ã“ã®å ´åˆã¯ mmioFOURCC() ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
+         */
+        switch (hResult)
+        {
 
-			case AVIERR_MEMORY:
-				setLastErrMsg(_T("AVIMakeCompressedStream() failed: There is not enough memory to complete the operation."));
-					break; 
+            case AVIERR_NOCOMPRESSOR:
+                setLastErrMsg(_T("AVIMakeCompressedStream() failed: A suitable compressor cannot be found."));
+                break;
 
-			case AVIERR_UNSUPPORTED:
-				setLastErrMsg(_T("AVIMakeCompressedStream() failed: Compression is not supported for this type of data. This error might be returned if you try to compress data that is not audio or video."));
-				break;
-		}
+            case AVIERR_MEMORY:
+                setLastErrMsg(_T("AVIMakeCompressedStream() failed: There is not enough memory to complete the operation."));
+                break;
 
-		return hResult;
-	}
+            case AVIERR_UNSUPPORTED:
+                setLastErrMsg(_T("AVIMakeCompressedStream() failed: Compression is not supported for this type of data. This error might be returned if you try to compress data that is not audio or video."));
+                break;
+        }
 
-/**
- *	STEP 5
- *		“Á’è‚ÌˆÊ’u‚ÉƒXƒgƒŠ[ƒ€‚ÌƒtƒH[ƒ}ƒbƒg‚ğİ’è
- */
-	hResult = AVIStreamSetFormat(pAviCompressedStream, 0, (LPVOID)&bmpInfo, bmpInfo.bmiHeader.biSize +  bmpInfo.bmiHeader.biClrUsed * sizeof(RGBQUAD));
-	if (hResult != AVIERR_OK)
-	{
-		/**
-		 *	—Ç‚­‚ ‚éƒGƒ‰[‚ÌŒ´ˆö‚ÍAg—p‚·‚éƒrƒbƒgƒ}ƒbƒv‚ªƒR[ƒfƒbƒN‚Ìd—l‚É–‚½‚È‚¢ê‡‚Å‚ ‚éB
-		 *	—á‚¦‚ÎA
-		 *		ƒ†[ƒU‚Ìƒrƒbƒgƒ}ƒbƒv‚ª32bpp‚È‚Ì‚ÉƒR[ƒfƒbƒN‚ÌƒTƒ|[ƒg‚ª16‚â24bpp‚¾‚Á‚½ê‡
-		 *		ƒR[ƒfƒbƒN‚Ì‰ğ‘œ“xƒTƒ|[ƒg‚ª2‚Ìæ”‚Ì‚İ‚È‚Ì‚ÉAƒ†[ƒU‚Ìƒrƒbƒgƒ}ƒbƒv‚Ì‰ğ‘œ“x‚ª720*405‚È‚Ç‚Ìê‡
-		 *	‚±‚ê‚ç‚ğ”ğ‚¯‚é‚½‚ß‚ÉAƒR[ƒfƒbƒN‚Ì‘I‘ğ‚Æƒrƒbƒgƒ}ƒbƒv‚Ìd—l‚É‚Í’ˆÓ‚·‚é‚±‚Æ
-		 */
-		setLastErrMsg(_T("AVI Compressed Stream format setting failed."));
-		return hResult;
-	}
+        return hResult;
+    }
 
-	return S_OK;	/// ¬Œ÷
+    /**
+     *	STEP 5
+     *		ç‰¹å®šã®ä½ç½®ã«ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¨­å®š
+     */
+    hResult = AVIStreamSetFormat(pAviCompressedStream, 0, (LPVOID)&bmpInfo, bmpInfo.bmiHeader.biSize + bmpInfo.bmiHeader.biClrUsed * sizeof(RGBQUAD));
+    if (hResult != AVIERR_OK)
+    {
+        /**
+         *	è‰¯ãã‚ã‚‹ã‚¨ãƒ©ãƒ¼ã®åŸå› ã¯ã€ä½¿ç”¨ã™ã‚‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®ä»•æ§˜ã«æº€ãŸãªã„å ´åˆã§ã‚ã‚‹ã€‚
+         *	ä¾‹ãˆã°ã€
+         *		ãƒ¦ãƒ¼ã‚¶ã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒ32bppãªã®ã«ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®ã‚µãƒãƒ¼ãƒˆãŒ16ã‚„24bppã ã£ãŸå ´åˆ
+         *		ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®è§£åƒåº¦ã‚µãƒãƒ¼ãƒˆãŒ2ã®ä¹—æ•°ã®ã¿ãªã®ã«ã€ãƒ¦ãƒ¼ã‚¶ã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®è§£åƒåº¦ãŒ720*405ãªã©ã®å ´åˆ
+         *	ã“ã‚Œã‚‰ã‚’é¿ã‘ã‚‹ãŸã‚ã«ã€ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®é¸æŠã¨ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ä»•æ§˜ã«ã¯æ³¨æ„ã™ã‚‹ã“ã¨
+         */
+        setLastErrMsg(_T("AVI Compressed Stream format setting failed."));
+        return hResult;
+    }
+
+    return S_OK;	/// æˆåŠŸ
 }
 
 /**
- *	à–¾
- *		ƒƒ‚ƒŠ‚âŠÖ˜Aƒnƒ“ƒhƒ‹‚Ì‰ğ•ú
+ *	èª¬æ˜
+ *		ãƒ¡ãƒ¢ãƒªã‚„é–¢é€£ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾
  */
 void AviMaker::releaseMemory()
 {
-	/// ƒ_ƒ~[ƒZƒŒƒNƒ^‚ğw’è
-	appendFuncSelector = 0;
-	
-	/// ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ì‰ğ•ú
-	if(memDCHandle)
-	{
-		DeleteDC(memDCHandle);
-		memDCHandle=NULL;
-	}
-	
-	/// ˆ³kƒXƒgƒŠ[ƒ€‚Ì‰ğ•ú
-	if(pAviCompressedStream)
-	{
-		AVIStreamRelease(pAviCompressedStream);
-		pAviCompressedStream=NULL;
-	}
-	
-	/// ƒXƒgƒŠ[ƒ€‚Ì‰ğ•ú
-	if(pAviStream)
-	{
-		AVIStreamRelease(pAviStream);
-		pAviStream=NULL;
-	}
-	
-	/// ƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^‚Ì‰ğ•ú
-	if(pAviFile)
-	{
-		AVIFileRelease(pAviFile);
-		pAviFile=NULL;
-	}
-	
-	/// ƒƒ‚ƒŠƒuƒƒbƒN‚Ì‰ğ•ú
-	if(lpDIBPixelBits)
-	{
-		HeapFree(heapHandle, HEAP_NO_SERIALIZE, lpDIBPixelBits);
-		lpDIBPixelBits=NULL;
-	}
-	
-	/// ƒvƒ‰ƒCƒx[ƒgƒq[ƒv‚Ì”jŠü
-	if(heapHandle)
-	{
-		HeapDestroy(heapHandle);
-		heapHandle=NULL;
-	}
+    /// ãƒ€ãƒŸãƒ¼ã‚»ãƒ¬ã‚¯ã‚¿ã‚’æŒ‡å®š
+    appendFuncSelector = 0;
+
+    /// ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®è§£æ”¾
+    if (memDCHandle)
+    {
+        DeleteDC(memDCHandle);
+        memDCHandle = NULL;
+    }
+
+    /// åœ§ç¸®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®è§£æ”¾
+    if (pAviCompressedStream)
+    {
+        AVIStreamRelease(pAviCompressedStream);
+        pAviCompressedStream = NULL;
+    }
+
+    /// ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®è§£æ”¾
+    if (pAviStream)
+    {
+        AVIStreamRelease(pAviStream);
+        pAviStream = NULL;
+    }
+
+    /// ãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒ³ã‚¿ã®è§£æ”¾
+    if (pAviFile)
+    {
+        AVIFileRelease(pAviFile);
+        pAviFile = NULL;
+    }
+
+    /// ãƒ¡ãƒ¢ãƒªãƒ–ãƒ­ãƒƒã‚¯ã®è§£æ”¾
+    if (lpDIBPixelBits)
+    {
+        HeapFree(heapHandle, HEAP_NO_SERIALIZE, lpDIBPixelBits);
+        lpDIBPixelBits = NULL;
+    }
+
+    /// ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ’ãƒ¼ãƒ—ã®ç ´æ£„
+    if (heapHandle)
+    {
+        HeapDestroy(heapHandle);
+        heapHandle = NULL;
+    }
 }
 
 /**
- *	à–¾
- *		ÅIƒGƒ‰[‚Ìİ’è
- *	ˆø”
- *		pLastErrMsg: ƒGƒ‰[“à—e
+ *	èª¬æ˜
+ *		æœ€çµ‚ã‚¨ãƒ©ãƒ¼ã®è¨­å®š
+ *	å¼•æ•°
+ *		pLastErrMsg: ã‚¨ãƒ©ãƒ¼å†…å®¹
  */
 void AviMaker::setLastErrMsg(LPCTSTR lpszErrorMessage)
 {
-	_tcsncpy(lastErrMsg, lpszErrorMessage, __countof(lastErrMsg)-1);
+    _tcsncpy(lastErrMsg, lpszErrorMessage, __countof(lastErrMsg) - 1);
 }
 
 
 /**
  *	----------------------------------------
- *	“®‰æ‚Ìì¬‚Ì‚½‚ß‚Ìƒwƒ‹ƒvŠÖ”
- *	ƒI[ƒo[ƒ[ƒh
+ *	å‹•ç”»ã®ä½œæˆã®ãŸã‚ã®ãƒ˜ãƒ«ãƒ—é–¢æ•°
+ *	ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
  *	----------------------------------------
  */
-/// ‰‰ñ‚ÌƒtƒŒ[ƒ€’Ç‰ÁŠÖ”
+ /// åˆå›ã®ãƒ•ãƒ¬ãƒ¼ãƒ è¿½åŠ é–¢æ•°
 HRESULT	AviMaker::appendFrameFirstTime(HBITMAP hBitmap)
 {
-	BITMAP Bitmap;
+    BITMAP Bitmap;
 
-	/// ƒrƒbƒgƒ}ƒbƒv‚Ìî•ñ‚ğ“¾‚é
-	GetObject(hBitmap, sizeof(BITMAP), &Bitmap);
+    /// ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®æƒ…å ±ã‚’å¾—ã‚‹
+    GetObject(hBitmap, sizeof(BITMAP), &Bitmap);
 
-	/// Å‰‚É“®‰æ‚Ì‰Šú‰»‚ğs‚¤
-	if (SUCCEEDED(initializeEngine(Bitmap.bmWidth, Bitmap.bmHeight, Bitmap.bmBitsPixel)))
-	{
-		/// ’Êí‚Ì’Ç‰Á‹@”\‚ğ‘I‘ğ
-		appendFuncSelector = 2;
-		return appendFrameUsual(hBitmap);
-	}
+    /// æœ€åˆã«å‹•ç”»ã®åˆæœŸåŒ–ã‚’è¡Œã†
+    if (SUCCEEDED(initializeEngine(Bitmap.bmWidth, Bitmap.bmHeight, Bitmap.bmBitsPixel)))
+    {
+        /// é€šå¸¸ã®è¿½åŠ æ©Ÿèƒ½ã‚’é¸æŠ
+        appendFuncSelector = 2;
+        return appendFrameUsual(hBitmap);
+    }
 
-	releaseMemory();
+    releaseMemory();
 
-	return E_FAIL;
+    return E_FAIL;
 }
 
-/// ’Êí‚ÌƒtƒŒ[ƒ€’Ç‰ÁŠÖ”
+/// é€šå¸¸ã®ãƒ•ãƒ¬ãƒ¼ãƒ è¿½åŠ é–¢æ•°
 HRESULT AviMaker::appendFrameUsual(HBITMAP hBitmap)
 {
-	/// •Ô‹p’l
-	HRESULT hResult;
+    /// è¿”å´å€¤
+    HRESULT hResult;
 
-	BITMAPINFO	bmpInfo;
-	bmpInfo.bmiHeader.biBitCount = 0;
-	bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	
-	/**
-	 *	int GetDIBits(HDC hdc,HBITMAP hbmp,UINT uStartScan,UINT cScanLines,LPVOID lpvBits,LPBITMAPINFO lpbi,UINT uUsage);
-	 *		DDB‚Ì•`‰æ“à—e‚ğŠù‘¶‚ÌDIB‚ÉƒRƒs[
-	 *	ˆø”
-	 *		hdc: ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ìƒnƒ“ƒhƒ‹‚ğw’èB
-	 *		hbmp: ƒfƒoƒCƒXˆË‘¶ƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğw’èB
-	 *		uStartScan: æ“¾‚·‚éÅ‰‚Ì‘–¸s‚ğw’èB
-	 *		cScanLines: æ“¾‚·‚é‘–¸s‚Ì”‚ğw’èB
-	 *		lpvBits: ƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğw’èB‚±‚Ìƒoƒbƒtƒ@‚Éƒrƒbƒgƒ}ƒbƒvƒf[ƒ^‚ªŠi”[‚³‚ê‚éB
-	 *				NULL ‚ğw’è‚·‚é‚ÆAƒrƒbƒgƒ}ƒbƒv‚ÌƒTƒCƒY‚ÆŒ`®‚ªAlpbi ƒpƒ‰ƒ[ƒ^‚ªw‚· BITMAPINFO \‘¢‘Ì‚ÉŠi”[‚³‚ê‚éB
-	 *		lpbi: Šó–]‚·‚éƒf[ƒ^‚ÌŒ`®‚ª“ü‚Á‚½ABITMAPINFO \‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğw’èB
-	 *		uUsage:	BITMAPINFO \‘¢‘Ì‚Ì bmiColors ƒƒ“ƒo‚ÌŒ`®‚ğw’èBŸ‚Ì’l‚Ì‚¢‚¸‚ê‚©‚ğw’è‚·‚éB
-	 *					DIB_PAL_COLORS ƒJƒ‰[ƒe[ƒuƒ‹‚ÍAŒ»İ‚Ì˜_—ƒpƒŒƒbƒg‚Ö‚Ì 16 ƒrƒbƒg‚ÌƒCƒ“ƒfƒbƒNƒX‚Ì”z—ñB 
-	 *					DIB_RGB_COLORS ƒJƒ‰[ƒe[ƒuƒ‹‚ÍARGB ’l‚»‚Ì‚à‚ÌB 
-	 *	–ß‚è’l : lpvBits ƒpƒ‰ƒ[ƒ^‚ª NULL ˆÈŠO‚Ì‚Æ‚«‚ÉŠÖ”‚ª¬Œ÷‚·‚é‚ÆAƒRƒs[‚³‚ê‚½‘–¸s‚Ì”‚ª•Ô‚éB
-	 *				Windows 95 ‚Å‚ÍAlpvBits ƒpƒ‰ƒ[ƒ^‚ª NULL ‚Ì‚Æ‚«‚ÉŠÖ”‚ª¬Œ÷‚·‚é‚ÆAƒrƒbƒgƒ}ƒbƒv‚Ì‘–¸s‚Ì”‚ª•Ô‚è‚Ü‚·B
-	 *				Windows NT ‚Å‚ÍAlpvBits ƒpƒ‰ƒ[ƒ^‚ª NULL ‚Ì‚Æ‚«‚ÉŠÖ”‚ª¬Œ÷‚·‚é‚ÆA0 ˆÈŠO‚Ì’l‚ª•Ô‚è‚Ü‚·B
-	 *			ŠÖ”‚ª¸”s‚·‚é‚Æ 0B
-	 */
-	/**
-	 *	lpvBits‚ğNULL‚É‚µ‚ÄGetDIBits‚ğŒÄ‚Ño‚µA
-	 *	ƒfƒoƒCƒXƒhƒ‰ƒCƒo‚É BITMAPINFOHEADER \‘¢‘Ì‚ÌbiSizeImage ƒtƒB[ƒ‹ƒh‚ğŒvZ‚³‚¹‚é
-	 */
-	GetDIBits(memDCHandle, hBitmap, 0, 0, NULL, &bmpInfo, DIB_RGB_COLORS);
-	bmpInfo.bmiHeader.biCompression = BI_RGB;	
+    BITMAPINFO	bmpInfo;
+    bmpInfo.bmiHeader.biBitCount = 0;
+    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 
-	/// –Ú“I‚ÌDIB‚ğ lpDIBPixelBits ‚ÉŠi”[‚·‚é
-	GetDIBits(memDCHandle, hBitmap, 0, bmpInfo.bmiHeader.biHeight, lpDIBPixelBits, &bmpInfo, DIB_RGB_COLORS);
+    /**
+     *	int GetDIBits(HDC hdc,HBITMAP hbmp,UINT uStartScan,UINT cScanLines,LPVOID lpvBits,LPBITMAPINFO lpbi,UINT uUsage);
+     *		DDBã®æç”»å†…å®¹ã‚’æ—¢å­˜ã®DIBã«ã‚³ãƒ”ãƒ¼
+     *	å¼•æ•°
+     *		hdc: ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒ‡å®šã€‚
+     *		hbmp: ãƒ‡ãƒã‚¤ã‚¹ä¾å­˜ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’æŒ‡å®šã€‚
+     *		uStartScan: å–å¾—ã™ã‚‹æœ€åˆã®èµ°æŸ»è¡Œã‚’æŒ‡å®šã€‚
+     *		cScanLines: å–å¾—ã™ã‚‹èµ°æŸ»è¡Œã®æ•°ã‚’æŒ‡å®šã€‚
+     *		lpvBits: ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’æŒ‡å®šã€‚ã“ã®ãƒãƒƒãƒ•ã‚¡ã«ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ãŒæ ¼ç´ã•ã‚Œã‚‹ã€‚
+     *				NULL ã‚’æŒ‡å®šã™ã‚‹ã¨ã€ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ã‚µã‚¤ã‚ºã¨å½¢å¼ãŒã€lpbi ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒæŒ‡ã™ BITMAPINFO æ§‹é€ ä½“ã«æ ¼ç´ã•ã‚Œã‚‹ã€‚
+     *		lpbi: å¸Œæœ›ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®å½¢å¼ãŒå…¥ã£ãŸã€BITMAPINFO æ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’æŒ‡å®šã€‚
+     *		uUsage:	BITMAPINFO æ§‹é€ ä½“ã® bmiColors ãƒ¡ãƒ³ãƒã®å½¢å¼ã‚’æŒ‡å®šã€‚æ¬¡ã®å€¤ã®ã„ãšã‚Œã‹ã‚’æŒ‡å®šã™ã‚‹ã€‚
+     *					DIB_PAL_COLORS ã‚«ãƒ©ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã¯ã€ç¾åœ¨ã®è«–ç†ãƒ‘ãƒ¬ãƒƒãƒˆã¸ã® 16 ãƒ“ãƒƒãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®é…åˆ—ã€‚
+     *					DIB_RGB_COLORS ã‚«ãƒ©ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã¯ã€RGB å€¤ãã®ã‚‚ã®ã€‚
+     *	æˆ»ã‚Šå€¤ : lpvBits ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒ NULL ä»¥å¤–ã®ã¨ãã«é–¢æ•°ãŒæˆåŠŸã™ã‚‹ã¨ã€ã‚³ãƒ”ãƒ¼ã•ã‚ŒãŸèµ°æŸ»è¡Œã®æ•°ãŒè¿”ã‚‹ã€‚
+     *				Windows 95 ã§ã¯ã€lpvBits ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒ NULL ã®ã¨ãã«é–¢æ•°ãŒæˆåŠŸã™ã‚‹ã¨ã€ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®èµ°æŸ»è¡Œã®æ•°ãŒè¿”ã‚Šã¾ã™ã€‚
+     *				Windows NT ã§ã¯ã€lpvBits ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒ NULL ã®ã¨ãã«é–¢æ•°ãŒæˆåŠŸã™ã‚‹ã¨ã€0 ä»¥å¤–ã®å€¤ãŒè¿”ã‚Šã¾ã™ã€‚
+     *			é–¢æ•°ãŒå¤±æ•—ã™ã‚‹ã¨ 0ã€‚
+     */
+     /**
+      *	lpvBitsã‚’NULLã«ã—ã¦GetDIBitsã‚’å‘¼ã³å‡ºã—ã€
+      *	ãƒ‡ãƒã‚¤ã‚¹ãƒ‰ãƒ©ã‚¤ãƒã« BITMAPINFOHEADER æ§‹é€ ä½“ã®biSizeImage ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è¨ˆç®—ã•ã›ã‚‹
+      */
+    GetDIBits(memDCHandle, hBitmap, 0, 0, NULL, &bmpInfo, DIB_RGB_COLORS);
+    bmpInfo.bmiHeader.biCompression = BI_RGB;
 
-	/// ì¬‚µ‚½DIB‚ğAVI‚É‘‚«‚Ş
-	hResult = AVIStreamWrite(pAviCompressedStream, frameCounter++, 1, lpDIBPixelBits, bmpInfo.bmiHeader.biSizeImage, AVIIF_KEYFRAME, NULL, NULL);
+    /// ç›®çš„ã®DIBã‚’ lpDIBPixelBits ã«æ ¼ç´ã™ã‚‹
+    GetDIBits(memDCHandle, hBitmap, 0, bmpInfo.bmiHeader.biHeight, lpDIBPixelBits, &bmpInfo, DIB_RGB_COLORS);
 
-	if (FAILED(hResult))
-	{
-		setLastErrMsg(_T("Unable to Write Video Stream to the output Movie File"));
+    /// ä½œæˆã—ãŸDIBã‚’AVIã«æ›¸ãè¾¼ã‚€
+    hResult = AVIStreamWrite(pAviCompressedStream, frameCounter++, 1, lpDIBPixelBits, bmpInfo.bmiHeader.biSizeImage, AVIIF_KEYFRAME, NULL, NULL);
 
-		releaseMemory();
+    if (FAILED(hResult))
+    {
+        setLastErrMsg(_T("Unable to Write Video Stream to the output Movie File"));
 
-		return E_FAIL;
-	}
+        releaseMemory();
+
+        return E_FAIL;
+    }
 
     return S_OK;
 }
 
-/// ƒtƒŒ[ƒ€’Ç‰ÁŠÖ”‚Ìƒ_ƒ~[iÀÛ‚Í‚È‚É‚à‚µ‚È‚¢j
+/// ãƒ•ãƒ¬ãƒ¼ãƒ è¿½åŠ é–¢æ•°ã®ãƒ€ãƒŸãƒ¼ï¼ˆå®Ÿéš›ã¯ãªã«ã‚‚ã—ãªã„ï¼‰
 HRESULT AviMaker::appendDummy(HBITMAP hBitmap)
 {
-	return E_FAIL;
+    return E_FAIL;
 }
 
-/// ‰‰ñ‚ÌƒtƒŒ[ƒ€’Ç‰ÁŠÖ”
-HRESULT	AviMaker::appendFrameFirstTime(int width, int height, LPVOID pBits,int bitsPerPixel)
+/// åˆå›ã®ãƒ•ãƒ¬ãƒ¼ãƒ è¿½åŠ é–¢æ•°
+HRESULT	AviMaker::appendFrameFirstTime(int width, int height, LPVOID pBits, int bitsPerPixel)
 {
-	if (SUCCEEDED(initializeEngine(width, height, bitsPerPixel)))
-	{
-		/// ’Êí‚Ì’Ç‰Á‹@”\‚ğ‘I‘ğ	
-		appendFuncSelector=2;
+    if (SUCCEEDED(initializeEngine(width, height, bitsPerPixel)))
+    {
+        /// é€šå¸¸ã®è¿½åŠ æ©Ÿèƒ½ã‚’é¸æŠ	
+        appendFuncSelector = 2;
 
-		return appendFrameUsual(width, height, pBits, bitsPerPixel);
-	}
+        return appendFrameUsual(width, height, pBits, bitsPerPixel);
+    }
 
-	releaseMemory();
+    releaseMemory();
 
-	return E_FAIL;
+    return E_FAIL;
 }
 
-/// ’Êí‚ÌƒtƒŒ[ƒ€’Ç‰ÁŠÖ”
-HRESULT	AviMaker::appendFrameUsual(int width, int height, LPVOID pBits,int bitsPerPixel)
+/// é€šå¸¸ã®ãƒ•ãƒ¬ãƒ¼ãƒ è¿½åŠ é–¢æ•°
+HRESULT	AviMaker::appendFrameUsual(int width, int height, LPVOID pBits, int bitsPerPixel)
 {
-	/// •Ô‹p’l
-	HRESULT hResult;
+    /// è¿”å´å€¤
+    HRESULT hResult;
 
-	DWORD size = width*height*bitsPerPixel/8;
+    DWORD size = width * height * bitsPerPixel / 8;
 
-	hResult = AVIStreamWrite(pAviCompressedStream, frameCounter++, 1, pBits, size, AVIIF_KEYFRAME, NULL, NULL);
+    hResult = AVIStreamWrite(pAviCompressedStream, frameCounter++, 1, pBits, size, AVIIF_KEYFRAME, NULL, NULL);
 
-	if (FAILED(hResult))
-	{
-		setLastErrMsg(_T("Unable to Write Video Stream to the output Movie File"));
+    if (FAILED(hResult))
+    {
+        setLastErrMsg(_T("Unable to Write Video Stream to the output Movie File"));
 
-		releaseMemory();
+        releaseMemory();
 
-		return E_FAIL;
-	}
+        return E_FAIL;
+    }
 
     return S_OK;
 }
 
-/// ƒtƒŒ[ƒ€’Ç‰ÁŠÖ”‚Ìƒ_ƒ~[iÀÛ‚Í‚È‚É‚à‚µ‚È‚¢j
-HRESULT	AviMaker::appendDummy(int width, int height, LPVOID pBits,int bitsPerPixel)
+/// ãƒ•ãƒ¬ãƒ¼ãƒ è¿½åŠ é–¢æ•°ã®ãƒ€ãƒŸãƒ¼ï¼ˆå®Ÿéš›ã¯ãªã«ã‚‚ã—ãªã„ï¼‰
+HRESULT	AviMaker::appendDummy(int width, int height, LPVOID pBits, int bitsPerPixel)
 {
-	return E_FAIL;
+    return E_FAIL;
 }

@@ -39,9 +39,6 @@
     <ClCompile Include="Graphic\OpenGL\OpenGLObject.cpp">
       <Filter>Graphic\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic\OpenGL\OpenGLText.cpp">
-      <Filter>Graphic\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="Kinematics\walking_robot.cpp">
       <Filter>Kinematics</Filter>
     </ClCompile>
@@ -158,9 +155,6 @@
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Graphic\OpenGL\OpenGLParameter.h">
-      <Filter>Graphic\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphic\OpenGL\OpenGLText.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Kinematics\asura_parameter.h">
