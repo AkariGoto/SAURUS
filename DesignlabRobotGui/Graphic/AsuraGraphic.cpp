@@ -3,10 +3,8 @@
 
 #include "Math/math_constant.h"
 
-using namespace designlab_robot_gui;
 
-
-namespace Graphic
+namespace designlab_robot_gui::graphic
 {
 
 AsuraGraphic::AsuraGraphic(HWND hWnd, AsuraData* asuraData, ViewType type)
@@ -322,14 +320,14 @@ void AsuraGraphic::drawShadow()
 void AsuraGraphic::renderScenes()
 {
     // レンダリングコンテキストをカレントにする
-    if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
+    if (wglMakeCurrent(device_context_handle_ptr, rendering_context_handle))
     {
         // バッファをクリア（指定したバッファを特定の色で消去）
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glLoadIdentity();
 
         // 視点決定
-        setSceneView(sceneWidth, sceneHeight);
+        setSceneView(scene_width, scene_height);
 
 
         // オブジェクトの描画
@@ -363,7 +361,7 @@ void AsuraGraphic::renderScenes()
 
     SwapBuffers(wglGetCurrentDC());
 
-    wglMakeCurrent(deviceContextHandle, NULL);
+    wglMakeCurrent(device_context_handle_ptr, NULL);
 
     return;
 }
@@ -373,7 +371,7 @@ void AsuraGraphic::setSceneView(double width, double height)
     /// 視点属性により視点を変更
     switch (getViewType())
     {
-        case PERSPECTIVE:
+        case ViewType::PERSPECTIVE:
         {
             setViewPoint(cameraView.getDistance(),
                          cameraView.getAzimuth(),
@@ -384,7 +382,7 @@ void AsuraGraphic::setSceneView(double width, double height)
                          width, height);
             break;
         }
-        case TOP:
+        case ViewType::TOP:
         {
             setViewPoint(2500.0, -90.0, 90.0,
                          asuraDataSrcPtr->body_position(1),
@@ -394,7 +392,7 @@ void AsuraGraphic::setSceneView(double width, double height)
 
             break;
         }
-        case SIDE:
+        case ViewType::SIDE:
         {
             setViewPoint(1500.0, -90.0, 0.0,
                          asuraDataSrcPtr->body_position(1),
@@ -404,7 +402,7 @@ void AsuraGraphic::setSceneView(double width, double height)
 
             break;
         }
-        case FRONT:
+        case ViewType::FRONT:
             setViewPoint(1500.0, 0.0, 0.0,
                          asuraDataSrcPtr->body_position(1),
                          asuraDataSrcPtr->body_position(2),
@@ -540,7 +538,7 @@ void AsuraGraphic::drawSupportPolygon()
     }
 
     /// 支持脚多角形の色決定
-    setMaterialColor(selectMaterialColor(Graphic::YELLOW));
+    setMaterialColor(selectMaterialColor(designlab_robot_gui::graphic::MaterialColor::YELLOW));
 
     if (phase[0] == designlab_robot_gui::asura::LegPhase::SWING)
     {

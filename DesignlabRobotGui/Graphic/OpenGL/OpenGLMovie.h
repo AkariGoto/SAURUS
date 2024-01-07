@@ -20,7 +20,7 @@
 #include <gl/GL.h> 
 #include "AviMaker.h"
 
-namespace Graphic
+namespace designlab_robot_gui::graphic
 {
 
 /**

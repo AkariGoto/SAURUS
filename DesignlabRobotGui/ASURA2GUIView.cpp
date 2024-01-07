@@ -182,7 +182,8 @@ void CASURA2GUIView::initializeGraphics()
     if (::IsWindow(pictWndHandle))
     {
         /// メインスクリーン作成
-        asuraXGraphic = new Graphic::AsuraGraphic(pictWndHandle, &viewAsuraXData, Graphic::PERSPECTIVE);
+        asuraXGraphic = new designlab_robot_gui::graphic::AsuraGraphic(pictWndHandle, &viewAsuraXData,
+                                                  designlab_robot_gui::graphic::ViewType::PERSPECTIVE);
         asuraXGraphic->startRecording();
     }
 
@@ -580,45 +581,45 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
             case WM_LBUTTONDOWN:
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
-                //pView->asuraXGraphic[0]->beginCameraViewControl(CameraView::SPIN, x, y);
-                pView->asuraXGraphic->beginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::SPIN, x, y);  //20200820
+                //pView->asuraXGraphic[0]->BeginCameraViewControl(CameraView::SPIN, x, y);
+                pView->asuraXGraphic->BeginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::SPIN, x, y);  //20200820
                 break;
 
             case WM_LBUTTONUP:
-                //pView->asuraXGraphic[0]->endCameraViewControl();
-                pView->asuraXGraphic->endCameraViewControl();  //20200820
+                //pView->asuraXGraphic[0]->EndCameraViewControl();
+                pView->asuraXGraphic->EndCameraViewControl();  //20200820
                 break;
 
             case WM_MBUTTONDOWN:
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
-                pView->asuraXGraphic->beginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::PAN, x, y);
+                pView->asuraXGraphic->BeginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::PAN, x, y);
                 break;
 
             case WM_MBUTTONUP:
-                pView->asuraXGraphic->endCameraViewControl();
+                pView->asuraXGraphic->EndCameraViewControl();
                 break;
 
             case WM_MOUSEWHEEL:
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
-                pView->asuraXGraphic->beginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::ZOOM, x, y);
+                pView->asuraXGraphic->BeginCameraViewControl(designlab_robot_gui::graphic::CameraView::Mode::ZOOM, x, y);
 
                 zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
                 xDelta = x - zDelta / 10;
                 yDelta = y - zDelta / 10;
-                //pView->asuraXGraphic[0]->doCameraViewControl(xDelta, yDelta);
-                pView->asuraXGraphic->doCameraViewControl(xDelta, yDelta);  //20200820
+                //pView->asuraXGraphic[0]->DoCameraViewControl(xDelta, yDelta);
+                pView->asuraXGraphic->DoCameraViewControl(xDelta, yDelta);  //20200820
 
-                //pView->asuraXGraphic[0]->endCameraViewControl();
-                pView->asuraXGraphic->endCameraViewControl();  //20200820
+                //pView->asuraXGraphic[0]->EndCameraViewControl();
+                pView->asuraXGraphic->EndCameraViewControl();  //20200820
                 break;
 
             case WM_MOUSEMOVE:
                 x = GET_X_LPARAM(lParam);
                 y = GET_Y_LPARAM(lParam);
-                //pView->asuraXGraphic[0]->doCameraViewControl(x, y);
-                pView->asuraXGraphic->doCameraViewControl(x, y);  //20200820
+                //pView->asuraXGraphic[0]->DoCameraViewControl(x, y);
+                pView->asuraXGraphic->DoCameraViewControl(x, y);  //20200820
                 break;
 
             default:

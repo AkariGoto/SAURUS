@@ -33,7 +33,7 @@
     <ClCompile Include="Graphic\OpenGL\camera_view.cpp">
       <Filter>Graphic\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic\OpenGL\OpenGL.cpp">
+    <ClCompile Include="Graphic\OpenGL\abstract_open_gl_base.cpp">
       <Filter>Graphic\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Graphic\OpenGL\OpenGLObject.cpp">
@@ -145,7 +145,7 @@
     <ClInclude Include="Graphic\OpenGL\camera_view.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic\OpenGL\OpenGL.h">
+    <ClInclude Include="Graphic\OpenGL\abstract_open_gl_base.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Graphic\OpenGL\OpenGLMovie.h">
@@ -154,7 +154,7 @@
     <ClInclude Include="Graphic\OpenGL\OpenGLObject.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic\OpenGL\OpenGLParameter.h">
+    <ClInclude Include="Graphic\OpenGL\open_gl_parameter.h">
       <Filter>Graphic\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Kinematics\asura_parameter.h">

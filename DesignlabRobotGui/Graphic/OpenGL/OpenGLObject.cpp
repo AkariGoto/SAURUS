@@ -4,7 +4,7 @@
 #include "Math/Matrix/matrix_library.h"
 
 
-namespace Graphic
+namespace designlab_robot_gui::graphic
 {
 
 OpenGLObject::OpenGLObject()
@@ -42,7 +42,7 @@ OpenGLObject::~OpenGLObject()
 bool OpenGLObject::createGLObject(HWND hWnd)
 {
     /// 最初にOpenGLのデフォルト初期化を行う
-    if (!OpenGL::initializeGL(hWnd))
+    if (!AbstractOpenGLBase::InitializeGL(hWnd))
         return false;
 
     /// ディスプレイリスト作成
@@ -73,7 +73,7 @@ void OpenGLObject::destroyGLObject(void)
     deleteObjDispList();
 
     /// 最後に基底クラスの終了処理
-    OpenGL::finalizeGL();
+    AbstractOpenGLBase::FinalizeGL();
 
     return;
 }
@@ -129,14 +129,14 @@ void OpenGLObject::drawScenes(void)
 void OpenGLObject::renderScenes(void)
 {
     /// レンダリングコンテキストをカレントにする
-    if (wglMakeCurrent(deviceContextHandle, renderingContextHandle))
+    if (wglMakeCurrent(device_context_handle_ptr, rendering_context_handle))
     {
         /// バッファをクリア（指定したバッファを特定の色で消去）
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glLoadIdentity();
 
         /// 視点決定
-        setSceneView(sceneWidth, sceneHeight);
+        setSceneView(scene_width, scene_height);
 
         /// 今の座標系を保存しておく
         glPushMatrix();
@@ -159,7 +159,7 @@ void OpenGLObject::renderScenes(void)
      */
     SwapBuffers(wglGetCurrentDC());
 
-    wglMakeCurrent(deviceContextHandle, NULL);
+    wglMakeCurrent(device_context_handle_ptr, NULL);
 
     return;
 }
@@ -184,7 +184,7 @@ void OpenGLObject::pickup(int x, int y)
     GLint viewPort[4] = { 0,0,0,0 };		/// ビューポート		
     float currentAspect;				/// 現在のアスペクト比
 
-    wglMakeCurrent(deviceContextHandle, renderingContextHandle);
+    wglMakeCurrent(device_context_handle_ptr, rendering_context_handle);
 
     /**
      *	セレクション開始
@@ -486,7 +486,7 @@ void OpenGLObject::drawPolygonSurface(double x1, double y1, double z1,
 
     if (norm == 0)
     {
-        std::cerr << "Error: [OpenGL::drawPolygonSurface] argument error\n" << std::endl;
+        std::cerr << "Error: [AbstractOpenGLBase::drawPolygonSurface] argument error\n" << std::endl;
         return;
     }
 

@@ -2,19 +2,19 @@
 #ifndef __OpenGLObject_h__
 #define __OpenGLObject_h__
 
-#include "OpenGL.h"
+#include "Graphic/OpenGL/abstract_open_gl_base.h"
 
 #include "Math/Matrix/matrix.h"
 #include "Math/Matrix/matrix_library.h"
 
 
-namespace Graphic
+namespace designlab_robot_gui::graphic
 {
 
-class OpenGLObject : public OpenGL
+class OpenGLObject : public AbstractOpenGLBase
 {
-    using Vector = designlab_robot_gui::math::Vector;
-    using Matrix = designlab_robot_gui::math::Matrix;
+    using Vector = math::Vector;
+    using Matrix = math::Matrix;
 
 protected:
 
@@ -129,29 +129,20 @@ protected:
      *	説明
      *		ピックアップにより選んだ物体の処理
      */
-    virtual void handlePickupResult(void);
+    virtual void handlePickupResult();
 
-    /**
-     *	------------------------------------------------------------
-     *		オブジェクトの描画に関係するもの
-     *	------------------------------------------------------------
-     */
 
 public:
-    /**
-     *	----------------------------------------
-     *	物体の表示/非表示
-     *	----------------------------------------
-     */
-     /// 床を見せる
-    void showGridFloor(void) { isGridFloorDrawn = true; return; }
-    /// 床を隠す
-    void hideGridFloor(void) { isGridFloorDrawn = false; return; }
 
-    /// 座標軸を見せる
-    void showCoordinateAxis(void) { isCoordinateAxisDrawn = true; return; }
-    /// 座標軸を隠す
-    void hideCoordinateAxis(void) { isCoordinateAxisDrawn = false; return; }
+    // 床を見せる
+    void showGridFloor() { isGridFloorDrawn = true; }
+    // 床を隠す
+    void hideGridFloor() { isGridFloorDrawn = false; }
+
+    // 座標軸を見せる
+    void showCoordinateAxis() { isCoordinateAxisDrawn = true; }
+    // 座標軸を隠す
+    void hideCoordinateAxis() { isCoordinateAxisDrawn = false; }
 
     /**
      *	----------------------------------------

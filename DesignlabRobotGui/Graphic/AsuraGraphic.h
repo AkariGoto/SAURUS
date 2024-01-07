@@ -8,16 +8,16 @@
 #include "Data/asura_data.h"
 
 
-namespace Graphic
+namespace designlab_robot_gui::graphic
 {
 
-const int LEG_DISP_LIST_NUM = designlab_robot_gui::asura::LEG_JOINT_NUM + 2;
+const int LEG_DISP_LIST_NUM = asura::LEG_JOINT_NUM + 2;
 
 class AsuraGraphic : public OpenGLObject
 {
-    using AsuraData = designlab_robot_gui::data::AsuraData;
-    using Vector = designlab_robot_gui::math::Vector;
-    using Matrix = designlab_robot_gui::math::Matrix;
+    using AsuraData = data::AsuraData;
+    using Vector = math::Vector;
+    using Matrix = math::Matrix;
 
 private:
     /**
@@ -74,7 +74,7 @@ public:
      */
      /// デフォルトコンストラクタ
     explicit AsuraGraphic(HWND hWnd = NULL, AsuraData* asuraData = NULL,
-                          ViewType type = PERSPECTIVE);
+                          ViewType type = ViewType::PERSPECTIVE);
 
     /// デストラクタ
     virtual ~AsuraGraphic();

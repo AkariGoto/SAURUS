@@ -68,7 +68,7 @@ private:
     designlab_robot_gui::math::Vector* localFootPosition; //脚座標系による脚先位置
     designlab_robot_gui::math::Vector* worldFootPosition; //ワールド座標系による脚先位置
 
-    Graphic::AsuraGraphic* asuraXGraphic;
+    designlab_robot_gui::graphic::AsuraGraphic* asuraXGraphic;
 
     DWORD motionPlanThreadID;
     DWORD AsuraUDPThreadID;
