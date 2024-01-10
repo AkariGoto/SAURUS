@@ -9,12 +9,11 @@ namespace designlab_robot_gui::graphic
 
 AsuraGraphic::AsuraGraphic(HWND hWnd, AsuraData* asuraData, ViewType type)
 {
-    /// 初期化
+    // 初期化．
     initializeAsuraGraphic(hWnd, asuraData);
 
-    /// 視点を決定
-    setViewType(type);
-
+    // 視点を決定．
+    SetViewType(type);
 }
 
 /// デストラクタ
@@ -29,9 +28,9 @@ void AsuraGraphic::initializeAsuraGraphic(HWND hWnd, AsuraData* asuraData)
     isAsuraDrawn = true;
     isSupportPolygonDrawn = false;
     isDisplayListReady = false;
-    isAnimationRecorded = false;
+    is_recorded_animation_ = false;
 
-    legCoordinate = false;  // 起動時は脚座標系を表示しない
+    is_displayed_leg_coordinate_ = false;  // 起動時は脚座標系を表示しない
 
     // 最初にOpenGLのデフォルト初期化を行う
     if (!OpenGLObject::createGLObject(hWnd))
@@ -42,7 +41,7 @@ void AsuraGraphic::initializeAsuraGraphic(HWND hWnd, AsuraData* asuraData)
     // ポインタが有効だったらポインタをセット
     if (asuraData != nullptr)
     {
-        asuraDataSrcPtr = asuraData;
+        asura_data_ptr_ = asuraData;
     }
 
     // ディスプレイリスト作成
@@ -97,24 +96,19 @@ void AsuraGraphic::newAsuraDisplayList()
         legDisplayListID[i] = legList + i;
     }
 
-    // 関節色
-    //SAURUS
+    // 関節色を設定．
     const GLfloat jointColor[4] = { 0.55f, 0.55f, 0.65f, 1.0f };
     const GLfloat linkColor[4] = { 0.156f, 0.40f, 1.0f, 1.0f };
 
-    // ASURA20231128変更
-    // const GLfloat linkColor[4] = { 0.55f, 0.55f, 0.65f, 1.0f };
-    // const GLfloat jointColor[4] = { 0.10f, 0.50f, 0.50f, 1.0f };
-    //const GLfloat joint4Color[4] = {0.0f, 0.0f, 1.0f, 1.0f};
 
     // body
     glNewList(bodyDisplayListID, GL_COMPILE);
     setMaterialColor(linkColor);
 
-    drawBox(-BODY_LENGTH / 2, -BODY_WIDTH / designlab_robot_gui::math::ROOT_2 / 2 + 50, -BODY_HEIGHT / 2,
-            BODY_LENGTH / 2, BODY_WIDTH / designlab_robot_gui::math::ROOT_2 / 2 - 50, BODY_HEIGHT / 2);
-    drawBox(-BODY_LENGTH / designlab_robot_gui::math::ROOT_2 / 2 + 50, -BODY_WIDTH / 2, -BODY_HEIGHT / 2,
-            BODY_LENGTH / designlab_robot_gui::math::ROOT_2 / 2 - 50, BODY_WIDTH / 2, BODY_HEIGHT / 2);
+    DrawBox(-BODY_LENGTH / 2, -BODY_WIDTH / math::ROOT_2 / 2 + 50, -BODY_HEIGHT / 2,
+            BODY_LENGTH / 2, BODY_WIDTH / math::ROOT_2 / 2 - 50, BODY_HEIGHT / 2);
+    DrawBox(-BODY_LENGTH / math::ROOT_2 / 2 + 50, -BODY_WIDTH / 2, -BODY_HEIGHT / 2,
+            BODY_LENGTH / math::ROOT_2 / 2 - 50, BODY_WIDTH / 2, BODY_HEIGHT / 2);
 
     glEndList();
 
@@ -124,51 +118,50 @@ void AsuraGraphic::newAsuraDisplayList()
     // Base
     glNewList(legDisplayListID[0], GL_COMPILE);
     setMaterialColor(jointColor);	///関節	/// 原点
-    drawCylinder(30, BODY_HEIGHT + 10);
+    DrawCylinder(30, BODY_HEIGHT + 10);
     glEndList();
 
     // 1.Hip
     glNewList(legDisplayListID[1], GL_COMPILE);
     setMaterialColor(jointColor);	///関節	/// 原点
-    drawCylinder(30, BODY_HEIGHT + 10);
-    //drawCylinder(50, BODY_HEIGHT + 10);ASURA_20231128変更
+    DrawCylinder(30, BODY_HEIGHT + 10);
     glTranslated(-LINK1, 0, 0);	/// 座標変換
+
     setMaterialColor(linkColor);
-    drawBox(0, -35, -35, LINK1, 35, 35);
-    //drawBox(0, -45, -45, LINK1,45, 45);ASURA_20231128変更
+    DrawBox(0, -35, -35, LINK1, 35, 35);
     glEndList();
 
     /// 2.Thigh
     glNewList(legDisplayListID[2], GL_COMPILE);
     setMaterialColor(jointColor);///関節	
-    drawCylinder(30, 60);
-    //drawCylinder(40, 70);ASURA_20231128変更
+    DrawCylinder(30, 60);
+    //DrawCylinder(40, 70);ASURA_20231128変更
     glTranslated(-LINK2, 0, 0);	/// 座標変換
     setMaterialColor(linkColor);
-    drawBox(0, -30, -30, LINK2, 30, 30);
+    DrawBox(0, -30, -30, LINK2, 30, 30);
     setMaterialColor(jointColor);///関節	
-    drawCylinder(30, 60);
-    //drawCylinder(40, 110);ASURA_20231128変更
+    DrawCylinder(30, 60);
+    //DrawCylinder(40, 110);ASURA_20231128変更
     glEndList();
 
     // 3.Shank
     glNewList(legDisplayListID[3], GL_COMPILE);
     glTranslated(-LINK3, 0, 0);	/// 座標変換
     setMaterialColor(linkColor);
-    drawBox(0, -25, -25, LINK3, 25, 25);
+    DrawBox(0, -25, -25, LINK3, 25, 25);
     setMaterialColor(jointColor);///関節	
-    drawCylinder(30, 60);
-    //drawCylinder(40, 70); ASURA_20231128変更
+    DrawCylinder(30, 60);
+    //DrawCylinder(40, 70); ASURA_20231128変更
     glEndList();
 
     // 4.Foot
     glNewList(legDisplayListID[4], GL_COMPILE);
     glTranslated(-FOOT, 0, 0);  // 座標変換
     setMaterialColor(linkColor);
-    drawBox(0, -25, -25, FOOT, 25, 25);  // drawBox(3*FOOT/5, -40, -35, FOOT, 40, 35);
+    DrawBox(0, -25, -25, FOOT, 25, 25);  // DrawBox(3*FOOT/5, -40, -35, FOOT, 40, 35);
     setMaterialColor(jointColor);  // 関節	
-    drawCylinder(30, 60);
-    // drawCylinder(40, 70); ASURA_20231128変更
+    DrawCylinder(30, 60);
+    // DrawCylinder(40, 70); ASURA_20231128変更
     glEndList();
 
     // 準備完了
@@ -182,7 +175,7 @@ void AsuraGraphic::deleteAsuraDisplayList()
     glDeleteLists(legDisplayListID[0], LEG_DISP_LIST_NUM);
 }
 
-void AsuraGraphic::drawObjects(GLenum renderMode)
+void AsuraGraphic::drawObjects(GLenum renderMode) const
 {
     Matrix gAb(math::DH_DIMENSION, math::DH_DIMENSION);
 
@@ -193,20 +186,20 @@ void AsuraGraphic::drawObjects(GLenum renderMode)
             /// シーンを描画
             glDisable(GL_CULL_FACE);
             /// 座標系描画
-            drawCoordinateAxis(300.0, 5.0, 0.8);
+            DrawCoordinateAxis(300.0, 5.0, 0.8);
             /// Asura描画
             drawAsura();
             glEnable(GL_CULL_FACE);
 
             //20201019
-            if (legCoordinate)
+            if (is_displayed_leg_coordinate_)
             {
                 glDisable(GL_CULL_FACE);
                 glPushMatrix();
                 /// 脚座標系に変換
-                gAb = asuraDataSrcPtr->leg_base_transformation[1];
+                gAb = asura_data_ptr_->leg_base_transformation[1];
                 transformOpenGLMatrix(gAb);
-                drawCoordinateAxis(300.0, 5.0, 0.8);
+                DrawCoordinateAxis(300.0, 5.0, 0.8);
                 glPopMatrix();
                 glEnable(GL_CULL_FACE);
             }
@@ -224,13 +217,13 @@ void AsuraGraphic::drawObjects(GLenum renderMode)
     }
 }
 
-void AsuraGraphic::drawScenes()
+void AsuraGraphic::DrawScenes() const
 {
     drawObjects(GL_RENDER);
     return;
 }
 
-void AsuraGraphic::drawShadow()
+void AsuraGraphic::DrawShadow()
 {
     // 影の光源
     float lightPosition[] = { 60, 80, 3000, 1 };
@@ -317,17 +310,17 @@ void AsuraGraphic::drawShadow()
     glDisable(GL_NORMALIZE);
 }
 
-void AsuraGraphic::renderScenes()
+void AsuraGraphic::RenderScenes()
 {
     // レンダリングコンテキストをカレントにする
-    if (wglMakeCurrent(device_context_handle_ptr, rendering_context_handle))
+    if (wglMakeCurrent(device_context_handle_ptr_, rendering_context_handle_))
     {
         // バッファをクリア（指定したバッファを特定の色で消去）
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glLoadIdentity();
 
         // 視点決定
-        setSceneView(scene_width, scene_height);
+        setSceneView(scene_width_, scene_height_);
 
 
         // オブジェクトの描画
@@ -336,10 +329,10 @@ void AsuraGraphic::renderScenes()
         glPushMatrix();
 
         // シーンを描画
-        drawScenes();
+        DrawScenes();
 
         // 影描画
-        drawShadow();
+        DrawShadow();
 
         // 支持脚多角形描画
         drawSupportPolygon();
@@ -349,7 +342,7 @@ void AsuraGraphic::renderScenes()
         glPopMatrix();
 
         // コマンドのフラッシュ
-        if (isAnimationRecorded)
+        if (is_recorded_animation_)
         {
             movieRecorder.recordFrame();
         }
@@ -361,33 +354,33 @@ void AsuraGraphic::renderScenes()
 
     SwapBuffers(wglGetCurrentDC());
 
-    wglMakeCurrent(device_context_handle_ptr, NULL);
+    wglMakeCurrent(device_context_handle_ptr_, NULL);
 
     return;
 }
 
-void AsuraGraphic::setSceneView(double width, double height)
+void AsuraGraphic::setSceneView(const double width, const double height)
 {
-    /// 視点属性により視点を変更
-    switch (getViewType())
+    // view_type_ により視点を変更する．
+    switch (view_type_)
     {
         case ViewType::PERSPECTIVE:
         {
-            setViewPoint(cameraView.getDistance(),
-                         cameraView.getAzimuth(),
-                         cameraView.getElevation(),
-                         cameraView.getViewCenterPosition(1),
-                         cameraView.getViewCenterPosition(2),
-                         cameraView.getViewCenterPosition(3),
+            setViewPoint(camera_view_.GetDistance(),
+                         camera_view_.GetAzimuth(),
+                         camera_view_.GetElevation(),
+                         camera_view_.GetViewCenterPos(1),
+                         camera_view_.GetViewCenterPos(2),
+                         camera_view_.GetViewCenterPos(3),
                          width, height);
             break;
         }
         case ViewType::TOP:
         {
             setViewPoint(2500.0, -90.0, 90.0,
-                         asuraDataSrcPtr->body_position(1),
-                         asuraDataSrcPtr->body_position(2),
-                         asuraDataSrcPtr->body_position(3) - 100,
+                         asura_data_ptr_->body_position(1),
+                         asura_data_ptr_->body_position(2),
+                         asura_data_ptr_->body_position(3) - 100,
                          width, height);
 
             break;
@@ -395,30 +388,30 @@ void AsuraGraphic::setSceneView(double width, double height)
         case ViewType::SIDE:
         {
             setViewPoint(1500.0, -90.0, 0.0,
-                         asuraDataSrcPtr->body_position(1),
-                         asuraDataSrcPtr->body_position(2),
-                         asuraDataSrcPtr->body_position(3) - 100,
+                         asura_data_ptr_->body_position(1),
+                         asura_data_ptr_->body_position(2),
+                         asura_data_ptr_->body_position(3) - 100,
                          width, height);
 
             break;
         }
         case ViewType::FRONT:
+        {
             setViewPoint(1500.0, 0.0, 0.0,
-                         asuraDataSrcPtr->body_position(1),
-                         asuraDataSrcPtr->body_position(2),
-                         asuraDataSrcPtr->body_position(3) - 100,
+                         asura_data_ptr_->body_position(1),
+                         asura_data_ptr_->body_position(2),
+                         asura_data_ptr_->body_position(3) - 100,
                          width, height);
             break;
-
+        }
         default:
+        {
             break;
-
+        }
     }
-
-    return;
 }
 
-void AsuraGraphic::drawAsura()
+void AsuraGraphic::drawAsura() const
 {
     if (!isAsuraDrawn)
     {
@@ -428,39 +421,30 @@ void AsuraGraphic::drawAsura()
     // 胴体描画
     drawBody();
 
-    // ロコモーション様式により描画を分ける
-    if (asuraDataSrcPtr->locomotion_style == designlab_robot_gui::asura::LocomotionStyle::LEGGED)
+    // ロコモーション様式により描画を分ける．
+    if (asura_data_ptr_->locomotion_style == asura::LocomotionStyle::LEGGED)
     {
-        int i = 2;
+        int i = 2;  // 2脚目のみを描画．
+
         drawLeg(i);
     }
-    else
-    {
-        for (int j = 0; j < designlab_robot_gui::asura::LEG_NUM; j++)
-        {
-            drawTrack(j + 1);
-        }
-
-    }
-
-    return;
 }
 
-void AsuraGraphic::drawBody()
+void AsuraGraphic::drawBody() const
 {
-    // グローバルから胴体座標への変換行列
+    // グローバルから胴体座標への変換行列．
     Matrix gAb(math::DH_DIMENSION, math::DH_DIMENSION);
 
     glPushMatrix();
 
-    // 胴体座標系に変換
-    gAb = asuraDataSrcPtr->body_transformation;
+    // 胴体座標系に変換．
+    gAb = asura_data_ptr_->body_transformation;
     transformOpenGLMatrix(gAb);
     glCallList(bodyDisplayListID);
     glPopMatrix();
 }
 
-void AsuraGraphic::drawLeg(const int legNo)
+void AsuraGraphic::drawLeg(const int legNo) const
 {
     if (!isDisplayListReady)
     {
@@ -468,7 +452,7 @@ void AsuraGraphic::drawLeg(const int legNo)
     }
 
     // 脚の引数チェック
-    assert(1 <= legNo && legNo <= designlab_robot_gui::asura::LEG_NUM);
+    assert(1 <= legNo && legNo <= asura::LEG_NUM);
 
     Matrix trans(math::DH_DIMENSION, math::DH_DIMENSION);	// 座標変換用の行列
     Matrix bAl(math::DH_DIMENSION, math::DH_DIMENSION);		// 胴体 -> 脚
@@ -478,48 +462,44 @@ void AsuraGraphic::drawLeg(const int legNo)
 
     /// 脚のベース座標系を取得して，脚座標に変換
     glPushMatrix();
-    bAl = asuraDataSrcPtr->leg_base_transformation[legNo - 1];
+    bAl = asura_data_ptr_->leg_base_transformation[legNo - 1];
     transformOpenGLMatrix(bAl);
     glCallList(legDisplayListID[0]);
     glPopMatrix();
 
     /// hip
     glPushMatrix();
-    trans = asuraDataSrcPtr->leg_joint_transformation[legNo - 1][0];
+    trans = asura_data_ptr_->leg_joint_transformation[legNo - 1][0];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[1]);
     glPopMatrix();
 
     /// shank
     glPushMatrix();
-    trans = asuraDataSrcPtr->leg_joint_transformation[legNo - 1][1];
+    trans = asura_data_ptr_->leg_joint_transformation[legNo - 1][1];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[2]);
     glPopMatrix();
 
     /// knee
     glPushMatrix();
-    trans = asuraDataSrcPtr->leg_joint_transformation[legNo - 1][2];
+    trans = asura_data_ptr_->leg_joint_transformation[legNo - 1][2];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[3]);
     glPopMatrix();
 
     /// foot
     glPushMatrix();
-    trans = asuraDataSrcPtr->leg_foot_transformation[legNo - 1];
+    trans = asura_data_ptr_->leg_foot_transformation[legNo - 1];
     transformOpenGLMatrix(trans);
     glCallList(legDisplayListID[4]);
     glPopMatrix();
 
     glPopMatrix();
-
-    return;
 }
 
 
-void AsuraGraphic::drawTrack(int trackNo)
-{
-}
+
 
 void AsuraGraphic::drawSupportPolygon()
 {
@@ -534,7 +514,7 @@ void AsuraGraphic::drawSupportPolygon()
 
     for (i = 0; i < designlab_robot_gui::asura::LEG_NUM; i++)
     {
-        phase[i] = asuraDataSrcPtr->leg_phase[i];
+        phase[i] = asura_data_ptr_->leg_phase[i];
     }
 
     /// 支持脚多角形の色決定
@@ -542,33 +522,33 @@ void AsuraGraphic::drawSupportPolygon()
 
     if (phase[0] == designlab_robot_gui::asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->leg_foot_position[1], asuraDataSrcPtr->leg_foot_position[2],
-                     asuraDataSrcPtr->leg_foot_position[3], 2.0);
+        drawTriangle(asura_data_ptr_->leg_foot_position[1], asura_data_ptr_->leg_foot_position[2],
+                     asura_data_ptr_->leg_foot_position[3], 2.0);
     }
     else if (phase[1] == designlab_robot_gui::asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[2],
-                     asuraDataSrcPtr->leg_foot_position[3], 2.0);
+        drawTriangle(asura_data_ptr_->leg_foot_position[0], asura_data_ptr_->leg_foot_position[2],
+                     asura_data_ptr_->leg_foot_position[3], 2.0);
     }
     else if (phase[2] == designlab_robot_gui::asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[1],
-                     asuraDataSrcPtr->leg_foot_position[3], 2.0);
+        drawTriangle(asura_data_ptr_->leg_foot_position[0], asura_data_ptr_->leg_foot_position[1],
+                     asura_data_ptr_->leg_foot_position[3], 2.0);
     }
     else if (phase[3] == designlab_robot_gui::asura::LegPhase::SWING)
     {
-        drawTriangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[1],
-                     asuraDataSrcPtr->leg_foot_position[2], 2.0);
+        drawTriangle(asura_data_ptr_->leg_foot_position[0], asura_data_ptr_->leg_foot_position[1],
+                     asura_data_ptr_->leg_foot_position[2], 2.0);
     }
     else
     {
-        drawQuadrangle(asuraDataSrcPtr->leg_foot_position[0], asuraDataSrcPtr->leg_foot_position[1],
-                    asuraDataSrcPtr->leg_foot_position[3], asuraDataSrcPtr->leg_foot_position[2],
+        drawQuadrangle(asura_data_ptr_->leg_foot_position[0], asura_data_ptr_->leg_foot_position[1],
+                    asura_data_ptr_->leg_foot_position[3], asura_data_ptr_->leg_foot_position[2],
                     2.0);
     }
 }
 
-void AsuraGraphic::transformOpenGLMatrix(const Matrix& matrix)
+void AsuraGraphic::transformOpenGLMatrix(const Matrix& matrix) const
 {
     /// 変換行列要素
     double T[16];

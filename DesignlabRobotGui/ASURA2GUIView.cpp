@@ -184,7 +184,7 @@ void CASURA2GUIView::initializeGraphics()
         /// メインスクリーン作成
         asuraXGraphic = new designlab_robot_gui::graphic::AsuraGraphic(pictWndHandle, &viewAsuraXData,
                                                   designlab_robot_gui::graphic::ViewType::PERSPECTIVE);
-        asuraXGraphic->startRecording();
+        asuraXGraphic->StartRecording();
     }
 
     orgWndProcedure = (WNDPROC)(UINT_PTR)GetWindowLongPtr(pictWndHandle, GWLP_WNDPROC);
@@ -220,8 +220,8 @@ void CASURA2GUIView::finalizeGraphics(void)
     SetWindowLongPtr(pictWndHandle, GWLP_WNDPROC, (LONG)(LONG_PTR)orgWndProcedure);  //20200820
 
     /// グラフィックオブジェクトの破棄
-    //asuraXGraphic[0]->stopRecording();
-    asuraXGraphic->stopRecording();  //20200820
+    //asuraXGraphic[0]->StopRecording();
+    asuraXGraphic->StopRecording();  //20200820
     /*
     int j;
     for (j = 0; j < SCREEN_NUMBER; j++)
@@ -238,15 +238,16 @@ void CASURA2GUIView::updateFormView(void)
     //20201019
     CButton* radioWorld = (CButton*)GetDlgItem(IDC_RADIO_WORLD);
     CButton* radioLeg = (CButton*)GetDlgItem(IDC_RADIO_LEG);
+
     if (radioWorld->GetCheck())
     {
         legCoordinateSystem = false;
-        asuraXGraphic->legCoordinateOff();
+        asuraXGraphic->DisplayLegCoordinate(false);
     }
     else if (radioLeg->GetCheck())
     {
         legCoordinateSystem = true;
-        asuraXGraphic->legCoordinateOn();
+        asuraXGraphic->DisplayLegCoordinate(true);
     }
 
     /// 画面の更新
@@ -568,8 +569,8 @@ LRESULT CALLBACK CASURA2GUIView::drawMainScrWndProc(HWND hWnd, UINT uMsg, WPARAM
                 hDC = ::BeginPaint(hWnd, &ps);
                 dc.Attach(hDC);
 
-                //pView->asuraXGraphic[0]->renderScenes();
-                pView->asuraXGraphic->renderScenes();  //20200820
+                //pView->asuraXGraphic[0]->RenderScenes();
+                pView->asuraXGraphic->RenderScenes();  //20200820
 
                 dc.Detach();
                 ::EndPaint(hWnd, &ps);

@@ -9,31 +9,31 @@
 namespace  designlab_robot_gui::graphic
 {
 
-void  CameraView::BeginViewControl(CameraView::Mode mode, int x, int y)
+void  CameraView::BeginViewControl(const Mode mode, const  int x, const  int y)
 {
-    modeState = mode;
+    mode_state_ = mode;
 
-    initX = x;
-    initY = y;
+    init_x = x;
+    init_y = y;
 
-    initAzimuth = azimuth;
-    initElevation = elevation;
-    initDistance = distance;
+    init_azimuth_ = azimuth_;
+    init_elevation_ = elevation_;
+    init_distance_ = distance_;
 
     for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
-        initViewCenterPosition[i] = viewCenterPosition[i];
+        init_view_center_pos_[i] = view_center_pos_[i];
     }
 }
 
 void  CameraView::EndViewControl()
 {
-    modeState = Mode::STOP;
+    mode_state_ = Mode::STOP;
 }
 
 void  CameraView::DoViewControl(const int x, const int y)
 {
-    switch (modeState)
+    switch (mode_state_)
     {
         case Mode::PAN:
         {
@@ -61,8 +61,8 @@ void  CameraView::DoViewControl(const int x, const int y)
 
 void CameraView::Pan(const int x, const  int y)
 {
-    const double dx = static_cast<double>(x) - initX;
-    const double dy = static_cast<double>(y) - initY;
+    const double dx = static_cast<double>(x) - init_x;
+    const double dy = static_cast<double>(y) - init_y;
 
     double up_view[3] = {};
     double view[3] = {};
@@ -81,66 +81,64 @@ void CameraView::Pan(const int x, const  int y)
 
     for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
-        viewCenterPosition[i] = (vx * dx * right[i] + vy * dy * up_view[i]) +
-            initViewCenterPosition[i];
+        view_center_pos_[i] = (vx * dx * right[i] + vy * dy * up_view[i]) +
+            init_view_center_pos_[i];
     }
 }
 
 void CameraView::Spin(const int x, const  int y)
 {
-    double dx = static_cast<double>(x) - initX;
-    double dy = static_cast<double>(y) - initY;
+    double dx = static_cast<double>(x) - init_x;
+    double dy = static_cast<double>(y) - init_y;
 
-    azimuth = (-0.5) * dx + initAzimuth;
-    elevation = (0.5) * dy + initElevation;
+    azimuth_ = (-0.5) * dx + init_azimuth_;
+    elevation_ = (0.5) * dy + init_elevation_;
 }
 
 void CameraView::Zoom(const int x, const int y)
 {
-    // const double dx = static_cast<double>(x) - initX;
-    const double dy = static_cast<double>(y) - initY;
+    // const double dx = static_cast<double>(x) - init_x;
+    const double dy = static_cast<double>(y) - init_y;
 
     const double dl = dy;
 
-    distance = 100.0 * dl + initDistance;
+    distance_ = 100.0 * dl + init_distance_;
 
     return;
 }
 
 void CameraView::SetControlPoint(const int x, const int y)
 {
-    initX = x;
-    initY = y;
+    init_x = x;
+    init_y = y;
 
-    initAzimuth = azimuth;
-    initElevation = elevation;
-    initDistance = distance;
+    init_azimuth_ = azimuth_;
+    init_elevation_ = elevation_;
+    init_distance_ = distance_;
 
     for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
-        initViewCenterPosition[i] = viewCenterPosition[i];
+        init_view_center_pos_[i] = view_center_pos_[i];
     }
 }
 
 void CameraView::SetDefaultCondition()
 {
-    initX = 0;
-    initY = 0;
+    init_x = 0;
+    init_y = 0;
 
-    azimuth = 90;
-    elevation = 15;
-    distance = 2500;
+    azimuth_ = 90;
+    elevation_ = 15;
+    distance_ = 2500;
 
     for (int i = 0; i < math::THREE_DIMENSION; i++)
     {
-        viewCenterPosition[i] = 0.0;
+        view_center_pos_[i] = 0.0;
     }
 
     SetControlPoint(0, 0);
 
-    modeState = Mode::STOP;
-
-    return;
+    mode_state_ = Mode::STOP;
 }
 
 void CameraView::GetEyeDirection(double* x, double* y, double* z)
@@ -149,13 +147,13 @@ void CameraView::GetEyeDirection(double* x, double* y, double* z)
     assert(y != nullptr);
     assert(z != nullptr);
 
-    const double xo = cos(elevation * math::PI / 180) *
-        cos(azimuth * math::PI / 180);
+    const double xo = cos(elevation_ * math::PI / 180) *
+        cos(azimuth_ * math::PI / 180);
 
-    const double yo = cos(elevation * math::PI / 180) *
-        sin(azimuth * math::PI / 180);
+    const double yo = cos(elevation_ * math::PI / 180) *
+        sin(azimuth_ * math::PI / 180);
 
-    const double zo = sin(elevation * math::PI / 180);
+    const double zo = sin(elevation_ * math::PI / 180);
 
     *x = xo;
     *y = yo;
@@ -168,13 +166,13 @@ void CameraView::GetUpDirection(double* x, double* y, double* z)
     assert(y != nullptr);
     assert(z != nullptr);
 
-    const double xo = distance * cos((elevation + 90) * math::PI / 180) *
-        cos(azimuth * math::PI / 180);
+    const double xo = distance_ * cos((elevation_ + 90) * math::PI / 180) *
+        cos(azimuth_ * math::PI / 180);
 
-    const double yo = distance * cos((elevation + 90) * math::PI / 180) *
-        sin(azimuth * math::PI / 180);
+    const double yo = distance_ * cos((elevation_ + 90) * math::PI / 180) *
+        sin(azimuth_ * math::PI / 180);
 
-    const double zo = distance * sin((elevation + 90) * math::PI / 180);
+    const double zo = distance_ * sin((elevation_ + 90) * math::PI / 180);
 
     *x = xo;
     *y = yo;

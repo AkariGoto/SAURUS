@@ -16,172 +16,47 @@ class OpenGLObject : public AbstractOpenGLBase
     using Vector = math::Vector;
     using Matrix = math::Matrix;
 
-protected:
-
-    /// 最終的に選択したオブジェクトの名前番号を格納する
-    unsigned int nameNumberOfHitObj[NAME_ARRAY_SIZE];
-
-    /**
-     *	----------------------------------------
-     *	フラグ
-     *	----------------------------------------
-     */
-     /// 座標軸を描画するかどうか
-    bool isCoordinateAxisDrawn;
-
-    /// メッシュの床を描画するかどうか
-    bool isGridFloorDrawn;
-
-    /// 床描画のためのディスプレイリスト
-    int gridFloorDisplayListID;
-
-
 public:
-    /**
-     *	----------------------------------------
-     *	コンストラクタとデストラクタ
-     *	----------------------------------------
-     */
-     /// デフォルトコンストラクタ
-    OpenGLObject();
+    /// デフォルトコンストラクタ
+    OpenGLObject() = default;
 
     /// デフォルトコンストラクタ
-    explicit OpenGLObject(HWND hWnd);
+    inline explicit OpenGLObject(HWND hWnd)
+    {
+        createGLObject(hWnd);
+    }
 
     /// デストラクタ
-    virtual ~OpenGLObject();
-
-    /**
-     *	----------------------------------------
-     *	OpenGLのオブジェクト作成・消去
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		OpenGLの初期化を行い、OpenGLObjectに関連づける
-      *	引数
-      *		hWnd: 描画する領域のウィンドウハンドル
-      */
-    bool createGLObject(HWND hWnd = NULL);
+    inline virtual ~OpenGLObject()
+    {
+        destroyGLObject();
+    }
 
     /**
      *	説明
-     *		終了処理
+     *		OpenGLのオブジェクト描画
      */
-    void destroyGLObject(void);
-
-    /**
-     *	------------------------------------------------------------
-     *		オーバーライド関数
-     *	------------------------------------------------------------
-     */
-     /**
-      *	----------------------------------------
-      *	シーンの描画
-      *	----------------------------------------
-      */
-      /**
-       *	説明
-       *		OpenGLのオブジェクト描画
-       */
-    virtual void drawObjects(GLenum renderMode);
-
-    /**
-     *	説明
-     *		OpenGLのイメージ描画
-     */
-    virtual void drawScenes(void);
+    virtual void drawObjects(GLenum renderMode) const;
 
     /**
      *	説明
      *		OpenGLイメージのレンダリング
      *		OpenGL描画のコールバック関数になる
      */
-    virtual void renderScenes(void);
+    virtual void RenderScenes();
 
-    /**
-     *	----------------------------------------
-     *	ピッキングに関するもの
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		デバイス（マウスなど）による物体のピックアップ関数
-      *		デバイスによるイベント（マウスだったら左クリックなど）関数内で呼ぶ
-      *	引数
-      *		x: クリックした点のx座標
-      *		y: クリックした点のy座標
-      */
-    virtual void pickup(int x, int y);
-
-protected:
-    /**
-     *	説明
-     *		セレクションバッファからデプスバッファを並び替えたりしながらヒットしたオブジェクトを識別する
-     *	引数
-     *		hitCount: ヒット数
-     *		selectBuffer:	glSelectBuffer() の結果が格納されているセレクションバッファ
-     *						選択したオブジェクトの名前、セレクションされた位置の奥行きの最小値と最大値などが格納されたバッファ
-     */
-    virtual int selectHitObjects(GLuint hitCount, GLuint selectBuffer[]);
-
-    /**
-     *	説明
-     *		ピックアップにより選んだ物体の処理
-     */
-    virtual void handlePickupResult();
 
 
 public:
 
-    // 床を見せる
-    void showGridFloor() { isGridFloorDrawn = true; }
-    // 床を隠す
-    void hideGridFloor() { isGridFloorDrawn = false; }
 
-    // 座標軸を見せる
-    void showCoordinateAxis() { isCoordinateAxisDrawn = true; }
-    // 座標軸を隠す
-    void hideCoordinateAxis() { isCoordinateAxisDrawn = false; }
 
-    /**
-     *	----------------------------------------
-     *	3Dモデリング
-     *	----------------------------------------
-     */
-     /// 座標軸描画
-    void drawCoordinateAxis(double length = 300.0, double width = 2.0, double scale = 1.0);
-
-    /**
-     *	説明
-     *		ポリゴンモデリング（法線も計算）
-     *		添字(1, 2, 3)の順にCW（時計回り）で入力
-     *		各頂点の座標を入力
-     */
-    void drawPolygonSurface(double x1, double y1, double z1,
-                double x2, double y2, double z2,
-                double x3, double y3, double z3);
-    void drawPolygonSurface(const Vector& point1, const Vector& point2, const Vector& point3);
-
-    /// 円柱描画
-    void drawCylinder(double radius, double height);
-
-    /// 球描画
-    void drawSphere(double radius);
-
-    /// Box描画(線画)
-    void drawBox(double startX, double startY, double startZ, double endX, double endY, double endZ);
-    void drawBox(const Vector& startPoint, const Vector& endPoint);
 
     /// フレーム描画(平面と4隅の垂線)
     void drawFrame(double startX, double startY, double startZ, double endX, double endY, double endZ);
     void drawFrame(const Vector& startPoint, const Vector& endPoint);
 
-    /// 線描画(線画)
-    void drawLine(double startX, double startY, double startZ,
-               double endX, double endY, double endZ,
-               double width = 1.0);
-    void drawLine(const Vector& startPoint, const Vector& endPoint, double width = 1.0);
+
 
     /// 三角形描画
     void drawTriangle(const Vector& point1, const Vector& point2, const Vector& point3, double width = 1.0);
@@ -218,27 +93,94 @@ public:
      */
     void drawGridFloor(void);
 
-    /**
-     *	----------------------------------------
-     *	ディスプレイリスト
-     *	----------------------------------------
-     */
+
 protected:
+    /**
+ *	説明
+ *		OpenGLのイメージ描画
+ */
+    virtual void DrawScenes() const override;
+
+    //! @brief OpenGLの初期化を行う．OpenGLObjectに関連づける．
+    //! @param[in] window_handle 描画する領域のウィンドウハンドル．
+    bool createGLObject(HWND window_handle);
+
+    /**
+     *	説明
+     *		終了処理
+     */
+    void destroyGLObject();
+
+    //! @brief 座標軸を描画する．
+    //! @param[in] length 座標軸の長さ．
+    //! @param[in] width 座標軸の太さ．
+    //! @param[in] scale 座標軸のスケール．
+    void DrawCoordinateAxis(double length = 300.0, double width = 2.0,
+                            double scale = 1.0) const;
+
+    //! @brief 円柱を描画する．
+    //! @param[in] radius 円柱の半径．
+    //! @param[in] height 円柱の高さ．
+    void DrawCylinder(double radius, double height) const;
+
+    //! @brief 円柱の描画を行う．
+    //! @param[in] radius 円柱の半径．
+    void DrawSphere(double radius) const;
+
+    //! @brief 線分の描画を行う．
+    //! @param[in] start_x 始点のx座標．
+    //! @param[in] start_y 始点のy座標．
+    //! @param[in] start_z 始点のz座標．
+    //! @param[in] end_x 終点のx座標．
+    //! @param[in] end_y 終点のy座標．
+    //! @param[in] end_z 終点のz座標．
+    //! @param[in] width 線分の太さ．デフォルトでは1．
+    void DrawLine(double start_x, double start_y, double start_z,
+                  double end_x, double end_y, double end_z,
+                  double width = 1.0) const;
+
+    //! @brief 線分の描画を行う．
+    //! @param[in] start_point 始点の座標．
+    //! @param[in] end_point 終点の座標．
+    //! @param[in] width 線分の太さ．デフォルトでは1．
+    void DrawLine(const Vector& start_point, const Vector& end_point,
+                  double width = 1.0) const;
+
+    //! @brief 2点を指定して，直方体を描画する．
+    //! @param[in] start_x 始点のx座標．
+    //! @param[in] start_y 始点のy座標．
+    //! @param[in] start_z 始点のz座標．
+    //! @param[in] end_x 終点のx座標．
+    //! @param[in] end_y 終点のy座標．
+    //! @param[in] end_z 終点のz座標．
+    void DrawBox(double start_x, double start_y, double start_z,
+                 double end_x, double end_y, double end_z) const;
+
+    //! @brief 2点を指定して，直方体を描画する．
+    //! @param[in] start_point 始点の座標．
+    //! @param[in] end_point 終点の座標．
+    void DrawBox(const Vector& start_point, const Vector& end_point);
+
     /**
      *	説明
      *		ディスプレイリストの生成
      */
-    void newGLObjDispList(void);
+    void newGLObjDispList();
     /**
      *	説明
      *		ディスプレイリストの消去
      */
-    void deleteObjDispList(void);
+    void deleteObjDispList();
 
-private:
 
-};	/// end of class OpenGLObject
+    bool is_drawn_coordinate_axis_;  //!< 座標軸を描画するかどうか．
 
-}	/// end of namespace Graphic
+    bool is_drawn_grid_floor_;  //!< メッシュの床を描画するかどうか．
+
+    int grid_floor_display_list_id_;  //!< 床描画のためのディスプレイリスト．
+};
+
+}  // namespace designlab_robot_gui::graphic
+
 
 #endif	/// __OpenGLObject_h__

@@ -66,7 +66,7 @@ constexpr double EPS = 1.0e-13;
 
 //! D-Hの行列要素数．
 constexpr int DH_DIMENSION = 4;
-//! 3次元数．
+//! 3次元．
 constexpr int THREE_DIMENSION = 3;
 
 }  // namespace designlab_robot_gui::math

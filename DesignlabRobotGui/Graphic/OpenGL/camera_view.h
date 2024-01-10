@@ -1,6 +1,6 @@
 ﻿
-#ifndef __CameraView_h__
-#define __CameraView_h__
+#ifndef DESIGNLABROBOTGUI_GRAPHIC_OPENGL_CAMERA_VIEW_H_
+#define DESIGNLABROBOTGUI_GRAPHIC_OPENGL_CAMERA_VIEW_H_
 
 #include <cassert>
 
@@ -14,13 +14,13 @@ class CameraView final
 {
 public:
     //! @enum Mode
-    //! @brief 視点変更モード
+    //! @brief 視点変更モード．
     enum class Mode
     {
-        PAN,    //!< 並進
-        SPIN,   //!< 回転
-        ZOOM,   //!< 縮尺
-        STOP    //!< 停止
+        PAN,    //!< 並進．
+        SPIN,   //!< 回転．
+        ZOOM,   //!< 縮尺．
+        STOP    //!< 停止．
     };
 
     //! @brief コンストラクタ．
@@ -47,13 +47,36 @@ public:
     void DoViewControl(int x, int y);
 
 
-    double getAzimuth() const { return azimuth; }
-    double getElevation() const { return elevation; }
-    double getDistance() const { return distance; }
-    double getViewCenterPosition(int num) const
+    //! @brief 視点の方位角を取得する．
+    //! @return 視点の方位角．
+    constexpr double GetAzimuth() const
     {
-        assert(1 <= num && num <= designlab_robot_gui::math::THREE_DIMENSION);
-        return viewCenterPosition[num - 1];
+        return azimuth_;
+    }
+
+    //! @brief 視点の仰角を取得する．
+    //! @return 視点の仰角．
+    constexpr double GetElevation() const
+    {
+        return elevation_;
+    }
+
+    //! @brief 視点の距離を取得する．
+    //! @return 視点の距離．
+    constexpr double GetDistance() const
+    {
+        return distance_;
+    }
+
+    //! @brief 視点の中心位置を取得する．
+    //! @param[in] num 取得する座標の番号．
+    double GetViewCenterPos(const int num) const
+    {
+        // num は 1 から 3 までの値を取る．取らなければ assert で止まる．
+        assert(1 <= num);
+        assert(num <= math::THREE_DIMENSION);
+
+        return view_center_pos_[num - 1];
     }
 
 private:
@@ -89,26 +112,25 @@ private:
     void Zoom(int x, int y);
 
 
-    double  azimuth;    //!< 方位角(アジマス)[deg]
-    double  elevation;  //!< 仰角(エレベイション)[deg]
-    double  distance;   //!< 距離
+    double  azimuth_;    //!< 方位角(アジマス)[deg]
+    double  elevation_;  //!< 仰角(エレベイション)[deg]
+    double  distance_;   //!< 距離．
 
-    double viewCenterPosition[3];   //!< 視点の中心位置
+    double view_center_pos_[math::THREE_DIMENSION];  //!< 視点の中心位置
 
-    double  initAzimuth;    //!< 方位角(アジマス)[deg]
-    double  initElevation;  //!< 仰角(エレベイション)[deg]
-    double  initDistance;   //!< 距離
+    double  init_azimuth_;    //!< 方位角(アジマス)[deg]
+    double  init_elevation_;  //!< 仰角(エレベイション)[deg]
+    double  init_distance_;   //!< 距離．
 
-    //! 視点の初期中心位置
-    double  initViewCenterPosition[designlab_robot_gui::math::THREE_DIMENSION];
+    double  init_view_center_pos_[math::THREE_DIMENSION];  //! 視点の初期中心位置．
 
-    int initX;  //!< 視点の2次元初期位置，起点のx座標．
-    int initY;  //!< 視点の2次元初期位置，起点のy座標．
+    int init_x;  //!< 視点の2次元初期位置，起点のx座標．
+    int init_y;  //!< 視点の2次元初期位置，起点のy座標．
 
-    Mode modeState;  //!< 視点変更モード
+    Mode mode_state_;  //!< 視点変更モード．
 };
 
 }  // namespace designlab_robot_gui::graphic
 
 
-#endif /// __CameraView_h__
+#endif  // DESIGNLABROBOTGUI_GRAPHIC_OPENGL_CAMERA_VIEW_H_

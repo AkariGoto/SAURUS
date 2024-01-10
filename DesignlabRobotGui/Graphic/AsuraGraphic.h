@@ -11,9 +11,9 @@
 namespace designlab_robot_gui::graphic
 {
 
-const int LEG_DISP_LIST_NUM = asura::LEG_JOINT_NUM + 2;
+constexpr int LEG_DISP_LIST_NUM = asura::LEG_JOINT_NUM + 2;
 
-class AsuraGraphic : public OpenGLObject
+class AsuraGraphic final : public OpenGLObject
 {
     using AsuraData = data::AsuraData;
     using Vector = math::Vector;
@@ -23,7 +23,7 @@ private:
     /**
      *	Asuraを描画するためのデータソース
      */
-    AsuraData* asuraDataSrcPtr;
+    AsuraData* asura_data_ptr_;
 
     /**
      *	ムービーレコーダ
@@ -36,9 +36,7 @@ private:
     int bodyDisplayListID;
     int legDisplayListID[LEG_DISP_LIST_NUM];
 
-    /*  20200819
-    int trackDisplayListID[TRACK_DISP_LIST_NUM];
-    */
+
 
     /**
      *	影描画用変数
@@ -54,83 +52,46 @@ private:
     bool isSupportPolygonDrawn;
     bool isDisplayListReady;
 
-    /// AVI保存用
-    bool isAnimationRecorded;
 
-    //20201019
-    bool legCoordinate;  //脚座標を表示するか否かのフラグ
+    bool is_recorded_animation_;  //!< AVI の録画を行うか否かのフラグ．
+
+    bool is_displayed_leg_coordinate_;  //!< 脚座標系を表示するか否かのフラグ．
 
 
-    /**
-     *	------------------------------------------------------------
-     *		メンバ関数
-     *	------------------------------------------------------------
-     */
+
 public:
-    /**
-     *	----------------------------------------
-     *	コンストラクタとデストラクタ
-     *	----------------------------------------
-     */
-     /// デフォルトコンストラクタ
-    explicit AsuraGraphic(HWND hWnd = NULL, AsuraData* asuraData = NULL,
-                          ViewType type = ViewType::PERSPECTIVE);
+    /// デフォルトコンストラクタ
+    AsuraGraphic(HWND hWnd = NULL, AsuraData* asuraData = NULL,
+                 ViewType type = ViewType::PERSPECTIVE);
 
     /// デストラクタ
-    virtual ~AsuraGraphic();
+    ~AsuraGraphic();
 
-    /**
-     *	----------------------------------------
-     *	OpenGLの設定の初期化・終了処理
-     *	----------------------------------------
-     */
-     /// 初期化
+    /// 初期化
     void initializeAsuraGraphic(HWND hWnd = NULL, AsuraData* asuraData = NULL);
     /// 終了処理
-    void finalizeAsuraGraphic(void);
+    void finalizeAsuraGraphic();
 
     /**
      *	説明
      *		ディスプレイリストの生成・消去
      */
-    void newAsuraDisplayList(void);
-    void deleteAsuraDisplayList(void);
+    void newAsuraDisplayList();
+    void deleteAsuraDisplayList();
 
-    /**
-     *	----------------------------------------
-     *	描画に関係するもの
-     *	----------------------------------------
-     */
-     /**
-      *	説明
-      *		OpenGLのオブジェクト描画
-      */
-    virtual void drawObjects(GLenum renderMode);
+    void drawObjects(GLenum renderMode) const override;
 
-    /**
-     *	説明
-     *		OpenGLイメージ描画
-     */
-    virtual void drawScenes(void);
+    void DrawScenes() const override;
 
-    /**
-     *	説明
-     *		オブジェクトの影描画
-     */
-    virtual void drawShadow(void);
+    void DrawShadow();
 
-    /**
-     *	説明
-     *		OpenGLイメージのレンダリング
-     *		OpenGL描画のコールバック関数になる
-     */
-    virtual void renderScenes(void);
+    void RenderScenes() override;
 
     /**
      *	説明
      *		シーンの視点をViewTypeにより設定
      */
-    virtual void setSceneView(double width, double height);
+    void setSceneView(double width, double height);
 
     /**
      *	Asuraの描画
@@ -138,42 +99,52 @@ public:
      *		drawBody			: Asuraの本体描画
      *		drawLeg				: Asuraの脚描画
     */
-    void drawAsura(void);
-    void drawBody(void);
-    void drawLeg(int legNo);
-    void drawTrack(int trackNo);
+    void drawAsura() const;
+    void drawBody() const;
+    void drawLeg(int legNo) const;
 
-    /**
-     *	支持脚多角形(三角形or四角形)の描画
-     */
-    void drawSupportPolygon(void);
 
-    /**
-     *	支持脚多角形(三角形or四角形)を見せる/隠す
-     */
-     /// 見せる
-    void showSupportPolygon(void) { isSupportPolygonDrawn = true; return; }
-    /// 隠す
-    void hideSupportPolygon(void) { isSupportPolygonDrawn = false; return; }
 
-    /**
-     *	AVIを保存するかどうか
-     */
-     /// 録画する
-    void startRecording(void) { isAnimationRecorded = true; return; }
-    /// 録画停止する
-    void stopRecording(void) { isAnimationRecorded = false; return; }
 
-    //20201019  脚座標系のフラグの関数
-    void legCoordinateOn(void) { legCoordinate = true; }  //脚座標系を表示する
-    void legCoordinateOff(void) { legCoordinate = false; }  //脚座標系を表示しない
+    //! @brief 支持脚多角形(三角形or四角形)を表示する．
+    //! @todo 未使用，削除予定．
+    inline void ShowSupportPolygon()
+    {
+        isSupportPolygonDrawn = true;
+    }
+
+    //! @brief 支持脚多角形(三角形or四角形)を非表示にする．
+    //! @todo 未使用，削除予定．
+    inline void HideSupportPolygon()
+    {
+        isSupportPolygonDrawn = false;
+    }
+
+    //! @brief AVIの録画を開始する．
+    inline void StartRecording()
+    {
+        is_recorded_animation_ = true;
+    }
+
+    //! @brief AVIの録画を終了する．
+    inline void StopRecording()
+    {
+        is_recorded_animation_ = false;
+    }
+
+    //! @brief 脚座標を表示するか否かを設定する．
+    //! @param display 表示する場合は true，非表示にする場合は false．
+    void DisplayLegCoordinate(const bool display)
+    {
+        is_displayed_leg_coordinate_ = display;
+    }
 
 private:
     /**
      *		OpenGL座標変換のためのヘルプ関数
      *			OpenGL用の4x4座標変換
      */
-    void transformOpenGLMatrix(const designlab_robot_gui::math::Matrix& matrix);
+    void transformOpenGLMatrix(const Matrix& matrix) const;
 
     /**
      *	説明
@@ -196,6 +167,9 @@ private:
      */
     void calcShadowMatrix(GLfloat matrix[], GLfloat planeEq[], GLfloat lightPos[]);
 
+
+    //! @brief 支持脚多角形を描画する．
+    void drawSupportPolygon();
 };
 
 }	/// end of namespace Graphic

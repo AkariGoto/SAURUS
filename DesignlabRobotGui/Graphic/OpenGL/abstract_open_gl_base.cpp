@@ -18,9 +18,9 @@ bool AbstractOpenGLBase::InitializeGL(HWND hWnd)
         return false;
     }
 
-    // ハンドルの代入
-    window_handle_ptr = hWnd;
-    device_context_handle_ptr = ::GetDC(window_handle_ptr);
+    // ハンドルの代入．
+    window_handle_ptr_ = hWnd;
+    device_context_handle_ptr_ = ::GetDC(window_handle_ptr_);
 
     // ピクセルフォーマットの設定．
     if (!SetWindowPixelFormat())
@@ -46,9 +46,9 @@ bool AbstractOpenGLBase::InitializeGL(HWND hWnd)
 
     // 描画するシーンのサイズを格納．
     RECT sceneSize;
-    ::GetClientRect(window_handle_ptr, &sceneSize);
-    scene_width = sceneSize.right;
-    scene_height = sceneSize.bottom;
+    ::GetClientRect(window_handle_ptr_, &sceneSize);
+    scene_width_ = sceneSize.right;
+    scene_height_ = sceneSize.bottom;
 
     return true;
 }
@@ -62,15 +62,15 @@ void AbstractOpenGLBase::FinalizeGL()
         wglMakeCurrent(NULL, NULL);
     }
 
-    if (rendering_context_handle != NULL)
+    if (rendering_context_handle_ != NULL)
     {
-        wglDeleteContext(rendering_context_handle);
-        rendering_context_handle = NULL;
+        wglDeleteContext(rendering_context_handle_);
+        rendering_context_handle_ = NULL;
     }
 
-    if (device_context_handle_ptr != NULL)
+    if (device_context_handle_ptr_ != NULL)
     {
-        ::ReleaseDC(window_handle_ptr, device_context_handle_ptr);
+        ::ReleaseDC(window_handle_ptr_, device_context_handle_ptr_);
     }
 }
 
@@ -115,18 +115,18 @@ void AbstractOpenGLBase::SetOpenGLFunctions()
 void AbstractOpenGLBase::ClearOpenGLSettings(void)
 {
     // レンダリングコンテキストの初期化
-    if (rendering_context_handle != NULL)
+    if (rendering_context_handle_ != NULL)
     {
-        wglDeleteContext(rendering_context_handle);
-        rendering_context_handle = NULL;
+        wglDeleteContext(rendering_context_handle_);
+        rendering_context_handle_ = NULL;
     }
 
     // デバイスコンテキストハンドルの初期化
-    if (device_context_handle_ptr != NULL)
-        ::ReleaseDC(window_handle_ptr, device_context_handle_ptr);
+    if (device_context_handle_ptr_ != NULL)
+        ::ReleaseDC(window_handle_ptr_, device_context_handle_ptr_);
 
     // 視点をパースペクティブに
-    view_type = ViewType::PERSPECTIVE;
+    view_type_ = ViewType::PERSPECTIVE;
 
 }
 
@@ -177,7 +177,7 @@ void AbstractOpenGLBase::setWorldLightings()
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 }
 
-void AbstractOpenGLBase::drawScenes()
+void AbstractOpenGLBase::DrawScenes() const
 {
     // 行列モード切り替え
     glMatrixMode(GL_MODELVIEW);
@@ -187,94 +187,54 @@ void AbstractOpenGLBase::drawScenes()
     glDisable(GL_CULL_FACE);
 
     glEnable(GL_CULL_FACE);
-
-    return;
 }
 
-void AbstractOpenGLBase::renderScenes()
+void AbstractOpenGLBase::RenderScenes()
 {
     // レンダリングコンテキストをカレントにする
-    if (wglMakeCurrent(device_context_handle_ptr, rendering_context_handle))
+    if (wglMakeCurrent(device_context_handle_ptr_, rendering_context_handle_))
     {
         // バッファをクリア（指定したバッファを特定の色で消去）
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        // 行列初期化
+
+        // 行列初期化．
         glLoadIdentity();
 
-        // 視点決定
-        setSceneView(scene_width, scene_height);
+        // 視点を決定．
+        setSceneView(scene_width_, scene_height_);
 
-        // シーンを描画
+        // シーンを描画．
         glPushMatrix();
-        drawScenes();
+        DrawScenes();
         glPopMatrix();
 
-        // コマンドのフラッシュ
+        // コマンドのフラッシュ．
         glFlush();
-
     }
 
-    /**
-     *		バッファの切替
-     *			バックバッファをフロントバッファに切り替え，新しい画像を見せる
-     */
+    // バッファの切替．
+    // バックバッファをフロントバッファに切り替え，新しい画像を見せる．
     SwapBuffers(wglGetCurrentDC());
 
-    wglMakeCurrent(device_context_handle_ptr, NULL);
+    wglMakeCurrent(device_context_handle_ptr_, nullptr);
 }
 
-/**
- *	説明
- *		描画領域のリサイズ処理
- */
-void AbstractOpenGLBase::resizeScenes(int width, int height)
-{
-    // 行列モードの切り替え
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
 
-    /**
-     *	gluPerspective(fovy, aspect, zNear, zFar)
-     *		fovy: 視野の垂直方向画角（角度）。大きいほど広角レンズ、小さいほど望遠レンズになる。
-     *			  180度以上や-も使えるが、45～50度あたりが標準レンズ（人の目に近い）。
-     *		aspect: 描画範囲の縦横比。Viewportのwidth/Heightをセットすれば、物体の縦横比が正しく描画される。
-     *		zNear: 視点からどれだけ離れた位置から表示するか。必ず0より大きく、かつZFarよりも小さな値を入れる。
-     *		zFar: 視点からどれだけ離れた位置まで表示するか。必ず0より大きく、かつZNearよりも大きな値を入れる。
-     */
-    gluPerspective(PERS_DEFAULT_FOVY, (GLdouble)width / (GLdouble)height, PERS_DEFAULT_NEAR, PERS_DEFAULT_FAR);
 
-    /**
-     *	void glViewport(GLint x , GLint y , GLsizei width , GLsizei height);
-     *	作成画像を、どこに描画するかを設定する
-     *	デフォルトでは、X 座標、Y 座標共に 0、ウィンドウの幅と高さで描画される
-     *		x, y: 描画範囲の原点位置を指定。単位はピクセル。ここでは左下が（0, 0）、上方向が+yで設定する。
-     *		width, height: 描画範囲の幅、高さを設定。単位はピクセル。
-     *
-     */
-    glViewport(0, 0, (GLint)width, (GLint)height);
-
-    // シーンのサイズを格納
-    scene_width = width;
-    scene_height = height;
-
-    // 行列モードをモデルビューに戻す
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
 
 void AbstractOpenGLBase::setSceneView(const double width, const double height)
 {
     // ビュータイプにより視点を変更
-    switch (view_type)
+    switch (view_type_)
     {
         case ViewType::PERSPECTIVE:
         {
-            setViewPoint(cameraView.getDistance(),
-                         cameraView.getAzimuth(),
-                         cameraView.getElevation(),
-                         cameraView.getViewCenterPosition(1),
-                         cameraView.getViewCenterPosition(2),
-                         cameraView.getViewCenterPosition(3),
+            setViewPoint(camera_view_.GetDistance(),
+                         camera_view_.GetAzimuth(),
+                         camera_view_.GetElevation(),
+                         camera_view_.GetViewCenterPos(1),
+                         camera_view_.GetViewCenterPos(2),
+                         camera_view_.GetViewCenterPos(3),
                          width, height);
             break;
         }
@@ -368,24 +328,6 @@ void AbstractOpenGLBase::setViewPoint(double distance, double azimuth, double el
           (GLdouble)upDirectionX, (GLdouble)upDirectionY, (GLdouble)upDirectionZ);
 }
 
-bool AbstractOpenGLBase::setWindowHandle(HWND hWnd)
-{
-    // 引数チェック
-    if (!::IsWindow(hWnd))
-    {
-        std::cerr << "Error: [AbstractOpenGLBase::setWindowHandle] Invalid Window Handle"
-            << std::endl;
-        return false;
-    }
-
-    return true;
-}
-
-void AbstractOpenGLBase::setViewType(const ViewType type)
-{
-    view_type = type;
-}
-
 void AbstractOpenGLBase::setMaterialColor(double red, double green, double blue, double alpha)
 {
     GLfloat materialAmbDiff[] = { (GLfloat)red, (GLfloat)green,
@@ -469,17 +411,17 @@ const GLfloat* AbstractOpenGLBase::selectMaterialColor(const MaterialColor color
 
 void AbstractOpenGLBase::BeginCameraViewControl(const CameraView::Mode mode, const  int x, const int y)
 {
-    cameraView.BeginViewControl(mode, x, y);
+    camera_view_.BeginViewControl(mode, x, y);
 }
 
 void AbstractOpenGLBase::EndCameraViewControl()
 {
-    cameraView.EndViewControl();
+    camera_view_.EndViewControl();
 }
 
 void AbstractOpenGLBase::DoCameraViewControl(const int x, const  int y)
 {
-    cameraView.DoViewControl(x, y);
+    camera_view_.DoViewControl(x, y);
 }
 
 bool AbstractOpenGLBase::SetWindowPixelFormat()
@@ -518,14 +460,14 @@ bool AbstractOpenGLBase::SetWindowPixelFormat()
     pfd.dwDamageMask = 0;               // ダメージマスクの設定. 現在では使用されていない．
 
     // 要求されたピクセルフォーマットに最も近いピクセルフォーマットを返す
-    int pixelFormat = ChoosePixelFormat(device_context_handle_ptr, &pfd);
+    int pixelFormat = ChoosePixelFormat(device_context_handle_ptr_, &pfd);
 
     if (pixelFormat == 0)		// Choose default
     {
         pixelFormat = 1;
 
         // 指定したピクセルフォーマットに関する情報を得る．
-        if (DescribePixelFormat(device_context_handle_ptr, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &pfd) == 0)
+        if (DescribePixelFormat(device_context_handle_ptr_, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &pfd) == 0)
         {
             // 失敗した場合は false を返す．
             return false;
@@ -533,7 +475,7 @@ bool AbstractOpenGLBase::SetWindowPixelFormat()
     }
 
     // 指定したデバイスコンテキストのピクセルフォーマットを設定する
-    if (!SetPixelFormat(device_context_handle_ptr, pixelFormat, &pfd))
+    if (!SetPixelFormat(device_context_handle_ptr_, pixelFormat, &pfd))
     {
         // 失敗した場合は false を返す．
         return false;
@@ -546,16 +488,16 @@ bool AbstractOpenGLBase::SetWindowPixelFormat()
 bool AbstractOpenGLBase::CreateGLContext()
 {
     // OpenGLのレンダリングコンテキストを作成．
-    rendering_context_handle = wglCreateContext(device_context_handle_ptr);
+    rendering_context_handle_ = wglCreateContext(device_context_handle_ptr_);
 
-    if (!rendering_context_handle)
+    if (!rendering_context_handle_)
     {
         // 作成不可ならば，false を返す．
         return false;
     }
 
     // 現在のレンダリングコンテキストにセット．
-    if (!wglMakeCurrent(device_context_handle_ptr, rendering_context_handle))
+    if (!wglMakeCurrent(device_context_handle_ptr_, rendering_context_handle_))
     {
         // 失敗した場合は false を返す．
         return false;
